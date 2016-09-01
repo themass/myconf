@@ -9,7 +9,7 @@ APP_DW_HOME=/home/software/tmp
 
 JDK_VERSION=jdk1.7.0_80
 
-MAVEN_VERSION=apache-maven-3.0.5-bin
+MAVEN_VERSION=apache-maven-3.0.5
 
 TOMCAT_VERSION=tomcat_1.7
 
@@ -58,7 +58,7 @@ setup_maven() {
     tar zxvpf ${APP_DW_HOME}/${MAVEN_VERSION}-bin.tar.gz
      rm -rf ${APP_HOME}/maven
     ln -s ${APP_HOME}/${MAVEN_VERSION} ${APP_HOME}/maven
-    wget ${URL}/setup/conf/maven/settings.xml -O ${APP_HOME}/maven/conf/settings.xml
+    #wget ${URL}/setup/conf/maven/settings.xml -O ${APP_HOME}/maven/conf/settings.xml
 }
 
 ## -----------------------
@@ -80,7 +80,7 @@ setup_redis() {
     rm -f ${APP_DW_HOME}/${REDIS_VERSION}.tar.bz2
     rm -rf ${REDIS_VERSION}
     wget ${URL}/store/${REDIS_VERSION}.tar.gz -O ${APP_DW_HOME}/${REDIS_VERSION}.tar.gz
-    tar -zxvf ${APP_DW_HOME}/{REDIS_VERSION}.tar.gz
+    tar -zxvf ${APP_DW_HOME}/${REDIS_VERSION}.tar.gz
  	ln -s ${APP_HOME}/${REDIS_VERSION} ${APP_HOME}/redis 
  	wget ${URL}/setup/myconf/redis/redis.conf -O ${APP_HOME}/redis/redis.conf
 }

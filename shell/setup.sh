@@ -80,6 +80,7 @@ setup_tomcat() {
  setup_mysql() {
     groupadd mysql
     useradd -d /home/mysql -g mysql mysql
+    dpkg -l |grep mysql | awk '{print$2}'|xargs dpkg -P
     mkdir -p /home/mysql/data
     chown mysql /home/mysql/data
     chgrp mysql /home/mysql/data

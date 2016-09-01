@@ -15,6 +15,8 @@ TOMCAT_VERSION=tomcat_1.7
 
 REDIS_VERSION=redis-3.2.3
 
+MYSQL_VERSION=mysql-5.7.14
+
 NGINX_VERSION=nginx-1.10.1
 NGINX_REDIS_VERSION=ngx_http_redis-0.3.7
 NGINX_REDIS2_VERSION=redis2-nginx-module-0.11
@@ -71,6 +73,34 @@ setup_tomcat() {
     wget ${URL}/tomcat/${TOMCAT_VERSION}.tar.bz2 -O ${APP_DW_HOME}/${TOMCAT_VERSION}.tar.bz2
     tar -jxvf ${APP_DW_HOME}/${TOMCAT_VERSION}.tar.bz2
 }
+
+## -----------------------
+## Setup MySQL
+## -----------------------
+function setup_mysql {
+    groupadd mysql
+    useradd -g mysql mysql
+    cd ${APP_DW_HOME}
+    rm -f ${MYSQL_VERSION}.tar.gz
+    rm -rf ${APP_HOME}/${MYSQL_VERSION}
+    wget ${URL}/mysql/${MYSQL_VERSION}.tar.gz
+    cd ${APP_HOME}
+    tar zxvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar.gz
+    rm -rf /home/mysql
+    ln -s ${APP_HOME}/${MYSQL_VERSION} /home/mysql
+    rm -rf /usr/local/mysql
+    ln -s ${APP_HOME}/${MYSQL_VERSION} /usr/local/mysql
+    cd /home/mysql
+    chown -R mysql .
+    chgrp -R mysql .
+    scripts/mysql_install_db --user=mysql --basedir=.
+    chown -R root .
+    chown -R mysql data
+    rm -f /etc/my.cnf
+    wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/my.cnf
+    #bin/mysqld_safe --user=mysql &
+}
+
 
 ## -----------------------
 ## Setup redis

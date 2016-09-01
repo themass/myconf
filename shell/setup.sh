@@ -77,7 +77,7 @@ setup_tomcat() {
 ## -----------------------
 ## Setup MySQL
 ## -----------------------
-function setup_mysql {
+ setup_mysql() {
     groupadd mysql
     useradd -g mysql mysql
     cd ${APP_DW_HOME}
@@ -253,6 +253,7 @@ if [ $# != 0 ]; then
             memcached)      setup_memcached;;
 	    	redis)	    setup_redis;;
 	    	tomcat)	    setup_tomcat;;
+	    	mysql)	    setup_mysql;;
             mongodb)        setup_mongodb;;
             python)         setup_python;;
             rsync)          setup_rsync;;

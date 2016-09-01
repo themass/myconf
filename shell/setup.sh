@@ -76,11 +76,13 @@ setup_tomcat() {
 ## Setup redis
 ## -----------------------
 setup_redis() {
- 	cd ${APP_HOME}
+ 	cd ${APP_DW_HOME}
     rm -f ${APP_DW_HOME}/${REDIS_VERSION}.tar.bz2
     rm -rf ${REDIS_VERSION}
+    rm -rf ${APP_HOME}/${REDIS_VERSION}
     wget ${URL}/store/${REDIS_VERSION}.tar.gz -O ${APP_DW_HOME}/${REDIS_VERSION}.tar.gz
     tar -zxvf ${APP_DW_HOME}/${REDIS_VERSION}.tar.gz
+    make PREFIX=${APP_HOME}/${REDIS_VERSION} install
  	ln -s ${APP_HOME}/${REDIS_VERSION} ${APP_HOME}/redis 
  	wget ${URL}/setup/myconf/redis/redis.conf -O ${APP_HOME}/redis/redis.conf
 }

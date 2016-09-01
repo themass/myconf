@@ -51,7 +51,7 @@ setup_jdk() {
 ## Setup maven
 ## -----------------------
 setup_maven() {
-   cd ${APP_HOME}
+    cd ${APP_HOME}
     rm -f ${APP_DW_HOME}/${MAVEN_VERSION}-bin.tar.gz
     rm -rf ${MAVEN_VERSION}
     wget ${URL}/maven/${MAVEN_VERSION}-bin.tar.gz -O ${APP_DW_HOME}/${MAVEN_VERSION}-bin.tar.gz
@@ -226,6 +226,7 @@ if [ $# != 0 ]; then
             mongodb)        setup_mongodb;;
             python)         setup_python;;
             rsync)          setup_rsync;;
+            maven)          setup_maven;;
             all)            setup_all;;
             *)              usage;;
         esac

@@ -5,13 +5,15 @@
 
 URL=http://10.134.3.8/software
 APP_HOME=/root/local
-APP_DW_HOME=/home/software
+APP_DW_HOME=/home/software/tmp
 
 JDK_VERSION=jdk1.7.0_80
 
 MAVEN_VERSION=apache-maven-3.0.5-bin
 
 TOMCAT_VERSION=tomcat_1.7
+
+REDIS_VERSION=redis-3.2.3
 
 NGINX_VERSION=nginx-1.10.1
 NGINX_REDIS_VERSION=ngx_http_redis-0.3.7
@@ -67,7 +69,19 @@ setup_tomcat() {
     rm -f ${APP_DW_HOME}/${TOMCAT_VERSION}.tar.bz2
     rm -rf ${TOMCAT_VERSION}
     wget ${URL}/tomcat/${TOMCAT_VERSION}.tar.bz2 -O ${APP_DW_HOME}/${TOMCAT_VERSION}.tar.bz2
-    tar -jcvf ${APP_DW_HOME}/{TOMCAT_VERSION}.tar.bz2
+    tar -jxvf ${APP_DW_HOME}/{TOMCAT_VERSION}.tar.bz2
+}
+
+## -----------------------
+## Setup redis
+## -----------------------
+setup_redis() {
+ 	cd ${APP_HOME}
+    rm -f ${APP_DW_HOME}/${REDIS_VERSION}.tar.bz2
+    rm -rf ${REDIS_VERSION}
+    wget ${URL}/store/${REDIS_VERSION}.tar.gz -O ${APP_DW_HOME}/${REDIS_VERSION}.tar.gz
+    tar -zxvf ${APP_DW_HOME}/{REDIS_VERSION}.tar.gz
+ 	ln -s ${APP_HOME}/${REDIS_VERSION} ${APP_HOME}/redis 
 }
 
 ## -----------------------

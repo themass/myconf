@@ -91,6 +91,8 @@ setup_redis() {
      
  	ln -s ${APP_HOME}/${REDIS_VERSION} ${APP_HOME}/redis 
  	wget ${URL}/setup/myconf/redis/redis.conf -O ${APP_HOME}/redis/redis.conf
+ 	${APP_HOME}/redis/bin/redis-server  ${APP_HOME}/redis/redis.conf
+ 	
 }
 
 ## -----------------------

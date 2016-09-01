@@ -83,6 +83,7 @@ setup_redis() {
     rm -rf ${APP_HOME}/redis
     wget ${URL}/store/${REDIS_VERSION}.tar.gz -O ${APP_DW_HOME}/${REDIS_VERSION}.tar.gz
     tar -zxvf ${APP_DW_HOME}/${REDIS_VERSION}.tar.gz
+    cd ${APP_DW_HOME}/${REDIS_VERSION}	
     make -j4
     mkdir -p ${APP_HOME}/${REDIS_VERSION}/bin 
     cp ${APP_DW_HOME}/${REDIS_VERSION}/src/redis*  ${APP_HOME}/${REDIS_VERSION}/bin/

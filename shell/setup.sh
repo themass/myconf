@@ -15,7 +15,7 @@ TOMCAT_VERSION=tomcat_1.7
 
 REDIS_VERSION=redis-3.2.3
 
-MYSQL_VERSION=mysql-5.6.32
+MYSQL_VERSION= mysql-server_5.7.14-1ubuntu14.04_amd64.deb-bundle
 
 NGINX_VERSION=nginx-1.10.1
 NGINX_REDIS_VERSION=ngx_http_redis-0.3.7
@@ -79,32 +79,32 @@ setup_tomcat() {
 ## -----------------------
  setup_mysql() {
     groupadd mysql
-    useradd -g mysql mysql
+    useradd -d /home/mysql -g mysql mysql
+    mkdir -p /home/mysql/data
+    chown mysql /home/mysql/data
+    chgrp mysql /home/mysql/data
     cd ${APP_DW_HOME}
-    rm -f ${MYSQL_VERSION}.tar.gz
-    rm -rf ${APP_HOME}/${MYSQL_VERSION}
-    wget ${URL}/store/${MYSQL_VERSION}.tar.gz
-    cd ${APP_HOME}
-    tar zxvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar.gz
-    rm -rf /home/mysql
-    ln -s ${APP_HOME}/${MYSQL_VERSION} /home/mysql
-    rm -rf /usr/local/mysql
-    ln -s ${APP_HOME}/${MYSQL_VERSION} /usr/local/mysql
-    cd /home/mysql
-    cmake .
-    make
-    make install
-    chown -R mysql .
-    chgrp -R mysql .
-    bin/mysqld --initialize --user=mysql
-    bin/mysql_ssl_rsa_setup
-    chown -R root .
-    chown -R mysql data
+    rm -f *mysql*
+    wget ${URL}/store/${MYSQL_VERSION}.tar
+    tar xvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar
+   	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb 
+   	dpkg-preconfigure  mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
+   	dpkg -i libmysqlclient20_5.7.14-1ubuntu14.04_amd64.deb
+   	dpkg -i libmysqlclient-dev_5.7.14-1ubuntu14.04_amd64.deb
+   	dpkg -i libmysqld-dev_5.7.14-1ubuntu14.04_amd64.deb 
+   	dpkg -i mysql-client_5.7.14-1ubuntu14.04_amd64.deb
+   	dpkg -i mysql-community-client_5.7.14-1ubuntu14.04_amd64.deb
+   	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb
+   	sudo apt-get -f install
+   	dpkg -i mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
+   	dpkg -i mysql-server_5.7.14-1ubuntu14.04_amd64.deb 
+
     rm -f /etc/my.cnf
     wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/my.cnf
-    bin/mysqld_safe --user=mysql &
-    #bin/mysqld_safe --user=mysql &
+    
+    whereis mysql
 }
+
 
 
 ## -----------------------

@@ -15,7 +15,7 @@ TOMCAT_VERSION=tomcat_1.7
 
 REDIS_VERSION=redis-3.2.3
 
-MYSQL_VERSION= mysql-server_5.7.14-1ubuntu14.04_amd64.deb-bundle
+MYSQL_VERSION=mysql-server_5.7.14-1ubuntu14.04_amd64.deb-bundle
 
 NGINX_VERSION=nginx-1.10.1
 NGINX_REDIS_VERSION=ngx_http_redis-0.3.7

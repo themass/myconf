@@ -90,11 +90,11 @@ setup_tomcat() {
     tar xvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar
    	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb 
    	dpkg-preconfigure  mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
+   	dpkg -i mysql-community-client_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i libmysqlclient20_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i libmysqlclient-dev_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i libmysqld-dev_5.7.14-1ubuntu14.04_amd64.deb 
    	dpkg -i mysql-client_5.7.14-1ubuntu14.04_amd64.deb
-   	dpkg -i mysql-community-client_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb
    	sudo apt-get -f install
    	dpkg -i mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb

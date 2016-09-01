@@ -69,7 +69,7 @@ setup_tomcat() {
     rm -f ${APP_DW_HOME}/${TOMCAT_VERSION}.tar.bz2
     rm -rf ${TOMCAT_VERSION}
     wget ${URL}/tomcat/${TOMCAT_VERSION}.tar.bz2 -O ${APP_DW_HOME}/${TOMCAT_VERSION}.tar.bz2
-    tar -jxvf ${APP_DW_HOME}/{TOMCAT_VERSION}.tar.bz2
+    tar -jxvf ${APP_DW_HOME}/${TOMCAT_VERSION}.tar.bz2
 }
 
 ## -----------------------
@@ -208,7 +208,6 @@ if [ $# != 0 ]; then
     for arg in $*; do
         case "$arg" in
             jdk)            setup_jdk;;
-           
             nginx)          setup_nginx;;
 	    	OpenResty)      setup_openresty;;
             memcached)      setup_memcached;;

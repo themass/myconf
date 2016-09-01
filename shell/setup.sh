@@ -83,7 +83,7 @@ setup_tomcat() {
     cd ${APP_DW_HOME}
     rm -f ${MYSQL_VERSION}.tar.gz
     rm -rf ${APP_HOME}/${MYSQL_VERSION}
-    wget ${URL}/mysql/${MYSQL_VERSION}.tar.gz
+    wget ${URL}/store/${MYSQL_VERSION}.tar.gz
     cd ${APP_HOME}
     tar zxvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar.gz
     rm -rf /home/mysql

@@ -171,7 +171,7 @@ setup_nginx() {
 ## -----------------------
 ## Setup all aboves
 ## -----------------------
-function setup_all {
+setup_all() {
     setup_jdk
     setup_maven
     setup_nginx
@@ -185,7 +185,7 @@ function setup_all {
 ## -----------------------
 ## Show help message
 ## -----------------------
-function usage {
+usage() {
     echo "Available arguments as below:"
     echo "jdk           Setup JDK"
     echo "maven         Setup maven"

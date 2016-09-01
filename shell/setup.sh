@@ -91,13 +91,18 @@ setup_tomcat() {
     rm -rf /usr/local/mysql
     ln -s ${APP_HOME}/${MYSQL_VERSION} /usr/local/mysql
     cd /home/mysql
+    cmake .
+    make
+    make install
     chown -R mysql .
     chgrp -R mysql .
-    scripts/mysql_install_db --user=mysql --basedir=.
+    bin/mysqld --initialize --user=mysql
+    bin/mysql_ssl_rsa_setup
     chown -R root .
     chown -R mysql data
     rm -f /etc/my.cnf
     wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/my.cnf
+    bin/mysqld_safe --user=mysql &
     #bin/mysqld_safe --user=mysql &
 }
 

@@ -82,6 +82,7 @@ setup_redis() {
     wget ${URL}/store/${REDIS_VERSION}.tar.gz -O ${APP_DW_HOME}/${REDIS_VERSION}.tar.gz
     tar -zxvf ${APP_DW_HOME}/{REDIS_VERSION}.tar.gz
  	ln -s ${APP_HOME}/${REDIS_VERSION} ${APP_HOME}/redis 
+ 	wget ${URL}/setup/myconf/redis/redis.conf -O ${APP_HOME}/redis/redis.conf
 }
 
 ## -----------------------
@@ -163,7 +164,7 @@ setup_nginx() {
     make install
     rm -f ${APP_HOME}/nginx
     ln -s ${APP_HOME}/${NGINX_VERSION} ${APP_HOME}/nginx
-    wget ${URL}/setup/conf/nginx/nginx.conf -O ${APP_HOME}/nginx/conf/nginx.conf
+    wget ${URL}/setup/myconf/nginx/conf/nginx.conf -O ${APP_HOME}/nginx/conf/nginx.conf
     rm -rf ${APP_HOME}/nginx/html
 }
 

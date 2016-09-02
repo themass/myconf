@@ -101,8 +101,8 @@ setup_tomcat() {
    	dpkg -i mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i mysql-server_5.7.14-1ubuntu14.04_amd64.deb 
 
-    mv /etc/mysqlmy.cnf /etc/mysqlmy.cnf_bak
-    wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
+    #mv /etc/mysql/my.cnf /etc/mysql/my.cnf_bak
+    #wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
     
     whereis mysql
 }

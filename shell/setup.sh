@@ -92,6 +92,7 @@ setup_tomcat() {
     wget ${URL}/store/${MYSQL_VERSION}.tar
     tar xvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar
    	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb 
+   	#wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
    	dpkg-preconfigure  mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i mysql-community-client_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i libmysqlclient20_5.7.14-1ubuntu14.04_amd64.deb

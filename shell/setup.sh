@@ -78,6 +78,8 @@ setup_tomcat() {
 ## Setup MySQL
 ## -----------------------
  setup_mysql() {
+ 	groupadd mysql
+    useradd -d /home/mysql -g mysql mysql
  	killall -TERM mysqld
  	apt-get install mysql-server-5.6 mysql-client-5.6
     #groupadd mysql

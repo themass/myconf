@@ -109,18 +109,18 @@ setup_tomcat() {
 ## -----------------------
 ## Setup mysql_set
 ## -----------------------
- mysql_set() {
-#	use mysql
-#	UPDATE user SET authentication_string=PASSWORD("NEWPASSWORD") WHERE User='root'
-#	FLUSH PRIVILEGES
-#	quit
-#	create user vpn
-#	update user set authentication_string=password("vpn@5296") where user="vpn"
-#	create database vpn
-#	grant all on vpn.* to 'vpn'
-#	flush privileges
-#	quit
-}
+# mysql_set() {
+##	use mysql
+##	UPDATE user SET authentication_string=PASSWORD("NEWPASSWORD") WHERE User='root'
+##	FLUSH PRIVILEGES
+##	quit
+##	create user vpn
+##	update user set authentication_string=password("vpn@5296") where user="vpn"
+##	create database vpn
+##	grant all on vpn.* to 'vpn'
+##	flush privileges
+##	quit
+#}
 
 
 

@@ -79,35 +79,36 @@ setup_tomcat() {
 ## -----------------------
  setup_mysql() {
  	killall -TERM mysqld
-    groupadd mysql
-    useradd -d /home/mysql -g mysql mysql
-    dpkg -l |grep mysql | awk '{print$2}'|xargs dpkg -P
-    mkdir -p /home/mysql/data
-    chown mysql /home/mysql/data
-    chgrp mysql /home/mysql/data
-    cd ${APP_DW_HOME}
-    rm -f *mysql*
-    rm -rf /var/lib/mysql*
-    rm -rf /etc/mysql*
-    wget ${URL}/store/${MYSQL_VERSION}.tar
-    tar xvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar
-   	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb 
-   	#wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
-   	dpkg-preconfigure  mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
-   	dpkg -i mysql-community-client_5.7.14-1ubuntu14.04_amd64.deb
-   	dpkg -i libmysqlclient20_5.7.14-1ubuntu14.04_amd64.deb
-   	dpkg -i libmysqlclient-dev_5.7.14-1ubuntu14.04_amd64.deb
-   	dpkg -i libmysqld-dev_5.7.14-1ubuntu14.04_amd64.deb 
-   	dpkg -i mysql-client_5.7.14-1ubuntu14.04_amd64.deb
-   	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb
-   	sudo apt-get -f install
-   	
-   	#wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
-   	
-   	dpkg -i mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
-   	dpkg -i mysql-server_5.7.14-1ubuntu14.04_amd64.deb 
-
-    #mv /etc/mysql/my.cnf /etc/mysql/my.cnf_bak
+ 	apt-get install mysql-server-5.6 mysql-client-5.6
+    #groupadd mysql
+    #useradd -d /home/mysql -g mysql mysql
+    #dpkg -l |grep mysql | awk '{print$2}'|xargs dpkg -P
+    #mkdir -p /home/mysql/data
+    #chown mysql /home/mysql/data
+    #chgrp mysql /home/mysql/data
+    #cd ${APP_DW_HOME}
+    #rm -f *mysql*
+    #rm -rf /var/lib/mysql*
+    #rm -rf /etc/mysql*
+    #wget ${URL}/store/${MYSQL_VERSION}.tar
+    #tar xvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar
+   	#dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb 
+   	##wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
+   	#dpkg-preconfigure  mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
+   	#dpkg -i mysql-community-client_5.7.14-1ubuntu14.04_amd64.deb
+   	#dpkg -i libmysqlclient20_5.7.14-1ubuntu14.04_amd64.deb
+   	#dpkg -i libmysqlclient-dev_5.7.14-1ubuntu14.04_amd64.deb
+   	#dpkg -i libmysqld-dev_5.7.14-1ubuntu14.04_amd64.deb 
+   	#dpkg -i mysql-client_5.7.14-1ubuntu14.04_amd64.deb
+   	#dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb
+   	#sudo apt-get -f install
+   	#
+   	##wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
+   	#
+   	#dpkg -i mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
+   	#dpkg -i mysql-server_5.7.14-1ubuntu14.04_amd64.deb 
+    #
+    ##mv /etc/mysql/my.cnf /etc/mysql/my.cnf_bak
     
     
     whereis mysql
@@ -117,11 +118,11 @@ setup_tomcat() {
 ## -----------------------
 # mysql_set() {
 ##	use mysql
-##	UPDATE user SET authentication_string=PASSWORD("NEWPASSWORD") WHERE User='root'
+##	UPDATE user SET password=PASSWORD('vpn@5296') WHERE user='root'
 ##	FLUSH PRIVILEGES
 ##	quit
 ##	create user vpn
-##	update user set authentication_string=password("vpn@5296") where user="vpn"
+##	update user set password=password("vpn@5296") where user="vpn"
 ##	create database vpn
 ##	grant all on vpn.* to 'vpn'
 ##	flush privileges

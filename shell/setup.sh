@@ -87,6 +87,8 @@ setup_tomcat() {
     chgrp mysql /home/mysql/data
     cd ${APP_DW_HOME}
     rm -f *mysql*
+    rm /var/lib/mysql*
+    rm /etc/mysql*
     wget ${URL}/store/${MYSQL_VERSION}.tar
     tar xvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar
    	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb 

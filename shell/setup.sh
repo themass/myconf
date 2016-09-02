@@ -87,8 +87,8 @@ setup_tomcat() {
     chgrp mysql /home/mysql/data
     cd ${APP_DW_HOME}
     rm -f *mysql*
-    rm /var/lib/mysql*
-    rm /etc/mysql*
+    rm -rf /var/lib/mysql*
+    rm -rf /etc/mysql*
     wget ${URL}/store/${MYSQL_VERSION}.tar
     tar xvf ${APP_DW_HOME}/${MYSQL_VERSION}.tar
    	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb 
@@ -100,11 +100,14 @@ setup_tomcat() {
    	dpkg -i mysql-client_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i mysql-common_5.7.14-1ubuntu14.04_amd64.deb
    	sudo apt-get -f install
+   	
+   	#wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
+   	
    	dpkg -i mysql-community-server_5.7.14-1ubuntu14.04_amd64.deb
    	dpkg -i mysql-server_5.7.14-1ubuntu14.04_amd64.deb 
 
     #mv /etc/mysql/my.cnf /etc/mysql/my.cnf_bak
-    #wget ${URL}/setup/myconf/mysql/my.cnf -O /etc/mysql/my.cnf
+    
     
     whereis mysql
 }

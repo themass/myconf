@@ -80,7 +80,7 @@ setup_tomcat() {
 #	useradd -r -m -s /bin/bash work 
 #	su -work
 #	alias rtm='ps -aux| grep tomcat_vpn |awk '\''{print$2}'\''|xargs kill -9 ;/home/work/local/tomcat_vpn/bin/startup.sh'
-#	alias vpu='cd /home/work/webroot/vpn-api ;ps -aux| grep tomcat_vpn |awk '\''{print$2}'\''|xargs kill -9 ;mvn clear;git pull;mvn install -Ppro; rtm;'
+#	alias vpu='cd /home/work/webroot/vpn-api ;ps -aux| grep tomcat_vpn |awk '\''{print$2}'\''|xargs kill -9 ;mvn clean;git pull;mvn install -Ppro; rtm;'
 #	
 	
  	cd ${APP_HOME}
@@ -151,7 +151,8 @@ setup_tomcat() {
 ## Setup redis
 ## -----------------------
 setup_user() {
- 	useradd -r -m -s /bin/bash work  
+ 	useradd -r -m -s /bin/bash work
+ 	password work  
  	chmod u+w /etc/sudoers
  	vi  /etc/sudoers
  	#root ALL=(ALL) ALL

@@ -78,6 +78,7 @@ setup_tomcat() {
 ## Setup MySQL
 ## -----------------------
  setup_mysql() {
+ 	killall -TERM mysqld
     groupadd mysql
     useradd -d /home/mysql -g mysql mysql
     dpkg -l |grep mysql | awk '{print$2}'|xargs dpkg -P

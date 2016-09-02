@@ -4,14 +4,14 @@
 ## -----------------------
 
 URL=http://10.134.3.8/software
-APP_HOME=/root/local
+APP_HOME=/home/work/local
 APP_DW_HOME=/home/software/tmp
 
 JDK_VERSION=jdk1.7.0_80
 
 MAVEN_VERSION=apache-maven-3.0.5
 
-TOMCAT_VERSION=tomcat_1.7
+TOMCAT_VERSION=tomcat_vpn
 
 REDIS_VERSION=redis-3.2.3
 
@@ -38,14 +38,23 @@ mkdir -p ${APP_HOME}
 ## Setup JDK
 ## -----------------------
 setup_jdk() {
-    cd ${APP_HOME}
-    rm -f ${APP_DW_HOME}/${JDK_VERSION}*
-    rm -rf ${JDK_VERSION}
-    wget ${URL}/jdk/${JDK_VERSION}.tar.gz -O  ${APP_DW_HOME}/${JDK_VERSION}.tar.gz
-    tar -zxvf ${APP_DW_HOME}/${JDK_VERSION}.tar.gz 
-    echo "yes" | ${APP_HOME}/${JDK_VERSION} | cat
-    rm -rf ${APP_HOME}/jdk
-    ln -s ${APP_HOME}/${JDK_VERSION} ${APP_HOME}/jdk
+	sudo add-apt-repository ppa:webupd8team/java
+	sudo apt-get update
+	sudo apt-get install oracle-java8-installer
+	sudo apt-get install oracle-java8-set-default
+	sudo sudo update-java-alternatives -s java-8-oracle
+	sudo java -version
+	sudo which java
+	#　update-alternatives --config java
+	#修改path 
+	#    cd ${APP_HOME}
+	#    rm -f ${APP_DW_HOME}/${JDK_VERSION}*
+	#    rm -rf ${JDK_VERSION}
+	#    wget ${URL}/jdk/${JDK_VERSION}.tar.gz -O  ${APP_DW_HOME}/${JDK_VERSION}.tar.gz
+	#    tar -zxvf ${APP_DW_HOME}/${JDK_VERSION}.tar.gz 
+	#    echo "yes" | ${APP_HOME}/${JDK_VERSION} | cat
+	#    rm -rf ${APP_HOME}/jdk
+	#    ln -s ${APP_HOME}/${JDK_VERSION} ${APP_HOME}/jdk
 
 }
 
@@ -53,6 +62,7 @@ setup_jdk() {
 ## Setup maven
 ## -----------------------
 setup_maven() {
+	#sudo apt-get install maven2
     cd ${APP_HOME}
     rm -f ${APP_DW_HOME}/${MAVEN_VERSION}-bin.tar.gz
     rm -rf ${MAVEN_VERSION}
@@ -67,6 +77,12 @@ setup_maven() {
 ## Setup tomcat
 ## -----------------------
 setup_tomcat() {
+#	useradd -r -m -s /bin/bash work 
+#	su -work
+#	alias rtm='ps -aux| grep tomcat_vpn |awk '\''{print$2}'\''|xargs kill -9 ;/home/work/local/tomcat_vpn/bin/startup.sh'
+#	alias vpu='cd /home/work/webroot/vpn-api ;ps -aux| grep tomcat_vpn |awk '\''{print$2}'\''|xargs kill -9 ;mvn clear;git pull;mvn install -Ppro; rtm;'
+#	
+	
  	cd ${APP_HOME}
     rm -f ${APP_DW_HOME}/${TOMCAT_VERSION}.tar.bz2
     rm -rf ${TOMCAT_VERSION}
@@ -118,7 +134,7 @@ setup_tomcat() {
 ## -----------------------
 ## Setup mysql_set
 ## -----------------------
-# mysql_set() {
+# mysql_setshell() {
 ##	use mysql
 ##	UPDATE user SET password=PASSWORD('vpn@5296') WHERE user='root'
 ##	FLUSH PRIVILEGES
@@ -131,7 +147,20 @@ setup_tomcat() {
 ##	quit
 #}
 
+## -----------------------
+## Setup redis
+## -----------------------
+setup_user() {
+ 	useradd -r -m -s /bin/bash work  
+ 	chmod u+w /etc/sudoers
+ 	vi  /etc/sudoers
+ 	#root ALL=(ALL) ALL
+ 	su - work
+ 	mkdir local
+ 	mkdir  webroot 
+ 	mkdir -p var/log 
 
+}
 
 ## -----------------------
 ## Setup redis

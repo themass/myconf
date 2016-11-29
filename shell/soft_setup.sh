@@ -93,6 +93,18 @@ setup_ndk()
 	mv ${TMP_HOME}/${NDK_VERSION} .
 	echo 'profile' ${APP_HOME}/${NDK_VERSION}
 }
+setup_user() {
+ 	useradd -r -m -s /bin/bash web
+ 	passwd web  
+ 	chmod u+w /etc/sudoers
+ 	vi  /etc/sudoers
+ 	#root ALL=(ALL) ALL
+ 	su - work
+ 	mkdir local
+ 	mkdir  webroot 
+ 	mkdir -p var/log 
+
+}
 setup_nginx() {
 	cd ${TMP_HOME}
     rm -f ${NGINX_VERSION}.tar.gz
@@ -181,6 +193,7 @@ usage()
     echo "sdk          Setup sdk"
     echo "ndk          Setup ndk"
     echo "nginx          Setup nginx"
+    echo "user          Setup user"
     echo "all           Setup all aboves"
 }
 
@@ -193,6 +206,7 @@ if [ $# != 0 ]; then
             jdk)            setup_jdk;;
             sdk)          setup_sdk;;
 			ndk)          setup_ndk;;
+			user)          setup_user;;
 			nginx)          setup_nginx;;
 			all)          setup_all;;
         esac

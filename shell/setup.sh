@@ -152,7 +152,7 @@ setup_tomcat() {
 ## -----------------------
 setup_user() {
  	useradd -r -m -s /bin/bash work
- 	password work  
+ 	passwd work  
  	chmod u+w /etc/sudoers
  	vi  /etc/sudoers
  	#root ALL=(ALL) ALL

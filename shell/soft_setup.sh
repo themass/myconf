@@ -41,8 +41,7 @@ setup_jdk()
     rm -rf ${JDK_DIR}
     wget ${URL}/soft/${JDK_VERSION}.tar.gz -O ${TMP_HOME}/${JDK_VERSION}.tar.gz
     echo "yes" | ${TMP_HOME}/${JDK_VERSION}.tar.gz | cat
-    tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz
-    mv ${JDK_VERSION} ${JDK_DIR}
+    tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz -C ${JDK_DIR}
 	echo 'profile' ${APP_HOME}/${JDK_DIR}
 }
 setup_sdk() 
@@ -51,12 +50,11 @@ setup_sdk()
 	rm -f ${TMP_HOME}/${SDK_VERSION}.tgz
 	rm -rf ${SDK_VERSION}
 	wget ${URL}/soft/${SDK_VERSION}.tgz -O ${TMP_HOME}/${SDK_VERSION}.tgz
-	tar -zxvf ${TMP_HOME}/${SDK_VERSION}.tgz
-	mv ${TMP_HOME}/${SDK_VERSION} .
+	tar -zxvf ${TMP_HOME}/${SDK_VERSION}.tgz 
 	rm -rf ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip 
 	wget ${URL}/soft/${SDK_PLATFORM_VERSION}.zip -O ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
 	unzip ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
-	mv ${TMP_HOME}/platform-tools  ${SDK_VERSION}/
+	mv platform-tools  ${SDK_VERSION}/
 	
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1}.zip
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip
@@ -72,10 +70,10 @@ setup_sdk()
 	unzip ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip  
 	unzip ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_3}.zip  
 	unzip ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_4}.zip  
-	mv ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1} ${SDK_VERSION}/platforms/
-	mv ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2} ${SDK_VERSION}/platforms/
-	mv ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_3} ${SDK_VERSION}/platforms/
-	mv ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_4} ${SDK_VERSION}/platforms/
+	mv ${SDK_PLATFORM_P_VERSION_1} ${SDK_VERSION}/platforms/
+	mv ${SDK_PLATFORM_P_VERSION_2} ${SDK_VERSION}/platforms/
+	mv ${SDK_PLATFORM_P_VERSION_3} ${SDK_VERSION}/platforms/
+	mv ${SDK_PLATFORM_P_VERSION_4} ${SDK_VERSION}/platforms/
 	
 	echo 'profile' ${APP_HOME}/${SDK_VERSION}
 	
@@ -87,7 +85,6 @@ setup_ndk()
 	rm -rf ${NDK_VERSION}
 	wget ${URL}/soft/${NDK_VERSION}.tar.bz2 -O ${TMP_HOME}/${NDK_VERSION}.tar.bz2
 	tar -jxvf ${TMP_HOME}/${NDK_VERSION}.tar.bz2
-	mv ${TMP_HOME}/${NDK_VERSION} .
 	echo 'profile' ${APP_HOME}/${NDK_VERSION}
 }
 setup_user() {

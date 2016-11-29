@@ -29,7 +29,7 @@ SDK_PLATFORM_P_VERSION_P_P_4=android-22
 
 NDK_VERSION=android-ndk64-r10b-linux-x86_64
 MAVEN_VERSION=apache-maven-3.0.3
-NGINX_VERSION=nginx-1.10.1
+NGINX_VERSION=nginx-1.10.2
 NGINX_REDIS_VERSION=ngx_http_redis-0.3.7
 NGINX_REDIS2_VERSION=redis2-nginx-module-0.11
 NGINX_SRCACHE_VERSION=srcache-nginx-module-0.26

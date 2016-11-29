@@ -41,7 +41,7 @@ setup_jdk()
     rm -rf ${JDK_DIR}
     wget ${URL}/soft/${JDK_VERSION}.tar.gz -O ${TMP_HOME}/${JDK_VERSION}.tar.gz
     echo "yes" | ${APP_HOME}/${JDK_VERSION}.tar.gz | cat
-    tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz
+    tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz -O ${TMP_HOME}/${JDK_VERSION}
     mv ${TMP_HOME}/${JDK_VERSION} ${JDK_DIR}
 	echo 'profile' ${APP_HOME}/${JDK_DIR}
 }

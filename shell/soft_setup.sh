@@ -5,7 +5,7 @@
 URL=http://10.117.233.81
 APP_HOME=/root/local
 TMP_HOME=/root/soft
-JDK_VERSION=jdk-8u111-linux-x64
+JDK_VERSION=jdk-8u111
 JDK_DIR=jdk1.8
 
 SDK_VERSION=android-sdk_r24.0.2-linux
@@ -41,7 +41,7 @@ setup_jdk()
     rm -rf ${JDK_DIR}
     wget ${URL}/soft/${JDK_VERSION}.tar.gz -O ${TMP_HOME}/${JDK_VERSION}.tar.gz
     echo "yes" | ${TMP_HOME}/${JDK_VERSION}.tar.gz | cat
-    tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz -C ${TMP_HOME}/${JDK_VERSION}
+    tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz
     mv ${TMP_HOME}/${JDK_VERSION} ${JDK_DIR}
 	echo 'profile' ${APP_HOME}/${JDK_DIR}
 }

@@ -14,11 +14,8 @@ SDK_PLATFORM_P_VERSION_1=android-17_r01
 SDK_PLATFORM_P_VERSION_2=android-19_r03
 SDK_PLATFORM_P_VERSION_3=android-21_r01
 SDK_PLATFORM_P_VERSION_4=android-22_r02
-
-NDK_VERSION= android-ndk64-r10b-linux-x86_64
-
+NDK_VERSION=android-ndk64-r10b-linux-x86_64
 MAVEN_VERSION=apache-maven-3.0.3
-
 NGINX_VERSION=nginx-1.10.1
 NGINX_REDIS_VERSION=ngx_http_redis-0.3.7
 NGINX_REDIS2_VERSION=redis2-nginx-module-0.11
@@ -43,7 +40,7 @@ setup_jdk()
     rm -f ${TMP_HOME}/${JDK_VERSION}.tar.gz
     rm -rf ${JDK_DIR}
     wget ${URL}/soft/${JDK_VERSION}.tar.gz -O ${TMP_HOME}/${JDK_VERSION}.tar.gz
-    echo "yes" | ${TMP_HOME}/${JDK_VERSION}.bin | cat
+    echo "yes" | ${APP_HOME}/${JDK_VERSION}.tar.gz | cat
     tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz
     mv ${TMP_HOME}/${JDK_VERSION} ${JDK_DIR}
 	echo 'profile' ${APP_HOME}/${JDK_DIR}

@@ -40,8 +40,8 @@ setup_jdk()
     rm -f ${TMP_HOME}/${JDK_VERSION}.tar.gz
     rm -rf ${JDK_DIR}
     wget ${URL}/soft/${JDK_VERSION}.tar.gz -O ${TMP_HOME}/${JDK_VERSION}.tar.gz
-    tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz -C ${JDK_DIR}
-	echo 'profile' ${APP_HOME}/${JDK_DIR}
+    tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz 
+	echo 'profile' ${APP_HOME}/${JDK_VERSION}
 }
 setup_sdk() 
 {

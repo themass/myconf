@@ -8,7 +8,8 @@ TMP_HOME=/root/soft
 JDK_VERSION=jdk-8u111
 JDK_DIR=jdk1.8
 
-SDK_VERSION=android-sdk_r24.0.2-linux
+SDK_NAME_VERSION=android-sdk_r24.0.2-linux
+SDK_VERSION=android-sdk-linux
 SDK_PLATFORM_VERSION=platform-tools_r23.1.0-linux
 
 SDK_PLATFORM_P_VERSION_1=android-17_r01
@@ -60,7 +61,7 @@ setup_sdk()
 	cd ${APP_HOME}
 	rm -f ${TMP_HOME}/${SDK_VERSION}.tgz
 	rm -rf ${SDK_VERSION}
-	wget ${URL}/soft/${SDK_VERSION}.tgz -O ${TMP_HOME}/${SDK_VERSION}.tgz
+	wget ${URL}/soft/${SDK_NAME_VERSION}.tgz -O ${TMP_HOME}/${SDK_VERSION}.tgz
 	tar -zxvf ${TMP_HOME}/${SDK_VERSION}.tgz 
 	rm -rf ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip 
 	wget ${URL}/soft/${SDK_PLATFORM_VERSION}.zip -O ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
@@ -89,7 +90,7 @@ setup_sdk()
 	echo 'profile' ${APP_HOME}/${SDK_VERSION}
 	
 }
-setup_ndk() 
+setup_ndk() 	
 {
 	cd ${APP_HOME}
 	rm -f ${TMP_HOME}/${NDK_VERSION}.tgz

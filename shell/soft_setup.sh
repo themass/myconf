@@ -42,7 +42,7 @@ setup_jdk()
     wget ${URL}/soft/${JDK_VERSION}.tar.gz -O ${TMP_HOME}/${JDK_VERSION}.tar.gz
     echo "yes" | ${TMP_HOME}/${JDK_VERSION}.tar.gz | cat
     tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz
-    mv ${TMP_HOME}/${JDK_VERSION} ${JDK_DIR}
+    mv ${JDK_VERSION} ${JDK_DIR}
 	echo 'profile' ${APP_HOME}/${JDK_DIR}
 }
 setup_sdk() 

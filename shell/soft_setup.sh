@@ -2,7 +2,7 @@
 ## -----------------------
 ## Version setting
 ## -----------------------
-URL=http://61.135.251.70:9876
+URL=http://10.117.233.81
 APP_HOME=/root/local
 TMP_HOME=/root/soft
 JDK_VERSION=jdk-8u111-linux-x64

@@ -185,9 +185,10 @@ setup_nginx() {
 	--add-module=../${NGINX_CONSISTENT_VERSION} --add-module=../${NGINX_ECHO_VERSION}
 	make -j4
     make install
-#    rm -rf ${APP_HOME}/nginx
-#    ln -s ${APP_HOME}/${NGINX_VERSION} ${APP_HOME}/nginx
-#    rm -rf ${APP_HOME}/nginx/html
+    rm -rf ${APP_HOME}/nginx
+    ln -s ${APP_HOME}/${NGINX_VERSION} ${APP_HOME}/nginx
+    rm -rf ${APP_HOME}/nginx/html
+
 }
 ## -----------------------
 ## Show help message

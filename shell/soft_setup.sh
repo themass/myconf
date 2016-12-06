@@ -244,7 +244,7 @@ setup_mysql() {
     mkdir -p /var/log/mysql
     mysqld_safe --user=mysql &
 }
-radius()
+setup_radius()
 {
 	cd ${TMP_HOME}
     rm -f ${RADIUS_VERSION}.tar.gz
@@ -287,6 +287,7 @@ usage()
     echo "nginx          Setup nginx"
     echo "user          Setup user"
     echo "mysql          Setup mysql"
+    echo "radius          Setup radius"
     echo "all           Setup all aboves"
 }
 
@@ -302,6 +303,7 @@ if [ $# != 0 ]; then
 			user)          setup_user;;
 			nginx)          setup_nginx;;
 			mysql)          setup_mysql;;
+			radius)         setup_radius;;
 			all)          setup_all;;
         esac
     done

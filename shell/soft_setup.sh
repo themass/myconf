@@ -228,12 +228,13 @@ setup_mysql() {
     cd /home/mysql/mysql
     chown -R mysql .
     chgrp -R mysql .
-    scripts/mysql_install_db --user=mysql --basedir=.
+    scripts/mysql_install_db --user=mysql --basedir=. --datadir=/home/mysql/db_data
     chown -R root .
     chown -R mysql data
-    #rm -f /etc/my.cnf
-    #wget ${URL}/setup/conf/mysql/my.cnf -O /etc/my.cnf
-    #bin/mysqld_safe --user=mysql &
+    cd
+    rm -f /etc/my.cnf
+    cp ../mysql/my.cnf /etc/my.cnf
+    mysqld_safe --user=mysql &
 }
 ## -----------------------
 ## Show help message

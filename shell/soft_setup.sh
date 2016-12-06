@@ -47,6 +47,7 @@ MYSQL_VERSION=mysql-5.6.34-linux-glibc2.5-x86_64
 
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}
+PWD=`pwd`
 
 #init soft
 setup_jdk() 
@@ -235,10 +236,29 @@ setup_mysql() {
     scripts/mysql_install_db --user=mysql --basedir=. --datadir=/home/mysql/db_data
     chown -R root .
     chown -R mysql data
-    cd ~
+    cd ${PWD}
     rm -f /etc/my.cnf
     cp ../mysql/my.cnf /etc/my.cnf
+    echo 'profile /usr/local/mysql/bin'
+    mkdir -p /var/log/mysql
     mysqld_safe --user=mysql &
+}
+radius()
+{
+	mysqladmin -u root -p create radius
+	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
+	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql
+	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
+	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
+	mysql -u root -p < ../radius/radius.sql
+	mv /usr/local/etc/raddb/sites-enabled/default /usr/local/etc/raddb/sites-enabled/default.bak
+	cp ../radius/default /usr/local/etc/raddb/sites-enabled/
+	mv /usr/local/etc/raddb/sites-enabled/inner-tunnel /usr/local/etc/raddb/sites-enabled/inner-tunnel.bak
+	cp ../radius/inner-tunnel /usr/local/etc/raddb/sites-enabled/
+	mv /usr/local/etc/raddb/sql.conf /usr/local/etc/raddb/sql.conf.bak
+	cp ../radius/sql.conf /usr/local/etc/raddb/
+	mv /usr/local/etc/raddb/radiusd.conf /usr/local/etc/raddb/radiusd.conf.bak
+	cp ../radius/radiusd.conf /usr/local/etc/raddb/
 }
 ## -----------------------
 ## Show help message

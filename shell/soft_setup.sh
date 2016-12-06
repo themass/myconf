@@ -190,7 +190,7 @@ setup_nginx() {
     rm -rf ${APP_HOME}/nginx
     ln -s ${APP_HOME}/${NGINX_VERSION} ${APP_HOME}/nginx
     rm -rf ${APP_HOME}/nginx/html
-    cd
+    cd ~
     rm ${APP_HOME}/nginx/conf/nginx.conf
     cp ../nginx/conf/nginx.conf ${APP_HOME}/nginx/conf/nginx.conf
     cp ../nginx/server ${APP_HOME}/nginx/conf/ -r
@@ -235,7 +235,7 @@ setup_mysql() {
     scripts/mysql_install_db --user=mysql --basedir=. --datadir=/home/mysql/db_data
     chown -R root .
     chown -R mysql data
-    cd
+    cd ~
     rm -f /etc/my.cnf
     cp ../mysql/my.cnf /etc/my.cnf
     mysqld_safe --user=mysql &

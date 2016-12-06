@@ -43,6 +43,8 @@ NGINX_CONSISTENT_VERSION=ngx_http_consistent_hash
 NGINX_ECHO_VERSION=echo-nginx-module
 NGINX_PCRE_VERSION=pcre-8.39
 
+MYSQL_VERSION_64=mysql-5.6.15-linux-glibc2.5-x86_64
+
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}
 
@@ -190,6 +192,50 @@ setup_nginx() {
     rm -rf ${APP_HOME}/nginx/html
 
 }
+strongswan_android() 
+{
+	#https://wiki.strongswan.org/issues/652
+	#libtool gperf
+	#https://wiki.strongswan.org/projects/strongswan/wiki/AndroidVPNClientBuild
+	apt-get install flex bison libtool autoconf gperf gettext automake
+	cd
+	cd work
+	git clone git://git.strongswan.org/strongswan.git
+	cd strongswan
+	./autogen.sh 
+	./configure 
+	make dist
+	cd src/frontends/android/app/src/main/jni
+	git clone git://git.strongswan.org/android-ndk-openssl.git -b ndk-static jni/openssl
+	ln -s ../../../../../../../../strongswan/  strongswan
+	ndk-build
+}
+## -----------------------
+## Setup MySQL
+## -----------------------
+setup_mysql() {
+    groupadd mysql
+    useradd -g mysql mysql
+    cd ${TMP_HOME}
+    rm -f ${MYSQL_VERSION}.tar.gz
+    rm -rf ${APP_HOME}/${MYSQL_VERSION}
+    wget ${URL}/soft/${MYSQL_VERSION}.tar.gz
+    cd ${APP_HOME}
+    tar zxvf ${TMP_HOME}/${MYSQL_VERSION}.tar.gz
+    rm -rf /home/mysql
+    ln -s ${APP_HOME}/${MYSQL_VERSION} /home/mysql
+    rm -rf /usr/local/mysql
+    ln -s ${APP_HOME}/${MYSQL_VERSION} /usr/local/mysql
+    cd /home/mysql
+    chown -R mysql .
+    chgrp -R mysql .
+    scripts/mysql_install_db --user=mysql --basedir=.
+    chown -R root .
+    chown -R mysql data
+    #rm -f /etc/my.cnf
+    #wget ${URL}/setup/conf/mysql/my.cnf -O /etc/my.cnf
+    #bin/mysqld_safe --user=mysql &
+}
 ## -----------------------
 ## Show help message
 ## -----------------------
@@ -201,6 +247,7 @@ usage()
     echo "ndk          Setup ndk"
     echo "nginx          Setup nginx"
     echo "user          Setup user"
+    echo "mysql          Setup mysql"
     echo "all           Setup all aboves"
 }
 
@@ -215,6 +262,7 @@ if [ $# != 0 ]; then
 			ndk)          setup_ndk;;
 			user)          setup_user;;
 			nginx)          setup_nginx;;
+			nginx)          setup_mysql;;
 			all)          setup_all;;
         esac
     done

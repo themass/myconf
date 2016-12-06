@@ -1,14 +1,22 @@
 #init soft
+
+#http://it.zhaozhao.info/archives/41127
+#https://segmentfault.com/a/1190000002540601
+#http://www.cnblogs.com/hyzhou/category/336618.html
+WORKDIR=/root/work
+TMP_HOME=/root/soft
+PWD=`pwd`
 ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $2}'|tr -d "addr:"`
 init_soft() 
 {
 	apt-get update
-	apt-get install build-essential lrzsz  tree dstat git dos2unix unzip	#编译环境
+	apt-get install build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev	#编译环境
 	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev     #编译所需要的软件
 }
 #strongswan setup
 strongswan_setup() 
 {
+	cd ${TMP_HOME}
 	wget http://download.strongswan.org/strongswan-5.2.2.tar.bz2
 	tar -jxvf strongswan-5.2.2.tar.bz2 && cd strongswan-5.2.2
 	./configure --prefix=/usr --sysconfdir=/etc  --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap  --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2  --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls
@@ -18,24 +26,35 @@ strongswan_setup()
 }
 strongswan_config() 
 {
-	unzip strongswan_conf.zip
-	dos2unix strongswan_conf/ipsec.conf
-	dos2unix strongswan_conf/charon.conf
-	dos2unix strongswan_conf/ipsec.secrets
+	#unzip strongswan_conf.zip
+	#dos2unix strongswan_conf/ipsec.conf
+	#dos2unix strongswan_conf/charon.conf
+	#dos2unix strongswan_conf/ipsec.secrets
+	#
+	#cp  /etc/ipsec.conf /etc/ipsec.conf.bak
+	#cp  strongswan_conf/ipsec.conf /etc/ipsec.conf
+    #
+	#cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
+	#cp  strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
+    #
+	#cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
+	#cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
+	
 	
 	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-	cp  strongswan_conf/ipsec.conf /etc/ipsec.conf
-
+	cp  ../strongswan_conf/ipsec.conf /etc/ipsec.conf
+    
 	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
-	cp  strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
-
+	cp  ../strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
+    
 	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-	cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
+	cp  ../strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	ipsec restart
 }
 #ca setup
 init_ca() 
 {
+	cd ${TMP_HOME}
 	mkdir -p ca
 	cd ca
 	echo "C=CN, O=timeline, CN=${ip}"
@@ -64,7 +83,7 @@ setup_iptables()
 {
 	iptables -A INPUT -p udp --dport 500 -j ACCEPT 
 	iptables -A INPUT -p udp --dport 4500 -j ACCEPT 
-	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth0 -j MASQUERADE 
+	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth1 -j MASQUERADE 
 	iptables -A FORWARD -s 10.0.0.0/24 -j ACCEPT 
 	iptables -A FORWARD -d 10.0.0.0/24 -j ACCEPT
 	ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
@@ -84,6 +103,19 @@ net()
 	net.ipv4.ip_forward = 1
 	net.ipv6.conf.all.forwarding=1
 	sysctl -p
+}
+radius()
+{
+	cd ${TMP_HOME}
+	wget ftp://ftp.freeradius.org/pub/freeradius/old/freeradius-server-2.1.12.tar.gz
+	tar -zxvf freeradius-server-2.1.12.tar.gz
+	cd freeradius-server-2.1.12
+	autoreconf -ivf
+	./configure
+	make
+	make install
+	
+	
 }
 ## -----------------------
 ## Setup all aboves

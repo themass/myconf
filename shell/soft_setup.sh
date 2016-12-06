@@ -250,11 +250,13 @@ setup_radius()
     rm -f ${RADIUS_VERSION}.tar.gz
     rm -rf ${APP_HOME}/${RADIUS_VERSION}
     wget ${URL}/soft/${RADIUS_VERSION}.tar.gz
-	tar -zxvf {RADIUS_VERSION}.tar.gz
-	cd RADIUS_VERSION
+	tar -zxvf ${RADIUS_VERSION}.tar.gz
+	cd ${RADIUS_VERSION}
 	./configure 
 	make
 	make install
+	cd ${PWD}
+	echo `pwd`
 	#mysqladmin -u root -p create radius
 	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
 	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql

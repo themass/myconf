@@ -43,7 +43,7 @@ NGINX_CONSISTENT_VERSION=ngx_http_consistent_hash
 NGINX_ECHO_VERSION=echo-nginx-module
 NGINX_PCRE_VERSION=pcre-8.39
 
-MYSQL_VERSION_64=mysql-5.6.15-linux-glibc2.5-x86_64
+MYSQL_VERSION=mysql-5.6.34-linux-glibc2.5-x86_64
 
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}

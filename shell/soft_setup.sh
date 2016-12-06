@@ -262,7 +262,7 @@ if [ $# != 0 ]; then
 			ndk)          setup_ndk;;
 			user)          setup_user;;
 			nginx)          setup_nginx;;
-			nginx)          setup_mysql;;
+			mysql)          setup_mysql;;
 			all)          setup_all;;
         esac
     done

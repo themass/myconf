@@ -115,67 +115,67 @@ setup_user() {
 }
 setup_nginx() {
 	cd ${TMP_HOME}
-    rm -f ${NGINX_VERSION}.tar.gz
-    rm -rf ${NGINX_VERSION}
-    rm -rf ${APP_HOME}/${NGINX_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_VERSION}.tar.gz
-    tar -zxvf ${NGINX_VERSION}.tar.gz
-
-	rm -f ${NGINX_REDIS_VERSION}.tar.gz
-    rm -rf ${NGINX_REDIS_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_REDIS_VERSION}.tar.gz
-    tar zxvf ${NGINX_REDIS_VERSION}.tar.gz
-    
-    rm -f ${NGINX_REDIS2_VERSION}.tar.gz
-    rm -rf ${NGINX_REDIS2_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_REDIS2_VERSION}.tar.gz
-    tar zxvf ${NGINX_REDIS2_VERSION}.tar.gz
-    
-    rm -f ${NGINX_SRCACHE_VERSION}.tar.gz
-    rm -rf ${NGINX_SRCACHE_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_SRCACHE_VERSION}.tar.gz
-    tar zxvf ${NGINX_SRCACHE_VERSION}.tar.gz
-    
-    rm -f ${NGINX_DEVEL_VERSION}.tar.gz
-    rm -rf ${NGINX_DEVEL_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_DEVEL_VERSION}.tar.gz
-    tar zxvf ${NGINX_DEVEL_VERSION}.tar.gz
-    
-    rm -f ${NGINX_MISC_VERSION}.tar.gz
-    rm -rf ${NGINX_MISC_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_MISC_VERSION}.tar.gz
-    tar zxvf ${NGINX_MISC_VERSION}.tar.gz
-    
-    rm -f ${NGINX_SLOWFS_VERSION}.tar.gz
-    rm -rf ${NGINX_SLOWFS_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_SLOWFS_VERSION}.tar.gz
-    tar zxvf ${NGINX_SLOWFS_VERSION}.tar.gz
-    
-    rm -f ${NGINX_PURGE_VERSION}.tar.gz
-    rm -rf ${NGINX_PURGE_VERSION}
-    https://github.com/FRiCKLE/ngx_cache_purge.git
-    
-    
-    rm -f ${NGINX_PHP_VERSION}.tar.gz
-    rm -rf ${NGINX_PHP_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_PHP_VERSION}.tar.gz
-    tar zxvf ${NGINX_PHP_VERSION}.tar.gz
-    
-    rm -f ${NGINX_ACCOUNTING_VERSION}.tar.gz
-    rm -rf ${NGINX_ACCOUNTING_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_ACCOUNTING_VERSION}.tar.gz
-    tar zxvf ${NGINX_ACCOUNTING_VERSION}.tar.gz
-    
-    rm -f ${NGINX_PCRE_VERSION}.tar.gz
-    rm -rf ${NGINX_PCRE_VERSION}
-    wget ${URL}/soft/nginx/${NGINX_PCRE_VERSION}.tar.gz
-    tar -zxvf ${NGINX_PCRE_VERSION}.tar.gz
-    
-    rm -rf ${NGINX_ECHO_VERSION}
-    git clone git://github.com/agentzh/echo-nginx-module.git
-
-    rm -rf ${NGINX_CONSISTENT_HASH_VERSION}
-    git clone https://github.com/replay/ngx_http_consistent_hash.git
+    #rm -f ${NGINX_VERSION}.tar.gz
+    #rm -rf ${NGINX_VERSION}
+    #rm -rf ${APP_HOME}/${NGINX_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_VERSION}.tar.gz
+    #tar -zxvf ${NGINX_VERSION}.tar.gz
+    #
+	#rm -f ${NGINX_REDIS_VERSION}.tar.gz
+    #rm -rf ${NGINX_REDIS_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_REDIS_VERSION}.tar.gz
+    #tar zxvf ${NGINX_REDIS_VERSION}.tar.gz
+    #
+    #rm -f ${NGINX_REDIS2_VERSION}.tar.gz
+    #rm -rf ${NGINX_REDIS2_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_REDIS2_VERSION}.tar.gz
+    #tar zxvf ${NGINX_REDIS2_VERSION}.tar.gz
+    #
+    #rm -f ${NGINX_SRCACHE_VERSION}.tar.gz
+    #rm -rf ${NGINX_SRCACHE_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_SRCACHE_VERSION}.tar.gz
+    #tar zxvf ${NGINX_SRCACHE_VERSION}.tar.gz
+    #
+    #rm -f ${NGINX_DEVEL_VERSION}.tar.gz
+    #rm -rf ${NGINX_DEVEL_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_DEVEL_VERSION}.tar.gz
+    #tar zxvf ${NGINX_DEVEL_VERSION}.tar.gz
+    #
+    #rm -f ${NGINX_MISC_VERSION}.tar.gz
+    #rm -rf ${NGINX_MISC_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_MISC_VERSION}.tar.gz
+    #tar zxvf ${NGINX_MISC_VERSION}.tar.gz
+    #
+    #rm -f ${NGINX_SLOWFS_VERSION}.tar.gz
+    #rm -rf ${NGINX_SLOWFS_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_SLOWFS_VERSION}.tar.gz
+    #tar zxvf ${NGINX_SLOWFS_VERSION}.tar.gz
+    #
+    #rm -f ${NGINX_PURGE_VERSION}.tar.gz
+    #rm -rf ${NGINX_PURGE_VERSION}
+    #https://github.com/FRiCKLE/ngx_cache_purge.git
+    #
+    #
+    #rm -f ${NGINX_PHP_VERSION}.tar.gz
+    #rm -rf ${NGINX_PHP_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_PHP_VERSION}.tar.gz
+    #tar zxvf ${NGINX_PHP_VERSION}.tar.gz
+    #
+    #rm -f ${NGINX_ACCOUNTING_VERSION}.tar.gz
+    #rm -rf ${NGINX_ACCOUNTING_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_ACCOUNTING_VERSION}.tar.gz
+    #tar zxvf ${NGINX_ACCOUNTING_VERSION}.tar.gz
+    #
+    #rm -f ${NGINX_PCRE_VERSION}.tar.gz
+    #rm -rf ${NGINX_PCRE_VERSION}
+    #wget ${URL}/soft/nginx/${NGINX_PCRE_VERSION}.tar.gz
+    #tar -zxvf ${NGINX_PCRE_VERSION}.tar.gz
+    #
+    #rm -rf ${NGINX_ECHO_VERSION}
+    #git clone git://github.com/agentzh/echo-nginx-module.git
+    #
+    #rm -rf ${NGINX_CONSISTENT_HASH_VERSION}
+    #git clone https://github.com/replay/ngx_http_consistent_hash.git
 
 	
     cd ${NGINX_VERSION}

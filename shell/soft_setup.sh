@@ -214,19 +214,18 @@ strongswan_android()
 ## Setup MySQL
 ## -----------------------
 setup_mysql() {
-    groupadd mysql
-    useradd -g mysql mysql
+    useradd -r -m -s /bin/bash mysql
     cd ${TMP_HOME}
     rm -f ${MYSQL_VERSION}.tar.gz
     rm -rf ${APP_HOME}/${MYSQL_VERSION}
     wget ${URL}/soft/${MYSQL_VERSION}.tar.gz
     cd ${APP_HOME}
     tar zxvf ${TMP_HOME}/${MYSQL_VERSION}.tar.gz
-    rm -rf /home/mysql
-    ln -s ${APP_HOME}/${MYSQL_VERSION} /home/mysql
+    rm -rf /home/mysql/mysql
+    ln -s ${APP_HOME}/${MYSQL_VERSION} /home/mysql/mysql
     rm -rf /usr/local/mysql
     ln -s ${APP_HOME}/${MYSQL_VERSION} /usr/local/mysql
-    cd /home/mysql
+    cd /home/mysql/mysql
     chown -R mysql .
     chgrp -R mysql .
     scripts/mysql_install_db --user=mysql --basedir=.

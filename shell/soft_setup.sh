@@ -260,6 +260,7 @@ setup_mysql() {
 }
 setup_radius()
 {
+	shelldir=`pwd`
 	apt-get install  freeradius-mysql
 	cd ${TMP_HOME}
     rm -f ${RADIUS_VERSION}.tar.gz
@@ -270,8 +271,8 @@ setup_radius()
 	./configure 
 	make
 	make install
-	cd ${PWD}
-	echo ${PWD}
+	cd ${shelldir}
+	echo ${shelldir}
 	mysqladmin -u root -p create radius
 	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
 	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql

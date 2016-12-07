@@ -16,3 +16,4 @@
  
 # 限制账户同时登陆次数
  INSERT INTO radgroupcheck (GroupName, Attribute, op, Value) values("vpn_grp", "Simultaneous-Use", ":=", "1");
+flush privileges; 

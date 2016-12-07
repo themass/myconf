@@ -224,6 +224,7 @@ setup_mysql() {
     cd ${TMP_HOME}
     rm -f ${MYSQL_VERSION}.tar.gz
     rm -rf ${APP_HOME}/${MYSQL_VERSION}
+    rm -rf /home/mysql/db_data/*
     wget ${URL}/soft/${MYSQL_VERSION}.tar.gz
     cd ${APP_HOME}
     tar zxvf ${TMP_HOME}/${MYSQL_VERSION}.tar.gz

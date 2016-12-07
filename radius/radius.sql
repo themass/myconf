@@ -1,6 +1,7 @@
- GRANT SELECT ON radius.* TO 'radius'@'localhost' IDENTIFIED BY 'themass';
- GRANT ALL on radius.radacct TO 'radius'@'localhost';
- GRANT ALL on radius.radpostauth TO 'radius'@'localhost';
+ CREATE USER 'radius'@'%' IDENTIFIED BY 'themass';
+ GRANT SELECT ON radius.* TO 'radius'@'%';
+ GRANT ALL on radius.radacct TO 'radius'@'%';
+ GRANT ALL on radius.radpostauth TO 'radius'@'%';
  use radius;
  
 # 加入组信息，本例中的组名为user
@@ -17,3 +18,8 @@
 # 限制账户同时登陆次数
  INSERT INTO radgroupcheck (GroupName, Attribute, op, Value) values("vpn_grp", "Simultaneous-Use", ":=", "1");
 flush privileges; 
+#select * from information_schema.user_privileges;
+#update user set password=password('themass') where user='radius';
+#drop user 'radius'@'%';
+#show grants for 'radius'@'%';
+#删除空用户名的记录

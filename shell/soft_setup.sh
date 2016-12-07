@@ -273,25 +273,27 @@ setup_radius()
 	make install
 	cd ${shelldir}
 	echo ${shelldir}
-	mysqladmin -u root -p create radius
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
-	mysql -u root -p < ../radius/radius.sql
+	rm -rf /usr/local/etc/raddb
+	#mysqladmin -u root -p create radius
+	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
+	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql
+	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
+	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
+	#mysql -u root -p < ../radius/radius.sql
 	rm /usr/local/etc/raddb/sites-enabled/default
 	cp ../radius/default /usr/local/etc/raddb/sites-enabled/
-	mv /usr/local/etc/raddb/sites-enabled/inner-tunnel /usr/local/etc/raddb/sites-enabled/inner-tunnel.bak
+	rm /usr/local/etc/raddb/sites-enabled/inner-tunnel
 	cp ../radius/inner-tunnel /usr/local/etc/raddb/sites-enabled/
-	mv /usr/local/etc/raddb/sql.conf /usr/local/etc/raddb/sql.conf.bak
+	rm /usr/local/etc/raddb/sql.conf
 	cp ../radius/sql.conf /usr/local/etc/raddb/
-	mv /usr/local/etc/raddb/radiusd.conf /usr/local/etc/raddb/radiusd.conf.bak
+	rm /usr/local/etc/raddb/radiusd.conf
 	cp ../radius/radiusd.conf /usr/local/etc/raddb/
-	
-	mv /usr/local/etc/raddb/users /usr/local/etc/raddb/users.bak
+	rm /usr/local/etc/raddb/users
 	cp ../radius/users /usr/local/etc/raddb/
+	
 	echo  ' test  radiusd -X'
-	echo 'radtest vpn themass localhost 1812 testing123'
+	echo 'radtest testing testing localhost 1812 testing123'
+	echo 'service freeradius stop'
 }
 ## -----------------------
 ## Show help message

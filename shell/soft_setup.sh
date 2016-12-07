@@ -256,7 +256,7 @@ setup_mysql() {
     chown mysql:mysql /var/run/mysqld
     chown mysql:mysql /var/lib/mysql
     cp /home/mysql/mysql/share/english/errmsg.sys  /usr/share/mysql/
-    mysqld_safe --user=mysql  --datadir=/home/mysql/db_data &
+    mysqld_safe  &
 }
 setup_radius()
 {

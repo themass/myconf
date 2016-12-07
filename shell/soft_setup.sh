@@ -242,6 +242,13 @@ setup_mysql() {
     cp ../mysql/my.cnf /etc/my.cnf
     echo 'profile /usr/local/mysql/bin'
     mkdir -p /var/log/mysql
+    mkdir -p /var/run/mysqld
+    mkdir -p /var/lib/mysql/
+    mkdir -p /usr/share/mysql/
+    chown mysql:mysql /var/log/mysql
+    chown mysql:mysql /var/run/mysqld
+    chown mysql:mysql /var/lib/mysql
+    cp /home/mysql/mysql/share/english/errmsg.sys  /usr/share/mysql/
     mysqld_safe --user=mysql &
 }
 setup_radius()

@@ -221,7 +221,6 @@ strongswan_android()
 ## -----------------------
 setup_mysql() {
 	shelldir=`pwd`
-	echo ${shelldir}
     useradd -r -m -s /bin/bash mysql
     cd ${TMP_HOME}
     rm -f ${MYSQL_VERSION}.tar.gz
@@ -239,15 +238,7 @@ setup_mysql() {
     chgrp -R mysql .
     mkdir -p /home/mysql/db_data
     chown mysql:mysql /home/mysql/db_data
-    scripts/mysql_install_db --user=mysql --basedir=. --datadir=/home/mysql/db_data
-    chown -R root .
-    chown -R mysql data
-    cd ${shelldir}
-    rm -f /etc/my.cnf
-    cp ../mysql/my.cnf /etc/my.cnf
-    rm /etc/mysql/my.cnf
-    echo 'profile /usr/local/mysql/bin'
-    rm -rf /var/log/mysql  /var/run/mysqld /var/lib/mysql/
+    rm -rf /var/log/mysql  /var/run/mysqld /var/lib/mysql
     mkdir -p /var/log/mysql
     mkdir -p /var/run/mysqld
     mkdir -p /var/lib/mysql
@@ -255,6 +246,15 @@ setup_mysql() {
     chown mysql:mysql /var/log/mysql
     chown mysql:mysql /var/run/mysqld
     chown mysql:mysql /var/lib/mysql
+    scripts/mysql_install_db --user=mysql --basedir=. --datadir=/home/mysql/db_data
+    chown -R root .
+    chown -R mysql data
+    echo ${shelldir}
+    cd ${shelldir}
+    rm -f /etc/my.cnf
+    cp ../mysql/my.cnf /etc/my.cnf
+    rm /etc/mysql/my.cnf
+    echo 'profile /usr/local/mysql/bin'
     cp /home/mysql/mysql/share/english/errmsg.sys  /usr/share/mysql/
     mysqld_safe  &
 }

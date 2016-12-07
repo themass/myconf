@@ -49,6 +49,9 @@ strongswan_config()
     
 	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
 	cp  ../strongswan_conf/ipsec.secrets /etc/ipsec.secrets
+	
+	cp  ../strongswan_conf/strongswan.conf /etc/strongswan.conf
+	
 	ipsec restart
 }
 #ca setup

@@ -280,17 +280,11 @@ setup_radius()
 	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
 	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
 	#mysql -u root -p < ../radius/radius.sql
-	rm /usr/local/etc/raddb/sites-enabled/default
 	cp ../radius/default /usr/local/etc/raddb/sites-enabled/
-	rm /usr/local/etc/raddb/sites-enabled/inner-tunnel
 	cp ../radius/inner-tunnel /usr/local/etc/raddb/sites-enabled/
-	rm /usr/local/etc/raddb/sql.conf
 	cp ../radius/sql.conf /usr/local/etc/raddb/
-	rm /usr/local/etc/raddb/radiusd.conf
 	cp ../radius/radiusd.conf /usr/local/etc/raddb/
-	rm /usr/local/etc/raddb/users
 	cp ../radius/users /usr/local/etc/raddb/
-	rm /usr/local/etc/raddb/dictionary
 	cp ../radius/dictionary /usr/local/etc/raddb/
 	
 	echo  ' test  radiusd -X'

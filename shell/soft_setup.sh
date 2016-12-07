@@ -220,6 +220,7 @@ strongswan_android()
 ## Setup MySQL
 ## -----------------------
 setup_mysql() {
+	cp ../mysql/my.cnf /etc/my.cnf
     useradd -r -m -s /bin/bash mysql
     cd ${TMP_HOME}
     rm -f ${MYSQL_VERSION}.tar.gz
@@ -236,13 +237,12 @@ setup_mysql() {
     chown -R mysql .
     chgrp -R mysql .
     mkdir -p /home/mysql/db_data
-     chown mysql:mysql /home/mysql/db_data
+    chown mysql:mysql /home/mysql/db_data
     scripts/mysql_install_db --user=mysql --basedir=. --datadir=/home/mysql/db_data
     chown -R root .
     chown -R mysql data
     cd ${PWD}
     rm -f /etc/my.cnf
-    cp ../mysql/my.cnf /etc/my.cnf
     echo 'profile /usr/local/mysql/bin'
     rm -rf /var/log/mysql  /var/run/mysqld /var/lib/mysql/
     mkdir -p /var/log/mysql

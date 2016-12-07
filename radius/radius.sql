@@ -16,8 +16,19 @@
  insert into radusergroup(username,groupname) values('vpn','vpn_grp');
  
 # 限制账户同时登陆次数
- INSERT INTO radgroupcheck (GroupName, Attribute, op, Value) values("vpn_grp", "Simultaneous-Use", ":=", "1");
-flush privileges; 
+ INSERT INTO radgroupcheck (GroupName, Attribute, op, Value) values('vpn_grp', 'Simultaneous-Use', ':=', '1');
+
+在数据库中限制用户组的最大流量为1M(本例中的用户组名为user)
+ INSERT INTO radgroupcheck (GroupName,attribute,op,Value) VALUES ('vpn_grp','Max-Monthly-Traffic',':=','1048576');
+  # 流量统计时间的间隔（60秒）
+ INSERT INTO radgroupcheck (GroupName,attribute,op,Value) VALUES ('vpn_grp','Acct-Interim-Interval',':=','60');
+ # 加入一个新的VPN用户（用户名zhukun.net，密码abc123）
+ INSERT INTO radcheck (UserName, Attribute, Value) VALUES ('123', 'Password', '123456');
+ #将用户zhukun.net加到组里
+ insert into radusergroup(username,groupname) values('123','vpn_grp');
+ 
+ flush privileges; 
+ 
 #select * from information_schema.user_privileges;
 #update user set password=password('themass') where user='radius';
 #drop user 'radius'@'%';

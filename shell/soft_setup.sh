@@ -290,9 +290,11 @@ setup_radius()
 	cp ../radius/radiusd.conf /usr/local/etc/raddb/
 	rm /usr/local/etc/raddb/users
 	cp ../radius/users /usr/local/etc/raddb/
+	rm /usr/local/etc/raddb/dictionary
+	cp ../radius/dictionary /usr/local/etc/raddb/
 	
 	echo  ' test  radiusd -X'
-	echo 'radtest testing testing localhost 1812 testing123'
+	echo 'radtest vpn themass localhost 1812 testing123'
 	echo 'service freeradius stop'
 }
 ## -----------------------

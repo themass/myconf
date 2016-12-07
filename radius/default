@@ -220,6 +220,7 @@ authorize {
 #	Autz-Type Status-Server {
 #
 #	}
+	monthlytrafficcounter
 }
 
 

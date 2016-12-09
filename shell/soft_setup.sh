@@ -320,11 +320,14 @@ setup_php()
     ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=${APP_HOME}/${PHP_VERSION}/etc --enable-fpm --enable-mbstring --enable-mbregex --enable-soap --with-mhash --with-zlib --with-openssl-dir=/usr/lib/ --with-openssl
     make -j4
     make install
-    cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/${PHP_VERSION}/etc
-    cp ${shelldir}/../php/php.ini ${APP_HOME}/${PHP_VERSION}/etc
-    mkdir -p ${APP_HOME}/${PHP_VERSION}/lib/php/extensions
-    cd ${APP_HOME}/${PHP_VERSION}/lib/php/extensions
+    cd ${APP_HOME}
+    ln -s php ${PHP_VERSION}
+    cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/php/etc
+    cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
+    mkdir -p ${APP_HOME}/php/lib/php/extensions
+    cd ${APP_HOME}/php/lib/php/extensions
     echo 'killall php-fpm '
+    echo 'profile php'
     
 }
 ## -----------------------

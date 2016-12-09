@@ -10,7 +10,7 @@ ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk
 init_soft() 
 {
 	apt-get update
-	apt-get install build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev	#编译环境
+	apt-get install build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2	#编译环境
 	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev     #编译所需要的软件
 }
 #strongswan setup

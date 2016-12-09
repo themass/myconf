@@ -306,6 +306,7 @@ setup_radius()
 }
 setup_php()
 {
+	mkdir -p /home/php/
 	cd {TMP_HOME}
     rm -f ${PHP_VERSION}.tar.bz2  
     rm -rf ${PHP_VERSION}

@@ -258,6 +258,16 @@ setup_mysql() {
     cp /home/mysql/mysql/share/english/errmsg.sys  /usr/share/mysql/
     mysqld_safe  &
 }
+setup_
+{
+	cd ${TMP_HOME}
+	wget http://nchc.dl.sourceforge.net/project/daloradius/daloradius/daloradius0.9-9/daloradius-0.9-9.tar.gz
+	cd ${APP_HOME}
+	tar zxvf daloradius-0.9-9.tar.gz
+	mv daloradius-0.9-9
+	mysql -u root -p radius < daloradius-0.9-9/contrib/db/fr2-mysql-daloradius-and-freeradius.sql
+	echo 'library/daloradius.conf.php'
+}
 setup_radius()
 {
 	shelldir=`pwd`

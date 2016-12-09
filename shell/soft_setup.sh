@@ -320,6 +320,7 @@ setup_php()
     cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/${PHP_VERSION}/etc
     mkdir -p ${APP_HOME}/${PHP_VERSION}/lib/php/extensions
     cd ${APP_HOME}/${PHP_VERSION}/lib/php/extensions
+    echo 'killall php-fpm '
     
 }
 ## -----------------------

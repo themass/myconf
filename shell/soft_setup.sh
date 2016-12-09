@@ -46,7 +46,7 @@ NGINX_PCRE_VERSION=pcre-8.39
 MYSQL_VERSION=mysql-5.6.34-linux-glibc2.5-x86_64
 RADIUS_VERSION=freeradius-server-2.1.12
 
-PHP_VERSION=php-7.0.14
+PHP_VERSION=php-5.6.29
 
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}

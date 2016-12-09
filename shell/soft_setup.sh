@@ -269,6 +269,9 @@ setup_daloradius()
 	mv daloradius-0.9-9
 	mysql -u root -p radius < daloradius-0.9-9/contrib/db/fr2-mysql-daloradius-and-freeradius.sql
 	echo 'daloradius-0.9-9/library/daloradius.conf.php'
+	echo '/root/local/php'
+	pear upgrade-all
+	pear install DB
 }
 setup_radius()
 {

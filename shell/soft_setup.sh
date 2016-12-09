@@ -310,7 +310,7 @@ setup_radius()
 setup_php()
 {
 	shelldir=`pwd`
-	cd {TMP_HOME}
+	cd ${TMP_HOME}
     rm -f ${PHP_VERSION}.tar.bz2  
     rm -rf ${PHP_VERSION}
     rm -rf ${APP_HOME}/${PHP_VERSION}

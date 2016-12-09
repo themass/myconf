@@ -321,6 +321,7 @@ setup_php()
     make -j4
     make install
     cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/${PHP_VERSION}/etc
+    cp ${shelldir}/../php/php.ini ${APP_HOME}/${PHP_VERSION}/etc
     mkdir -p ${APP_HOME}/${PHP_VERSION}/lib/php/extensions
     cd ${APP_HOME}/${PHP_VERSION}/lib/php/extensions
     echo 'killall php-fpm '

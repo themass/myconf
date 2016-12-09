@@ -18,7 +18,7 @@
 # 限制账户同时登陆次数
  INSERT INTO radgroupcheck (GroupName, Attribute, op, Value) values('vpn_grp', 'Simultaneous-Use', ':=', '1');
 
-在数据库中限制用户组的最大流量为1M(本例中的用户组名为user)
+#在数据库中限制用户组的最大流量为1M(本例中的用户组名为user)
  INSERT INTO radgroupcheck (GroupName,attribute,op,Value) VALUES ('vpn_grp','Max-Monthly-Traffic',':=','1048576');
   # 流量统计时间的间隔（60秒）
  INSERT INTO radgroupcheck (GroupName,attribute,op,Value) VALUES ('vpn_grp','Acct-Interim-Interval',':=','60');

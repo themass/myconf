@@ -258,7 +258,7 @@ setup_mysql() {
     cp /home/mysql/mysql/share/english/errmsg.sys  /usr/share/mysql/
     mysqld_safe  &
 }
-setup_daloradius
+setup_daloradius()
 {
 	cd ${TMP_HOME}
 	wget http://nchc.dl.sourceforge.net/project/daloradius/daloradius/daloradius0.9-9/daloradius-0.9-9.tar.gz

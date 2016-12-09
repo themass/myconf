@@ -306,7 +306,7 @@ setup_radius()
 }
 setup_php()
 {
-	mkdir -p /home/php/
+	shelldir=`pwd`
 	cd {TMP_HOME}
     rm -f ${PHP_VERSION}.tar.bz2  
     rm -rf ${PHP_VERSION}
@@ -314,13 +314,12 @@ setup_php()
     wget ${URL}/soft/${PHP_VERSION}.tar.bz2  
     tar -jxvf ${PHP_VERSION}.tar.bz2  
     cd ${PHP_VERSION}
-    ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=/home/php/etc --enable-fpm --enable-mbstring --enable-mbregex --enable-soap --with-mhash --with-zlib --with-openssl-dir=/usr/lib/ --with-openssl
+    ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=${APP_HOME}/${PHP_VERSION}/etc --enable-fpm --enable-mbstring --enable-mbregex --enable-soap --with-mhash --with-zlib --with-openssl-dir=/usr/lib/ --with-openssl
     make -j4
     make install
-    rm -f /home/php
-    ln -s ${APP_HOME}/${PHP_VERSION} /home/php
-    mkdir -p /home/php/lib/php/extensions
-    cd /home/php/lib/php/extensions
+    cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/${PHP_VERSION}/etc
+    mkdir -p ${APP_HOME}/${PHP_VERSION}/lib/php/extensions
+    cd ${APP_HOME}/${PHP_VERSION}/lib/php/extensions
     
 }
 ## -----------------------

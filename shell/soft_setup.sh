@@ -46,6 +46,8 @@ NGINX_PCRE_VERSION=pcre-8.39
 MYSQL_VERSION=mysql-5.6.34-linux-glibc2.5-x86_64
 RADIUS_VERSION=freeradius-server-2.1.12
 
+PHP_VERSION=php-7.0.14
+
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}
 PWD=`pwd`
@@ -266,7 +268,7 @@ setup_daloradius()
 	tar -zxvf ${TMP_HOME}/daloradius-0.9-9.tar.gz
 	mv daloradius-0.9-9
 	mysql -u root -p radius < daloradius-0.9-9/contrib/db/fr2-mysql-daloradius-and-freeradius.sql
-	echo 'library/daloradius.conf.php'
+	echo 'daloradius-0.9-9/library/daloradius.conf.php'
 }
 setup_radius()
 {
@@ -301,6 +303,24 @@ setup_radius()
 	echo  ' test  radiusd -X'
 	echo 'radtest vpn themass localhost 1812 testing123'
 	echo 'service freeradius stop'
+}
+setup_php()
+{
+	cd {TMP_HOME}
+    rm -f ${PHP_VERSION}.tar.bz2  
+    rm -rf ${PHP_VERSION}
+    rm -rf ${APP_HOME}/${PHP_VERSION}
+    wget ${URL}/soft/${PHP_VERSION}.tar.bz2  
+    tar -jxvf ${PHP_VERSION}.tar.bz2  
+    cd ${PHP_VERSION}
+    ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=/home/php/etc --enable-fpm --enable-mbstring --enable-mbregex --enable-soap --with-mhash --with-zlib --with-openssl-dir=/usr/lib/ --with-openssl
+    make -j4
+    make install
+    rm -f /home/php
+    ln -s ${APP_HOME}/${PHP_VERSION} /home/php
+    mkdir -p /home/php/lib/php/extensions
+    cd /home/php/lib/php/extensions
+    
 }
 ## -----------------------
 ## Show help message

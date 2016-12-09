@@ -336,6 +336,7 @@ usage()
     echo "mysql          Setup mysql"
     echo "radius          Setup radius"
     echo "daloradius       Setup daloradius"
+    echo "php       Setup php"
     echo "all           Setup all aboves"
 }
 
@@ -353,6 +354,7 @@ if [ $# != 0 ]; then
 			mysql)          setup_mysql;;
 			radius)         setup_radius;;
 			daloradius)         setup_daloradius;;
+			php)         setup_php;;
 			all)          setup_all;;
         esac
     done

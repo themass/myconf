@@ -1,4 +1,4 @@
- CREATE USER 'radius'@'%' IDENTIFIED BY 'themass';
+# CREATE USER 'radius'@'%' IDENTIFIED BY 'themass';
  GRANT SELECT ON radius.* TO 'radius'@'%';
  GRANT ALL on radius.radacct TO 'radius'@'%';
  GRANT ALL on radius.radpostauth TO 'radius'@'%';

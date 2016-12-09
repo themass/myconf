@@ -258,7 +258,7 @@ setup_mysql() {
     cp /home/mysql/mysql/share/english/errmsg.sys  /usr/share/mysql/
     mysqld_safe  &
 }
-setup_
+setup_daloradius
 {
 	cd ${TMP_HOME}
 	wget http://nchc.dl.sourceforge.net/project/daloradius/daloradius/daloradius0.9-9/daloradius-0.9-9.tar.gz
@@ -315,6 +315,7 @@ usage()
     echo "user          Setup user"
     echo "mysql          Setup mysql"
     echo "radius          Setup radius"
+    echo "daloradius       Setup daloradius"
     echo "all           Setup all aboves"
 }
 
@@ -331,6 +332,7 @@ if [ $# != 0 ]; then
 			nginx)          setup_nginx;;
 			mysql)          setup_mysql;;
 			radius)         setup_radius;;
+			daloradius)         setup_daloradius;;
 			all)          setup_all;;
         esac
     done

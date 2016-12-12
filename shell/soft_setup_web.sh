@@ -210,6 +210,8 @@ strongswan_android()
 }
 setup_daloradius()
 {
+	sudo apt-get install php5-common php5-gd php-pear php-db libapache2-mod-php5 php-mail php5-mysql
+	
 	cd ${TMP_HOME}
 	wget http://nchc.dl.sourceforge.net/project/daloradius/daloradius/daloradius0.9-9/daloradius-0.9-9.tar.gz
 	cd ${WEB_HOME}
@@ -275,7 +277,7 @@ setup_php()
     cd ${APP_HOME}
     ln -s  ${PHP_VERSION} php
     cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/php/etc
-    #cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
+    cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
     mkdir -p ${APP_HOME}/php/lib/php/extensions
     cd ${APP_HOME}/php/lib/php/extensions
     echo 'killall php-fpm '

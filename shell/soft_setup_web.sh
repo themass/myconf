@@ -283,7 +283,7 @@ setup_php()
     tar -jxvf ${PHP_VERSION}.tar.bz2  
     cd ${PHP_VERSION}
     ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=${APP_HOME}/${PHP_VERSION}/etc \
-    --with-config-file-path=/home/web/php/etc --with-curl --with-pear --with-gd --with-jpeg-dir --with-vpx-dir --with-png-dir \
+    --with-curl --with-pear --with-gd --with-jpeg-dir --with-vpx-dir --with-png-dir \
     --with-zlib --with-xpm-dir --with-freetype-dir --with-mcrypt --with-mhash --with-mysql \
     --with-mysqli --enable-pdo --with-pdo-mysql --with-openssl  --enable-fpm --enable-exif --enable-wddx --enable-zip \
     --enable-bcmath -with-bz2 --enable-calendar --enable-ftp --enable-mbstring --enable-soap --enable-sockets --enable-shmop \

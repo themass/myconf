@@ -309,6 +309,10 @@ setup_radius()
 }
 setup_php()
 {
+	mkdir -p /home/web/local
+	mkdir -p /home/web/soft
+	APP_HOME=/home/web/local
+	TMP_HOME=/home/web/soft
 	shelldir=`pwd`
 	cd ${TMP_HOME}
     rm -f ${PHP_VERSION}.tar.bz2  
@@ -321,9 +325,9 @@ setup_php()
     make -j4
     make install
     cd ${APP_HOME}
-    ln -s php ${PHP_VERSION}
+    ln -s  ${PHP_VERSION} php
     cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/php/etc
-    cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
+    #cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
     mkdir -p ${APP_HOME}/php/lib/php/extensions
     cd ${APP_HOME}/php/lib/php/extensions
     echo 'killall php-fpm '

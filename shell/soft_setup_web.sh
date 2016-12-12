@@ -271,7 +271,7 @@ setup_php()
     wget ${URL}/soft/${PHP_VERSION}.tar.bz2  
     tar -jxvf ${PHP_VERSION}.tar.bz2  
     cd ${PHP_VERSION}
-    ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=${APP_HOME}/${PHP_VERSION}/etc --enable-fpm --enable-mbstring --enable-mbregex --enable-soap --with-mhash --with-zlib --with-openssl-dir=/usr/lib/ --with-openssl
+    ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=${APP_HOME}/${PHP_VERSION}/etc --with-curl --with-pear --with-gd --with-jpeg-dir --with-png-dir --with-zlib --with-xpm-dir --with-freetype-dir --with-t1lib --with-mcrypt --with-mhash --with-mysql --with-mysqli --enable-pdo --with-pdo-mysql --with-openssl --with-xmlrpc --with-xsl --with-gettext --with-fpm-user=www-data --with-fpm-group=www-data --enable-fpm --enable-exif --enable-wddx --enable-zip --enable-bcmath -with-bz2 --enable-calendar --enable-ftp --enable-mbstring --enable-soap --enable-sockets --enable-shmop --enable-dba --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-debug --enable-maintainer-zts --enable-embed
     make -j4
     make install
     cd ${APP_HOME}

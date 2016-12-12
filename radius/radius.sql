@@ -1,7 +1,8 @@
 # CREATE USER 'radius'@'%' IDENTIFIED BY 'themass';
- GRANT SELECT ON radius.* TO 'radius'@'%';
- GRANT ALL on radius.radacct TO 'radius'@'%';
- GRANT ALL on radius.radpostauth TO 'radius'@'%';
+# GRANT SELECT ON radius.* TO 'radius'@'%';
+ GRANT ALL ON radius.* TO 'radius'@'%';
+# GRANT ALL on radius.radacct TO 'radius'@'%';
+# GRANT ALL on radius.radpostauth TO 'radius'@'%';
  use radius;
  
 # 加入组信息，本例中的组名为user

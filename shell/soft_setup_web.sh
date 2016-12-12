@@ -259,19 +259,35 @@ setup_radius()
 }
 setup_php()
 {
-	mkdir -p /home/web/local
-	mkdir -p /home/web/soft
-	APP_HOME=/home/web/local
-	TMP_HOME=/home/web/soft
+	
 	shelldir=`pwd`
 	cd ${TMP_HOME}
+	#wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+	#tar -zxvf  bzip2-1.0.6.tar.gz
+	#cd bzip2-1.0.6
+	#make 
+	#sudo make install
+	#echo 'makefile -fPIC'
+	#cd ..
+	#wget http://zlib.net/zlib-1.2.8.tar.gz
+	#tar -zxvf zlib-1.2.8.tar.gz
+	#cd zlib-1.2.8
+	#make 
+	#make install
+	#echo 'makefile -fPIC'
+	sudo apt-get install libcurl4-gnutls-dev  libvpx-dev libjpeg-dev libpng-dev libXpm-dev libfreetype6-dev  libmcrypt-dev libmhash-dev
     rm -f ${PHP_VERSION}.tar.bz2  
     rm -rf ${PHP_VERSION}
     rm -rf ${APP_HOME}/${PHP_VERSION}
     wget ${URL}/soft/${PHP_VERSION}.tar.bz2  
     tar -jxvf ${PHP_VERSION}.tar.bz2  
     cd ${PHP_VERSION}
-    ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=${APP_HOME}/${PHP_VERSION}/etc --with-curl --with-pear --with-gd --with-jpeg-dir --with-png-dir --with-zlib --with-xpm-dir --with-freetype-dir --with-t1lib --with-mcrypt --with-mhash --with-mysql --with-mysqli --enable-pdo --with-pdo-mysql --with-openssl --with-xmlrpc --with-xsl --with-gettext --with-fpm-user=www-data --with-fpm-group=www-data --enable-fpm --enable-exif --enable-wddx --enable-zip --enable-bcmath -with-bz2 --enable-calendar --enable-ftp --enable-mbstring --enable-soap --enable-sockets --enable-shmop --enable-dba --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-debug --enable-maintainer-zts --enable-embed
+    ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=${APP_HOME}/${PHP_VERSION}/etc \
+    --with-config-file-path=/home/web/php/etc --with-curl --with-pear --with-gd --with-jpeg-dir --with-vpx-dir --with-png-dir \
+    --with-zlib --with-xpm-dir --with-freetype-dir --with-mcrypt --with-mhash --with-mysql \
+    --with-mysqli --enable-pdo --with-pdo-mysql --with-openssl  --enable-fpm --enable-exif --enable-wddx --enable-zip \
+    --enable-bcmath -with-bz2 --enable-calendar --enable-ftp --enable-mbstring --enable-soap --enable-sockets --enable-shmop \
+    --enable-dba --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-debug --enable-maintainer-zts --enable-embed
     make -j4
     make install
     cd ${APP_HOME}
@@ -280,6 +296,7 @@ setup_php()
     cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
     mkdir -p ${APP_HOME}/php/lib/php/extensions
     cd ${APP_HOME}/php/lib/php/extensions
+    pear install DB
     echo 'killall php-fpm '
     echo 'profile php'
     

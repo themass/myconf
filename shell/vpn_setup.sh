@@ -107,19 +107,6 @@ net()
 	net.ipv6.conf.all.forwarding=1
 	sysctl -p
 }
-radius()
-{
-	cd ${TMP_HOME}
-	wget ftp://ftp.freeradius.org/pub/freeradius/old/freeradius-server-2.1.12.tar.gz
-	tar -zxvf freeradius-server-2.1.12.tar.gz
-	cd freeradius-server-2.1.12
-	autoreconf -ivf
-	./configure
-	make
-	make install
-	
-	
-}
 ## -----------------------
 ## Setup all aboves
 ## -----------------------

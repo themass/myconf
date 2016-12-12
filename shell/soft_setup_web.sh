@@ -4,6 +4,7 @@
 ## -----------------------
 URL=http://10.117.233.81
 APP_HOME=/home/web/local
+WEB_HOME=/home/web/webroot
 TMP_HOME=/home/web/soft
 JDK_VERSION=jdk-8u111
 JDK_DIR=jdk1.8
@@ -211,12 +212,12 @@ setup_daloradius()
 {
 	cd ${TMP_HOME}
 	wget http://nchc.dl.sourceforge.net/project/daloradius/daloradius/daloradius0.9-9/daloradius-0.9-9.tar.gz
-	cd ${APP_HOME}
+	cd ${WEB_HOME}
 	tar -zxvf ${TMP_HOME}/daloradius-0.9-9.tar.gz
 	mv daloradius-0.9-9
 	mysql -u root -p radius < daloradius-0.9-9/contrib/db/fr2-mysql-daloradius-and-freeradius.sql
 	echo 'daloradius-0.9-9/library/daloradius.conf.php'
-	echo '/root/local/php'
+	echo '/home/web/local/php'
 	pear upgrade-all
 	pear install DB
 }

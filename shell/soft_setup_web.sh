@@ -252,6 +252,8 @@ setup_radius()
 	cp ../radius/users /usr/local/etc/raddb/
 	cp ../radius/dictionary /usr/local/etc/raddb/
 	cp ../radius/clients.conf /usr/local/etc/raddb/
+	cp ../radius/dialup.conf /usr/local/etc/raddb/sql/mysql/
+	cp ../radius/counter.conf /usr/local/etc/raddb/sql/mysql/
 	
 	echo  ' test  radiusd -X'
 	echo 'radtest vpn themass localhost 1812 testing123'

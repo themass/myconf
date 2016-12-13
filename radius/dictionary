@@ -47,3 +47,5 @@ ATTRIBUTE Monthly-Traffic-Limit 3004 integer
 ATTRIBUTE Max-Daily-Traffic 3005 integer
 ATTRIBUTE Daily-Traffic-Limit 3006 integer
 ATTRIBUTE Client-Type 3007 string
+ATTRIBUTE Max-All-Session 3008 integer
+ATTRIBUTE Session-Timeout 3009 integer

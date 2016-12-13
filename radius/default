@@ -223,6 +223,7 @@ authorize {
 
 	monthlytrafficcounter
 	dailytrafficcounter
+	sessionresetcounter
 }
 
 

@@ -331,6 +331,7 @@ usage()
     echo "radius          Setup radius"
     echo "daloradius       Setup daloradius"
     echo "php       Setup php"
+    echo "redis       Setup redis"
     echo "all           Setup all aboves"
 }
 setup_all()
@@ -340,6 +341,7 @@ setup_all()
 	setup_ndk
 	setup_nginx
 	setup_php
+	setup_redis
 }
 ## =====================================
 ## The main process
@@ -351,6 +353,7 @@ if [ $# != 0 ]; then
             sdk)          setup_sdk;;
 			ndk)          setup_ndk;;
 			nginx)          setup_nginx;;
+			redis)          setup_redis;;
 			radius)         setup_radius;;
 			daloradius)         setup_daloradius;;
 			php)         setup_php;;

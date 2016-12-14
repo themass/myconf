@@ -49,6 +49,8 @@ RADIUS_VERSION=freeradius-server-2.1.12
 
 PHP_VERSION=php-5.6.29
 
+REDIS_VERSION=redis-3.2.6
+
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}
 PWD=`pwd`
@@ -105,6 +107,19 @@ setup_ndk()
 	wget ${URL}/soft/${NDK_VERSION}.tar.bz2 -O ${TMP_HOME}/${NDK_VERSION}.tar.bz2
 	tar -jxvf ${TMP_HOME}/${NDK_VERSION}.tar.bz2
 	echo 'profile' ${APP_HOME}/${NDK_VERSION}
+}
+setup_redis() 
+{
+	shelldir=`pwd`
+	cd ${APP_HOME}
+    rm -f ${TMP_HOME}/${REDIS_VERSION}.tar.gz
+    wget ${URL}/soft/${REDIS_VERSION}.tar.gz -O ${TMP_HOME}/${REDIS_VERSION}.tar.gz
+    tar -zxvf ${TMP_HOME}/${REDIS_VERSION}.tar.gz 
+    cd ${REDIS_VERSION}
+    make
+    make PREFIX=${APP_HOME}/${REDIS_VERSION} install
+    cp ${shelldir}../redis/redis.conf  ${APP_HOME}/${REDIS_VERSION}/
+	echo 'profile' ${APP_HOME}/${REDIS_VERSION}
 }
 setup_nginx() {
 	shelldir=`pwd`

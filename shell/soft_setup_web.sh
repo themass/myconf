@@ -111,14 +111,14 @@ setup_ndk()
 setup_redis() 
 {
 	shelldir=`pwd`
-	cd ${APP_HOME}
+	cd ${TMP_HOME}
     rm -f ${TMP_HOME}/${REDIS_VERSION}.tar.gz
-    wget ${URL}/soft/${REDIS_VERSION}.tar.gz -O ${TMP_HOME}/${REDIS_VERSION}.tar.gz
-    tar -zxvf ${TMP_HOME}/${REDIS_VERSION}.tar.gz 
+    wget ${URL}/soft/${REDIS_VERSION}.tar.gz 
+    tar -zxvf ${REDIS_VERSION}.tar.gz 
     cd ${REDIS_VERSION}
     make
     make PREFIX=${APP_HOME}/${REDIS_VERSION} install
-    cp ${shelldir}../redis/redis.conf  ${APP_HOME}/${REDIS_VERSION}/
+    cp ${shelldir}/../redis/redis.conf  ${APP_HOME}/${REDIS_VERSION}/
 	echo 'profile' ${APP_HOME}/${REDIS_VERSION}
 }
 setup_nginx() {

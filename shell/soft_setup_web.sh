@@ -50,7 +50,7 @@ RADIUS_VERSION=freeradius-server-2.1.12
 PHP_VERSION=php-5.6.29
 
 REDIS_VERSION=redis-3.2.6
-
+MAVEN_VERSION=apache-maven-3.3.9-bin
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}
 PWD=`pwd`
@@ -107,6 +107,12 @@ setup_ndk()
 	wget ${URL}/soft/${NDK_VERSION}.tar.bz2 -O ${TMP_HOME}/${NDK_VERSION}.tar.bz2
 	tar -jxvf ${TMP_HOME}/${NDK_VERSION}.tar.bz2
 	echo 'profile' ${APP_HOME}/${NDK_VERSION}
+}
+setup_maven(){
+	cd ${APP_HOME}
+	rm -rf ${MAVEN_VERSION}
+	wget ${URL}/soft/${MAVEN_VERSION}.tgz -O ${TMP_HOME}/${MAVEN_VERSION}.tar.gz
+	tar -zxvf ${TMP_HOME}/${MAVEN_VERSION}.tgz 
 }
 setup_redis() 
 {
@@ -333,6 +339,7 @@ usage()
     echo "daloradius       Setup daloradius"
     echo "php       Setup php"
     echo "redis       Setup redis"
+     echo "maven       Setup maven"
     echo "all           Setup all aboves"
 }
 setup_all()
@@ -343,6 +350,7 @@ setup_all()
 	setup_nginx
 	setup_php
 	setup_redis
+	setup_maven
 }
 ## =====================================
 ## The main process
@@ -358,6 +366,7 @@ if [ $# != 0 ]; then
 			radius)         setup_radius;;
 			daloradius)         setup_daloradius;;
 			php)         setup_php;;
+			maven)         setup_maven;;
 			all)          setup_all;;
         esac
     done

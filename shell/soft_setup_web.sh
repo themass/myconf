@@ -111,7 +111,7 @@ setup_ndk()
 setup_maven(){
 	cd ${APP_HOME}
 	rm -rf ${MAVEN_VERSION}
-	wget ${URL}/soft/${MAVEN_VERSION}.tgz -O ${TMP_HOME}/${MAVEN_VERSION}.tar.gz
+	wget ${URL}/soft/${MAVEN_VERSION}.tar.gz -O ${TMP_HOME}/${MAVEN_VERSION}.tar.gz
 	tar -zxvf ${TMP_HOME}/${MAVEN_VERSION}.tar.gz 
 }
 setup_redis() 

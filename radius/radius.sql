@@ -31,7 +31,7 @@
  flush privileges; 
  
 #select * from information_schema.user_privileges;
-#update user set password=password('themass') where user='radius';
+#update user set password=password('themass') where user='root';
 #drop user 'radius'@'%';
 #show grants for 'radius'@'%';
 #删除空用户名的记录

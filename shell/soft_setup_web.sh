@@ -113,6 +113,7 @@ setup_maven(){
 	rm -rf ${MAVEN_VERSION}
 	wget ${URL}/soft/${MAVEN_VERSION}.tar.gz -O ${TMP_HOME}/${MAVEN_VERSION}.tar.gz
 	tar -zxvf ${TMP_HOME}/${MAVEN_VERSION}.tar.gz 
+	echo 'profile ' ${APP_HOME}/${MAVEN_VERSION}/bin
 }
 setup_redis() 
 {

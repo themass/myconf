@@ -112,6 +112,7 @@ setup_redis()
 {
 	shelldir=`pwd`
 	cd ${TMP_HOME}
+	rm -rf ${APP_HOME}/${REDIS_VERSION}
     rm -f ${TMP_HOME}/${REDIS_VERSION}.tar.gz
     wget ${URL}/soft/${REDIS_VERSION}.tar.gz 
     tar -zxvf ${REDIS_VERSION}.tar.gz 

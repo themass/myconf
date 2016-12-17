@@ -12,6 +12,14 @@ RADIUS_VERSION=freeradius-server-2.1.12
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}
 PWD=`pwd`
+setup_check()
+{
+	ps -aux| grep mysql
+	ps -aux| grep nginx
+	ps -aux| grep ips
+	ps -aux| grep radiusd
+	iptables --list
+}
 setup_kernel()
 {
 	cd ${TMP_HOME}
@@ -96,12 +104,15 @@ usage()
     echo "Available arguments as below:"
     echo "user          Setup user"
     echo "mysql          Setup mysql"
+    echo "kernel          Setup kernel"
+    echo "check          Setup check"
     echo "all           Setup all aboves"
 }
 setup_all()
 {
 	setup_user
 	setup_mysql
+	setup_kernel
 }
 ## =====================================
 ## The main process
@@ -111,6 +122,9 @@ if [ $# != 0 ]; then
         case "$arg" in
 			user)          setup_user;;
 			mysql)          setup_mysql;;
+			mysql)          setup_mysql;;
+			kernel)          setup_kernel;;
+			check)          setup_check;;
 			all)          setup_all;;
         esac
     done

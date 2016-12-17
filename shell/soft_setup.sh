@@ -32,6 +32,11 @@ setup_kernel()
 	wget wget ${URL}/soft/linux-kernel/linux-headers-4.9.0-040900-generic_4.9.0-040900.201612111631_amd64.deb
 	wget wget ${URL}/soft/linux-kernel/linux-image-4.9.0-040900-generic_4.9.0-040900.201612111631_amd64.deb
 	dpkg -i *.deb 
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+	sysctl -p
+	sysctl net.ipv4.tcp_available_congestion_control
+	lsmod | grep bbr
 }
 setup_user() {
  	useradd -r -m -s /bin/bash web

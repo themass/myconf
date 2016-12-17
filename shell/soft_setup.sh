@@ -19,6 +19,8 @@ setup_check()
 	ps -aux| grep ips
 	ps -aux| grep radiu
 	iptables --list
+	ps -aux| grep php
+	ps -aux| grep tomcat
 }
 setup_kernel()
 {

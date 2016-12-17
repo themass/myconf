@@ -17,7 +17,7 @@ setup_check()
 	ps -aux| grep mysql
 	ps -aux| grep nginx
 	ps -aux| grep ips
-	ps -aux| grep radiusd
+	ps -aux| grep radiu
 	iptables --list
 }
 setup_kernel()

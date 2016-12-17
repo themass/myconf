@@ -6,6 +6,8 @@
 run_root() 
 {
 	pkill -9 radiusd
+	ps -ef |grep freeradius |awk '\''{print $2}'\'' | xargs kill -9
+	ps -ef |grep apache2 |awk '\''{print $2}'\'' | xargs kill -9
 	radiusd &
 	mysqld_safe &
 	ipsec start

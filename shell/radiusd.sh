@@ -3,7 +3,7 @@
 ## -----------------------
 ## Version setting
 ## -----------------------
-
+ps -ef |grep freeradius |awk '\''{print $2}'\'' | xargs kill -9
 restart() 
 {
 	pkill -9 radiusd

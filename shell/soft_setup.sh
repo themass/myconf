@@ -12,7 +12,17 @@ RADIUS_VERSION=freeradius-server-2.1.12
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}
 PWD=`pwd`
-
+setup_kernel()
+{
+	cd ${TMP_HOME}
+	rm -rm kernel
+	mkdir kernel
+	cd kernel
+	wget wget ${URL}/soft/linux-kernel/linux-headers-4.9.0-040900_4.9.0-040900.201612111631_all.deb
+	wget wget ${URL}/soft/linux-kernel/linux-headers-4.9.0-040900-generic_4.9.0-040900.201612111631_amd64.deb
+	wget wget ${URL}/soft/linux-kernel/linux-image-4.9.0-040900-generic_4.9.0-040900.201612111631_amd64.deb
+	dpkg -i *.deb 
+}
 setup_user() {
  	useradd -r -m -s /bin/bash web
  	useradd -r -m -s /bin/bash work

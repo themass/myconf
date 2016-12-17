@@ -3,26 +3,27 @@
 ## Version setting
 ## -----------------------
 
-restart() 
+run_root() 
 {
 	pkill -9 radiusd
 	radiusd &
+	mysqld_safe &
+	ipsec start
+	killall nginx
+	/root/local/nginx/sbin/nginx
 }
-stop() 
+run_web() 
 {
-	pkill -9 radiusd
-}
-debug() 
-{
-	pkill -9 radiusd
-	radiusd -X
+	su - web
+	/home/web/local/nginx/sbin/nginx
+	/home/web/local/apache-tomcat-7.0.73/bin/startup.sh
+	/home/web/local/php/sbin/php-fpm
 }
 usage() 
 {
     echo "Available arguments as below:"
-    echo "start           start"
-    echo "stop          stop"
-    echo "debug          debug"
+    echo "root           run_root"
+    echo "web          run_web"
 }
 
 ## =====================================
@@ -31,9 +32,8 @@ usage()
 if [ $# != 0 ]; then
     for arg in $*; do
         case "$arg" in
-            start)            restart;;
-            stop)          stop;;
-            debug)          debug;;
+            root)            run_root;;
+            web)          run_web;;
         esac
     done
 else

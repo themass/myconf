@@ -3,18 +3,20 @@
 ## -----------------------
 ## Version setting
 ## -----------------------
-ps -ef |grep freeradius |awk '\''{print $2}'\'' | xargs kill -9
 restart() 
 {
+	ps -ef |grep freeradius |awk '\''{print $2}'\'' | xargs kill -9
 	pkill -9 radiusd
 	radiusd &
 }
 stop() 
 {
+	ps -ef |grep freeradius |awk '\''{print $2}'\'' | xargs kill -9
 	pkill -9 radiusd
 }
 debug() 
 {
+	ps -ef |grep freeradius |awk '\''{print $2}'\'' | xargs kill -9
 	pkill -9 radiusd
 	radiusd -X
 }

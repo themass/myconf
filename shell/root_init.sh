@@ -20,6 +20,7 @@ run_web()
 	/home/web/local/nginx/sbin/nginx
 	/home/web/local/apache-tomcat-7.0.73/bin/startup.sh
 	/home/web/local/php/sbin/php-fpm
+	/home/web/local/redis-3.2.6/bin/redis-server /home/web/local/redis-3.2.6/redis.conf &
 }
 usage() 
 {

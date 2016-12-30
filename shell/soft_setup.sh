@@ -21,6 +21,7 @@ setup_check()
 	iptables --list
 	ps -aux| grep php
 	ps -aux| grep tomcat
+	ps -aux| grep redis
 }
 setup_kernel()
 {
@@ -37,6 +38,10 @@ setup_kernel()
 	sysctl -p
 	sysctl net.ipv4.tcp_available_congestion_control
 	lsmod | grep bbr
+	#grep menuentry /boot/grub/grub.cfg
+	# /etc/default/grub GRUB_DEFAULT=0-》2
+	#update-grub
+	# reboot
 }
 setup_user() {
  	useradd -r -m -s /bin/bash web
@@ -102,6 +107,8 @@ setup_mysql() {
     echo 'profile /usr/local/mysql/bin'
     cp /home/mysql/mysql/share/english/errmsg.sys  /usr/share/mysql/
     mysqld_safe  &
+    #show variables like "%char%"; ->utf-8
+    
 }
 ## -----------------------
 ## Show help message

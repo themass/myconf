@@ -13,7 +13,6 @@ init_soft()
 	apt-get install build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear	#编译环境
 	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev     #编译所需要的软件
 }
-#strongswan setup
 strongswan_setup() 
 {
 	cd ${TMP_HOME}

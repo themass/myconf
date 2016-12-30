@@ -226,13 +226,17 @@ strongswan_android()
 	#https://wiki.strongswan.org/issues/652
 	#libtool gperf
 	#https://wiki.strongswan.org/projects/strongswan/wiki/AndroidVPNClientBuild
+#	libstrongswan: aes des rc2 sha2 sha1 md5 random nonce x509 revocation constraints pubkey pkcs1 pkcs7 pkcs8 pkcs12 pgp dnskey sshkey pem fips-prf gmp curve25519 xcbc cmac hmac
+#	libcharon:     attr kernel-netlink resolve socket-default stroke vici updown xauth-generic
+#	libtnccs:
 	apt-get install flex bison libtool autoconf gperf gettext automake
 	cd
 	cd work
 	git clone git://git.strongswan.org/strongswan.git
 	cd strongswan
 	./autogen.sh 
-	./configure 
+	# eap+sha
+	./configure  --enable-sha3   
 	make dist
 	cd src/frontends/android/app/src/main/jni
 	git clone git://git.strongswan.org/android-ndk-openssl.git -b ndk-static jni/openssl
@@ -348,7 +352,8 @@ usage()
     echo "daloradius       Setup daloradius"
     echo "php       Setup php"
     echo "redis       Setup redis"
-     echo "maven       Setup maven"
+    echo "maven       Setup maven"
+    echo "android       Setup android"
     echo "all           Setup all aboves"
 }
 setup_all()
@@ -359,6 +364,7 @@ setup_all()
 	setup_nginx
 	setup_php
 	setup_redis
+	strongswan_android
 	setup_maven
 }
 ## =====================================
@@ -376,6 +382,7 @@ if [ $# != 0 ]; then
 			daloradius)         setup_daloradius;;
 			php)         setup_php;;
 			maven)         setup_maven;;
+			android)      strongswan_android;;
 			all)          setup_all;;
         esac
     done

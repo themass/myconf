@@ -239,7 +239,7 @@ strongswan_android()
 	./configure  --enable-sha3   
 	make dist
 	cd src/frontends/android/app/src/main/jni
-	git clone git://git.strongswan.org/android-ndk-openssl.git -b ndk-static jni/openssl
+	git clone git://git.strongswan.org/android-ndk-openssl.git -b ndk-static openssl
 	ln -s ../../../../../../../../strongswan/  strongswan
 	ndk-build
 }

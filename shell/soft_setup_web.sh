@@ -232,15 +232,15 @@ strongswan_android()
 	apt-get install flex bison libtool autoconf gperf gettext automake
 	cd
 	cd work
-	git clone git://git.strongswan.org/strongswan.git
+	#git clone git://git.strongswan.org/strongswan.git
 	cd strongswan
 	./autogen.sh 
 	# eap+sha
-	./configure  --enable-sha3   
+	./configure  --enable-sha3  --disable-curve25519
 	make dist
 	cd src/frontends/android/app/src/main/jni
-	git clone git://git.strongswan.org/android-ndk-openssl.git -b ndk-static openssl
-	ln -s ../../../../../../../../strongswan/  strongswan
+	#git clone git://git.strongswan.org/android-ndk-openssl.git -b ndk-static openssl
+	#ln -s ../../../../../../../../strongswan/  strongswan
 	ndk-build
 }
 setup_daloradius()

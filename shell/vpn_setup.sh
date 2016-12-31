@@ -16,8 +16,8 @@ init_soft()
 strongswan_setup() 
 {
 	cd ${TMP_HOME}
-	wget http://download.strongswan.org/strongswan-5.5.2.tar.bz2
-	tar -jxvf strongswan-5.5.2.tar.bz2 && cd strongswan-5.5.2
+	wget http://download.strongswan.org/strongswan-5.5.2dr3.tar.bz2
+	tar -jxvf strongswan-5.5.2dr3.tar.bz2 && cd strongswan-5.5.2dr3
 	./configure --prefix=/usr --sysconfdir=/etc  --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap  --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2  --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls
 	make && make install
 	ipsec start 
@@ -49,7 +49,7 @@ strongswan_config()
 	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
 	cp  ../strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	
-	cp  ../strongswan_conf/strongswan.conf /etc/strongswan.conf
+#	cp  ../strongswan_conf/strongswan.conf /etc/strongswan.conf
 	
 	ipsec restart
 }
@@ -85,7 +85,7 @@ setup_iptables()
 {
 	iptables -A INPUT -p udp --dport 500 -j ACCEPT 
 	iptables -A INPUT -p udp --dport 4500 -j ACCEPT 
-	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth1 -j MASQUERADE 
+	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth0 -j MASQUERADE 
 	iptables -A FORWARD -s 10.0.0.0/24 -j ACCEPT 
 	iptables -A FORWARD -d 10.0.0.0/24 -j ACCEPT
 	ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42

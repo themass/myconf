@@ -229,6 +229,8 @@ strongswan_android()
 #	libstrongswan: aes des rc2 sha2 sha1 md5 random nonce x509 revocation constraints pubkey pkcs1 pkcs7 pkcs8 pkcs12 pgp dnskey sshkey pem fips-prf gmp curve25519 xcbc cmac hmac
 #	libcharon:     attr kernel-netlink resolve socket-default stroke vici updown xauth-generic
 #	libtnccs:
+#   必须看 https://wiki.strongswan.org/projects/strongswan/repository/revisions/853cc61c2f818e1b513eef1c7467b94acbdeb19e/diff/src/libstrongswan/Android.mk
+#
 	apt-get install flex bison libtool autoconf gperf gettext automake
 	cd
 	cd work

@@ -236,7 +236,7 @@ strongswan_android()
 	cd strongswan
 	./autogen.sh 
 	# eap+sha
-	./configure  --enable-sha3  --disable-curve25519
+	./configure --disable-curve25519
 	make dist
 	cd src/frontends/android/app/src/main/jni
 	#git clone git://git.strongswan.org/android-ndk-openssl.git -b ndk-static openssl

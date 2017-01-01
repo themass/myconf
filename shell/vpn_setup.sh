@@ -7,7 +7,6 @@ WORKDIR=/root/work
 TMP_HOME=/root/soft
 PWD=`pwd`
 ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $2}'|tr -d "addr:"`
-ip=123.207.170.154
 init_soft() 
 {
 	apt-get update
@@ -50,7 +49,7 @@ strongswan_config()
 	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
 	cp  ../strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	
-#	cp  ../strongswan_conf/strongswan.conf /etc/strongswan.conf
+	cp  ../strongswan_conf/strongswan.conf /etc/strongswan.conf
 	
 	ipsec restart
 }

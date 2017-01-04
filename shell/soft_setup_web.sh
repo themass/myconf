@@ -99,7 +99,7 @@ setup_sdk()
 	echo 'profile' ${APP_HOME}/${SDK_VERSION} 
 	
 }
-init_buildtool{
+init_buildtool(){
 	mkdir -p ${SDK_VERSION}/build-tools
 	rm -f ${TMP_HOME}/${BUILD_TOOL_P_VERSION_1}-linux.zip
 	rm -f ${TMP_HOME}/${BUILD_TOOL_P_VERSION_2}-linux.zip
@@ -121,7 +121,7 @@ init_buildtool{
 	mv ${BUILD_TOOL_P_VERSION_P_3} ${SDK_VERSION}/build-tools/${BUILD_TOOL_P_VERSION_P_P_3}
 	mv ${BUILD_TOOL_P_VERSION_P_4} ${SDK_VERSION}/build-tools/${BUILD_TOOL_P_VERSION_P_P_4}
 }
-init_plateform{
+init_plateform(){
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1}.zip
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_3}.zip

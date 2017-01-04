@@ -31,6 +31,21 @@ SDK_PLATFORM_P_VERSION_P_P_3=android-21
 SDK_PLATFORM_P_VERSION_P_P_4=android-22
 SDK_PLATFORM_P_VERSION_P_P_5=android-23
 
+BUILD_TOOL_P_VERSION_1=build-tools_r19.1
+BUILD_TOOL_P_VERSION_2=build-tools_r22.0.1
+BUILD_TOOL_P_VERSION_3=build-tools_r23.0.3
+BUILD_TOOL_P_VERSION_4=build-tools_r25.0.2
+
+BUILD_TOOL_P_VERSION_P_1=android-4.4.2 
+BUILD_TOOL_P_VERSION_P_2=android-5.1
+BUILD_TOOL_P_VERSION_P_3=android-5.0
+BUILD_TOOL_P_VERSION_P_4=android-7.1.1
+
+BUILD_TOOL_P_VERSION_P_P_1=19.1
+BUILD_TOOL_P_VERSION_P_P_2=22.0.1
+BUILD_TOOL_P_VERSION_P_P_3=23.0.3
+BUILD_TOOL_P_VERSION_P_P_4=25.0.2
+
 NDK_VERSION=android-ndk64-r10b-linux-x86_64
 MAVEN_VERSION=apache-maven-3.0.3
 NGINX_VERSION=nginx-1.10.2
@@ -79,7 +94,34 @@ setup_sdk()
 	wget ${URL}/soft/${SDK_PLATFORM_VERSION}.zip -O ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
 	unzip ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
 	mv platform-tools  ${SDK_VERSION}/
+	init_plateform
+	init_buildtool
+	echo 'profile' ${APP_HOME}/${SDK_VERSION} 
 	
+}
+init_buildtool{
+	mkdir -p ${SDK_VERSION}/build-tools
+	rm -f ${TMP_HOME}/${BUILD_TOOL_P_VERSION_1}-linux.zip
+	rm -f ${TMP_HOME}/${BUILD_TOOL_P_VERSION_2}-linux.zip
+	rm -f ${TMP_HOME}/${BUILD_TOOL_P_VERSION_3}-linux.zip
+	rm -f ${TMP_HOME}/${BUILD_TOOL_P_VERSION_4}-linux.zip
+	
+	wget ${URL}/soft/${BUILD_TOOL_P_VERSION_1}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_1}.zip
+	wget ${URL}/soft/${BUILD_TOOL_P_VERSION_2}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_2}.zip
+	wget ${URL}/soft/${BUILD_TOOL_P_VERSION_3}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_3}.zip
+	wget ${URL}/soft/${BUILD_TOOL_P_VERSION_4}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_4}.zip
+	
+	unzip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_1}.zip  
+	unzip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_2}.zip  
+	unzip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_3}.zip  
+	unzip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_4}.zip  
+	
+	mv ${BUILD_TOOL_P_VERSION_P_1} ${SDK_VERSION}/build-tools/${BUILD_TOOL_P_VERSION_P_P_1}
+	mv ${BUILD_TOOL_P_VERSION_P_2} ${SDK_VERSION}/build-tools/${BUILD_TOOL_P_VERSION_P_P_2}
+	mv ${BUILD_TOOL_P_VERSION_P_3} ${SDK_VERSION}/build-tools/${BUILD_TOOL_P_VERSION_P_P_3}
+	mv ${BUILD_TOOL_P_VERSION_P_4} ${SDK_VERSION}/build-tools/${BUILD_TOOL_P_VERSION_P_P_4}
+}
+init_plateform{
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1}.zip
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_3}.zip
@@ -103,9 +145,6 @@ setup_sdk()
 	mv ${SDK_PLATFORM_P_VERSION_P_3} ${SDK_VERSION}/platforms/${SDK_PLATFORM_P_VERSION_P_P_3}
 	mv ${SDK_PLATFORM_P_VERSION_P_4} ${SDK_VERSION}/platforms/${SDK_PLATFORM_P_VERSION_P_P_4}
 	mv ${SDK_PLATFORM_P_VERSION_P_5} ${SDK_VERSION}/platforms/${SDK_PLATFORM_P_VERSION_P_P_5}
-	
-	echo 'profile' ${APP_HOME}/${SDK_VERSION} 
-	
 }
 setup_ndk() 	
 {

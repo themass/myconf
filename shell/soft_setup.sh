@@ -2,7 +2,11 @@
 ## -----------------------
 ## Version setting
 ## -----------------------
-URL=http://10.117.233.81:9003
+
+#URL=http://10.117.233.81:9003
+URL=http://47.88.7.156:9003
+
+
 APP_HOME=/root/local
 TMP_HOME=/root/soft
 

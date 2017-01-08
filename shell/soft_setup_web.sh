@@ -299,42 +299,6 @@ setup_daloradius()
 	pear upgrade-all
 	pear install DB
 }
-setup_radius()
-{
-	shelldir=`pwd`
-	apt-get install  freeradius-mysql
-	cd ${TMP_HOME}
-    rm -f ${RADIUS_VERSION}.tar.gz
-    rm -rf ${APP_HOME}/${RADIUS_VERSION}
-    rm -rf /usr/local/etc/raddb
-    wget ${URL}/soft/${RADIUS_VERSION}.tar.gz
-	tar -zxvf ${RADIUS_VERSION}.tar.gz
-	cd ${RADIUS_VERSION}
-	./configure 
-	make
-	make install
-	cd ${shelldir}
-	echo ${shelldir}
-	mysqladmin -u root -p create radius
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
-	mysql -u root -p < ../radius/radius.sql
-	cp ../radius/default /usr/local/etc/raddb/sites-enabled/
-	cp ../radius/inner-tunnel /usr/local/etc/raddb/sites-enabled/
-	cp ../radius/sql.conf /usr/local/etc/raddb/
-	cp ../radius/radiusd.conf /usr/local/etc/raddb/
-	cp ../radius/users /usr/local/etc/raddb/
-	cp ../radius/dictionary /usr/local/etc/raddb/
-	cp ../radius/clients.conf /usr/local/etc/raddb/
-	cp ../radius/dialup.conf /usr/local/etc/raddb/sql/mysql/
-	cp ../radius/counter.conf /usr/local/etc/raddb/sql/mysql/
-	
-	echo  ' test  radiusd -X'
-	echo 'radtest vpn themass localhost 1812 testing123'
-	echo 'service freeradius stop'
-}
 setup_php()
 {
 	
@@ -419,7 +383,6 @@ if [ $# != 0 ]; then
 			ndk)          setup_ndk;;
 			nginx)          setup_nginx;;
 			redis)          setup_redis;;
-			radius)         setup_radius;;
 			daloradius)         setup_daloradius;;
 			php)         setup_php;;
 			maven)         setup_maven;;

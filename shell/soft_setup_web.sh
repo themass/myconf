@@ -2,7 +2,7 @@
 ## -----------------------
 ## Version setting
 ## -----------------------
-URL=http://10.117.233.81:9003
+URL=http://file.sspacee.com
 APP_HOME=/home/web/local
 WEB_HOME=/home/web/webroot
 TMP_HOME=/home/web/soft

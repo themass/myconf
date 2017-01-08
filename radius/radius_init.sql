@@ -39,4 +39,9 @@
 # 流量统计时间的间隔（60秒）
  INSERT INTO radgroupcheck (GroupName,attribute,op,Value) VALUES ('VPN_FREE','Acct-Interim-Interval',':=','60');
 
+ CREATE USER 'vpn@server'@'%' IDENTIFIED BY 'Themass@5296vpn';
+ REVOKE ALL ON radius.* FROM 'radius'@'%';
+ GRANT ALL ON radius.* TO 'vpn@server'@'%';
+ GRANT ALL ON vpn.* TO 'vpn@server'@'%';
+ GRANT SELECT,INSERT,UPDATE,DELETE ON radius.* TO 'radius'@'%';
  

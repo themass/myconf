@@ -270,14 +270,16 @@ strongswan_android()
 #	libtnccs:
 #   必须看 https://wiki.strongswan.org/projects/strongswan/repository/revisions/853cc61c2f818e1b513eef1c7467b94acbdeb19e/diff/src/libstrongswan/Android.mk
 #
-	apt-get install flex bison libtool autoconf gperf gettext automake
+	#apt-get install flex bison libtool autoconf gperf gettext automake
 	cd
 	cd work
-	#git clone git://git.strongswan.org/strongswan.git
+	rm -rf strongswan
+	git clone git://git.strongswan.org/strongswan.git
 	cd strongswan
 	./autogen.sh 
 	# eap+sha
-	./configure --disable-curve25519
+	./configure 
+	#--disable-curve25519
 	make dist
 	cd src/frontends/android/app/src/main/jni
 	#git clone git://git.strongswan.org/android-ndk-openssl.git -b ndk-static openssl

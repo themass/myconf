@@ -6,7 +6,7 @@
 WORKDIR=/root/work
 TMP_HOME=/root/soft
 PWD=`pwd`
-#ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $2}'|tr -d "addr:"`
+#ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $1}'|tr -d "addr:"`
 init_soft() 
 {
 	mkdir -p ${WORKDIR}
@@ -61,17 +61,17 @@ init_ca()
 	cd ${TMP_HOME}
 	mkdir -p ca
 	cd ca
-	echo "C=CN, O=timeline, CN=$2"
+	echo "C=CN, O=timeline, CN=$1"
 	ipsec pki --gen --outform pem > caKey.pem
-	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=$2" --ca --outform pem > caCert.pem
+	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=$1" --ca --outform pem > caCert.pem
 
 	ipsec pki --gen --outform pem > serverKey.pem
-	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=$2" --san="$2" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert.pem
+	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=$1" --san="$1" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert.pem
 
 	ipsec pki --gen --outform pem > clientKey.pem
 	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert.pem
 
-	openssl pkcs12 -export -inkey clientKey.pem -in clientCert.pem -name "client" -certfile caCert.pem -caname "$2" -out clientCert.p12
+	openssl pkcs12 -export -inkey clientKey.pem -in clientCert.pem -name "client" -certfile caCert.pem -caname "$1" -out clientCert.p12
 
 	cp caCert.pem /etc/ipsec.d/cacerts/
 	cp serverCert.pem /etc/ipsec.d/certs/

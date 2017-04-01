@@ -1,8 +1,4 @@
 # args java_main java_name btrace
-export LD_PRELOAD=/usr/local/lib/libtcmalloc.so
-export HEAPPROFILE=/tmp/test
-java $1  &
-
 ## -----------------------
 ## java proc
 ## -----------------------

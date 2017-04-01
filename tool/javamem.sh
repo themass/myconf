@@ -13,6 +13,7 @@ java_proc()
 ## -----------------------
 mem_proc()
 {
+	  export HEAPPROFILE=/tmp/test
 	  pprof --text $JAVA_HOME/bin/java $2 | more
 }
 ## -----------------------

@@ -99,6 +99,7 @@ setup_iptables()
 	#systemctl restart iptables
 	iptables-save
 	#iptables-restore
+	#tcpdump -s 0 -n -i eth0 'esp or udp and (port 500 or port 4500)'
 }
 #net
 # vi /etc/sysctl.conf

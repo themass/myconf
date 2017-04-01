@@ -24,7 +24,7 @@ mem_proc()
 ## -----------------------
 btrace_proc()
 {
-	  btrace -cp ~/local/btrace/build `jps | grep  $1 | awk '{print$1}'`$2
+	  btrace -cp ~/local/btrace/build `jps | grep  $2 | awk '{print$1}'` $3
 }
 ## -----------------------
 ## Show help message

@@ -24,7 +24,7 @@ btrace_proc()
 	  btrace -cp ~/local/btrace/build `jps | grep  $2 | awk '{print$1}'` $3
 }
 ## -----------------------
-## Show help message
+## Show help message	
 ## -----------------------
 usage() 
 {

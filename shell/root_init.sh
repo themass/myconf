@@ -22,11 +22,21 @@ run_web()
 	/home/web/local/php/sbin/php-fpm
 	/home/web/local/redis-3.2.6/bin/redis-server /home/web/local/redis-3.2.6/redis.conf &
 }
+run_check()
+{
+	ps -aux|grep mysqld_safe |grep -v grep  
+	ps -aux|grep nginx |grep -v grep
+	ps -aux|grep radiusd |grep -v grep
+	ps -aux|grep ipsec |grep -v grep
+	ps -aux|grep tomcat |grep -v grep
+	ps -aux|grep redis |grep -v grep
+}
 usage() 
 {
     echo "Available arguments as below:"
     echo "root           run_root"
     echo "web          run_web"
+    echo "check          run_check"
 }
 
 ## =====================================
@@ -37,6 +47,7 @@ if [ $# != 0 ]; then
         case "$arg" in
             root)            run_root;;
             web)          run_web;;
+            check)          run_check;;
         esac
     done
 else

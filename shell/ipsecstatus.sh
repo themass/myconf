@@ -22,6 +22,14 @@ status_send()
 	 	curl  -d "count=${c}" http://api.sspacee.com/vpn/api/noapp/collect.json
 	 fi
 }
+usage() 
+{
+    echo "Available arguments as below:"
+    echo "start           start"
+    echo "stop          stop"
+    echo "status          status"
+    echo "status_send          status_send"
+}
 ## =====================================
 ## The main process
 ## =====================================

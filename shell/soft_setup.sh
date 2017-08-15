@@ -33,6 +33,7 @@ setup_kernel()
 	rm -rm kernel
 	mkdir kernel
 	cd kernel
+	#http://kernel.ubuntu.com/~kernel-ppa/mainline
 	wget  ${URL}/soft/linux-kernel/linux-headers-4.9.0-040900_4.9.0-040900.201612111631_all.deb
 	wget  ${URL}/soft/linux-kernel/linux-headers-4.9.0-040900-generic_4.9.0-040900.201612111631_amd64.deb
 	wget  ${URL}/soft/linux-kernel/linux-image-4.9.0-040900-generic_4.9.0-040900.201612111631_amd64.deb

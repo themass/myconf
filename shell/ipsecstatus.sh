@@ -6,7 +6,7 @@
 . /root/.profile
 status() 
 {
-	ipsec status | grep Associations 
+	/usr/sbin/ipsec status | grep Associations 
 }
 stop() 
 {
@@ -14,11 +14,11 @@ stop()
 }
 restart() 
 {
-	ipsec restart
+	/usr/sbin/ipsec restart
 }
 status_send() 
 {
-	c=`ipsec status | grep Associations | awk -F '(' '{print$2}' |awk -F' up' '{print$1}'`
+	c=`/usr/sbin/ipsec status | grep Associations | awk -F '(' '{print$2}' |awk -F' up' '{print$1}'`
 	 if [ -n "${c}" ]; then
 	 	curl  -d "count=${c}" http://api.sspacee.com/vpn/api/noapp/collect.json
 	 fi

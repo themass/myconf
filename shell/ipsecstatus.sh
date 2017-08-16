@@ -2,7 +2,7 @@
 ## -----------------------
 ## Version setting
 ## -----------------------
-./etc/profile
+. /etc/profile
 status() 
 {
 	ipsec status | grep Associations 

@@ -1,8 +1,8 @@
-
 #!/bin/bash
 ## -----------------------
 ## Version setting
 ## -----------------------
+./etc/profile
 status() 
 {
 	ipsec status | grep Associations 

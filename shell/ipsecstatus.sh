@@ -33,7 +33,6 @@ usage()
 ## =====================================
 ## The main process
 ## =====================================
-source /etc/profile
 if [ $# != 0 ]; then
     for arg in $*; do
         case "$arg" in

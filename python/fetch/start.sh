@@ -3,7 +3,6 @@
 ## Version setting
 ## -----------------------
 APPPATH=/root/work/myconf/python/fetch
-PROCESS_IDS=(dehyc.py se8_vip.py)
 LOG_FILE=/var/log/fetch.log
 start_process()
 {

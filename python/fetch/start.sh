@@ -2,7 +2,7 @@
 APPPATH=/root/work/myconf/python/fetch
 PROCESS_IDS=(dehyc.py se8_vip.py)
 LOG_FILE=/var/log/fetch.log
-function start_process()
+start_process()
 {
      echo "PROCESS_ID:" $1;
      echo "ENV:" $2;

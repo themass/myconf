@@ -43,11 +43,12 @@ class ChannelFetch(threading.Thread):
         self.t_item = item
 
     def run(self):
-        dbVPN = db.DbVPN()
-        ops = db_ops.DbOps(dbVPN)
-        ret = ops.getTextChannelItems(self.t_item["url"])
-        dbVPN.close()
+
         try:
+            dbVPN = db.DbVPN()
+            ops = db_ops.DbOps(dbVPN)
+            ret = ops.getTextChannelItems(self.t_item["url"])
+            dbVPN.close()
             print '开始写入 channel ：', self.t_item["url"],
             for item in ret:
                 path = filePATH + str(item['id']) + ".txt"

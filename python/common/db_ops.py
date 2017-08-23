@@ -38,5 +38,5 @@ class DbOps(object):
 
     def getTextChannelItems(self, channel):
         self.conn.execute(
-            "select * from  textitems where channel=%s" % (channel))
+            "select * from  textitems where channel='%s'" % (channel))
         return self.conn.fetchAll()

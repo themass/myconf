@@ -179,5 +179,5 @@ if __name__ == '__main__':
     for i in range(0, 30):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-#     SoundParse()
-    textParse()
+    SoundParse()
+#     textParse()

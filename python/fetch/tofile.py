@@ -47,13 +47,17 @@ class ChannelFetch(threading.Thread):
         ops = db_ops.DbOps(dbVPN)
         ret = ops.getTextChannelItems(self.t_item["url"])
         dbVPN.close()
-        for item in ret:
-            path = filePATH + str(item['id']) + ".txt"
-            output = open(path, 'w')
-            output.write(item['file'])
-            output.close()
-            print '写完文件：' + path
-        print 'channel ：', self.t_item["url"], '同步完成 len=', len(ret)
+        try:
+            print '开始写入 channel ：', self.t_item["url"],
+            for item in ret:
+                path = filePATH + str(item['id']) + ".txt"
+                output = open(path, 'w')
+                output.write(item['file'])
+                output.close()
+                print '写完文件：' + path
+            print 'channel ：', self.t_item["url"], '同步完成 len=', len(ret)
+        except Exception as e:
+            print common.format_exception(e)
 
 
 def getAllChannel():

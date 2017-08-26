@@ -106,31 +106,32 @@ setup_iptables()
 net() 
 {
 
-	net.ipv4.tcp_syncookies = 1
-	net.ipv4.tcp_tw_reuse = 0
-	net.ipv4.tcp_tw_recycle = 0
-	#向外连接的端口范围
-	net.ipv4.ip_local_port_range = 1024 65000 
-	#示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数
-	net.ipv4.tcp_max_syn_backlog = 8192 
-	net.ipv4.tcp_max_tw_buckets = 5000
-	net.ipv4.tcp_keepalive_time = 1200
-	net.ipv4.tcp_fin_timeout = 30
-	net.ipv4.tcp_max_tw_buckets = 5000
-	#TCP接收缓冲大小，对应最小、默认、最大
-	net.ipv4.tcp_rmem = 4096 87380 4194304
-	#TCP发送缓冲大小，对应最小、默认、最大
-	net.ipv4.tcp_wmem = 4096 16384 4194304
-	#最大发送套接字缓冲区大小
-	net.core.rmem_max = 16777216
-	#最大接收套接字缓冲区大小
-	net.core.wmem_max = 16777216
-	#当网络接口接收速率比内核处理快时允许发到队列的数据包数目
-	net.core.netdev_max_backlog = 262144
-	#系统同时发起的TCP连接娄，超过导致连接超时或重传
-	net.core.somaxconn = 262144
-	net.ipv4.ip_forward = 1
-	net.ipv6.conf.all.forwarding=1
+	echo "net.ipv4.tcp_syncookies = 1"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_tw_reuse = 0"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_tw_recycle = 0"  >>  /etc/sysctl.conf
+	echo "#向外连接的端口范围"  >>  /etc/sysctl.conf
+	echo "net.ipv4.ip_local_port_range = 1024 65000 "  >>  /etc/sysctl.conf
+	echo "#示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_max_syn_backlog = 8192 "  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_max_tw_buckets = 5000"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_keepalive_time = 1200"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_fin_timeout = 30"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_max_tw_buckets = 5000"  >>  /etc/sysctl.conf
+	echo "#TCP接收缓冲大小，对应最小、默认、最大"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_rmem = 4096 87380 4194304"  >>  /etc/sysctl.conf
+	echo "#TCP发送缓冲大小，对应最小、默认、最大"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_wmem = 4096 16384 4194304"  >>  /etc/sysctl.conf
+	echo "#最大发送套接字缓冲区大小"  >>  /etc/sysctl.conf
+	echo "net.core.rmem_max = 16777216"  >>  /etc/sysctl.conf
+	echo "#最大接收套接字缓冲区大小"  >>  /etc/sysctl.conf
+	echo "net.core.wmem_max = 16777216"  >>  /etc/sysctl.conf
+	echo "#当网络接口接收速率比内核处理快时允许发到队列的数据包数目"  >>  /etc/sysctl.conf
+	echo "net.core.netdev_max_backlog = 262144"  >>  /etc/sysctl.conf
+	echo "#系统同时发起的TCP连接娄，超过导致连接超时或重传"  >>  /etc/sysctl.conf
+	echo "net.core.somaxconn = 262144"  >>  /etc/sysctl.conf
+	echo "net.ipv4.ip_forward = 1"  >>  /etc/sysctl.conf
+	echo "net.ipv6.conf.all.forwarding=1"  >>  /etc/sysctl.conf
+	cat /etc/sysctl.conf
 	sysctl -p
 }
 ## -----------------------

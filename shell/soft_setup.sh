@@ -50,7 +50,7 @@ setup_kernel()
 	#grep menuentry /boot/grub/grub.cfg
 	# /etc/default/grub GRUB_DEFAULT=0-》2
 	#update-grub
-	# reboot
+	#reboot
 }
 setup_user() {
  	useradd -r -m -s /bin/bash web

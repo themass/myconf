@@ -349,4 +349,4 @@ if __name__ == '__main__':
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
     parseSound()
-#     parseText()
+    parseText()

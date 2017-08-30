@@ -125,7 +125,7 @@ class TextItemsParse(threading.Thread):
         for item in ret:
             obj = {}
             obj['fileDate'] = ''
-            obj['name'] = item.get('title', '') + "2"
+            obj['name'] = item.get('title', '')
             obj['url'] = textFileUrl + '/' + str(item.get('id', 0))
             obj['baseurl'] = baseurl_text
             obj['channel'] = self.t_obj.get('url')
@@ -156,7 +156,7 @@ def textParse():
     if len(ret) > 0:
         for item in ret:
             obj = {}
-            obj['name'] = item.get('title', '性福之事')
+            obj['name'] = item.get('title', '性福之事') + "2"
             obj['baseurl'] = baseurl_text
             obj['url'] = textchannelUrl + '/' + str(item.get('id', 0))
             obj['dir'] = item.get('id', 0)

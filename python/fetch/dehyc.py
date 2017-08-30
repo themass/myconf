@@ -52,7 +52,7 @@ class SoundItemParse(threading.Thread):
     def run(self):
         param = {}
         param['action'] = 'mp3list'
-        param['pagesize'] = 1000
+        param['pagesize'] = 30
         param['pageindex'] = 1
         param['dirid'] = self.t_obj.get('dir')
         data = httputil.postRequestWithParam(
@@ -79,7 +79,7 @@ class SoundItemParse(threading.Thread):
 def SoundParse():
     param = {}
     param['action'] = 'dirlist'
-    param['pagesize'] = 1000
+    param['pagesize'] = 30
     param['pageindex'] = 1
     param['type'] = 0
     data = httputil.postRequestWithParam(baseurl + soundUrl, param, header)
@@ -126,7 +126,7 @@ class TextItemsParse(threading.Thread):
         for item in ret:
             obj = {}
             obj['fileDate'] = ''
-            obj['name'] = item.get('title', '')
+            obj['name'] = item.get('title', '') + "2"
             obj['url'] = textFileUrl + '/' + str(item.get('id', 0))
             obj['baseurl'] = baseurl_text
             obj['channel'] = self.t_obj.get('url')
@@ -180,4 +180,4 @@ if __name__ == '__main__':
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
     SoundParse()
-#     textParse()
+    textParse()

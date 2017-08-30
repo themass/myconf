@@ -10,7 +10,7 @@ class DbOps(object):
 
     def inertSoundChannel(self, obj):
         self.conn.execute(
-            "replace into  soundchannel (name,baseurl,url,pic,updateTime) values ('%s','%s','%s','%s','%s')"
+            "replace into  soundchannel (name,baseurl,url,pic,updateTime,rate) values ('%s','%s','%s','%s','%s',1.1)"
             % (
                 obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("pic"), obj.get("updateTime")))
 

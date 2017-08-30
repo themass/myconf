@@ -40,5 +40,5 @@ class DbOps(object):
         start = i * 20
         end = (i + 1) * 20
         self.conn.execute(
-            "select * from  textitems where channel='%s' limit %s,%s order by id desc " % (channel, start, end))
+            "select * from  textitems where channel='%s' order by id desc  limit %s,%s " % (channel, start, end))
         return self.conn.fetchAll()

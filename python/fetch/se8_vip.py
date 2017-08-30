@@ -242,27 +242,27 @@ class TextChannelParse(threading.Thread):
         ops.inertTextChannel(self.t_obj)
         dbVPN.commit()
         print self.t_obj
-#         try:
-#             url = self.t_obj['url']
-#             channel = url
-#             first = parsFirstPage(url)
-#             print first, url
-#             if first != None:
-#                 for i in range(1, 500):
-#                     url = first + str(i) + ".htm"
-#                     count = self.update(url, ops, channel)
-#                     dbVPN.commit()
-#                     if count == 0:
-#                         break
-#             else:
-#                 self.update(url, ops, channel)
-#                 dbVPN.commit()
-#
-#             dbVPN.close()
-#         except Exception as e:
-#             print common.format_exception(e)
-#             dbVPN.commit()
-#             dbVPN.close()
+        try:
+            url = self.t_obj['url']
+            channel = url
+            first = parsFirstPage(url)
+            print first, url
+            if first != None:
+                for i in range(1, 500):
+                    url = first + str(i) + ".htm"
+                    count = self.update(url, ops, channel)
+                    dbVPN.commit()
+                    if count == 0:
+                        break
+            else:
+                self.update(url, ops, channel)
+                dbVPN.commit()
+
+            dbVPN.close()
+        except Exception as e:
+            print common.format_exception(e)
+            dbVPN.commit()
+            dbVPN.close()
 
     def update(self, url, ops, channel):
         objs = self.fetchTextData(url, channel)

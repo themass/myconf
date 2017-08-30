@@ -11,6 +11,7 @@ from common import db_ops
 from common import MyQueue
 from common import httputil
 import re
+import os
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -47,16 +48,24 @@ class ChannelFetch(threading.Thread):
         try:
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
-            ret = ops.getTextChannelItems(self.t_item["url"])
-            dbVPN.close()
-            print '开始写入 channel ：', self.t_item["url"],
-            for item in ret:
-                path = filePATH + str(item['id']) + ".txt"
-                output = open(path, 'w')
-                output.write(item['file'])
-                output.close()
-                print '写完文件：' + path
+
+            for i in range(0, 100):
+                ret = ops.getTextChannelItems(self.t_item["url"], i)
+                print '开始写入 channel ：', self.t_item["url"],
+                cloase = False
+                for item in ret:
+                    path = filePATH + str(item['id']) + ".txt"
+                    if os.path.exists(path):
+                        cloase = True
+                        break
+                    output = open(path, 'w')
+                    output.write(item['file'])
+                    output.close()
+                    print '写完文件：' + path
+                if cloase == True:
+                    break
             print 'channel ：', self.t_item["url"], '同步完成 len=', len(ret)
+            dbVPN.close()
         except Exception as e:
             print common.format_exception(e)
 

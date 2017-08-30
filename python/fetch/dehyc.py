@@ -52,12 +52,11 @@ class SoundItemParse(threading.Thread):
     def run(self):
         param = {}
         param['action'] = 'mp3list'
-        param['pagesize'] = 30
+        param['pagesize'] = 1000
         param['pageindex'] = 1
         param['dirid'] = self.t_obj.get('dir')
         data = httputil.postRequestWithParam(
             baseurl + soundItemUrl, param, header)
-        print data
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         ret = data.get('data', [])
@@ -79,7 +78,7 @@ class SoundItemParse(threading.Thread):
 def SoundParse():
     param = {}
     param['action'] = 'dirlist'
-    param['pagesize'] = 30
+    param['pagesize'] = 1000
     param['pageindex'] = 1
     param['type'] = 0
     data = httputil.postRequestWithParam(baseurl + soundUrl, param, header)
@@ -162,7 +161,7 @@ def textParse():
             obj['url'] = textchannelUrl + '/' + str(item.get('id', 0))
             obj['dir'] = item.get('id', 0)
             obj['updateTime'] = datetime.datetime.now()
-            for i in range(1, 200):
+            for i in range(1, 50):
                 queue.put(TextItemsParse(obj, i))
             objs.append(obj)
             print 'dehyc text channel=', obj['url'], '--加入队列'

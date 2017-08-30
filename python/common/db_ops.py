@@ -36,7 +36,9 @@ class DbOps(object):
         self.conn.execute("select * from  textchannel")
         return self.conn.fetchAll()
 
-    def getTextChannelItems(self, channel):
+    def getTextChannelItems(self, channel, i):
+        start = i * 20
+        end = (i + 1) * 20
         self.conn.execute(
-            "select * from  textitems where channel='%s'" % (channel))
+            "select * from  textitems where channel='%s' limit %s,%s order by id desc " % (start, end, channel))
         return self.conn.fetchAll()

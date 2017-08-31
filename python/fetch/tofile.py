@@ -49,7 +49,7 @@ class ChannelFetch(threading.Thread):
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
 
-            for i in range(0, 100):
+            for i in range(0, 1000):
                 ret = ops.getTextChannelItems(self.t_item["url"], i)
                 print '开始写入 channel ：', self.t_item["url"],
                 cloase = False

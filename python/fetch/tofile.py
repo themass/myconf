@@ -62,8 +62,8 @@ class ChannelFetch(threading.Thread):
                     output.write(item['file'])
                     output.close()
                     print '写完文件：' + path
-                if cloase == True:
-                    break
+#                 if cloase == True:
+#                     break
             print 'channel ：', self.t_item["url"], '同步完成 len=', len(ret)
             dbVPN.close()
         except Exception as e:

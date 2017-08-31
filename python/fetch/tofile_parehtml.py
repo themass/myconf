@@ -52,8 +52,10 @@ class ChannelFetch(threading.Thread):
 
             for i in range(0, 1000):
                 ret = ops.getTextChannelItems(self.t_item["url"], i)
-                print '开始写入 channel ：', self.t_item["url"], '\n'
+                print '开始写入 channel ：', self.t_item["url"], len(ret), '\n'
                 cloase = False
+                if len(ret) == 0:
+                    break
                 for item in ret:
                     path = filePATH + str(item['id']) + ".txt"
                     if os.path.exists(path):
@@ -65,7 +67,7 @@ class ChannelFetch(threading.Thread):
                     print '写完文件：' + path
 #                 if cloase == True:
 #                     break
-            print 'channel ：', self.t_item["url"], '同步完成 len=', len(ret)
+            print 'channel ：', self.t_item["url"], '同步完成 '
             dbVPN.close()
         except Exception as e:
             print common.format_exception(e)

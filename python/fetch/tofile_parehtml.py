@@ -52,7 +52,7 @@ class ChannelFetch(threading.Thread):
 
             for i in range(0, 1000):
                 ret = ops.getTextChannelItems(self.t_item["url"], i)
-                print '开始写入 channel ：', self.t_item["url"],
+                print '开始写入 channel ：', self.t_item["url"], '\n'
                 cloase = False
                 for item in ret:
                     path = filePATH + str(item['id']) + ".txt"

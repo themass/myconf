@@ -37,10 +37,10 @@ class DbOps(object):
         return self.conn.fetchAll()
 
     def getTextChannelItems(self, channel, i):
-        start = i * 20 + 21118
-        end = (i + 1) * 20 + 21118
+        start = i * 20
+        end = (i + 1) * 20
         self.conn.execute(
-            "select * from  textitems where channel='%s' order by id desc  limit %s,%s " % (channel, start, end))
+            "select * from  textitems where channel='%s' and id>21118 order by id desc  limit %s,%s " % (channel, start, end))
         return self.conn.fetchAll()
 
     def inertImgChannel(self, obj):

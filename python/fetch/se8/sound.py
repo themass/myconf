@@ -3,7 +3,7 @@
 import datetime
 import threading
 from common import common
-from baseparse import BaseParse
+from baseparse import *
 from common import db_ops
 from common.envmod import *
 global baseurl

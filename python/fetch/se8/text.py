@@ -5,7 +5,7 @@ import threading
 from common.envmod import *
 from common import common
 from common import db_ops
-from baseparse import BaseParse
+from baseparse import *
 global baseurl
 
 

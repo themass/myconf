@@ -10,6 +10,7 @@ from common import typeutil
 from common import db_ops
 from common import MyQueue
 from common import httputil
+from common import html_parse
 import re
 import os
 import sys
@@ -17,6 +18,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 queue = MyQueue.MyQueue(20000)
 filePATH = "/home/file/book/"
+filePATHWeb = "/home/file/book_web/"
 
 
 class HandleThread(threading.Thread):
@@ -49,21 +51,25 @@ class ChannelFetch(threading.Thread):
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
 
-            for i in range(0, 1000):
+            for i in range(0, 10000):
                 ret = ops.getTextChannelItems(self.t_item["url"], i)
+                if len(ret) == 0:
+                    break
                 print '开始写入 channel ：', self.t_item["url"],
                 cloase = False
                 for item in ret:
                     path = filePATH + str(item['id']) + ".txt"
-                    if os.path.exists(path):
-                        cloase = True
-#                         break
-                    output = open(path, 'w')
-                    output.write(item['file'])
-                    output.close()
-                    print '写完文件：' + path
-#                 if cloase == True:
-#                     break
+                    if os.path.exists(path) == False:
+                        output = open(path, 'w')
+                        output.write(item['file'])
+                        output.close()
+                        print '写完文件：' + path
+                    path = filePATHWeb + str(item['id']) + ".txt"
+                    if os.path.exists(path) == False:
+                        output = open(path, 'w')
+                        output.write(html_parse.filter_tags(item['file']))
+                        output.close()
+                        print '写完文件：' + path
             print 'channel ：', self.t_item["url"], '同步完成 len=', len(ret)
             dbVPN.close()
         except Exception as e:
@@ -80,7 +86,7 @@ def getAllChannel():
     dbVPN.close()
 if __name__ == '__main__':
 
-    for i in range(0, 30):
+    for i in range(0, 20):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
     getAllChannel()

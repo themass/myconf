@@ -39,12 +39,15 @@ class ImgParse(BaseParse):
         objs = self.fetchImgItemsData(url, channel)
         print "解析 Img 图片ok----channl=", channel, '  页数=', i, " 数量=", len(objs)
         for obj in objs:
-            ops.inertImgItems(obj)
-            for picItem in obj['picList']:
-                item = {}
-                item['itemUrl'] = obj['url']
-                item['picUrl'] = picItem
-                ops.inertImgItems_item(item)
+            try:
+                ops.inertImgItems(obj)
+                for picItem in obj['picList']:
+                    item = {}
+                    item['itemUrl'] = obj['url']
+                    item['picUrl'] = picItem
+                    ops.inertImgItems_item(item)
+            except Exception as e:
+                print common.format_exception(e)
         return len(objs)
 
     def fetchDataHead(self, url):

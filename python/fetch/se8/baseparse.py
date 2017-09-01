@@ -55,7 +55,8 @@ class BaseParse(threading.Thread):
         for li in lis:
             a = li.first("a")
             if a.get("href") != "/":
-                data[a.get("href")] = a.text
+                if a.text == '欧美色图':
+                    data[a.get("href")] = a.text
         for url, name in data.items():
             obj = {}
             obj['name'] = name

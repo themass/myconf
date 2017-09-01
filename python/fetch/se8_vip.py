@@ -67,7 +67,7 @@ def parseImg():
         print obj
 if __name__ == '__main__':
 
-    for i in range(0, 30):
+    for i in range(0, 1):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 #     parseSound()

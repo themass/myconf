@@ -60,7 +60,7 @@ class ChannelFetch(threading.Thread):
                     path = filePATH + str(item['id']) + ".txt"
                     if os.path.exists(path):
                         cloase = True
-                        break
+#                         break
                     output = open(path, 'w')
                     output.write(html_parse.filter_tags(item['file']))
                     output.close()

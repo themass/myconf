@@ -248,7 +248,7 @@ class TextChannelParse(threading.Thread):
             first = parsFirstPage(url)
             print first, url
             if first != None:
-                for i in range(1, 50):
+                for i in range(1, 500):
                     url = first + str(i) + ".htm"
                     count = self.update(url, ops, channel)
                     dbVPN.commit()

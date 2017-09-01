@@ -162,7 +162,7 @@ def textParse():
             obj['url'] = textchannelUrl + '/' + str(item.get('id', 0))
             obj['dir'] = item.get('id', 0)
             obj['updateTime'] = datetime.datetime.now()
-            for i in range(1, 50):
+            for i in range(1, 500):
                 queue.put(TextItemsParse(obj, i))
             objs.append(obj)
             print 'dehyc text channel=', obj['url'], '--加入队列'
@@ -179,5 +179,5 @@ if __name__ == '__main__':
     for i in range(0, 30):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-    SoundParse()
+#     SoundParse()
     textParse()

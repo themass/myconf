@@ -52,7 +52,8 @@ class ChannelFetch(threading.Thread):
             ops = db_ops.DbOps(dbVPN)
 
             for i in range(0, 10000):
-                ret = ops.getTextChannelItems(self.t_item["url"], i)
+                #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
+                ret = ops.getTextChannelItemsById(i)
                 if len(ret) == 0:
                     break
                 print '开始写入 channel ：', self.t_item["url"],
@@ -82,11 +83,12 @@ def getAllChannel():
     channels = ops.getTextChannel()
     for item in channels:
         queue.put(ChannelFetch(item))
+        break
     print 'channel len：', len(channels)
     dbVPN.close()
 if __name__ == '__main__':
 
-    for i in range(0, 20):
+    for i in range(0, 1):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
     getAllChannel()

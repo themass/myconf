@@ -60,7 +60,7 @@ class ChannelFetch(threading.Thread):
                     path = filePATH + str(item['id']) + ".txt"
                     if os.path.exists(path):
                         cloase = True
-#                         break
+                        continue
                     output = open(path, 'w')
                     output.write(html_parse.filter_tags(item['file']))
                     output.close()
@@ -83,7 +83,7 @@ def getAllChannel():
     dbVPN.close()
 if __name__ == '__main__':
 
-    for i in range(0, 30):
+    for i in range(0, 3):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
     getAllChannel()

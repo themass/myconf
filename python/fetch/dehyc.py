@@ -14,6 +14,7 @@ import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
+# http://www.dehyc.com
 baseurl = "http://www.dehyc.com"
 baseurl_text = 'http://58.84.54.38:8010'
 queue = MyQueue.MyQueue(20000)

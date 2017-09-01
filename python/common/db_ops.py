@@ -37,8 +37,25 @@ class DbOps(object):
         return self.conn.fetchAll()
 
     def getTextChannelItems(self, channel, i):
-        start = i * 20
-        end = (i + 1) * 20
+        start = i * 20 + 21118
+        end = (i + 1) * 20 + 21118
         self.conn.execute(
             "select * from  textitems where channel='%s' order by id desc  limit %s,%s " % (channel, start, end))
         return self.conn.fetchAll()
+
+    def inertImgChannel(self, obj):
+        self.conn.execute(
+            "replace into  imgchannel (name,baseurl,url,updateTime) values ('%s','%s','%s','%s')"
+            % (
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime")))
+
+    def inertImgItems(self, obj):
+        self.conn.execute(
+            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime) values ('%s','%s','%s','%s','%s','%s','%s')"
+            % (
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime")))
+
+    def inertImgItems_item(self, obj):
+        self.conn.execute(
+            "replace into  imgitems_item (picUrl,itemUrl) values ('%s','%s')"
+            % (obj.get("picUrl"), obj.get("itemUrl")))

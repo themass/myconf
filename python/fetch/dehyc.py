@@ -162,7 +162,7 @@ def textParse():
             obj['url'] = textchannelUrl + '/' + str(item.get('id', 0))
             obj['dir'] = item.get('id', 0)
             obj['updateTime'] = datetime.datetime.now()
-            for i in range(1, 500):
+            for i in range(1, 50):
                 queue.put(TextItemsParse(obj, i))
             objs.append(obj)
             print 'dehyc text channel=', obj['url'], '--加入队列'

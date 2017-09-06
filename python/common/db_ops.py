@@ -49,11 +49,11 @@ class DbOps(object):
             "select * from  textitems where channel='%s' order by id asc  limit %s,%s " % (channel, start, end))
         return self.conn.fetchAll()
 
-    def getTextChannelItemsById(self, i):
+    def getTextChannelItemsById(self, i, sortType):
         start = i * 20
         end = (i + 1) * 20
         self.conn.execute(
-            "select i.file file,t.url url ,t.id id from  textitems_item i, textitems t on i.fileUrl=t.url order by i.id desc  limit %s,%s " % (start, end))
+            "select i.file file,t.url url ,t.id id from  textitems_item i, textitems t on i.fileUrl=t.url and t.sortType=%s order by i.id desc  limit %s,%s " % (sortType, start, end))
         return self.conn.fetchAll()
 
     def inertImgChannel(self, obj):

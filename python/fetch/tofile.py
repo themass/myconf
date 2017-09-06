@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from common import httputil
+from common import dateutil
 from common import html_parse
 import re
 import os
@@ -50,10 +50,10 @@ class ChannelFetch(threading.Thread):
         try:
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
-
+            sortType = dateutil.y_m_d()
             for i in range(0, 10000):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
-                ret = ops.getTextChannelItemsById(i)
+                ret = ops.getTextChannelItemsById(i, sortType)
                 if len(ret) == 0:
                     break
                 print '开始写入 channel ：', self.t_item["url"],

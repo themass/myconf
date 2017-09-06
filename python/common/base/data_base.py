@@ -29,7 +29,7 @@ class DataBase(object):
         try:
             return self.cur.execute(query, args)
         except Exception as e:
-            print common.format_exception(e)
+            #             print common.format_exception(e)
             return None
 
     def commit(self):

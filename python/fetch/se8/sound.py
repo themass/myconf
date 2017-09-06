@@ -110,7 +110,9 @@ class FileParse(BaseParse):
         objs = self.fetchFileData(url, self.t_channel)
         print threading.current_thread().getName(), "解析有声小说  mp3 ok----数据items=", len(objs), '--channel:', self.t_channel
         for obj in objs:
-            ops.inertSoundItems(obj)
+            ret = ops.inertSoundItems(obj)
+            if ret == None:
+                return 0
         return len(objs)
 
     def fetchMp3(self, url):

@@ -8,7 +8,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 # http://www.dehyc.com
 queue = MyQueue.MyQueue(200000)
-thread_count = 2
+thread_count = 1
 
 
 class HandleThread(threading.Thread):

@@ -29,7 +29,8 @@ class TextItemsParse(threading.Thread):
             obj = {}
             obj['fileDate'] = ''
             obj['name'] = item.get('title', '')
-            obj['url'] = textFileUrl + '/' + str(item.get('id', 0))
+            obj['url'] = textFileUrl + '/' + \
+                sortType + "/" + str(item.get('id', 0))
             obj['baseurl'] = baseurl_text
             obj['channel'] = self.t_obj.get('url')
             obj['updateTime'] = datetime.datetime.now()

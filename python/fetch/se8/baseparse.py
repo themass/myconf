@@ -10,7 +10,7 @@ import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://www.bbb960.com"
+baseurl = "https://www.eee993.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)
@@ -55,8 +55,7 @@ class BaseParse(threading.Thread):
         for li in lis:
             a = li.first("a")
             if a.get("href") != "/":
-                if a.text == '欧美色图':
-                    data[a.get("href")] = a.text
+                data[a.get("href")] = a.text
         for url, name in data.items():
             obj = {}
             obj['name'] = name

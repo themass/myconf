@@ -36,11 +36,11 @@ class TextItemsParse(threading.Thread):
 #             obj['file'] = self.parseText(item.get('id', 0))
             obj['sortType'] = sortType
             insRet = ops.inertTextItems(obj)
-            self.t_queue .put(
-                text_content.TextItemsItem(obj, str(item.get('id', 0))))
             if insRet == None:
                 print 'text结束解析', obj
                 break
+            self.t_queue .put(
+                text_content.TextItemsItem(obj, str(item.get('id', 0))))
         print 'dehyc channel=', self.t_obj['url'], '--解析完毕---', self.t_page, 'size=', len(ret)
         dbVPN.commit()
         dbVPN.close()

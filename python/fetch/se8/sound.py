@@ -9,6 +9,9 @@ from common import db_ops
 from common.envmod import *
 global baseurl
 
+max_page = 100
+list_size = 100
+
 
 class ChannelParse(BaseParse):
 
@@ -25,7 +28,7 @@ class ChannelParse(BaseParse):
             first = self.parsFirstPage(url)
             print first
             if first != None:
-                for i in range(1, 100):
+                for i in range(1, max_page):
                     url = first + str(i) + ".htm"
                     count = self.update(url, ops)
                     dbVPN.commit()
@@ -88,7 +91,7 @@ class FileParse(BaseParse):
             first = self.parsFirstPage(url)
             print '分页', first
             if first != None:
-                for i in range(1, 100):
+                for i in range(1, list_size):
                     url = first + str(i) + ".htm"
                     count = self.update(url, ops)
                     dbVPN.commit()

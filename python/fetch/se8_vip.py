@@ -14,11 +14,11 @@ import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://www.bbb960.com"
+baseurl = "https://www.eee993.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)
-maxCount = 5
+maxCount = 30
 
 parser = baseparse.BaseParse()
 
@@ -54,7 +54,7 @@ def parseText():
     objs = parser.parsHeadText(lis)
     print "解析有情色小说 ok----项目=", len(objs)
     for obj in objs:
-        queue.put(text.TextChannelParse(obj))
+        queue.put(text.TextChannelParse(obj, queue))
         print obj
 
 
@@ -67,9 +67,9 @@ def parseImg():
         print obj
 if __name__ == '__main__':
 
-    for i in range(0, 1):
+    for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 #     parseSound()
-#     parseText()
-    parseImg()
+    parseText()
+#     parseImg()

@@ -9,12 +9,15 @@ from baseparse import *
 from common import dateutil
 global baseurl
 
+max_page = 500
+
 
 class TextChannelParse(BaseParse):
 
-    def __init__(self, obj):
+    def __init__(self, obj, queue):
         threading.Thread.__init__(self)
         self.t_obj = obj
+        self.t_queue = queue
 
     def run(self):
         dbVPN = db.DbVPN()
@@ -28,7 +31,7 @@ class TextChannelParse(BaseParse):
             first = self.parsFirstPage(url)
             print first, url
             if first != None:
-                for i in range(1, 500):
+                for i in range(1, max_page):
                     url = first + str(i) + ".htm"
                     count = self.update(url, ops, channel)
                     dbVPN.commit()
@@ -48,7 +51,10 @@ class TextChannelParse(BaseParse):
         objs = self.fetchTextData(url, channel)
         print "解析Txt小说 ok----channl=", channel, '  数量=', len(objs)
         for obj in objs:
-            ops.inertTextItems(obj)
+            ret = ops.inertTextItems(obj)
+            if ret == None:
+                print 'text 已经存在，解析完毕'
+                return 0
         return len(objs)
 
     def fetchTextData(self, url, channel):
@@ -72,21 +78,38 @@ class TextChannelParse(BaseParse):
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel
                     obj['updateTime'] = datetime.datetime.now()
-                    txt = self.fetchText(ahref.get('href'))
-                    if txt == None:
-                        print '没有Txt文件--', ahref, '---', url
-                        continue
-                    obj['file'] = txt
+                    self.t_queue.put(TextItemContentParse(ahref.get('href')))
+#                     txt = self.fetchText(ahref.get('href'))
+#                     if txt == None:
+#                         print '没有Txt文件--', ahref, '---', url
+#                         continue
+#                     obj['file'] = txt
                     obj['sortType'] = sortType
                     objs.append(obj)
             return objs
         except Exception as e:
             print common.format_exception(e)
 
-    def fetchText(self, url):
-        soup = self.fetchUrl(url)
+
+class TextItemContentParse(BaseParse):
+
+    def __init__(self, url):
+        threading.Thread.__init__(self)
+        self.t_url = url
+
+    def run(self):
+        soup = self.fetchUrl(self.t_url)
         data = soup.first("div", {"class": "novelContent"})
+        print '解析文件 ', self.t_url
         if data != None:
-            print url, ' 解析完成'
-            return str(data)
-        return None
+            obj = {}
+            obj['fileUrl'] = self.t_url
+            obj['file'] = data
+            dbVPN = db.DbVPN()
+            ops = db_ops.DbOps(dbVPN)
+            ops.inertTextItems_item(obj)
+            dbVPN.commit()
+            dbVPN.close()
+#             print url, ' 解析完成'
+#             return str(data)
+#         return None

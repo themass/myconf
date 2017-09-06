@@ -3,6 +3,7 @@
 import datetime
 import threading
 from common import common
+from common import dateutil
 from baseparse import *
 from common import db_ops
 from common.envmod import *
@@ -106,7 +107,7 @@ class FileParse(BaseParse):
         objs = self.fetchFileData(url, self.t_channel)
         print threading.current_thread().getName(), "解析有声小说  mp3 ok----数据items=", len(objs), '--channel:', self.t_channel
         for obj in objs:
-            ops.inertSoundFile(obj)
+            ops.inertSoundItems(obj)
         return len(objs)
 
     def fetchMp3(self, url):
@@ -122,6 +123,7 @@ class FileParse(BaseParse):
             soup = self.fetchUrl(url)
             datalist = soup.findAll("ul", {"class": "textList"})
             objs = []
+            sortType = dateutil.y_m_d()
             for item in datalist:
                 ahrefs = item.findAll("a")
                 for ahref in ahrefs:
@@ -137,6 +139,7 @@ class FileParse(BaseParse):
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel
                     obj['updateTime'] = datetime.datetime.now()
+                    obj['sortType'] = sortType
                     mp3 = self.fetchMp3(ahref.get('href'))
                     if mp3 == None:
                         print '没有mp3文件--', ahref, '---', url

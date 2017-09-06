@@ -6,6 +6,7 @@ from common import common
 from baseparse import *
 from common import db_ops
 from common.envmod import *
+from common import dateutil
 global baseurl
 
 
@@ -63,6 +64,7 @@ class ImgParse(BaseParse):
         try:
             lis = self.fetchDataHead(url)
             objs = []
+            sortType = dateutil.y_m_d()
             for item in lis:
                 ahrefs = item.findAll("a")
                 for ahref in ahrefs:
@@ -84,6 +86,7 @@ class ImgParse(BaseParse):
                         continue
                     obj['picList'] = pics
                     obj['pics'] = len(pics)
+                    obj['sortType'] = sortType
                     print 'url=', obj['url'], '  图片数量=', len(pics)
                     objs.append(obj)
             return objs

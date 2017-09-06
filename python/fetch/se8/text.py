@@ -6,6 +6,7 @@ from common.envmod import *
 from common import common
 from common import db_ops
 from baseparse import *
+from common import dateutil
 global baseurl
 
 
@@ -47,7 +48,7 @@ class TextChannelParse(BaseParse):
         objs = self.fetchTextData(url, channel)
         print "解析Txt小说 ok----channl=", channel, '  数量=', len(objs)
         for obj in objs:
-            ops.inertTextFile(obj)
+            ops.inertTextItems(obj)
         return len(objs)
 
     def fetchTextData(self, url, channel):
@@ -55,6 +56,7 @@ class TextChannelParse(BaseParse):
             soup = self.fetchUrl(url)
             datalist = soup.findAll("ul", {"class": "textList"})
             objs = []
+            sortType = dateutil.y_m_d()
             for item in datalist:
                 ahrefs = item.findAll("a")
                 for ahref in ahrefs:
@@ -75,6 +77,7 @@ class TextChannelParse(BaseParse):
                         print '没有Txt文件--', ahref, '---', url
                         continue
                     obj['file'] = txt
+                    obj['sortType'] = sortType
                     objs.append(obj)
             return objs
         except Exception as e:

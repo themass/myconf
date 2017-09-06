@@ -4,6 +4,7 @@ import MySQLdb
 import datetime
 from common import dateutil
 from common import typeutil
+from common import common
 
 
 class DataBase(object):
@@ -25,7 +26,11 @@ class DataBase(object):
                 print ('%s:[%s]') % (query, args)
             else:
                 print query
-        return self.cur.execute(query, args)
+        try:
+            return self.cur.execute(query, args)
+        except Exception as e:
+            print common.format_exception(e)
+            return None
 
     def commit(self):
         self.conn.commit()

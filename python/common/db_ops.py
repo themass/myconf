@@ -9,28 +9,34 @@ class DbOps(object):
         self.conn = conn
 
     def inertSoundChannel(self, obj):
-        self.conn.execute(
+        return self.conn.execute(
             "replace into  soundchannel (name,baseurl,url,pic,updateTime,rate) values ('%s','%s','%s','%s','%s',1.1)"
             % (
                 obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("pic"), obj.get("updateTime")))
 
-    def inertSoundFile(self, obj):
-        self.conn.execute(
-            "replace into  sounditems (name,baseurl,url,channel,file,fileDate,updateTime) values ('%s','%s','%s','%s','%s','%s','%s')"
+    def inertSoundItems(self, obj):
+        return self.conn.execute(
+            "insert into  sounditems (name,baseurl,url,channel,file,fileDate,updateTime,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("file"), obj.get("fileDate"), obj.get("updateTime")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("file"), obj.get("fileDate"), obj.get("updateTime"), obj.get("sortType")))
 
     def inertTextChannel(self, obj):
-        self.conn.execute(
+        return self.conn.execute(
             "replace into  textchannel (name,baseurl,url,updateTime) values ('%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime")))
 
-    def inertTextFile(self, obj):
-        self.conn.execute(
-            "replace into  textitems (name,baseurl,url,channel,file,fileDate,updateTime) values ('%s','%s','%s','%s','%s','%s','%s')"
+    def inertTextItems(self, obj):
+        return self.conn.execute(
+            "insert into  textitems (name,baseurl,url,channel,fileDate,updateTime,sortType) values ('%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), MySQLdb.escape_string(obj.get("file")), obj.get("fileDate"), obj.get("updateTime")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("updateTime"), obj.get("sortType")))
+
+    def inertTextItems_item(self, obj):
+        return self.conn.execute(
+            "replace into  textitems_item (fileUrl,file) values ('%s','%s')"
+            % (
+                obj.get("fileUrl"), MySQLdb.escape_string(obj.get("file"))))
 
     def getTextChannel(self):
         self.conn.execute("select * from  textchannel")
@@ -47,22 +53,22 @@ class DbOps(object):
         start = i * 20
         end = (i + 1) * 20
         self.conn.execute(
-            "select * from  textitems  order by id asc  limit %s,%s " % (start, end))
+            "select i.file file,t.url url ,t.id id from  textitems_item i, textitems t on i.fileUrl=t.url order by i.id desc  limit %s,%s " % (start, end))
         return self.conn.fetchAll()
 
     def inertImgChannel(self, obj):
-        self.conn.execute(
+        return self.conn.execute(
             "replace into  imgchannel (name,baseurl,url,updateTime) values ('%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime")))
 
     def inertImgItems(self, obj):
-        self.conn.execute(
-            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime) values ('%s','%s','%s','%s','%s','%s','%s')"
+        return self.conn.execute(
+            "insert into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime"), obj.get("sortType")))
 
     def inertImgItems_item(self, obj):
-        self.conn.execute(
-            "replace into  imgitems_item (picUrl,itemUrl) values ('%s','%s')"
-            % (obj.get("picUrl"), obj.get("itemUrl")))
+        return self.conn.execute(
+            "insert into  imgitems_item (picUrl,origUrl,itemUrl) values ('%s','%s','%s')"
+            % (obj.get("picUrl"), obj.get("origUrl"), obj.get("itemUrl")))

@@ -3,7 +3,7 @@
 from baseparse import *
 import text_content
 total_page = 100
-page_size = 5
+page_size = 10
 
 
 class TextItemsParse(threading.Thread):

@@ -53,7 +53,7 @@ class ChannelFetch(threading.Thread):
             sortType = dateutil.y_m_d()
             for i in range(0, 10000):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
-                ret = ops.getTextChannelItemsById(i, sortType)
+                ret = ops.getTextChannelItemsById(i, "2017-09-06")
                 if len(ret) == 0:
                     break
                 print '开始写入 channel ：', self.t_item["url"],

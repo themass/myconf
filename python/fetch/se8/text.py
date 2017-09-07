@@ -116,3 +116,14 @@ class TextItemContentParse(BaseParse):
 #             print url, ' 解析完成'
 #             return str(data)
 #         return None
+
+
+class TextItemContentParseRet(BaseParse):
+
+    def run(self):
+        pass
+
+    def getData(self, url):
+        soup = self.fetchUrl(self.url)
+        data = soup.first("div", {"class": "novelContent"})
+        return str(data)

@@ -42,11 +42,11 @@ class DbOps(object):
         self.conn.execute("select * from  textchannel")
         return self.conn.fetchAll()
 
-    def getTextChannelItems(self, channel, i):
+    def getTextChannelItems(self, channel, i, sortType):
         start = i * 20
         end = (i + 1) * 20
         self.conn.execute(
-            "select * from  textitems where channel='%s' order by id asc  limit %s,%s " % (channel, start, end))
+            "select * from  textitems where channel='%s' and sortType='%s' order by id asc  limit %s,%s " % (channel, sortType, start, end))
         return self.conn.fetchAll()
 
     def getTextChannelItemsById(self, i, sortType):
@@ -55,6 +55,13 @@ class DbOps(object):
         self.conn.execute(
             "select i.file file,t.url url ,t.id id from  textitems_item i, textitems t where i.fileUrl=t.url and t.sortType='%s' order by i.id desc  limit %s,%s " % (sortType, start, end))
         return self.conn.fetchAll()
+
+#     def getTextChannelItems(self, i, sortType):
+#         start = i * 20
+#         end = (i + 1) * 20
+#         self.conn.execute(
+#             "select i.file file,t.url url ,t.id id from  textitems_item i, textitems t where i.fileUrl=t.url and t.sortType='%s' order by i.id desc  limit %s,%s " % (sortType, start, end))
+#         return self.conn.fetchAll()
 
     def inertImgChannel(self, obj):
         rate = obj.get("rate", 1.1)

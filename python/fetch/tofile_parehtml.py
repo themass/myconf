@@ -16,7 +16,7 @@ import os
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-queue = MyQueue.MyQueue(20000)
+queue = MyQueue.MyQueue(200000)
 filePATH = "/home/file/book_web/"
 
 

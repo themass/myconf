@@ -54,7 +54,7 @@ class ChannelFetch(threading.Thread):
             sortType = dateutil.y_m_d()
             for i in range(0, 20000):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
-                ret = ops.getTextChannelItemsById(i, sortType)
+                ret = ops.getTextChannelItemsById(i, '2017-09-07')
                 if len(ret) == 0:
                     print '写入完毕'
                     break

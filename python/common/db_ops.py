@@ -10,9 +10,9 @@ class DbOps(object):
 
     def inertSoundChannel(self, obj):
         return self.conn.execute(
-            "replace into  soundchannel (name,baseurl,url,pic,updateTime,rate) values ('%s','%s','%s','%s','%s',1.1)"
+            "replace into  soundchannel (name,baseurl,url,pic,updateTime,rate) values ('%s','%s','%s','%s','%s',%s)"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("pic"), obj.get("updateTime")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("pic"), obj.get("updateTime"), 1.1))
 
     def inertSoundItems(self, obj):
         return self.conn.execute(
@@ -57,10 +57,11 @@ class DbOps(object):
         return self.conn.fetchAll()
 
     def inertImgChannel(self, obj):
+        rate = obj.get("rate", 1.1)
         return self.conn.execute(
-            "replace into  imgchannel (name,baseurl,url,updateTime) values ('%s','%s','%s','%s')"
+            "replace into  imgchannel (name,baseurl,url,updateTime,rate,pic) values ('%s','%s','%s','%s',%s,'%s')"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime"), rate, obj.get('pic', "")))
 
     def inertImgItems(self, obj):
         return self.conn.execute(

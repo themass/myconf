@@ -20,77 +20,69 @@ class ImgGrilParse(BaseParse):
     def run(self):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-        ops.inertImgChannel(self.t_obj)
-        dbVPN.commit()
+#         ops.inertImgChannel(self.t_obj)
+#         dbVPN.commit()
         url = self.t_obj['url']
-        channel = url
-        self.fetchImgGrilUrl(channel, url)
-
-    def fetchGrilDataHead(self, url):
-        try:
-            first = self.parsFirstPage(url)
-            girls = []
-            if first != None:
-                for i in range(1, 20):
-                    page = first + str(i) + ".htm"
-                    items = self.fetchGrilDataHeadPage(page)
-                    if items == None:
-                        break
-                    girls.extend(items)
+        objs = self.fetchImgGrilChannel(url)
+        for obj in objs:
+            # and obj['url'].find('tubaobao.htm') == -1
+            if obj['url'].find('/') != -1:
+                ops.inertImgChannel(obj)
+                self.t_queue.put(ParsImgChannel(obj))
+                print '更新channel 完成，chennel数据事件加入队列,', obj['url']
             else:
-                items = self.fetchGrilDataHeadPage(url)
-                girls.extend(items)
-            return girls
-        except Exception as e:
-            print common.format_exception(e)
+                print '错误的url', obj
+        dbVPN.commit()
+        dbVPN.close()
+    # 每一项都当成一个channel
 
-    def fetchGrilDataHeadPage(self, url):
-        pageList = []
+    def fetchImgGrilChannel(self, url):
         soup = self.fetchUrl(url)
-        table = soup.find("div", {"class": 'mainArea px17'})
-        if table == None:
+        objs = []
+        div = soup.find("div", {"class": 'mainArea px17'})
+        if div == None:
+            print '没有 channel:', url
             return None
-        aList = table.findAll("a")
+        table = div.find('table')
+        if table == None:
+            print '没有 channel:', url
+            return None
+        aList = table.findAll('a')
         for item in aList:
-            if item.get('href').find("/") != -1:
-                pageList.append(item.get('href'))
-        return pageList
+            obj = {}
+            obj['url'] = item.get('href')
+            obj['baseurl'] = baseurl
+            print str(item)
+            img = item.find('img')
+            if img != None:
+                obj['pic'] = img.get('src')
+            else:
+                obj['pic'] = None
+            obj['updateTime'] = dateutil.y_m_d()
+            obj['rate'] = 1.4
+            obj['name'] = self.fetchImgGrilChannelName(item.get('href'))
+            objs.append(obj)
+        return objs
 
-    def fetchImgGrilUrl(self, url, channel):
-        girls = self.fetchGrilDataHead(url)
-        for girl in girls:
-            self.t_queue.put(ParsImgChannel(girl, url))
-#             channels = self.fetchGirlChannel(girl)
-#             objs = self.fetchImgItemsData(channels)
-#             print "解析 Girl 图片ok----url=", url
-#             for obj in objs:
-#                 try:
-#                     #                     ops.inertImgItems(obj)
-#                     print 'items ：', obj
-#                     for picItem in obj['picList']:
-#                         item = {}
-#                         item['itemUrl'] = obj['url']
-#                         item['picUrl'] = picItem
-# #                         ops.inertImgItems_item(item)
-#                         print 'items_item ：', obj
-#                 except Exception as e:
-#                     print common.format_exception(e)
-#             dbVPN.commit()
+    def fetchImgGrilChannelName(self, url):
+        soup = self.fetchUrl(url)
+        p = soup.find("div", {"class": 'position'})
+        if p != None:
+            return p.text.replace("您的位置：", "")
+        return "girl"
 
 
 class ParsImgChannel(BaseParse):
 
-    def __init__(self, obj, url):
+    def __init__(self, obj):
         threading.Thread.__init__(self)
         self.t_obj = obj
-        self.url = url
 
     def run(self):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-        channels = self.fetchGirlChannel(self.t_obj)
-        objs = self.fetchImgItemsData(channels)
-        print "解析 Girl 图片ok----url=", self.url
+        objs = self.fetchGirlChannelData()
+        print "解析 Girl channel图片ok----channel=", self.t_obj['url'], ' size=', len(objs)
         for obj in objs:
             try:
                 ops.inertImgItems(obj)
@@ -107,49 +99,25 @@ class ParsImgChannel(BaseParse):
         dbVPN.commit()
         dbVPN.close()
 
-    def fetchGirlChannel(self, url):
-        first = self.parsFirstPage(url)
-        channels = []
+    def fetchGirlChannelData(self):
+        first = self.parsFirstPage(self.t_obj['url'])
+        objs = []
         if first != None:
             for i in range(1, 10):
                 page = first + str(i) + ".htm"
                 items = self.fetchgirlChannelItems(page)
                 if items == None:
                     break
-                channels.extend(items)
+                objs.extend(items)
         else:
-            items = self.fetchgirlChannelItems(url)
-            channels.extend(items)
-
-        return channels
-
-    def fetchImgItemsData(self, channels):
-        try:
-            objs = []
-            for item in channels:
-                sortType = dateutil.y_m_d()
-                obj = {}
-                obj.update(item)
-                obj['baseurl'] = baseurl
-                obj['channel'] = self.t_obj
-                obj['updateTime'] = datetime.datetime.now()
-                pics = self.fetchImgs(obj['url'])
-                if len(pics) == 0:
-                    print '没有 图片文件--', obj['url']
-                    continue
-                obj['picList'] = pics
-                obj['pics'] = len(pics)
-                obj['sortType'] = sortType
-                print 'url=', obj['url'], '  图片数量=', len(pics)
-                objs.append(obj)
-            return objs
-        except Exception as e:
-            print common.format_exception(e)
+            items = self.fetchgirlChannelItems(self.t_obj['url'])
+            objs.extend(items)
+        return objs
 
     def fetchgirlChannelItems(self, url):
         soup = self.fetchUrl(url)
         div = soup.find("ul", {"class": 'movieList'})
-        channels = []
+        objs = []
         if div != None:
             alist = div.findAll("a")
             for item in alist:
@@ -161,8 +129,14 @@ class ParsImgChannel(BaseParse):
                     obj['fileDate'] = span.text
                 else:
                     obj['fileDate'] = ''
-                channels.append(obj)
-        return channels
+                obj['channel'] = self.t_obj['url']
+                obj['updateTime'] = dateutil.y_m_d()
+                obj['baseurl'] = baseurl
+                pics = self.fetchImgs(item.get("href"))
+                obj['pics'] = len(pics)
+                obj['picList'] = pics
+                objs.append(obj)
+        return objs
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)

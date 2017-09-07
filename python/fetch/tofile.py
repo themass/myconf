@@ -55,6 +55,7 @@ class ChannelFetch(threading.Thread):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
                 ret = ops.getTextChannelItemsById(i, "2017-09-06")
                 if len(ret) == 0:
+                    print '写入完毕'
                     break
                 print '开始写入 channel ：', self.t_item["url"],
                 cloase = False

@@ -19,6 +19,7 @@ sys.setdefaultencoding('utf8')
 queue = MyQueue.MyQueue(20000)
 filePATH = "/home/file/book/"
 filePATHWeb = "/home/file/book_web/"
+filePATHHtml = "/home/file/book_html/"
 
 
 class HandleThread(threading.Thread):
@@ -51,9 +52,9 @@ class ChannelFetch(threading.Thread):
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             sortType = dateutil.y_m_d()
-            for i in range(0, 2000):
+            for i in range(0, 20000):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
-                ret = ops.getTextChannelItemsById(i, "2017-09-06")
+                ret = ops.getTextChannelItemsById(i, sortType)
                 if len(ret) == 0:
                     print '写入完毕'
                     break
@@ -70,6 +71,13 @@ class ChannelFetch(threading.Thread):
                     if os.path.exists(path) == False:
                         output = open(path, 'w')
                         output.write(html_parse.filter_tags(item['file']))
+                        output.close()
+                        print '写完文件：' + path
+                    path = filePATHHtml + str(item['id']) + ".html"
+                    if os.path.exists(path) == False:
+                        output = open(path, 'w')
+                        output.write(
+                            html_parse.txtToHtml(html_parse.filter_tags(item['file'])))
                         output.close()
                         print '写完文件：' + path
                 print '写完页', i

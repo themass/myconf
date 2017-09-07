@@ -33,6 +33,7 @@ class BaseParse(threading.Thread):
                 return soup
             except Exception as e:
                 print '打开页面错误,重试', baseurl + url, '次数', count
+                count = count + 1
 
         print '打开页面错误,重试3次还是错误', baseurl + url
         return BeautifulSoup('')
@@ -75,6 +76,8 @@ class BaseParse(threading.Thread):
                     href = a.get('href')
                     match = reg.search(href)
                     if match == None:
+                        return None
+                    if match.group(1).replace(" ", "") == "":
                         return None
                     return match.group(1)
         else:

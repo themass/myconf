@@ -29,7 +29,7 @@ class TextChannelParse(BaseParse):
             url = self.t_obj['url']
             channel = url
             first = self.parsFirstPage(url)
-            print first, url
+
             if first != None:
                 for i in range(1, max_page):
                     url = first + str(i) + ".htm"
@@ -52,9 +52,9 @@ class TextChannelParse(BaseParse):
         print "解析Txt小说 ok----channl=", channel, '  数量=', len(objs)
         for obj in objs:
             ret = ops.inertTextItems(obj)
-            if ret == None:
-                print 'text 已经存在，解析完毕'
-                return 0
+#             if ret == None:
+#                 print 'text 已经存在，解析完毕'
+#                 return 0
         return len(objs)
 
     def fetchTextData(self, url, channel):
@@ -102,14 +102,17 @@ class TextItemContentParse(BaseParse):
         data = soup.first("div", {"class": "novelContent"})
         print '解析文件 ', self.t_url
         if data != None:
-            obj = {}
-            obj['fileUrl'] = self.t_url
-            obj['file'] = data
-            dbVPN = db.DbVPN()
-            ops = db_ops.DbOps(dbVPN)
-            ops.inertTextItems_item(obj)
-            dbVPN.commit()
-            dbVPN.close()
+            try:
+                obj = {}
+                obj['fileUrl'] = self.t_url
+                obj['file'] = str(data)
+                dbVPN = db.DbVPN()
+                ops = db_ops.DbOps(dbVPN)
+                ops.inertTextItems_item(obj)
+                dbVPN.commit()
+                dbVPN.close()
+            except Exception as e:
+                print common.format_exception(e)
 #             print url, ' 解析完成'
 #             return str(data)
 #         return None

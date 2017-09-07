@@ -17,7 +17,7 @@ sys.setdefaultencoding('utf8')
 baseurl = "https://www.eee993.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
-queue = MyQueue.MyQueue(200)
+queue = MyQueue.MyQueue(200000)
 maxCount = 30
 
 parser = baseparse.BaseParse()
@@ -35,9 +35,10 @@ class HandleThread(threading.Thread):
             try:
                 print queue.qsize()
                 obj = queue.get(timeout=30)
-                obj.run()
+                if obj != None:
+                    obj.run()
             except Exception as e:
-                print threading.current_thread().getName(), '---conti'
+                print common.format_exception(e)
                 pass
 
 
@@ -58,6 +59,16 @@ def parseText():
         print obj
 
 
+def parseGirlImg():
+    lis = parser.fetchHead(u"图区")
+    objs = parser.parsHeadText(lis)
+    print "解析图片 ok----项目=", len(objs)
+    for obj in objs:
+        if obj.get("name") == "极品美女":
+            queue.put(img_girl.ImgGrilParse(obj, queue))
+            print obj
+
+
 def parseImg():
     lis = parser.fetchHead(u"图区")
     objs = parser.parsHeadText(lis)
@@ -71,5 +82,5 @@ if __name__ == '__main__':
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 #     parseSound()
-    parseText()
+    parseGirlImg()
 #     parseImg()

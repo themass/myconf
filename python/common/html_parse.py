@@ -59,7 +59,45 @@ def replaceCharEntity(htmlstr):
 def repalce(s, re_exp, repl_string):
     return re_exp.sub(repl_string, s)
 
+head = '''
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>About FreeVPN</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+         body{
+             font-size:22px;
+             font-family: 微软雅黑;
+             letter-spacing:1.8px;
+             line-height:1.2;
+             background-color:rgba(0,0,0,0);
+         }
+
+    </style>
+</head>
+<body>
+
+'''
+end = '''
+</body>
+
+</html>
+
+'''
+
+
+def addHead(txt):
+    return head + txt + end
+
+
+def txtToHtml(txt):
+    txt = txt.replace("\n", "").replace("\r", "<br/>").replace(" ", "&nbsp;")
+    return head + txt + end
 if __name__ == '__main__':
     s = file('1003.txt').read()
-    news = filter_tags(s)
-    print news
+#     news = filter_tags(s)
+#     print news
+    s = txtToHtml(s)
+    print s

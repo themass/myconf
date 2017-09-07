@@ -16,17 +16,18 @@ class DataBase(object):
         self.__level = False
 
     def execute(self, query, args=None):
-        if args != None and isinstance(args, list):
-            typeutil.listReplace(args, None, -1)
-        if query.count('%s') != 0 and query.count('%s') != len(args):
-            print 'error: sql error[%s][%s]' % (query, args)
-            raise ValueError('error: sql error[%s][%s]' % (query, args))
-        if self.__level == True:
-            if args != None:
-                print ('%s:[%s]') % (query, args)
-            else:
-                print query
         try:
+            if args != None and isinstance(args, list):
+                typeutil.listReplace(args, None, -1)
+            if query.count('%s') != 0 and query.count('%s') != len(args):
+                print 'error: sql error[%s][%s]' % (query, args)
+                raise ValueError('error: sql error[%s][%s]' % (query, args))
+            if self.__level == True:
+                if args != None:
+                    print ('%s:[%s]') % (query, args)
+                else:
+                    print query
+
             return self.cur.execute(query, args)
         except Exception as e:
             print common.format_exception(e)

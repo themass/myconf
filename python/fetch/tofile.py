@@ -51,7 +51,7 @@ class ChannelFetch(threading.Thread):
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             sortType = dateutil.y_m_d()
-            for i in range(0, 10000):
+            for i in range(0, 2000):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
                 ret = ops.getTextChannelItemsById(i, "2017-09-06")
                 if len(ret) == 0:
@@ -89,7 +89,9 @@ def getAllChannel():
     dbVPN.close()
 if __name__ == '__main__':
 
-    for i in range(0, 1):
-        worker = HandleThread("work-%s" % (i), queue)
-        worker.start()
-    getAllChannel()
+    #     for i in range(0, 1):
+    #         worker = HandleThread("work-%s" % (i), queue)
+    #         worker.start()
+    #     getAllChannel()
+    fetch = ChannelFetch(1)
+    fetch.run()

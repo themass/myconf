@@ -93,5 +93,7 @@ if __name__ == '__main__':
     #         worker = HandleThread("work-%s" % (i), queue)
     #         worker.start()
     #     getAllChannel()
-    fetch = ChannelFetch(1)
+    item = {}
+    item['url'] = "test"
+    fetch = ChannelFetch(item)
     fetch.run()

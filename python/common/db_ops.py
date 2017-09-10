@@ -84,9 +84,10 @@ class DbOps(object):
     def getImgItems_itemUnSync(self, page):
         start = page * 30
         end = (page + 1) * 30
-        return self.conn.execute(
+        self.conn.execute(
             "select * from  imgitems_item where compress is null order by id asc  limit %s,%s "
-            % (start, end)).fetchAll()
+            % (start, end))
+        return self.conn.fetchAll()
 
     def updateImgItems_itemSync(self, obj):
         return self.conn.execute(

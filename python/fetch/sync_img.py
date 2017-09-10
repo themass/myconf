@@ -20,7 +20,9 @@ sys.setdefaultencoding('utf8')
 queue = MyQueue.MyQueue(20000)
 fileOrige = "/home/file/img_orige/"
 fileCompress = "/home/file/img_compress/"
-max_count = 5
+max_count = 10
+
+names = []
 
 
 class HandleThread(threading.Thread):
@@ -38,27 +40,34 @@ class HandleThread(threading.Thread):
             if len(items) == 0:
                 print '结束同步', self.page
                 break
-            dbVPN = db.DbVPN()
-            ops = db_ops.DbOps(dbVPN)
+#             dbVPN = db.DbVPN()
+#             ops = db_ops.DbOps(dbVPN)
             for obj in items:
                 try:
                     ext = os.path.splitext(obj['picUrl'])[1]
                     out = fileOrige + str(obj['id']) + ext
-                    if os.path.exists(out) == False:
+                    if names.count(str(obj['id'])) <= 0:
                         os.system("wget -O %s %s " % (out, obj['picUrl']))
-                    print 'url=', obj['picUrl']
+                    print threading.current_thread().getName(), '----', str(obj['id']), '--url=', obj['picUrl']
                 except Exception as e:
                     print obj['picUrl'], common.format_exception(e)
-            dbVPN.close()
+#             dbVPN.close()
             page = index * max_count + self.index
             index = index + 1
 
     def getImgs(self, page):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
+        print threading.current_thread().getName(), '--page=', page
         items = ops.getImgItems_itemUnSync(page)
         dbVPN.close()
         return items
+
+
+def listDir():
+    lists = os.listdir(fileOrige)
+    for item in lists:
+        names.append(item.replace(".jpg", ''))
 if __name__ == '__main__':
 
     for i in range(0, max_count):

@@ -41,10 +41,13 @@ class HandleThread(threading.Thread):
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             for obj in items:
-                ext = os.path.splitext(obj['picUrl'])[1]
-                out = fileOrige + str(obj['id']) + ext
-                os.system("wget -O %s %s " % (out, obj['picUrl']))
-                print 'url=', obj['picUrl'], ' ', 'out=', out
+                try:
+                    ext = os.path.splitext(obj['picUrl'])[1]
+                    out = fileOrige + str(obj['id']) + ext
+                    os.system("wget -O %s %s " % (out, obj['picUrl']))
+                    print 'url=', obj['picUrl']
+                except Exception as e:
+                    print obj['picUrl'], common.format_exception(e)
             dbVPN.close()
             page = index * max_count + self.index
             index = index + 1

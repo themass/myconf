@@ -46,7 +46,7 @@ class HandleThread(threading.Thread):
                 os.system("wget -o %s %s " % (out, obj['picUrl']))
                 print 'url=', obj['picUrl'], ' ', 'out=', out
             dbVPN.close()
-            page = index * max_count + self.page
+            page = index * max_count + self.index
             index = index + 1
 
     def getImgs(self, page):

@@ -44,7 +44,8 @@ class HandleThread(threading.Thread):
                 try:
                     ext = os.path.splitext(obj['picUrl'])[1]
                     out = fileOrige + str(obj['id']) + ext
-                    os.system("wget -O %s %s " % (out, obj['picUrl']))
+                    if os.path.exists(out) == False:
+                        os.system("wget -O %s %s " % (out, obj['picUrl']))
                     print 'url=', obj['picUrl']
                 except Exception as e:
                     print obj['picUrl'], common.format_exception(e)

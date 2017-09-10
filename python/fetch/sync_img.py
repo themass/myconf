@@ -31,7 +31,7 @@ class HandleThread(threading.Thread):
         self.index = index
 
     def run(self):
-        page = self.page
+        page = self.index
         index = 1
         while(True):
             items = self.getImgs(page)

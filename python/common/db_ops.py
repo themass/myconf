@@ -82,8 +82,8 @@ class DbOps(object):
             % (obj.get("picUrl"), obj.get("origUrl"), obj.get("itemUrl")))
 
     def getImgItems_itemUnSync(self, page):
-        start = page * 30
-        end = (page + 1) * 30
+        start = page * 200
+        end = (page + 1) * 200
         self.conn.execute(
             "select * from  imgitems_item where compress is null order by id asc  limit %s,%s "
             % (start, end))
@@ -91,5 +91,5 @@ class DbOps(object):
 
     def updateImgItems_itemSync(self, obj):
         return self.conn.execute(
-            "upate  imgitems_item set origUrl='%s',compress='%s' where id=%s"
+            "upate  imgitems_item set origUrl='%s',compressUrl='%s' where id=%s"
             % (obj.get("origUrl"), obj.get("compress"), obj.get("id")))

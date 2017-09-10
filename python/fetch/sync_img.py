@@ -43,7 +43,7 @@ class HandleThread(threading.Thread):
             for obj in items:
                 ext = os.path.splitext(obj['picUrl'])[1]
                 out = fileOrige + str(obj['id']) + ext
-                os.system("wget -o %s %s " % (out, obj['picUrl']))
+                os.system("wget -O %s %s " % (out, obj['picUrl']))
                 print 'url=', obj['picUrl'], ' ', 'out=', out
             dbVPN.close()
             page = index * max_count + self.index

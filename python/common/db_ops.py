@@ -85,7 +85,7 @@ class DbOps(object):
         start = page * 200
         end = (page + 1) * 200
         self.conn.execute(
-            "select * from  imgitems_item where compress is null order by id asc  limit %s,%s "
+            "select * from  imgitems_item where compressUrl is null order by id asc  limit %s,%s "
             % (start, end))
         return self.conn.fetchAll()
 

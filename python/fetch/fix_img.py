@@ -39,7 +39,9 @@ def syncImgsObj(self):
 
 def mv0K():
     os.system(
-        "ll %s -h | awk -F' ' '{print$5" "$9}' | awk -F' ' '$1==0{print$2}'  | xargs mv -t -i mv {} ../test/{}", fileOrige)
+        '''
+        ll %s -h | awk -F' ' '{print$5"  "$9}' | awk -F' ' '$1==0{print$2}'  | xargs mv -t -i mv {} ../test/{}
+        ''', fileOrige)
 
 
 def getImgs():

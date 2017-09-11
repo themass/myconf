@@ -87,18 +87,21 @@ def fix2():
             ext = os.path.splitext(urls[1])[1]
             out = fileOrige + str(urls[0]) + ext
             outjpg = fileOrige + str(urls[0]) + '.jpg'
-            os.system("wget -O %s %s " % (out, urls[1]))
+            print "wget -O %s %s " % (out, urls[1])
+            ret = os.system("wget -O %s %s " % (out, urls[1]))
+            if ret != 0:
+                print '没找到图片', urls[1], urls[0]
             os.system("mogrify  -resize 80%x80% " + out)
             if ext != 'jpg':
                 os.system("convert  %s %s " % (out, outjpg))
-            outComjpg = fileCompress + str(urls[0]) + '.jpg'
-            commond = "convert  -resize 50%x50% " + outjpg + "  " + outComjpg
-            print commond
-            os.system(commond)
-            count += 1
-            if (count % 150) == 0:
-                print 'sleep'
-                time.sleep(5)
+#             outComjpg = fileCompress + str(urls[0]) + '.jpg'
+#             commond = "convert  -resize 50%x50% " + outjpg + "  " + outComjpg
+#             print commond
+#             os.system(commond)
+#             count += 1
+#             if (count % 150) == 0:
+#                 print 'sleep'
+#                 time.sleep(5)
 if __name__ == '__main__':
     #     mv0K()
     #     print 'mv ok'
@@ -111,5 +114,5 @@ if __name__ == '__main__':
     #             idlist.append(imgId)
     #     print len(idlist), idlist
     #     syncImgsObj()
-    fix1()
+    #     fix1()
     fix2()

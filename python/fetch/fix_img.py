@@ -40,7 +40,7 @@ def syncImgsObj():
 
 def mv0K():
     os.system(
-        "ll %s -h | awk -F' ' '{print$5" "$9}' | awk -F' ' '$1==0{print$2}'  | xargs -t -i mv {} /mnt/file/test/{}" % (fileOrige))
+        "sudo ll %s -h | awk -F' ' '{print$5" "$9}' | awk -F' ' '$1==0{print$2}'  | xargs -t -i mv {} /mnt/file/test/{}" % (fileOrige))
 
 
 def getImgs():
@@ -106,8 +106,8 @@ def fix2():
 #                 print 'sleep'
 #                 time.sleep(5)
 if __name__ == '__main__':
-    #     mv0K()
-    #     print 'mv ok'
+    mv0K()
+    print 'mv ok'
     imgIds = getImgs()
     print 'imgIds ok'
     names = listDir()

@@ -40,7 +40,7 @@ def syncImgsObj():
 
 def mv0K():
     os.system(
-        "sudo ls -l %s -h | awk -F' ' '{print$5" "$9}' | awk -F' ' '$1==0{print$2}'  | xargs -t -i mv {} /mnt/file/test/{}" % (fileOrige))
+        "sudo ls -l %s -h | awk -F' ' '{print$5" "$9}' | awk -F' ' '$1==0{print$2}'  | xargs -t -i mv %s{} /mnt/file/test/{}" % (fileOrige, fileOrige))
 
 
 def getImgs():
@@ -117,5 +117,5 @@ if __name__ == '__main__':
             idlist.append(imgId)
     print len(idlist), idlist
     #     syncImgsObj()
-    fix1()
+#     fix1()
 #     fix2()

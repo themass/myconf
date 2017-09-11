@@ -36,6 +36,9 @@ def listDir():
     names = []
     for item in lists:
         names.append(item.replace(".jpg", ''))
+    print names
+    return names
+
 if __name__ == '__main__':
 
     imgIds = getImgs()

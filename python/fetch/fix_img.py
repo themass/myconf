@@ -80,7 +80,7 @@ def fix2():
     count = 0
     for line in fh.readlines():
         if line.count("http") > 0:
-            urls = line.splitlines(",")
+            urls = line.split(",")
             if len(urls) != 2:
                 print 'error', line
                 continue

@@ -85,7 +85,8 @@ def fix2():
                 print 'error', line
                 continue
             ext = os.path.splitext(urls[1])[1]
-            out = fileOrige + str(urls[0]) + ext
+            out = fileOrige + \
+                str(urls[0]) + ext.replace('\n', '').replace('\r', '')
             outjpg = fileOrige + str(urls[0]) + '.jpg'
             print "wget -O %s %s " % (out, urls[1])
             ret = os.system("wget -O %s %s " % (out, urls[1]))

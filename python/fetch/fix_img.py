@@ -96,6 +96,7 @@ def fix2():
             os.system("mogrify  -resize 80%x80% " + out)
             if ext != 'jpg':
                 os.system("convert  %s %s " % (out, outjpg))
+                print 'convert to jpg'
 #             outComjpg = fileCompress + str(urls[0]) + '.jpg'
 #             commond = "convert  -resize 50%x50% " + outjpg + "  " + outComjpg
 #             print commond

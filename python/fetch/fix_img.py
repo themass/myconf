@@ -71,6 +71,7 @@ def fix1():
             print item
             count = count + 1
             if count % 50 == 0:
+                print 'sleep'
                 time.sleep(8)
 
 
@@ -96,6 +97,7 @@ def fix2():
             os.system(commond)
             count = count + 1
             if count % 50 == 0:
+                print 'sleep'
                 time.sleep(8)
 if __name__ == '__main__':
     #     mv0K()

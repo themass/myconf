@@ -68,7 +68,7 @@ def fix1():
         count = 0
         if os.path.exists(path) == False:
             os.system("convert  -resize 50%x50% " + out + ' ' + path)
-            print item
+            print item, count, (count % 50)
             count += 1
             if (count % 50) == 0:
                 print 'sleep'

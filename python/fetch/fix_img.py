@@ -40,7 +40,7 @@ def syncImgsObj():
 
 def mv0K():
     os.system(
-        "sudo ll %s -h | awk -F' ' '{print$5" "$9}' | awk -F' ' '$1==0{print$2}'  | xargs -t -i mv {} /mnt/file/test/{}" % (fileOrige))
+        "sudo ls -l %s -h | awk -F' ' '{print$5" "$9}' | awk -F' ' '$1==0{print$2}'  | xargs -t -i mv {} /mnt/file/test/{}" % (fileOrige))
 
 
 def getImgs():

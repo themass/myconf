@@ -70,7 +70,7 @@ def fix1():
             os.system("convert  -resize 50%x50% " + out + ' ' + path)
             print item, count, (count % 50)
             count += 1
-            if (count % 50) == 0:
+            if (count % 150) == 0:
                 print 'sleep'
                 time.sleep(8)
 
@@ -96,7 +96,7 @@ def fix2():
             print commond
             os.system(commond)
             count += 1
-            if (count % 50) == 0:
+            if (count % 150) == 0:
                 print 'sleep'
                 time.sleep(8)
 if __name__ == '__main__':

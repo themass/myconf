@@ -68,4 +68,4 @@ if __name__ == '__main__':
         if names.count(str(imgId)) == 0:
             idlist.append(imgId)
     print len(idlist), idlist
-    syncImgsObj()
+#     syncImgsObj()

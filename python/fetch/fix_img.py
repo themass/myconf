@@ -54,18 +54,52 @@ def listDir():
     lists = os.listdir(fileOrige)
     names = []
     for item in lists:
-        names.append(item.replace(".jpg", ''))
+        names.append(
+            item.replace(".jpg", '').replace(".png", '').replace(".jpeg", ''))
     return names
 
+
+def fix1():
+    lists = os.listdir(fileOrige)
+    for item in lists:
+        out = fileOrige + item
+        path = fileCompress + item
+        if os.path.exists(path) == False:
+            os.system("convert  -resize 50%x50% " + out + ' ' + path)
+            print item
+
+
+def fix2():
+    fh = open('fix_img.txt')
+    for line in fh.readlines():
+        line = ''
+        if line.count("http") > 0:
+            urls = line.splitlines(",")
+            if len(urls) != 2:
+                print 'error', line
+                continue
+            ext = os.path.splitext(urls[1])[1]
+            out = fileOrige + str(urls[0]) + ext
+            outjpg = fileOrige + str(urls[0]) + '.jpg'
+            os.system("wget -O %s %s " % (out, urls[1]))
+            os.system("mogrify  -resize 80%x80% " + out)
+            if ext != 'jpg':
+                os.system("convert  %s %s " % (out, outjpg))
+            outComjpg = fileCompress + str(urls[0]) + '.jpg'
+            commond = "convert  -resize 50%x50% " + outjpg + "  " + outComjpg
+            print commond
+            os.system(commond)
 if __name__ == '__main__':
-    mv0K()
-    print 'mv ok'
-    imgIds = getImgs()
-    print 'imgIds ok'
-    names = listDir()
-    print 'listDir ok'
-    for imgId in imgIds:
-        if names.count(str(imgId)) == 0:
-            idlist.append(imgId)
-    print len(idlist), idlist
-#     syncImgsObj()
+    #     mv0K()
+    #     print 'mv ok'
+    #     imgIds = getImgs()
+    #     print 'imgIds ok'
+    #     names = listDir()
+    #     print 'listDir ok'
+    #     for imgId in imgIds:
+    #         if names.count(str(imgId)) == 0:
+    #             idlist.append(imgId)
+    #     print len(idlist), idlist
+    #     syncImgsObj()
+    fix1()
+    fix2()

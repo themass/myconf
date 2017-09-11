@@ -5,14 +5,15 @@
 
 run_root() 
 {
-	pkill -9 radiusd
-	ps -ef |grep rad |awk '{print $2}' | xargs kill -9
-	ps -ef |grep apache2 |awk '{print $2}' | xargs kill -9
-	radiusd &
-	mysqld_safe &
-	ipsec start
-	killall nginx
-	/root/local/nginx/sbin/nginx
+		pkill -9 radiusd
+		ps -ef |grep rad |awk '{print $2}' | xargs kill -9
+		ps -ef |grep free |awk '{print $2}' | xargs kill -9
+		ps -ef |grep apache2 |awk '{print $2}' | xargs kill -9
+		radiusd &
+		mysqld_safe &
+		ipsec start
+		killall nginx
+		/root/local/nginx/sbin/nginx
 }
 run_web() 
 {

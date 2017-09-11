@@ -108,14 +108,14 @@ def fix2():
 if __name__ == '__main__':
     #     mv0K()
     #     print 'mv ok'
-    #     imgIds = getImgs()
-    #     print 'imgIds ok'
-    #     names = listDir()
-    #     print 'listDir ok'
-    #     for imgId in imgIds:
-    #         if names.count(str(imgId)) == 0:
-    #             idlist.append(imgId)
-    #     print len(idlist), idlist
+    imgIds = getImgs()
+    print 'imgIds ok'
+    names = listDir()
+    print 'listDir ok'
+    for imgId in imgIds:
+        if names.count(str(imgId)) == 0:
+            idlist.append(imgId)
+    print len(idlist), idlist
     #     syncImgsObj()
-    #     fix1()
-    fix2()
+    fix1()
+#     fix2()

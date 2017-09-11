@@ -24,7 +24,7 @@ max_count = 10
 idlist = []
 
 
-def syncImgsObj(self):
+def syncImgsObj():
     dbVPN = db.DbVPN()
     ops = db_ops.DbOps(dbVPN)
     objs = ops.getImgItems_itemUnSyncById(idlist)
@@ -59,8 +59,11 @@ def listDir():
 
 if __name__ == '__main__':
     mv0K()
+    print 'mv ok'
     imgIds = getImgs()
+    print 'imgIds ok'
     names = listDir()
+    print 'listDir ok'
     for imgId in imgIds:
         if names.count(str(imgId)) == 0:
             idlist.append(imgId)

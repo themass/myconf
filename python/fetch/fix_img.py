@@ -33,7 +33,7 @@ def syncImgsObj():
         ext = os.path.splitext(obj['picUrl'])[1]
         out = fileOrige + str(obj['id']) + ext
         os.system("wget -O %s %s " % (out, obj['picUrl']))
-        os.system("mogrify  -resize 80%x80% %s" % (out))
+        os.system("mogrify  -resize 80%x80% " + out)
         print 'sync imgok url=', obj['picUrl']
 
 

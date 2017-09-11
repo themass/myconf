@@ -89,6 +89,15 @@ class DbOps(object):
             % (start, end))
         return self.conn.fetchAll()
 
+    def getImgItems_itemId(self):
+        self.conn.execute(
+            "select id from  imgitems_item  ")
+        objs = self.conn.fetchAll()
+        items = []
+        for obj in objs:
+            items.append(obj['id'])
+        return items
+
     def updateImgItems_itemSync(self, obj):
         return self.conn.execute(
             "upate  imgitems_item set origUrl='%s',compressUrl='%s' where id=%s"

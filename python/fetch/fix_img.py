@@ -91,6 +91,7 @@ def fix2():
             ret = os.system("wget -O %s %s " % (out, urls[1]))
             if ret != 0:
                 print '没找到图片', urls[1], urls[0]
+                continue
             os.system("mogrify  -resize 80%x80% " + out)
             if ext != 'jpg':
                 os.system("convert  %s %s " % (out, outjpg))

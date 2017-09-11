@@ -48,4 +48,4 @@ if __name__ == '__main__':
         if names.count(str(imgId)) == 0:
             error.append(imgId)
             print imgId
-    print error
+    print len(error), error

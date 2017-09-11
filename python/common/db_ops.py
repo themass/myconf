@@ -89,6 +89,13 @@ class DbOps(object):
             % (start, end))
         return self.conn.fetchAll()
 
+    def getImgItems_itemUnSyncById(self, ids):
+        sql = "select * from  imgitems_item wher order by id in (%s) "
+        in_p = ', '.join(map(lambda x: '%s', ids))
+        sql = sql % in_p
+        self.conn.execute(sql, ids)
+        return self.conn.fetchAll()
+
     def getImgItems_itemId(self):
         self.conn.execute(
             "select id from  imgitems_item  ")

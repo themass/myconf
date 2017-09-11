@@ -72,7 +72,7 @@ def fix1():
             count += 1
             if (count % 150) == 0:
                 print 'sleep'
-                time.sleep(8)
+                time.sleep(5)
 
 
 def fix2():
@@ -98,7 +98,7 @@ def fix2():
             count += 1
             if (count % 150) == 0:
                 print 'sleep'
-                time.sleep(8)
+                time.sleep(5)
 if __name__ == '__main__':
     #     mv0K()
     #     print 'mv ok'

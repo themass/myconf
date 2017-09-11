@@ -69,8 +69,8 @@ def fix1():
         if os.path.exists(path) == False:
             os.system("convert  -resize 50%x50% " + out + ' ' + path)
             print item
-            count = count + 1
-            if count % 50 == 0:
+            count += 1
+            if (count % 50) == 0:
                 print 'sleep'
                 time.sleep(8)
 
@@ -95,8 +95,8 @@ def fix2():
             commond = "convert  -resize 50%x50% " + outjpg + "  " + outComjpg
             print commond
             os.system(commond)
-            count = count + 1
-            if count % 50 == 0:
+            count += 1
+            if (count % 50) == 0:
                 print 'sleep'
                 time.sleep(8)
 if __name__ == '__main__':

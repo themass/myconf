@@ -62,10 +62,10 @@ def listDir():
 
 def fix1():
     lists = os.listdir(fileOrige)
+    count = 0
     for item in lists:
         out = fileOrige + item
         path = fileCompress + item
-        count = 0
         if os.path.exists(path) == False:
             os.system("convert  -resize 50%x50% " + out + ' ' + path)
             print item, count, (count % 50)
@@ -77,8 +77,8 @@ def fix1():
 
 def fix2():
     fh = open('fix_img.txt')
+    count = 0
     for line in fh.readlines():
-        count = 0
         if line.count("http") > 0:
             urls = line.splitlines(",")
             if len(urls) != 2:

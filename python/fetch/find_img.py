@@ -44,4 +44,5 @@ if __name__ == '__main__':
     for imgId in imgIds:
         if names.count(str(imgId)) == 0:
             error.append(imgId)
+            print imgId
     print error

@@ -14,6 +14,7 @@ from common import html_parse
 import re
 import os
 import sys
+import time
 from urlparse import urlparse
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -64,15 +65,19 @@ def fix1():
     for item in lists:
         out = fileOrige + item
         path = fileCompress + item
+        count = 0
         if os.path.exists(path) == False:
             os.system("convert  -resize 50%x50% " + out + ' ' + path)
             print item
+            count = count + 1
+            if count % 50 == 0:
+                time.sleep(8)
 
 
 def fix2():
     fh = open('fix_img.txt')
     for line in fh.readlines():
-        line = ''
+        count = 0
         if line.count("http") > 0:
             urls = line.splitlines(",")
             if len(urls) != 2:
@@ -89,6 +94,9 @@ def fix2():
             commond = "convert  -resize 50%x50% " + outjpg + "  " + outComjpg
             print commond
             os.system(commond)
+            count = count + 1
+            if count % 50 == 0:
+                time.sleep(8)
 if __name__ == '__main__':
     #     mv0K()
     #     print 'mv ok'

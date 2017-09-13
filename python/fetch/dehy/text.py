@@ -34,12 +34,12 @@ class TextItemsParse(threading.Thread):
             obj['baseurl'] = baseurl_text
             obj['channel'] = self.t_obj.get('url')
             obj['updateTime'] = datetime.datetime.now()
-#             obj['file'] = self.parseText(item.get('id', 0))
+            obj['file'] = self.parseText(item.get('id', 0))
             obj['sortType'] = sortType
             insRet = ops.inertTextItems(obj)
-#             if insRet == None:
-#                 print 'text结束解析', obj
-#                 break
+            if insRet == None:
+                print 'text结束解析', obj
+                break
             self.t_queue .put(
                 text_content.TextItemsItem(obj, str(item.get('id', 0))))
         print 'dehyc channel=', self.t_obj['url'], '--解析完毕---', self.t_page, 'size=', len(ret)

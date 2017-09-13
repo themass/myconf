@@ -60,7 +60,11 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            datalist = soup.findAll("div", {"id": "text_box"})
+            div = soup.first("div", {"class": "box list channel"})
+            if div == None:
+                print '没有数据', url
+                return []
+            datalist = div.findAll("ul")
             objs = []
             sortType = dateutil.y_m_d()
             for item in datalist:

@@ -52,9 +52,9 @@ class TextChannelParse(BaseParse):
         print "解析Txt小说 ok----channl=", channel, '  数量=', len(objs)
         for obj in objs:
             ret = ops.inertTextItems(obj)
-#             if ret == None:
-#                 print 'text 已经存在，解析完毕'
-#                 return 0
+            if ret == None:
+                print 'text 已经存在，解析完毕'
+                return 0
         return len(objs)
 
     def fetchTextData(self, url, channel):
@@ -79,11 +79,6 @@ class TextChannelParse(BaseParse):
                     obj['channel'] = channel
                     obj['updateTime'] = datetime.datetime.now()
                     self.t_queue.put(TextItemContentParse(ahref.get('href')))
-#                     txt = self.fetchText(ahref.get('href'))
-#                     if txt == None:
-#                         print '没有Txt文件--', ahref, '---', url
-#                         continue
-#                     obj['file'] = txt
                     obj['sortType'] = sortType
                     objs.append(obj)
             return objs

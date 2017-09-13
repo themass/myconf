@@ -52,9 +52,9 @@ class ChannelFetch(threading.Thread):
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             sortType = dateutil.y_m_d()
-            for i in range(310, 20000):
+            for i in range(0, 20000):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
-                ret = ops.getTextChannelItemsById(i, '2017-09-07')
+                ret = ops.getTextChannelItemsById(i, sortType)
                 if len(ret) == 0:
                     print '写入完毕'
                     break

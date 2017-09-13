@@ -67,12 +67,12 @@ class ChannelFetch(threading.Thread):
                         output.write(item['file'])
                         output.close()
                         print '写完文件：' + path
-                    path = filePATHWeb + str(item['id']) + ".txt"
-                    if os.path.exists(path) == False:
-                        output = open(path, 'w')
-                        output.write(html_parse.filter_tags(item['file']))
-                        output.close()
-                        print '写完文件：' + path
+#                     path = filePATHWeb + str(item['id']) + ".txt"
+#                     if os.path.exists(path) == False:
+#                         output = open(path, 'w')
+#                         output.write(html_parse.filter_tags(item['file']))
+#                         output.close()
+#                         print '写完文件：' + path
                     path = filePATHHtml + str(item['id']) + ".html"
                     if os.path.exists(path) == False:
                         output = open(path, 'w')

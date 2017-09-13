@@ -14,7 +14,7 @@ import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://www.eee991.com"
+baseurl = "https://www.ttt977.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200000)
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-#     parseSound()
+    parseSound()
 #     parseGirlImg()
-    parseImg()
-    parseText()
+#     parseImg()
+#     parseText()

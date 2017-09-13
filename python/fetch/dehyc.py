@@ -33,5 +33,5 @@ if __name__ == '__main__':
     for i in range(0, thread_count):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-#     sound.SoundParse(queue)
-    text.textParse(queue)
+    sound.SoundParse(queue)
+#     text.textParse(queue)

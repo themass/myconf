@@ -47,8 +47,8 @@ class HandleThread(threading.Thread):
                     out = fileOrige + str(obj['id']) + ext
                     path = fileCompress + str(obj['id']) + ext
                     os.system("wget -O %s %s " % (out, obj['picUrl']))
-                    os.system("mogrify  -resize 70%x70% " + out)
-                    os.system("convert  -resize 40%x40% " + out + ' ' + path)
+                    os.system("mogrify  -resize 40%x40% " + out)
+                    os.system("convert  -resize 50%x50% " + out + ' ' + path)
                     print threading.current_thread().getName(), '----', str(obj['id']), '--url=', obj['picUrl']
                 except Exception as e:
                     print obj['picUrl'], common.format_exception(e)

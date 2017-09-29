@@ -7,7 +7,9 @@ from baseparse import *
 from common import db_ops
 from common.envmod import *
 from common import dateutil
+from common import html_parse
 global baseurl
+nameStr = r"<.*>"
 
 
 class ImgGrilParse(BaseParse):
@@ -129,11 +131,14 @@ class ParsImgChannel(BaseParse):
                 for item in alist:
                     obj = {}
                     obj['url'] = item.get("href")
-                    obj['name'] = item.text
+                    strName = item.text.replace(
+                        "<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")
+                    obj['name'] = html_parse.filter_tags(strName)
                     span = item.first('span')
                     if span != None:
-                        obj['fileDate'] = span.text
-                        obj['name'] = item.text.replace(obj['fileDate'], '')
+                        obj['fileDate'] = span.text.replace(
+                            "<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")
+                        obj['name'] = obj['name'].replace(obj['fileDate'], '')
                     else:
                         obj['fileDate'] = ''
                     obj['channel'] = self.t_obj['url']

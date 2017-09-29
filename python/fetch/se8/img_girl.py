@@ -39,11 +39,11 @@ class ImgGrilParse(BaseParse):
     def fetchImgGrilChannel(self, url):
         soup = self.fetchUrl(url)
         objs = []
-        div = soup.find("div", {"class": 'mainArea px17'})
-        if div == None:
-            print '没有 channel:', url
-            return None
-        table = div.find('table')
+#         div = soup.find("div", {"class": 'wrap mt20'})
+#         if div == None:
+#             print '没有 channel:', url
+#             return None
+        table = soup.find('table')
         if table == None:
             print '没有 channel:', url
             return None

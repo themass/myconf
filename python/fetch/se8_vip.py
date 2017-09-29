@@ -12,6 +12,7 @@ from common import MyQueue
 from se8 import *
 import re
 import sys
+import getopt
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "https://www.ttt977.com"
@@ -70,7 +71,7 @@ def parseGirlImg():
 
 
 def parseImg():
-    lis = parser.fetchHead(u"图区")
+    lis = parser.fetchHead(u"圖區")
     objs = parser.parsHeadText(lis)
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:
@@ -81,7 +82,8 @@ if __name__ == '__main__':
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-#     parseSound()
-#     parseGirlImg()
-#     parseImg()
+#     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
+    parseSound()
+    parseGirlImg()
+    parseImg()
     parseText()

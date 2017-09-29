@@ -14,6 +14,7 @@ from common import html_parse
 import re
 import os
 import sys
+import time
 from urlparse import urlparse
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -22,7 +23,7 @@ fileOrige = "/home/file/img_orige/"
 fileCompress = "/home/file/img_compress/"
 max_count = 10
 
-names = []
+sortType = dateutil.y_m_d()
 
 
 class HandleThread(threading.Thread):
@@ -40,18 +41,18 @@ class HandleThread(threading.Thread):
             if len(items) == 0:
                 print '结束同步', self.page
                 break
-#             dbVPN = db.DbVPN()
-#             ops = db_ops.DbOps(dbVPN)
             for obj in items:
                 try:
                     ext = os.path.splitext(obj['picUrl'])[1]
                     out = fileOrige + str(obj['id']) + ext
-                    if names.count(str(obj['id'])) <= 0:
-                        os.system("wget -O %s %s " % (out, obj['picUrl']))
+                    path = fileCompress + str(obj['id']) + ext
+                    os.system("wget -O %s %s " % (out, obj['picUrl']))
+                    os.system("mogrify  -resize 70%x70% " + out)
+                    os.system("convert  -resize 40%x40% " + out + ' ' + path)
                     print threading.current_thread().getName(), '----', str(obj['id']), '--url=', obj['picUrl']
                 except Exception as e:
                     print obj['picUrl'], common.format_exception(e)
-#             dbVPN.close()
+            time.sleep(2)
             page = index * max_count + self.index
             index = index + 1
 
@@ -59,15 +60,10 @@ class HandleThread(threading.Thread):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         print threading.current_thread().getName(), '--page=', page
-        items = ops.getImgItems_itemUnSync(page)
+        items = ops.getImgItems_itemUnSync(page, sortType)
         dbVPN.close()
         return items
 
-
-def listDir():
-    lists = os.listdir(fileOrige)
-    for item in lists:
-        names.append(item.replace(".jpg", ''))
 if __name__ == '__main__':
 
     for i in range(0, max_count):

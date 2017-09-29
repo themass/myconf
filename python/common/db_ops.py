@@ -80,14 +80,6 @@ class DbOps(object):
             "insert into  imgitems_item (picUrl,origUrl,itemUrl) values ('%s','%s','%s')"
             % (obj.get("picUrl"), obj.get("origUrl"), obj.get("itemUrl")))
 
-    def getImgItems_itemUnSync(self, page):
-        start = page * 200
-        end = (page + 1) * 200
-        self.conn.execute(
-            "select * from  imgitems_item wher order by id desc  limit %s,%s "
-            % (start, end))
-        return self.conn.fetchAll()
-
     def getImgItems_itemUnSyncById(self, ids):
         sql = "select * from  imgitems_item wher order by id in (%s) "
         in_p = ', '.join(map(lambda x: '%s', ids))
@@ -104,9 +96,11 @@ class DbOps(object):
             items.append(obj['id'])
         return items
 
-    def getImgItems_itemBySortType(self, sortType):
+    def getImgItems_itemBySortType(self, sortType, page):
+        start = page * 200
+        end = (page + 1) * 200
         self.conn.execute(
-            "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='%s' " % (sortType))
+            "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='%s' order by t.id limit %s,%s" % (sortType, start, end))
         return self.conn.fetchAll()
 
     def updateImgItems_itemSync(self, obj):

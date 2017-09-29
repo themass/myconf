@@ -98,9 +98,9 @@ def getAllChannel():
     dbVPN.close()
 if __name__ == '__main__':
 
-    #     for i in range(0, 1):
-    #         worker = HandleThread("work-%s" % (i), queue)
-    #         worker.start()
+    for i in range(0, 1):
+        worker = HandleThread("work-%s" % (i), queue)
+        worker.start()
     getAllChannel()
 #     item = {}
 #     item['url'] = "test"

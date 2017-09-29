@@ -86,5 +86,5 @@ if __name__ == '__main__':
 #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
     # parseSound()
     parseGirlImg()
-#     parseImg()
+    parseImg()
     # parseText()

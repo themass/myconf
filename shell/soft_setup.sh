@@ -170,6 +170,7 @@ usage()
     echo "mysql          Setup mysql"
     echo "kernel          Setup kernel"
     echo "check          Setup check"
+    echo "radius_client          Setup radius_client"
     echo "all           Setup all aboves"
 }
 setup_all()

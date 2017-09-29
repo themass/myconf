@@ -60,7 +60,7 @@ class HandleThread(threading.Thread):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         print threading.current_thread().getName(), '--page=', page
-        items = ops.getImgItems_itemUnSync(page, sortType)
+        items = ops.getImgItems_itemBySortType(page, sortType)
         dbVPN.close()
         return items
 

@@ -23,7 +23,7 @@ fileOrige = "/home/file/img_orige/"
 fileCompress = "/home/file/img_compress/"
 max_count = 2
 
-sortType = dateutil.y_m_d()
+sortType = "2017-09-29"
 
 
 class HandleThread(threading.Thread):

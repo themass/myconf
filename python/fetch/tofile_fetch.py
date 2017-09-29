@@ -101,8 +101,8 @@ if __name__ == '__main__':
     #     for i in range(0, 1):
     #         worker = HandleThread("work-%s" % (i), queue)
     #         worker.start()
-    #     getAllChannel()
-    item = {}
-    item['url'] = "test"
-    fetch = ChannelFetch(item)
-    fetch.run()
+    getAllChannel()
+#     item = {}
+#     item['url'] = "test"
+#     fetch = ChannelFetch(item)
+#     fetch.run()

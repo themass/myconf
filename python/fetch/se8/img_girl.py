@@ -118,7 +118,7 @@ class ParsImgChannel(BaseParse):
 
     def fetchgirlChannelItems(self, url):
         soup = self.fetchUrl(url)
-        div = soup.find("ul", {"class": 'movieList'})
+        div = soup.find("div", {"class": 'box movie_list'})
         objs = []
         if div != None:
             alist = div.findAll("a")
@@ -142,7 +142,7 @@ class ParsImgChannel(BaseParse):
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)
-        picData = soup.first("div", {"class": "picContent"})
+        picData = soup.first("div", {"class": "content"})
         if picData == None:
             return []
         picList = picData.findAll("img")

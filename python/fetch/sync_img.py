@@ -31,7 +31,7 @@ class HandleThread(threading.Thread):
     def __init__(self, name, index):
         threading.Thread.__init__(self, name=name)
         self.t_name = name
-        self.index = int(index)
+        self.index = index
 
     def run(self):
         page = self.index
@@ -60,7 +60,7 @@ class HandleThread(threading.Thread):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         print threading.current_thread().getName(), '--page=', page
-        items = ops.getImgItems_itemBySortType(page, sortType)
+        items = ops.getImgItems_itemBySortType(sortType, page)
         dbVPN.close()
         return items
 

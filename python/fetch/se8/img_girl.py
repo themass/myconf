@@ -54,7 +54,6 @@ class ImgGrilParse(BaseParse):
             obj = {}
             obj['url'] = item.get('href')
             obj['baseurl'] = baseurl
-            print str(item)
             img = item.find('img')
             if img != None:
                 obj['pic'] = img.get('src')
@@ -64,7 +63,6 @@ class ImgGrilParse(BaseParse):
             obj['rate'] = 1.4
             obj['showType'] = 0
             obj['name'] = self.fetchImgGrilChannelName(item.get('href'))
-            print obj
             objs.append(obj)
         return objs
 
@@ -89,6 +87,8 @@ class ParsImgChannel(BaseParse):
         print "解析 Girl channel图片ok----channel=", self.t_obj['url'], ' size=', len(objs)
         for obj in objs:
             try:
+                sortType = dateutil.y_m_d()
+                obj['sortType'] = sortType
                 ops.inertImgItems(obj)
                 print 'items ：', obj['url'], " piclen=", len(obj['picList'])
                 for picItem in obj['picList']:
@@ -133,12 +133,12 @@ class ParsImgChannel(BaseParse):
                     obj = {}
                     obj['url'] = item.get("href")
                     strName = item.text.replace(
-                        "<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")
+                        "[if lt IE 9 ]>", "").replace("<![endif]", "")
                     obj['name'] = html_parse.filter_tags(strName)
                     span = item.first('span')
                     if span != None:
-                        obj['fileDate'] = span.text.replace(
-                            "<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")
+                        obj['fileDate'] = html_parse.filter_tags(span.text.replace(
+                            "[if lt IE 9 ]>", "").replace("<![endif]", ""))
                         obj['name'] = obj['name'].replace(obj['fileDate'], '')
                     else:
                         obj['fileDate'] = ''

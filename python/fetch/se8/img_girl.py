@@ -72,7 +72,7 @@ class ImgGrilParse(BaseParse):
         soup = self.fetchUrl(url)
         p = soup.find("a", {"class": 'on'})
         if p != None:
-            return p.text.replace("您的位置：", "").replace(" ", "")
+            return p.text.replace("您的位置：", "").replace("首页", "").replace(" ", "").replace("&nbsp;", '')
         return "girl"
 
 

@@ -31,7 +31,7 @@ class HandleThread(threading.Thread):
     def __init__(self, name, index):
         threading.Thread.__init__(self, name=name)
         self.t_name = name
-        self.index = index
+        self.index = int(index)
 
     def run(self):
         page = self.index

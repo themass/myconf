@@ -100,7 +100,7 @@ class DbOps(object):
         start = page * 200
         end = (page + 1) * 200
         self.conn.execute(
-            "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='%s' order by t.id limit %s,%s" % (sortType, start, end))
+            "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='%s' order by i.id limit %s,%s" % (sortType, start, end))
         return self.conn.fetchAll()
 
     def updateImgItems_itemSync(self, obj):

@@ -126,8 +126,8 @@ class ParsImgChannel(BaseParse):
                     if item.get("href").count("tubaobaolist") > 0:
                         objs.extend(self.fetchTubaobaoList(item.get("href")))
                         continue
-                    obj = self.fetchgirlChannelItemsOne(item)
-                    objs.append(obj)
+                    #obj = self.fetchgirlChannelItemsOne(item)
+                    # objs.append(obj)
         return objs
 
     def fetchTubaobaoList(self, url):

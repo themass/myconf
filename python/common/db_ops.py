@@ -97,8 +97,8 @@ class DbOps(object):
         return items
 
     def getImgItems_itemBySortType(self, sortType, page):
-        start = page * 200
-        end = (page + 1) * 200
+        start = page * 500
+        end = (page + 1) * 500
         self.conn.execute(
             "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='%s' order by i.id limit %s,%s" % (sortType, start, end))
         return self.conn.fetchAll()

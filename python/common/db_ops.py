@@ -105,6 +105,11 @@ class DbOps(object):
             items.append(obj['id'])
         return items
 
+    def getImgItems_itemBySortType(self, sortType):
+        self.conn.execute(
+            "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='%s' " % (sortType))
+        return self.conn.fetchAll()
+
     def updateImgItems_itemSync(self, obj):
         return self.conn.execute(
             "upate  imgitems_item set origUrl='%s',compressUrl='%s' where id=%s"

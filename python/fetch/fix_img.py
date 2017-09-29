@@ -105,17 +105,34 @@ def fix2():
 #             if (count % 150) == 0:
 #                 print 'sleep'
 #                 time.sleep(5)
+
+
+def fix3():
+    dbVPN = db.DbVPN()
+    ops = db_ops.DbOps(dbVPN)
+    sortType = dateutil.y_m_d()
+    items = ops.getImgItems_itemBySortType(sortType)
+    dbVPN.close()
+    for obj in items:
+        ext = os.path.splitext(obj['picUrl'])[1]
+        out = fileOrige + str(obj['id']) + ext
+        path = fileCompress + + str(obj['id']) + ext
+        os.system("wget -O %s %s " % (out, obj['picUrl']))
+        os.system("mogrify  -resize 80%x80% " + out)
+        os.system("convert  -resize 50%x50% " + out + ' ' + path)
+        print 'sync imgok url=', obj['picUrl']
 if __name__ == '__main__':
     mv0K()
-    print 'mv ok'
-    imgIds = getImgs()
-    print 'imgIds ok'
-    names = listDir()
-    print 'listDir ok'
-    for imgId in imgIds:
-        if names.count(str(imgId)) == 0:
-            idlist.append(imgId)
-    print len(idlist), idlist
-    syncImgsObj()
-    fix1()
+#     print 'mv ok'
+#     imgIds = getImgs()
+#     print 'imgIds ok'
+#     names = listDir()
+#     print 'listDir ok'
+#     for imgId in imgIds:
+#         if names.count(str(imgId)) == 0:
+#             idlist.append(imgId)
+#     print len(idlist), idlist
+#     syncImgsObj()
+#     fix1()
 #     fix2()
+    fix3()

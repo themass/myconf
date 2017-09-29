@@ -162,6 +162,7 @@ class ParsImgChannel(BaseParse):
         pics = self.fetchImgs(item.get("href"))
         obj['pics'] = len(pics)
         obj['picList'] = pics
+        return obj
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)

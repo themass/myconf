@@ -41,10 +41,6 @@ class ImgGrilParse(BaseParse):
     def fetchImgGrilChannel(self, url):
         soup = self.fetchUrl(url)
         objs = []
-#         div = soup.find("div", {"class": 'wrap mt20'})
-#         if div == None:
-#             print '没有 channel:', url
-#             return None
         table = soup.find('table')
         if table == None:
             print '没有 channel:', url
@@ -121,35 +117,51 @@ class ParsImgChannel(BaseParse):
     def fetchgirlChannelItems(self, url):
         soup = self.fetchUrl(url)
         div = soup.find("div", {"class": 'box movie_list'})
-        if div == None:
-            print 'div is null', url
-            div = soup.find("div", {"class": 'box list channel'})
         objs = []
         if div != None:
             ul = div.find('ul')
             if ul != None:
                 alist = ul.findAll("a")
                 for item in alist:
-                    obj = {}
-                    obj['url'] = item.get("href")
-                    strName = item.text.replace(
-                        "[if lt IE 9 ]>", "").replace("<![endif]", "")
-                    obj['name'] = html_parse.filter_tags(strName)
-                    span = item.first('span')
-                    if span != None:
-                        obj['fileDate'] = html_parse.filter_tags(span.text.replace(
-                            "[if lt IE 9 ]>", "").replace("<![endif]", ""))
-                        obj['name'] = obj['name'].replace(obj['fileDate'], '')
-                    else:
-                        obj['fileDate'] = ''
-                    obj['channel'] = self.t_obj['url']
-                    obj['updateTime'] = dateutil.y_m_d()
-                    obj['baseurl'] = baseurl
-                    pics = self.fetchImgs(item.get("href"))
-                    obj['pics'] = len(pics)
-                    obj['picList'] = pics
+                    if item.get("href").count("tubaobaolist") > 0:
+                        objs.extend(self.fetchTubaobaoList(item.get("href")))
+                        continue
+                    obj = self.fetchgirlChannelItemsOne(item)
                     objs.append(obj)
         return objs
+
+    def fetchTubaobaoList(self, url):
+        soup = self.fetchUrl(url)
+        div = soup.find("div", {"class": 'box list channel'})
+        objs = []
+        if div != None:
+            ul = div.find('ul')
+            if ul != None:
+                alist = ul.findAll("a")
+                for item in alist:
+                    obj = self.fetchgirlChannelItemsOne(item)
+                    objs.append(obj)
+        return objs
+
+    def fetchgirlChannelItemsOne(self, item):
+        obj = {}
+        obj['url'] = item.get("href")
+        strName = item.text.replace(
+            "[if lt IE 9 ]>", "").replace("<![endif]", "")
+        obj['name'] = html_parse.filter_tags(strName)
+        span = item.first('span')
+        if span != None:
+            obj['fileDate'] = html_parse.filter_tags(span.text.replace(
+                "[if lt IE 9 ]>", "").replace("<![endif]", ""))
+            obj['name'] = obj['name'].replace(obj['fileDate'], '')
+        else:
+            obj['fileDate'] = ''
+        obj['channel'] = self.t_obj['url']
+        obj['updateTime'] = dateutil.y_m_d()
+        obj['baseurl'] = baseurl
+        pics = self.fetchImgs(item.get("href"))
+        obj['pics'] = len(pics)
+        obj['picList'] = pics
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)

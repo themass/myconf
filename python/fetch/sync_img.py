@@ -21,7 +21,7 @@ sys.setdefaultencoding('utf8')
 queue = MyQueue.MyQueue(20000)
 fileOrige = "/home/file/img_orige/"
 fileCompress = "/home/file/img_compress/"
-max_count = 10
+max_count = 2
 
 sortType = dateutil.y_m_d()
 
@@ -52,7 +52,7 @@ class HandleThread(threading.Thread):
                     print threading.current_thread().getName(), '----', str(obj['id']), '--url=', obj['picUrl']
                 except Exception as e:
                     print obj['picUrl'], common.format_exception(e)
-            time.sleep(2)
+            time.sleep(10)
             page = index * max_count + self.index
             index = index + 1
 

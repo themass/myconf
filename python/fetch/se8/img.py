@@ -15,6 +15,8 @@ class ImgParse(BaseParse):
     def __init__(self, obj):
         threading.Thread.__init__(self)
         self.t_obj = obj
+        self.t_obj['rate'] = 1.1
+        self.t_obj['showType'] = 1
 
     def run(self):
         dbVPN = db.DbVPN()

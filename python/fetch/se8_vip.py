@@ -75,7 +75,8 @@ def parseImg():
     objs = parser.parsHeadText(lis)
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:
-        queue.put(img.ImgParse(obj))
+        if obj.get("name") != "极品美女":
+            queue.put(img.ImgParse(obj))
         print obj
 if __name__ == '__main__':
 
@@ -83,7 +84,7 @@ if __name__ == '__main__':
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
-    parseSound()
+    # parseSound()
     parseGirlImg()
     parseImg()
-    parseText()
+    # parseText()

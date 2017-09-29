@@ -60,6 +60,7 @@ class ImgGrilParse(BaseParse):
                 obj['pic'] = None
             obj['updateTime'] = dateutil.y_m_d()
             obj['rate'] = 1.4
+            obj['showType'] = 1
             obj['name'] = self.fetchImgGrilChannelName(item.get('href'))
             objs.append(obj)
         return objs

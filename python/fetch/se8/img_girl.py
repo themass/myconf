@@ -123,23 +123,25 @@ class ParsImgChannel(BaseParse):
             div = soup.find("div", {"class": 'box list channel'})
         objs = []
         if div != None:
-            alist = div.findAll("a")
-            for item in alist:
-                obj = {}
-                obj['url'] = item.get("href")
-                obj['name'] = item.text
-                span = item.first('span')
-                if span != None:
-                    obj['fileDate'] = span.text
-                else:
-                    obj['fileDate'] = ''
-                obj['channel'] = self.t_obj['url']
-                obj['updateTime'] = dateutil.y_m_d()
-                obj['baseurl'] = baseurl
-                pics = self.fetchImgs(item.get("href"))
-                obj['pics'] = len(pics)
-                obj['picList'] = pics
-                objs.append(obj)
+            ul = div.find('ul')
+            if ul != None:
+                alist = ul.findAll("a")
+                for item in alist:
+                    obj = {}
+                    obj['url'] = item.get("href")
+                    obj['name'] = item.text
+                    span = item.first('span')
+                    if span != None:
+                        obj['fileDate'] = span.text
+                    else:
+                        obj['fileDate'] = ''
+                    obj['channel'] = self.t_obj['url']
+                    obj['updateTime'] = dateutil.y_m_d()
+                    obj['baseurl'] = baseurl
+                    pics = self.fetchImgs(item.get("href"))
+                    obj['pics'] = len(pics)
+                    obj['picList'] = pics
+                    objs.append(obj)
         return objs
 
     def fetchImgs(self, url):

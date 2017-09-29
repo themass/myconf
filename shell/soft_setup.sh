@@ -155,6 +155,11 @@ setup_radius()
 	echo 'radtest vpn themass localhost 1812 testing123'
 	echo 'service freeradius stop'
 }
+init_radius_client()
+{
+	rm /usr/local/etc/raddb/clients.conf
+	cp ../radius/clients.conf /usr/local/etc/raddb/
+}
 ## -----------------------
 ## Show help message
 ## -----------------------
@@ -186,6 +191,7 @@ if [ $# != 0 ]; then
 			kernel)          setup_kernel;;
 			check)          setup_check;;
 			radius)         setup_radius;;
+			radius_client)         init_radius_client;;
 			all)          setup_all;;
         esac
     done

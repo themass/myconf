@@ -16,9 +16,8 @@ import os
 import sys
 reload(sys)
 if __name__ == '__main__':
-    nameStr = '<.*>'
-    re_comment = re.compile('<!--.*-->')
-    name = '<!--[if lt IE 9 ]><span class="bg_top"><![endif]-->2017/9/9<!--[if lt IE 9 ]></span><span class="bg_tail"></span><![endif]-->'
-    name = name.replace("<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")
-    result, number = re.subn(nameStr, '', name)
-    print html_parse.filter_tags(name)
+    name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'
+    strName = name.replace(
+        "<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")
+    name = html_parse.filter_tags(strName)
+    print name

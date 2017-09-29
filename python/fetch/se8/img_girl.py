@@ -122,6 +122,7 @@ class ParsImgChannel(BaseParse):
         soup = self.fetchUrl(url)
         div = soup.find("div", {"class": 'box movie_list'})
         if div == None:
+            print 'div is null', url
             div = soup.find("div", {"class": 'box list channel'})
         objs = []
         if div != None:

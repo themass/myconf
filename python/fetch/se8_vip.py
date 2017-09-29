@@ -19,7 +19,7 @@ baseurl = "https://www.ttt977.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200000)
-maxCount = 9
+maxCount = 20
 
 parser = baseparse.BaseParse()
 

@@ -119,6 +119,8 @@ class ParsImgChannel(BaseParse):
     def fetchgirlChannelItems(self, url):
         soup = self.fetchUrl(url)
         div = soup.find("div", {"class": 'box movie_list'})
+        if div == None:
+            div = soup.find("div", {"class": 'box list channel'})
         objs = []
         if div != None:
             alist = div.findAll("a")

@@ -68,9 +68,9 @@ class ImgGrilParse(BaseParse):
 
     def fetchImgGrilChannelName(self, url):
         soup = self.fetchUrl(url)
-        p = soup.find("div", {"class": 'cat_pos_l'})
+        p = soup.find("span", {"class": 'cat_pos_l'})
         if p != None:
-            return p.text.replace("您的位置：", "")
+            return p.text.replace("您的位置：", "").replace(" ", "")
         return "girl"
 
 

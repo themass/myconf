@@ -116,7 +116,7 @@ def fix3():
     for obj in items:
         ext = os.path.splitext(obj['picUrl'])[1]
         out = fileOrige + str(obj['id']) + ext
-        path = fileCompress + + str(obj['id']) + ext
+        path = fileCompress + str(obj['id']) + ext
         os.system("wget -O %s %s " % (out, obj['picUrl']))
         os.system("mogrify  -resize 80%x80% " + out)
         os.system("convert  -resize 50%x50% " + out + ' ' + path)

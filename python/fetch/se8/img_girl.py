@@ -133,6 +133,7 @@ class ParsImgChannel(BaseParse):
                     span = item.first('span')
                     if span != None:
                         obj['fileDate'] = span.text
+                        obj['name'] = item.text.replace(obj['fileDate'], '')
                     else:
                         obj['fileDate'] = ''
                     obj['channel'] = self.t_obj['url']

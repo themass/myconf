@@ -56,7 +56,7 @@ class HandleThread(threading.Thread):
     def run(self):
         print self.channels
         for channel in self.channels:
-            for i in range(0, 4):
+            for i in range(4, 7):
                 start = i * 100
                 end = (i + 1) * 100
                 items = self.getImgs(channel, start, end)

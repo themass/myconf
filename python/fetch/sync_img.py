@@ -75,7 +75,6 @@ class HandleThread(threading.Thread):
         return items
 
 if __name__ == '__main__':
-    options, args = getopt.getopt(sys.argv[1:], "i")
     for name, val in options:
         if name in ("-i"):
             if val == '1':

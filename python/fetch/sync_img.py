@@ -25,21 +25,30 @@ max_count = 2
 
 sortType = "2017-09-29"
 
+channels1 = ['/htm/piclist3/', '/htm/piclist4/',
+             '/htm/piclist2/', '/htm/piclist7/']
+channels2 = ['/htm/tubaobao.htm', '/htm/piclist6/',
+             '/htm/piclist8/', '/htm/piclist1/']
+
+channels3 = ['/htm/girllist10/', '/htm/girllist16/', '/htm/girllist15/', '/htm/girllist8/',
+             '/htm/girllist4/', '/htm/girllist3/', '/htm/girllist2/', '/htm/girllist1/']
+channels4 = ['/htm/girllist7/', '/htm/girllist6/', '/htm/girllist5/',
+             '/htm/girllist13/', '/htm/girllist14/', '/htm/girllist18/', '/htm/girllist17/']
+
 
 class HandleThread(threading.Thread):
 
-    def __init__(self, name, index):
+    def __init__(self, name, channels):
         threading.Thread.__init__(self, name=name)
         self.t_name = name
-        self.index = index
+        self.channels = channels
 
     def run(self):
-        page = self.index
-        index = 1
+        index = 0
         while(True):
-            items = self.getImgs(page)
+            items = self.getImgs(index)
             if len(items) == 0:
-                print '结束同步', self.page
+                print '结束同步', self.channels
                 break
             for obj in items:
                 try:
@@ -47,25 +56,31 @@ class HandleThread(threading.Thread):
                     out = fileOrige + str(obj['id']) + ext
                     path = fileCompress + str(obj['id']) + ext
                     os.system("wget -O %s %s " % (out, obj['picUrl']))
-                    os.system("mogrify  -resize 55%x55% " + out)
-                    os.system("convert  -resize 35%x35% " + out + ' ' + path)
+                    os.system("mogrify  -resize 65%x65% " + out)
+                    #os.system("convert  -resize 35%x35% " + out + ' ' + path)
                     print threading.current_thread().getName(), '----', str(obj['id']), '--url=', obj['picUrl']
                 except Exception as e:
                     print obj['picUrl'], common.format_exception(e)
             time.sleep(10)
-            page = index * max_count + self.index
             index = index + 1
 
     def getImgs(self, page):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         print threading.current_thread().getName(), '--page=', page
-        items = ops.getImgItems_itemBySortType(sortType, page)
+        items = ops.getImgItems_itemBySortType(sortType, page, self.channels)
         dbVPN.close()
         return items
 
 if __name__ == '__main__':
 
-    for i in range(0, max_count):
-        worker = HandleThread("work-%s" % (i), i)
-        worker.start()
+    worker1 = HandleThread("work-1", channels1)
+    worker1.start()
+    worker2 = HandleThread("work-2", channels2)
+    worker2.start()
+
+#     worker3 = HandleThread("work-1", channels3)
+#     worker3.start()
+#
+#     worker4 = HandleThread("work-2", channels4)
+#     worker4.start()

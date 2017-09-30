@@ -96,18 +96,30 @@ class DbOps(object):
             items.append(obj['id'])
         return items
 
-    def getImgItems_itemBySortType(self, sortType, page, channels):
-        in_p = ', '.join(map(lambda x: '%s', channels))
-        print in_p
-        start = page * 10000
-        end = (page + 1) * 10000
-        sql = "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='" + \
-            sortType + \
-            "' and channel in (%s) order by i.id limit " + \
-            str(start) + "," + str(end)
+    def getImgItems_itemBySortType(self, sortType, channel, start, end):
+        sql = "select t.url from imgitems t  where t.channel = '%s' and t.sortType='%s' order by t.id limit %s,%s" % (
+            channel, sortType, start, end)
+        self.conn.execute(sql)
+        ret = self.conn.fetchAll()
+        itemUrls = []
+        if len(ret) == 0:
+            return []
+        for item in ret:
+            itemUrls.append(item['url'])
+        in_p = ', '.join(map(lambda x: '%s', itemUrls))
+        sql = "select i.id,i.picUrl,i.itemurl from imgitems_item i where i.itemurl in (%s)"
         sql = sql % in_p
-        self.conn.execute(sql, channels)
+
+        self.conn.execute(sql, itemUrls)
         return self.conn.fetchAll()
+
+    def updateImgItemsFileUrl(self, itemUrl, imgCdnUrl, imgUrl):
+        sql = "update imgitems_item set origUrl=CONCAT('%s',id,'%s'),cdnUrl=CONCAT('%s',id,'%s')" % (
+            imgUrl, ".jpg", imgCdnUrl, ".jpg")
+        where = " where itemUrl in (%s)"
+        in_p = ",".join(map(lambda x: "%s", itemUrl))
+        where = where % in_p
+        print self.conn.execute(sql + " " + where, itemUrl)
 
     def updateImgItems_itemSync(self, obj):
         return self.conn.execute(

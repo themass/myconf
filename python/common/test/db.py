@@ -14,4 +14,4 @@ class DbVPN(DataBase):
     def __init__(self):
         DataBase.__init__(
             self, host=db_host, port=db_port, user=db_user, passwd=db_passwd, db=db_vpn)
-        self.setPrintSql(False)
+        self.setPrintSql(True)

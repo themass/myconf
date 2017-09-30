@@ -77,13 +77,13 @@ class HandleThread(threading.Thread):
 if __name__ == '__main__':
     for name, val in options:
         if name in ("-i"):
-            if val == 1:
+            if val == '1':
                 print channels1, channels2
                 worker1 = HandleThread("work-1", channels1)
                 worker1.start()
                 worker2 = HandleThread("work-2", channels2)
                 worker2.start()
-            elif val == 2:
+            elif val == '2':
                 print channels3, channels4
                 worker3 = HandleThread("work-1", channels3)
                 worker3.start()

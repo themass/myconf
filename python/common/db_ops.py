@@ -98,6 +98,7 @@ class DbOps(object):
 
     def getImgItems_itemBySortType(self, sortType, page, channels):
         in_p = ', '.join(map(lambda x: '%s', channels))
+        print in_p
         start = page * 10000
         end = (page + 1) * 10000
         self.conn.execute(

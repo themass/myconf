@@ -24,7 +24,7 @@ def syncSound(itemId, url):
     parse = urlparse(url)
     outDir = fileOrige + os.path.dirname(parse.path)
     if os.path.exists(outDir) == False:
-        os.mkdir(outDir)
+        os.makedirs(outDir)
 
     out = fileOrige + parse.path
     os.system("wget -O %s %s " % (out, url))

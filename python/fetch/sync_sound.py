@@ -20,8 +20,9 @@ sys.setdefaultencoding('utf8')
 fileOrige = "/home/file/sound"
 
 
-def syncSound(itemId, url):
-    parse = urlparse(url.replace(' ', ''))
+def syncSound(itemId, url, url1):
+
+    parse = urlparse(url1.replace(' ', ''))
     outDir = fileOrige + os.path.dirname(parse.path)
     if os.path.exists(outDir) == False:
         os.makedirs(outDir)
@@ -34,7 +35,7 @@ def parseLine(line=''):
     if len(line) > 0:
         lines = line.split(',')
         if len(lines) == 2:
-            syncSound(int(lines[0]), lines[1])
+            syncSound(int(lines[0]), lines[1], lines[1])
         else:
             print 'error', line
 if __name__ == '__main__':

@@ -101,8 +101,12 @@ class DbOps(object):
         print in_p
         start = page * 10000
         end = (page + 1) * 10000
-        self.conn.execute(
-            "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='%s' and channel in (%s) order by i.id limit %s,%s" % (sortType, in_p, start, end))
+        sql = "select i.id,i.picUrl from  imgitems_item i , imgitems t where i.itemurl=t.url and t.sortType='" + \
+            sortType + \
+            "' and channel in (%s) order by i.id limit " + \
+            str(start) + "," + str(end)
+        sql = sql % in_p
+        self.conn.execute(sql, channels)
         return self.conn.fetchAll()
 
     def updateImgItems_itemSync(self, obj):

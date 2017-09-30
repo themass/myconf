@@ -16,6 +16,8 @@ import os
 import sys
 import time
 from urlparse import urlparse
+
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 queue = MyQueue.MyQueue(20000)
@@ -73,14 +75,21 @@ class HandleThread(threading.Thread):
         return items
 
 if __name__ == '__main__':
+    options, args = getopt.getopt(sys.argv[1:], "i")
+    for name, val in options:
+        if name in ("-i"):
+            if val == '1':
+                print channels1, channels2
+                worker1 = HandleThread("work-1", channels1)
+                worker1.start()
+                worker2 = HandleThread("work-2", channels2)
+                worker2.start()
+            elif val == '2':
+                print channels3, channels4
+                worker3 = HandleThread("work-1", channels3)
+                worker3.start()
 
-    worker1 = HandleThread("work-1", channels1)
-    worker1.start()
-    worker2 = HandleThread("work-2", channels2)
-    worker2.start()
-
-#     worker3 = HandleThread("work-1", channels3)
-#     worker3.start()
-#
-#     worker4 = HandleThread("work-2", channels4)
-#     worker4.start()
+                worker4 = HandleThread("work-2", channels4)
+                worker4.start()
+            else:
+                print 'i= 1 or 2'

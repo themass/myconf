@@ -21,7 +21,7 @@ fileOrige = "/home/file/sound"
 
 
 def syncSound(itemId, url):
-    parse = urlparse(url)
+    parse = urlparse(url.replace(' ', ''))
     outDir = fileOrige + os.path.dirname(parse.path)
     if os.path.exists(outDir) == False:
         os.makedirs(outDir)

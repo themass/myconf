@@ -46,6 +46,7 @@ class HandleThread(threading.Thread):
         self.channels = channels
 
     def run(self):
+        print self.channels
         index = 0
         while(True):
             items = self.getImgs(index)

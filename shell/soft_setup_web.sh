@@ -3,7 +3,7 @@
 ## Version setting
 ## -----------------------
 URL=http://file.sspacee.com
-APP_HOME=/root/local
+APP_HOME=/home/web/local
 WEB_HOME=/home/web/webroot
 TMP_HOME=/root/soft
 JDK_VERSION=jdk-8u111

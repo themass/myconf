@@ -19,7 +19,7 @@ status_send()
 {
 	c=`/usr/sbin/ipsec status | grep Associations | awk -F '(' '{print$2}' |awk -F' up' '{print$1}'`
 	 if [ -n "${c}" ]; then
-	 	curl  -d "count=${c}" http://api.sspacee.com/vpn/api/noapp/collect.json
+	 	curl  -d "count=${c} hostname=$HOSTNAME" http://api.sspacee.com/vpn/api/noapp/collect.json
 	 fi
 }
 usage() 

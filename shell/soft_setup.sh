@@ -166,9 +166,11 @@ init_radius_client()
 #CREATE USER admin WITH PASSWORD 'themass529696'
 #GRANT ALL PRIVILEGES TO admin
 # CREATE RETENTION POLICY "10_day" ON "telegraf" DURATION 10d REPLICATION 1 DEFAULT
+#influx -username 'admin' -password 'themass529696'
 ###
 setup_influx()
 {
+	shelldir=`pwd`
 	cd ${TMP_HOME}
 	rm ${TMP_HOME}/chronograf_1.3.9.0_amd64.deb
 	rm ${TMP_HOME}/influxdb_1.3.6_amd64.deb
@@ -188,10 +190,13 @@ setup_influx()
 	wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_4.5.2_amd64.deb 
 	sudo dpkg -i grafana_4.5.2_amd64.deb 
 	
+	cd ${shelldir}
+	echo ${shelldir}
+	
 	cp ../monitor/influxdb.conf /etc/influxdb/
 	cp ../monitor/grafana.ini /etc/grafana/
 	service influxdb restart
-	service grafana restart
+	service grafana-server restart
 	echo "注意设置influxdb 用户名密码"
 	setup_telegraf
 	
@@ -200,10 +205,14 @@ setup_influx()
 
 setup_telegraf()
 {
+	shelldir=`pwd`
 	cd ${TMP_HOME}
 	rm ${TMP_HOME}/telegraf_1.4.2-1_amd64.deb
 	wget https://dl.influxdata.com/telegraf/releases/telegraf_1.4.2-1_amd64.deb
 	sudo dpkg -i telegraf_1.4.2-1_amd64.deb
+	cd ${shelldir}
+	echo ${shelldir}
+	
 	cp ../monitor/telegraf.conf /etc/telegraf/
 	service telegraf restart
 }

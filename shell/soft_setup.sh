@@ -160,6 +160,50 @@ init_radius_client()
 	rm /usr/local/etc/raddb/clients.conf
 	cp ../radius/clients.conf /usr/local/etc/raddb/
 }
+
+###
+# influxdb 先设置密码，再打开鉴权
+#CREATE USER admin WITH PASSWORD 'themass529696'
+#GRANT ALL PRIVILEGES TO admin
+# CREATE RETENTION POLICY "10_day" ON "telegraf" DURATION 10d REPLICATION 1 DEFAULT
+###
+setup_influx()
+{
+	cd ${TMP_HOME}
+	rm ${TMP_HOME}/chronograf_1.3.9.0_amd64.deb
+	rm ${TMP_HOME}/influxdb_1.3.6_amd64.deb
+	rm ${TMP_HOME}/grafana_4.5.2_amd64.deb 
+	 
+	mkdir -p /home/grafana
+	mkdir -p /home/grafana/plugins
+	chmod 777 -R /home/grafana
+	mkdir -p /home/influxdb/
+	chmod 777 -R /home/influxdb
+	
+	
+	wget https://dl.influxdata.com/chronograf/releases/chronograf_1.3.9.0_amd64.deb
+	sudo dpkg -i chronograf_1.3.9.0_amd64.deb
+	wget https://dl.influxdata.com/influxdb/releases/influxdb_1.3.6_amd64.deb
+	sudo dpkg -i influxdb_1.3.6_amd64.deb
+	wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_4.5.2_amd64.deb 
+	sudo dpkg -i grafana_4.5.2_amd64.deb 
+	
+	cp ../monitor/influxdb.conf /etc/influxdb/
+	cp ../monitor/grafana.ini /etc/grafana/
+	setup_telegraf()
+	
+}
+
+setup_telegraf()
+{
+	cd ${TMP_HOME}
+	rm ${TMP_HOME}/telegraf_1.4.2-1_amd64.deb
+	wget https://dl.influxdata.com/telegraf/releases/telegraf_1.4.2-1_amd64.deb
+	sudo dpkg -i telegraf_1.4.2-1_amd64.deb
+	cp ../monitor/telegraf.conf /etc/telegraf/
+	
+}
+
 ## -----------------------
 ## Show help message
 ## -----------------------
@@ -171,6 +215,8 @@ usage()
     echo "kernel          Setup kernel"
     echo "check          Setup check"
     echo "radius_client          Setup radius_client"
+    echo "influx          Setup setup_influx"
+    echo "telegraf          Setup telegraf"
     echo "all           Setup all aboves"
 }
 setup_all()
@@ -179,6 +225,7 @@ setup_all()
 	setup_mysql
 	setup_kernel
 	setup_radius
+	setup_influx
 }
 ## =====================================
 ## The main process
@@ -192,6 +239,8 @@ if [ $# != 0 ]; then
 			kernel)          setup_kernel;;
 			check)          setup_check;;
 			radius)         setup_radius;;
+			influx)         setup_influx;;
+			telegraf)         setup_telegraf;;
 			radius_client)         init_radius_client;;
 			all)          setup_all;;
         esac

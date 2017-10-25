@@ -192,7 +192,7 @@ setup_influx()
 	cp ../monitor/grafana.ini /etc/grafana/
 	service influxdb restart
 	service grafana restart
-	setup_telegraf()
+	setup_telegraf
 	
 }
 

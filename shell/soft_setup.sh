@@ -190,6 +190,8 @@ setup_influx()
 	
 	cp ../monitor/influxdb.conf /etc/influxdb/
 	cp ../monitor/grafana.ini /etc/grafana/
+	service influxdb restart
+	service grafana restart
 	setup_telegraf()
 	
 }
@@ -201,7 +203,7 @@ setup_telegraf()
 	wget https://dl.influxdata.com/telegraf/releases/telegraf_1.4.2-1_amd64.deb
 	sudo dpkg -i telegraf_1.4.2-1_amd64.deb
 	cp ../monitor/telegraf.conf /etc/telegraf/
-	
+	service telegraf restart
 }
 
 ## -----------------------

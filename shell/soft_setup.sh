@@ -192,7 +192,9 @@ setup_influx()
 	cp ../monitor/grafana.ini /etc/grafana/
 	service influxdb restart
 	service grafana restart
+	echo "注意设置influxdb 用户名密码"
 	setup_telegraf
+	
 	
 }
 

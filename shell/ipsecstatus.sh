@@ -21,7 +21,7 @@ status_send()
 	local_host=`/bin/hostname`
 	 if [ -n "${c}" ]; then
 	 	curl  -d "count=${c} localhost=${local_host}" http://api.sspacee.com/vpn/api/noapp/collect.json
-	 	echo '${local_host}'
+	 	echo ${local_host}
 	 fi
 }
 usage() 

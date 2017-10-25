@@ -18,7 +18,7 @@ restart()
 status_send() 
 {
 	c=`/usr/sbin/ipsec status | grep Associations | awk -F '(' '{print$2}' |awk -F' up' '{print$1}'`
-	local_host = `/bin/hostname`
+	local_host=`/bin/hostname`
 	 if [ -n "${c}" ]; then
 	 	curl  -d "count=${c} localhost=${local_host}" http://api.sspacee.com/vpn/api/noapp/collect.json
 	 	echo '${local_host}'

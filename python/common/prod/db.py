@@ -3,7 +3,7 @@
 
 from common.base.data_base import DataBase
 db_host = 'innerip'
-db_port = 6606
+db_port = 6666
 db_user = 'vpn@server'
 db_passwd = 'Themass@5296vpn'
 db_vpn = 'vpn'

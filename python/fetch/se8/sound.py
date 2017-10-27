@@ -66,7 +66,7 @@ class ChannelParse(BaseParse):
         for li in lis:
             a = li.first("a")
             obj = {}
-            obj['name'] = a.text
+            obj['name'] = a.first('h3').TEXT
             obj['baseurl'] = baseurl
             obj['url'] = a.get('href')
             obj['updateTime'] = datetime.datetime.now()
@@ -126,7 +126,7 @@ class FileParse(BaseParse):
     def fetchFileData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            datalist = soup.findAll("ul", {"class": "textList"})
+            datalist = soup.findAll("div", {"class": "box list channel"})
             objs = []
             sortType = dateutil.y_m_d()
             for item in datalist:

@@ -30,7 +30,7 @@ setup_check()
 setup_kernel()
 {
 	cd ${TMP_HOME}
-	rm -rm kernel
+	rm -rf kernel
 	mkdir kernel
 	cd kernel
 	#http://kernel.ubuntu.com/~kernel-ppa/mainline

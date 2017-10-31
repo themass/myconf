@@ -60,8 +60,7 @@ def getText(url, data={}, header={}, isGzip=False):
             gzipper = gzip.GzipFile(fileobj=compressedstream)
             return gzipper.read()
         else:
-            res.decode('utf8', errors="ignore")
-            return res.read()
+            return res.read().decode('utf8', errors="ignore")
     except Exception as e:
         print common.format_exception(e)
         raise HTTPException('url=%s' % (url), ex=e)

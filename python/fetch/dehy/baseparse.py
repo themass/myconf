@@ -23,3 +23,5 @@ textchannelUrl = '/api/category.ashx'
 textItemUrl = '/api/bookdata.ashx'
 textFileUrl = '/api/bookdata.ashx'
 header = {'User-Agent': 'okhttp/3.3.1'}
+videoUrl = {"video": "http://www.9377fg.com/video.json", "avvideo":
+            "http://down.tsj666.com/avvideo.json", "livevideo": "http://down.tsj666.com/live.json"}

@@ -125,3 +125,9 @@ class DbOps(object):
         return self.conn.execute(
             "upate  imgitems_item set origUrl='%s',compressUrl='%s' where id=%s"
             % (obj.get("origUrl"), obj.get("compress"), obj.get("id")))
+
+    def inertVideo(self, obj):
+        return self.conn.execute(
+            "insert into  videoitems (name,url,channel,pic,updateTime) values ('%s','%s','%s','%s','%s')"
+            % (
+                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime")))

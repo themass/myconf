@@ -106,7 +106,10 @@ class TextItemContentParse(BaseParse):
         if first != None:
             for i in range(2, 10):
                 url = prefixUrl + "_" + str(i) + ".html"
-                data = data + self.pageTextData(url)
+                content = self.pageTextData(url)
+                if content == '':
+                    break
+                data = data + content
         try:
             obj = {}
             obj['fileUrl'] = self.t_url

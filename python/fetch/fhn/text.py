@@ -111,7 +111,6 @@ class TextItemContentParse(BaseParse):
             obj = {}
             obj['fileUrl'] = self.t_url
             obj['file'] = data
-            print data
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             ops.inertTextItems_item(obj)

@@ -26,17 +26,21 @@ class ImgParse(BaseParse):
         url = self.t_obj['url']
         channel = url
         first = self.parsFirstPage(url)
+        prefixUrl = url.replace("index.html", "")
         print first, url
+
+        # 第一页
+        url = prefixUrl + "index.html"
+        self.update(url, ops, channel, 1)
+        dbVPN.commit()
+        # 有分页
         if first != None:
-            for i in range(1, 500):
-                url = first + str(i) + ".htm"
+            for i in range(2, maxImgChannelPage):
+                url = prefixUrl + "index_" + str(i) + ".html"
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()
                 if count == 0:
                     break
-        else:
-            self.update(url, ops, channel)
-            dbVPN.commit()
 
     def update(self, url, ops, channel, i):
         objs = self.fetchImgItemsData(url, channel)
@@ -56,8 +60,10 @@ class ImgParse(BaseParse):
     def fetchDataHead(self, url):
         try:
             soup = self.fetchUrl(url)
-            lis = soup.findAll("li")
-            return lis
+            div = soup.first("div", {"class": "art"})
+            if div != None:
+                return div.findAll('li')
+            return []
 
         except Exception as e:
             print common.format_exception(e)
@@ -65,41 +71,42 @@ class ImgParse(BaseParse):
     def fetchImgItemsData(self, url, channel):
         try:
             lis = self.fetchDataHead(url)
+            print url, ";itemsLen=", len(lis)
             objs = []
             sortType = dateutil.y_m_d()
             for item in lis:
-                ahrefs = item.findAll("a")
-                for ahref in ahrefs:
-                    obj = {}
-                    span = ahref.first('span')
-                    if span != None:
-                        obj['fileDate'] = span.text
-                    else:
-                        obj['fileDate'] = ''
-                    name = ahref.text.replace(obj['fileDate'], '')
-                    obj['name'] = name
-                    obj['url'] = ahref.get('href')
-                    obj['baseurl'] = baseurl
-                    obj['channel'] = channel
-                    obj['updateTime'] = datetime.datetime.now()
-                    pics = self.fetchImgs(ahref.get('href'))
-                    if len(pics) == 0:
-                        print '没有 图片文件--', ahref, '---', url
-                        continue
-                    obj['picList'] = pics
-                    obj['pics'] = len(pics)
-                    obj['sortType'] = sortType
-                    print 'url=', obj['url'], '  图片数量=', len(pics)
-                    objs.append(obj)
+                ahref = item.first("a")
+                obj = {}
+                span = item.first('span')
+                if span != None:
+                    obj['fileDate'] = span.text
+                else:
+                    obj['fileDate'] = ''
+                name = ahref.text.replace(obj['fileDate'], '')
+                obj['name'] = name
+                obj['url'] = ahref.get('href')
+                obj['baseurl'] = baseurl
+                obj['channel'] = channel
+                obj['updateTime'] = datetime.datetime.now()
+                pics = self.fetchImgs(ahref.get('href'))
+                if len(pics) == 0:
+                    print '没有 图片文件--', ahref, '---', url
+                    continue
+                obj['picList'] = pics
+                obj['pics'] = len(pics)
+                obj['sortType'] = sortType
+                print 'url=', obj['url'], 'filedate=', obj['fileDate'], '  图片数量=', len(pics)
+                objs.append(obj)
             return objs
         except Exception as e:
             print common.format_exception(e)
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)
-        picData = soup.first("div", {"class": "box pic_text"})
+        picData = soup.first("div", {"class": "artbody imgbody"})
         picList = picData.findAll("img")
         pics = []
         for item in picList:
-            pics.append(item.get('src'))
+            if item.get('src') != None and item.get('src').endswith("jpg"):
+                pics.append("http:" + item.get('src'))
         return pics

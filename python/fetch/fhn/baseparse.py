@@ -11,7 +11,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "https://333av.vip"
-reg = re.compile(r"(.*)index(.*)\.html")
+reg = re.compile(r"(.*)_(.*)\.html")
 regPage = '<div id="pages">(.*)</div>'
 regImg = '<img(.*)/>'
 queue = MyQueue.MyQueue(20000)
@@ -78,7 +78,7 @@ class BaseParse(threading.Thread):
                     match = reg.search(href)
                     if match == None:
                         return None
-                    return match.group(2)
+                    return match.group(1)
         return None
 
     def removePage(self, data):

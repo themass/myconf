@@ -17,7 +17,7 @@ regImg = '<img(.*)/>'
 queue = MyQueue.MyQueue(200)
 maxCount = 5
 maxImgChannelPage = 100
-maxTextChannelPage = 300
+maxTextChannelPage = 150
 
 
 class BaseParse(threading.Thread):

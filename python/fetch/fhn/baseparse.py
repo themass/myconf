@@ -11,9 +11,13 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "https://333av.vip"
-reg = re.compile(r"(.*)index_\d+\.html")
+reg = re.compile(r"(.*)index(.*)\.html")
+regPage = '<div id="pages">(.*)</div>'
+regImg = '<img(.*)/>'
 queue = MyQueue.MyQueue(200)
 maxCount = 5
+maxImgChannelPage = 100
+maxTextChannelPage = 300
 
 
 class BaseParse(threading.Thread):
@@ -51,9 +55,10 @@ class BaseParse(threading.Thread):
             ret = []
             for li in lis:
                 a = li.first('a')
-                if a != None and a.TEXT.find('首页') == -1:
+                print a
+                if a != None and a.text.find('首页') == -1:
                     row = {}
-                    row['name'] = a.TEXT
+                    row['name'] = a.text
                     row['baseurl'] = baseurl
                     row['url'] = a.get('href')
                     row['updateTime'] = datetime.datetime.now()
@@ -73,5 +78,9 @@ class BaseParse(threading.Thread):
                     match = reg.search(href)
                     if match == None:
                         return None
-                    return match.group(1)
+                    return match.group(2)
         return None
+
+    def removePage(self, data):
+        data = re.sub(regPage, '', data)
+        return re.sub(regImg, '', data)

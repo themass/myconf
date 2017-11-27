@@ -39,15 +39,23 @@ class HandleThread(threading.Thread):
                 pass
 
 
+def parseText():
+    objs = parser.fetchHead("xs")
+    print "解析小说 ok----项目=", len(objs)
+    for obj in objs:
+        queue.put(text.TextChannelParse(obj, queue))
+        print obj
+
+
 def parseImg():
     objs = parser.fetchHead("tp")
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:
-        #         queue.put(img.ImgParse(obj))
+        queue.put(img.ImgParse(obj))
         print obj
 if __name__ == '__main__':
 
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-    parseImg()
+    parseText()

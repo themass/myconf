@@ -62,11 +62,11 @@ class ChannelFetch(threading.Thread):
                 cloase = False
                 for item in ret:
                     path = filePATH + str(item['id']) + ".txt"
-                    if os.path.exists(path) == False:
-                        output = open(path, 'w')
-                        output.write(item['file'])
-                        output.close()
-                        print '写完文件：' + path
+                    # if os.path.exists(path) == False:
+                    output = open(path, 'w')
+                    output.write(item['file'])
+                    output.close()
+                    print '写完文件：' + path
 #                     path = filePATHWeb + str(item['id']) + ".txt"
 #                     if os.path.exists(path) == False:
 #                         output = open(path, 'w')
@@ -74,12 +74,12 @@ class ChannelFetch(threading.Thread):
 #                         output.close()
 #                         print '写完文件：' + path
                     path = filePATHHtml + str(item['id']) + ".html"
-                    if os.path.exists(path) == False:
-                        output = open(path, 'w')
-                        output.write(
-                            html_parse.txtToHtml(html_parse.filter_tags(item['file'])))
-                        output.close()
-                        print '写完文件：' + path
+                    # if os.path.exists(path) == False:
+                    output = open(path, 'w')
+                    output.write(
+                        html_parse.txtToHtml(html_parse.filter_tags(item['file'])))
+                    output.close()
+                    print '写完文件：' + path
                 print '写完页', i
             print 'channel ：', self.t_item["url"], '同步完成 len=', len(ret)
             dbVPN.close()

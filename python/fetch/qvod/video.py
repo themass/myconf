@@ -11,13 +11,13 @@ class VideoParse(threading.Thread):
         self.queue = queue
 
     def run(self):
-        #         self.freeParse('qvod_free', freeurl, 2)
-        #         pages = parseFreePage(vipurl)
-        #         print 'vip  ', pages
-        #         self.freeParse('qvod_vip', vipurl, pages)
-        pages = parseUserOnePage()
-        print 'user  ', pages
-        self.personParse(pages)
+        self.freeParse('qvod_free', freeurl, 2)
+        pages = parseFreePage(vipurl)
+        print 'vip  ', pages
+        self.freeParse('qvod_vip', vipurl, pages)
+#         pages = parseUserOnePage()
+#         print 'user  ', pages
+#         self.personParse(pages)
 
     def freeParse(self, channel, url, pages):
         for page in range(1, pages):

@@ -128,6 +128,18 @@ class DbOps(object):
 
     def inertVideo(self, obj):
         return self.conn.execute(
-            "insert into  videoitems (name,url,channel,pic,updateTime) values ('%s','%s','%s','%s','%s')"
+            "insert into  videoitems (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime")))
+                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path")))
+
+    def inertVideoUser(self, obj):
+        return self.conn.execute(
+            "replace into  video_user (name,pic,userId,rate,updateTime) values ('%s','%s','%s','%s','%s')"
+            % (
+                obj.get("nickName"), obj.get("headPic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime")))
+
+    def inertVideoUserItem(self, obj):
+        return self.conn.execute(
+            "replace into  video_user_item (name,pic,url,userId,rate,updateTime,path) values ('%s','%s','%s','%s','%s','%s','%s')"
+            % (
+                obj.get("name"), obj.get("pic"), obj.get("url"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("path")))

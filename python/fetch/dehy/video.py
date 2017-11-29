@@ -3,6 +3,7 @@
 from baseparse import *
 import json
 sys.setdefaultencoding('utf8')
+from urlparse import urlparse
 
 
 class VideoParse(threading.Thread):
@@ -32,6 +33,8 @@ class VideoParse(threading.Thread):
             obj['url'] = item.get('mp4_url', '')
             if obj['url'] == '':
                 continue
+            videourl = urlparse(obj['url'])
+            obj['path'] = videourl.path
             obj['updateTime'] = datetime.datetime.now()
             obj['pic'] = item.get('mp4_img', '')
             obj['channel'] = channel

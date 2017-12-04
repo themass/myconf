@@ -8,6 +8,8 @@ restart()
 	ps -ef |grep freeradius |awk '{print $2}' | xargs kill -9
 	pkill -9 radiusd
 	radiusd &
+	sleep 3
+	ps -aux|grep rad
 }
 stop() 
 {

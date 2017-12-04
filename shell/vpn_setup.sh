@@ -15,6 +15,12 @@ init_soft()
 	apt-get install sysstat vim build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear aptitude	#编译环境
 	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev   curl  #编译所需要的软件
 }
+checkspeed()
+{
+	cd ${TMP_HOME}
+	wget https://raw.githubusercontent.com/wn789/Superspeed/master/superbench.sh
+	bash superbench.sh
+}
 strongswan_setup() 
 {
 	cd ${TMP_HOME}
@@ -167,6 +173,8 @@ usage()
     echo "iptables         Setup iptables"
     echo "net    Setup net"
     echo "fail2ban    Setup fail2ban"
+    echo "check    checkspeed"
+     echo "net    Setup net"
     echo "all           Setup all aboves"
 }
 
@@ -183,6 +191,7 @@ if [ $# != 0 ]; then
 	    strongswanconf)          strongswan_config;;
 	    net)          net;;
 	     fail2ban)          setup_fail2ban;;
+	    check)          checkspeed;;
 	    all)          setup_all;;
         esac
     done

@@ -13,7 +13,7 @@ init_soft()
 	mkdir -p ${TMP_HOME}
 	apt-get update
 	apt-get install sysstat vim build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear aptitude	#编译环境
-	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev   curl   #编译所需要的软件
+	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev   curl  #编译所需要的软件
 }
 strongswan_setup() 
 {
@@ -137,6 +137,15 @@ net()
 ## -----------------------
 ## Setup all aboves
 ## -----------------------
+setup_fail2ban() 
+{
+    apt-get install fail2ban
+    cp ../monitor/jail.conf /etc/fail2ban/
+    service fail2ban restart
+}
+## -----------------------
+## Setup all aboves
+## -----------------------
 setup_all() 
 {
     init_soft
@@ -157,6 +166,7 @@ usage()
     echo "ca           Setup ca"
     echo "iptables         Setup iptables"
     echo "net    Setup net"
+    echo "fail2ban    Setup fail2ban"
     echo "all           Setup all aboves"
 }
 
@@ -172,6 +182,7 @@ if [ $# != 0 ]; then
 	    iptables)          setup_iptables;;
 	    strongswanconf)          strongswan_config;;
 	    net)          net;;
+	     fail2ban)          setup_fail2ban;;
 	    all)          setup_all;;
         esac
     done

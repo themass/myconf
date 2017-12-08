@@ -15,6 +15,16 @@ init_soft()
 	apt-get install sysstat vim build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear aptitude	#编译环境
 	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev   curl  #编译所需要的软件
 }
+## -----------------------
+## Setup all aboves
+## -----------------------
+check_vpn() 
+{
+    	iptables -L 
+	ipsec status | grep Associations
+	ps -aux| grep fail | grep -v 'grep'
+	ps -aux| grep telegraf| grep -v 'grep'
+}
 checkspeed()
 {
 	cd ${TMP_HOME}
@@ -174,6 +184,7 @@ usage()
     echo "net    Setup net"
     echo "fail2ban    Setup fail2ban"
     echo "check    checkspeed"
+     echo "checkvpn    check vpn"
      echo "net    Setup net"
     echo "all           Setup all aboves"
 }
@@ -192,6 +203,7 @@ if [ $# != 0 ]; then
 	    net)          net;;
 	     fail2ban)          setup_fail2ban;;
 	    check)          checkspeed;;
+	    check_vpn)          check_vpn;;
 	    all)          setup_all;;
         esac
     done

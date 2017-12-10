@@ -167,6 +167,8 @@ init_radius_client()
 {
 	rm /usr/local/etc/raddb/clients.conf
 	cp ../radius/clients.conf /usr/local/etc/raddb/
+	sh radiusd.sh stop
+	sh radiusd.sh start
 }
 
 ###

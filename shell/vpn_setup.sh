@@ -184,7 +184,7 @@ usage()
     echo "net    Setup net"
     echo "fail2ban    Setup fail2ban"
     echo "check    checkspeed"
-     echo "checkvpn    check vpn"
+     echo "check_vpn    check vpn"
      echo "net    Setup net"
     echo "all           Setup all aboves"
 }

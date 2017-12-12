@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import poplib
 import email
 from email.parser import Parser
 from email.header import decode_header
 from email.utils import parseaddr
+import poplib
+poplib._MAXLINE = 20480
 
 
 class MailConn():
@@ -24,9 +25,10 @@ class MailConn():
         print('Messages: %s. Size: %s' % self.server.stat())
         resp, mails, octets = self.server.list()
         num = min(num, len(mails))
+        print num
         ret = []
         for i in range(1, num):
-            resp, lines, octets = self.server.retr(i)
+            lines = self.server.retr(i)[1]
             # 解析邮件:
             msg = Parser().parsestr('\r\n'.join(lines))
             # 打印邮件内容:
@@ -50,8 +52,9 @@ class MailConn():
 
     def decode_str(self, s):
         value, charset = decode_header(s)[0]
-        if charset:
-            value = value.decode(charset)
+#         if charset:
+#             value = value.decode(charset)
+        print value
         return value
 
     def get_title(self, msg, indent=0):

@@ -22,10 +22,11 @@ if __name__ == '__main__':
 #             print '---test ip--%s', item['gateway']
 #             os.popen(cmd)
     for item in hosts:
-        cmd = 'ping  -c 5 %s' % (item['gateway'])
+        cmd = 'ping  -c 2 %s' % (item['gateway'])
         lines = os.popen(cmd).readlines()
         count = 0
         for line in lines[1:len(lines)]:
-            num = int(parse(line))
-            count = count + num
-        print 'ip: %s --------cost %s' % (item['gateway'], count / 5)
+            #             num = int(parse(line))
+            #             count = count + num
+            print line
+#         print 'ip: %s --------cost %s' % (item['gateway'], count / 5)

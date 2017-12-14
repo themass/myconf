@@ -12,6 +12,9 @@ if __name__ == '__main__':
                                               item['port'])
             print '---test ip--%s', item['gateway']
             os.popen(cmd)
+        for item in hosts:
+            cmd = 'ping -c 10 %s' % (item['gateway'])
+            lines = os.popen(cmd).readlines()
 #             print textlist
 #             text = ''
 #             for line in textlist:

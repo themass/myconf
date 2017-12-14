@@ -14,6 +14,7 @@ if __name__ == '__main__':
             text = ''
             for line in textlist:
                 text = text + line
+            print text
             if text.find('succeeded') > 0:
                 pass
             else:

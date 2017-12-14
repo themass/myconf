@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from common.email_paser import*
 from common import db_ops
 from common.envmod import *
 import os

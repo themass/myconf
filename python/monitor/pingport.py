@@ -10,7 +10,9 @@ reg = re.compile(
 def parse(pingtexts):
     for line in pingtexts:
         if line.count("rtt min") > 0:
+            print line
             match = reg.search(line)
+            print match
             return match.group(2)
     return 10000
 

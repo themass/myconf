@@ -11,7 +11,7 @@ if __name__ == '__main__':
             cmd = 'nc -u -n -v  %s -z %s ' % (item['gateway'],
                                               item['port'])
             print '---test ip--%s', item['gateway']
-            textlist = os.popen(cmd).re
+            os.popen(cmd)
 #             print textlist
 #             text = ''
 #             for line in textlist:

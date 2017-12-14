@@ -11,11 +11,11 @@ if __name__ == '__main__':
             cmd = 'nc -u -n -v  %s -z %s ' % (item['gateway'],
                                               item['port'])
             textlist = os.popen(cmd).readlines()
-            text = ''
-            for line in textlist:
-                text = text + line
-            print text
-            if text.find('succeeded') > 0:
-                pass
-            else:
-                print item['gateway'], '---连不上，请检查'
+#             text = ''
+#             for line in textlist:
+#                 text = text + line
+#             print text
+#             if text.find('succeeded') > 0:
+#                 pass
+#             else:
+#                 print item['gateway'], '---连不上，请检查'

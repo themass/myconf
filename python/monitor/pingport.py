@@ -11,7 +11,6 @@ if __name__ == '__main__':
             cmd = 'nc -u -n -v  %s -z %s ' % (item['gateway'],
                                               item['port'])
             tmp = os.popen(cmd).readlines()
-            tmp = ''
             if tmp.find('succeeded') > 0:
                 pass
             else:

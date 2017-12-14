@@ -145,5 +145,6 @@ class DbOps(object):
                 obj.get("name"), obj.get("pic"), obj.get("url"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("path")))
 
     def getAllHost(self):
-        return self.conn.execute(
+        self.conn.execute(
             "select * from host where enable=1")
+        return self.conn.fetchAll()

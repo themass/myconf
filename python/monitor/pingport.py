@@ -2,6 +2,15 @@
 from common import db_ops
 from common.envmod import *
 import os
+import re
+reg = re.compile(r"time=(\d+)")
+
+
+def parse(pingtext):
+    match = reg.search(pingtext)
+    if match == None:
+        return 10000
+    return match.group(1)
 if __name__ == '__main__':
     dbVPN = db.DbVPN()
     ops = db_ops.DbOps(dbVPN)
@@ -12,15 +21,12 @@ if __name__ == '__main__':
                                               item['port'])
             print '---test ip--%s', item['gateway']
             os.popen(cmd)
-        for item in hosts:
-            cmd = 'ping -c 10 %s' % (item['gateway'])
-            lines = os.popen(cmd).readlines()
-#             print textlist
-#             text = ''
-#             for line in textlist:
-#                 text = text + line
-#             print text
-#             if text.find('succeeded') > 0:
-#                 pass
-#             else:
-#                 print item['gateway'], '---连不上，请检查'
+    for item in hosts:
+        cmd = 'ping  -c 10 %s' % (item['gateway'])
+        lines = os.popen(cmd).readlines()
+        count = 0
+        for line in lines:
+
+            num = int(parse(line))
+            count = count + num
+        print 'ip: %s --------cost %s' % (item['gateway'], count / 10)

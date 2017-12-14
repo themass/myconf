@@ -7,12 +7,13 @@ reg = re.compile(
     r"rtt min/avg/max/mdev = ([1-9\.]+)/([1-9\.]+)/([1-9\.]+)")
 
 
-def parse(pingtext):
-    match = reg.search(pingtext)
-    print match
-    if match == None:
-        return 10000
-    return match.group(2)
+def parse(pingtexts):
+    for line in pingtexts:
+        if line.count("rtt min") > 0:
+            match = reg.search(line)
+            return match.group(2)
+    return 10000
+
 if __name__ == '__main__':
     dbVPN = db.DbVPN()
     ops = db_ops.DbOps(dbVPN)
@@ -26,5 +27,5 @@ if __name__ == '__main__':
     for item in hosts:
         cmd = 'ping  -c2 -w2 %s' % (item['gateway'])
         lines = os.popen(cmd).readlines()
-        num = int(parse(lines[len(lines) - 1]))
+        num = int(parse(lines))
         print 'ip: %s --------cost %s' % (item['gateway'], num)

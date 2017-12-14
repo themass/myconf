@@ -4,15 +4,13 @@ from common.envmod import *
 import os
 import re
 reg = re.compile(
-    r"rtt min/avg/max/mdev = ([1-9\.]+)/([1-9\.]+)/([1-9\.]+)")
+    r"rtt min/avg/max/mdev = ([0-9\.]+)/([0-9\.]+)/([0-9\.]+)")
 
 
 def parse(pingtexts):
     for line in pingtexts:
         if line.count("rtt min") > 0:
-            print line
             match = reg.search(line)
-            print match
             return match.group(2)
     return 10000
 

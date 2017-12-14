@@ -10,8 +10,11 @@ if __name__ == '__main__':
         for item in hosts:
             cmd = 'nc -u -n -v  %s -z %s ' % (item['gateway'],
                                               item['port'])
-            tmp = os.popen(cmd).readlines()
-            if tmp.find('succeeded') > 0:
+            textlist = os.popen(cmd).readlines()
+            text = ''
+            for line in textlist:
+                text = text + line
+            if text.find('succeeded') > 0:
                 pass
             else:
                 print item['gateway'], '---连不上，请检查'

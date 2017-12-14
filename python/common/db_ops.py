@@ -143,3 +143,7 @@ class DbOps(object):
             "replace into  video_user_item (name,pic,url,userId,rate,updateTime,path) values ('%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("pic"), obj.get("url"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("path")))
+
+    def getAllHost(self):
+        return self.conn.execute(
+            "select * from host where enable=1")

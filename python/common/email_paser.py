@@ -24,10 +24,13 @@ class MailConn():
     def getTitle(self, num=1000, filter=''):
         print('Messages: %s. Size: %s' % self.server.stat())
         resp, mails, octets = self.server.list()
-        num = min(num, len(mails))
-        print num
         ret = []
-        for i in range(1, num):
+        if len(mails) <= num:
+            start = 1
+        else:
+            start = len(mails) - num
+        end = len(mails)
+        for i in range(start, end):
             lines = self.server.retr(i)[1]
             # 解析邮件:
             msg = Parser().parsestr('\r\n'.join(lines))

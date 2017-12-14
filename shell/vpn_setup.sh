@@ -30,6 +30,8 @@ checkspeed()
 	cd ${TMP_HOME}
 	wget https://raw.githubusercontent.com/wn789/Superspeed/master/superbench.sh
 	bash superbench.sh
+	wget  https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py 
+ 	python speedtest.py 
 }
 strongswan_setup() 
 {

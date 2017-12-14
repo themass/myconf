@@ -27,5 +27,5 @@ if __name__ == '__main__':
     for item in hosts:
         cmd = 'ping  -c2 -w2 %s' % (item['gateway'])
         lines = os.popen(cmd).readlines()
-        num = int(parse(lines))
+        num = parse(lines)
         print 'ip: %s --------cost %s' % (item['gateway'], num)

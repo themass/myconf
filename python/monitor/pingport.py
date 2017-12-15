@@ -3,6 +3,9 @@ from common import db_ops
 from common.envmod import *
 import os
 import re
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 reg = re.compile(
     r"rtt min/avg/max/mdev = ([0-9\.]+)/([0-9\.]+)/([0-9\.]+)")
 

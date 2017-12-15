@@ -146,5 +146,5 @@ class DbOps(object):
 
     def getAllHost(self):
         self.conn.execute(
-            "select * from host where enable=1")
+            "select * from host where order by com")
         return self.conn.fetchAll()

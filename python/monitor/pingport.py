@@ -25,7 +25,11 @@ if __name__ == '__main__':
     #             print '---test ip--%s', item['gateway']
     #             os.popen(cmd)
     for item in hosts:
+        if item['enable'] == 0:
+            print '公司：%s----国家：%s------ip: %s --------不可用' % (item['com'], item['cname'], item['gateway'])
+            continue
+
         cmd = 'ping  -c2 -w2 %s' % (item['gateway'])
         lines = os.popen(cmd).readlines()
         num = parse(lines)
-        print 'ip: %s --------cost %s' % (item['gateway'], num)
+        print '公司：%s----国家：%s------ip: %s --------cost %s' % (item['com'], item['cname'], item['gateway'], num)

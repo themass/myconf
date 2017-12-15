@@ -29,10 +29,10 @@ if __name__ == '__main__':
     #             os.popen(cmd)
     for item in hosts:
         if item['enable'] == 0:
-            print '公司：【%15s】----国家：【%15s】------ip: 【%15s】 --------不可用' % (item['com'], item['cname'], item['gateway'])
+            print '公司：【%-15s】----国家：【%-15s】------ip: 【%-15s】 --------不可用' % (item['com'], item['cname'], item['gateway'])
             continue
 
         cmd = 'ping  -c2 -w2 %s' % (item['gateway'])
         lines = os.popen(cmd).readlines()
         num = parse(lines)
-        print '公司：【%15s】----国家：【%15s】------ip: 【%15s】 --------cost:【%15s】' % (item['com'], item['cname'], item['gateway'], num)
+        print '公司：【%-15s】----国家：【%-10s】------ip: 【%-15s】 --------cost:【%-15s】' % (item['com'], item['cname'], item['gateway'], num)

@@ -6,7 +6,7 @@ password = 'themass5296'
 pop3_server = 'pop.163.com'
 if __name__ == '__main__':
     conn = MailConn(email, password, pop3_server)
-    ret = conn.getTitle(10000, "[Fail2Ban] sshd:")
+    ret = conn.getTitle(10000000, "[Fail2Ban] sshd:")
 
     if len(ret) > 0:
         for obj in ret:

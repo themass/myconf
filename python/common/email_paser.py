@@ -31,13 +31,15 @@ class MailConn():
             start = len(mails) - num
         end = len(mails)
         for i in range(start, end):
-            lines = self.server.retr(i)[1]
+            lines = self.server.retr(end - i)[1]
             # 解析邮件:
             msg = Parser().parsestr('\r\n'.join(lines))
             # 打印邮件内容:
             title = self.get_title(msg)
             if title.count(filter) != 0:
                 ret.append(title)
+            if i % 100 == 0:
+                print '已经接收邮件：', i, ' 攻击:', len(ret)
         return ret
 
     def quit(self):
@@ -57,7 +59,6 @@ class MailConn():
         value, charset = decode_header(s)[0]
 #         if charset:
 #             value = value.decode(charset)
-        print value
         return value
 
     def get_title(self, msg, indent=0):

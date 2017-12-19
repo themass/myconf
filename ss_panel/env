@@ -1,7 +1,7 @@
 //  ss-panel v4 Config
 
 ENV = 'prod'
-DEBUG =  'false'
+DEBUG =  'true'
 
 // TimeZone
 APP_TIMEZONE = 'PRC'

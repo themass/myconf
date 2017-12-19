@@ -54,9 +54,16 @@ if __name__ == '__main__':
     #     pattern = 'http://(.*?):9011/'
     #     out = re.sub(pattern, 'http://127.0.0.1:9091/', url)
     #     print out
-    url_str = "http://www.163.com/mail/index.htm"
-    url = urlparse(url_str)
-    print 'protocol:', url.scheme
-    print 'hostname:', url.hostname
-    print 'port:', url.port
-    print 'path:', url.path
+    #     url_str = "http://www.163.com/mail/index.htm"
+    #     url = urlparse(url_str)
+    #     print 'protocol:', url.scheme
+    #     print 'hostname:', url.hostname
+    #     print 'port:', url.port
+    #     print 'path:', url.path
+    s = '[12.19] 公司里的巨乳少妇搞来玩一玩[12P]'
+    img_channel_title = re.compile(r"\[[0-9]+P\]")
+    img_channel_date = re.compile(r"\[[0-9\.]+\]")
+    match = img_channel_title.search(s)
+    print match.group(0)
+    match = img_channel_date.search(s)
+    print match.group(0)

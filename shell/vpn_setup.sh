@@ -59,7 +59,7 @@ strongswan_config()
 	#cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
 	#cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	
-	
+	cd ${WORKDIR}/myconf/shell
 	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
 	cp  ../strongswan_conf/ipsec.conf /etc/ipsec.conf
     
@@ -125,7 +125,7 @@ net()
 {
 
 	echo "net.ipv4.tcp_syncookies = 1"  >>  /etc/sysctl.conf
-	echo "net.ipv4.tcp_tw_reuse = 0"  >>  /etc/sysctl.conf
+	echo "net.ipv4.tcp_tw_reuse = 1"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_tw_recycle = 0"  >>  /etc/sysctl.conf
 	echo "#向外连接的端口范围"  >>  /etc/sysctl.conf
 	echo "net.ipv4.ip_local_port_range = 1024 65000 "  >>  /etc/sysctl.conf
@@ -149,8 +149,25 @@ net()
 	echo "net.core.somaxconn = 262144"  >>  /etc/sysctl.conf
 	echo "net.ipv4.ip_forward = 1"  >>  /etc/sysctl.conf
 	echo "net.ipv6.conf.all.forwarding=1"  >>  /etc/sysctl.conf
+	
+	# max open files
+	echo "fs.file-max = 1024000"  >>  /etc/sysctl.conf
+	
 	cat /etc/sysctl.conf
 	sysctl -p
+	
+	#其中最后的hybla是为高延迟网络（如美国，欧洲）准备的算法，需要内核支持，测试内核是否支持，在终端输入：
+	#sysctl net.ipv4.tcp_available_congestion_control
+	#如果结果中有hybla，则证明你的内核已开启hybla，如果没有hybla，可以用命令modprobe tcp_hybla开启。
+
+		#对于低延迟的网络（如日本，香港等），可以使用htcp，可以非常显著的提高速度，首先使用modprobe tcp_htcp开启，再将net.ipv4.tcp_congestion_control = hybla改为net.ipv4.tcp_congestion_control = htcp，建议EC2日本用户使用这个算法。
+
+	echo "*               soft    nofile           512000"  >> /etc/security/limits.conf
+	echo "*               hard    nofile          1024000"  >> /etc/security/limits.conf
+	echo "ulimit -SHn 1024000"  >> /root/.profile
+	source /root/.profile
+	ulimit -n
+
 }
 ## -----------------------
 ## Setup all aboves
@@ -185,7 +202,7 @@ get_ip(){
 }
 get_netdev(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
-    DEV=$( ip addr | grep ${IP} ||egrep -o '(eth0|ens3)')
+    DEV=$( ip addr | grep ${IP} ||egrep -o '(eth0|ens3|enp1s0)')
     echo ${DEV}
 }
 ## -----------------------

@@ -28,7 +28,7 @@ setup_ssr()
 	cd shadowsocksr
 	bash setup_cymysql.sh
 	bash initcfg.sh
-	cp ${SHELL_HOME}/ssr_conf/* .
+	cp ${SHELL_HOME}/../ssr_conf/* .
 }
 
 ## -----------------------

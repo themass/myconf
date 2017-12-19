@@ -9,17 +9,23 @@ SHELL_HOME=/root/work/myconf/shell
 #https://doub.io/ss-jc13/
 setup_sspanel() 
 {
-	cd ${PANEL_TMP_HOME}
-	wget https://github.com/orvice/ss-panel/archive/v2.zip
-	unzip v2.zip
-	mv ss-panel-v2  ${PANEL_WORKDIR}/ss-panel
-	cp ${PANEL_SHELL_HOME}/../php/config.php ${PANEL_WORKDIR}/ss-panel/lib
-	mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/invite_code.sql
-	mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/ss_node.sql
-	mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/ss_reset_pwd.sql
-	mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/ss_user_admin.sql
-	mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/user.sql
-	echo 'http://hostggg.com/pwd.php?pwd=1993'
+	cd ${PANEL_WORKDIR}
+	rm -rf ss-panel
+	git clone https://github.com/orvice/ss-panel.git -b master
+	curl -sS https://getcomposer.org/installer | php
+	cd ss-panel
+	php composer.phar  install
+	cp ${PANEL_SHELL_HOME}/ss_panel/env  .env
+	php xcat migrate
+	chmod -R 777 storage
+	
+	#cp ${PANEL_SHELL_HOME}/../php/config.php ${PANEL_WORKDIR}/ss-panel/lib
+	#mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/invite_code.sql
+	#mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/ss_node.sql
+	#mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/ss_reset_pwd.sql
+	#mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/ss_user_admin.sql
+	#mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/user.sql
+	#echo 'http://hostggg.com/pwd.php?pwd=1993'
 }
 setup_ssr() 
 {

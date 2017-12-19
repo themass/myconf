@@ -337,6 +337,7 @@ setup_php()
     make -j4
     make install
     cd ${APP_HOME}
+    rm php
     ln -s  ${PHP_VERSION} php
     cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/php/etc
     cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc

@@ -12,10 +12,10 @@ setup_sspanel()
 	cd ${PANEL_WORKDIR}
 	rm -rf ss-panel
 	git clone https://github.com/orvice/ss-panel.git -b master
-	curl -sS https://getcomposer.org/installer | php
 	cd ss-panel
+	curl -sS https://getcomposer.org/installer | php
 	php composer.phar  install
-	cp ${PANEL_SHELL_HOME}/ss_panel/env  .env
+	cp ${PANEL_SHELL_HOME}/ss_panel/../env  .env
 	php xcat migrate
 	chmod -R 777 storage
 	

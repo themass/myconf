@@ -28,7 +28,7 @@ strongswan_config()
 init_ca() 
 {
 	cd ${TMP_HOME}
-	echo '$1'
+	echo $1
 	mkdir -p ca
 	cd ca
 	echo "C=CN, O=timeline, CN=$1"
@@ -49,7 +49,7 @@ init_ca()
 # iptables
 setup_iptables() 
 {
-	echo '$1'
+	echo $1
 	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o $1 -j MASQUERADE 
 	iptables-save
 	

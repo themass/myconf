@@ -1,12 +1,11 @@
 PANEL_WORKDIR=/home/web/webroot
 PANEL_TMP_HOME=/home/web/soft
-
 PANEL_SHELL_HOME=/home/web/work/myconf/shell
 
 
-WORKDIR=/home/web/webroot
+WORKDIR=/root/work
 TMP_HOME=/root/soft
-
+SHELL_HOME=/root/work/myconf/shell
 #https://doub.io/ss-jc13/
 setup_sspanel() 
 {
@@ -22,6 +21,15 @@ setup_sspanel()
 	mysql -u vpn@server -p -hmysql.sspacee.com vpn < ${PANEL_WORKDIR}/ss-panel/user.sql
 	echo 'http://hostggg.com/pwd.php?pwd=1993'
 }
+setup_ssr() 
+{
+	cd ${WORKDIR}
+	git clone -b manyuser https://github.com/ToyoDAdoubi/shadowsocksr.git
+	cd shadowsocksr
+	bash setup_cymysql.sh
+	bash initcfg.sh
+	cp ${SHELL_HOME}/ssr_conf/* .
+}
 
 ## -----------------------
 ## Show help message
@@ -29,17 +37,8 @@ setup_sspanel()
 usage() 
 {
     echo "Available arguments as below:"
-    echo "soft           Setup init soft"
-    echo "strongswan          Setup strongswan"
-    echo "strongswanconf          Setup strongswan config"
-    echo "ca           Setup ca"
-    echo "iptables         Setup iptables"
-    echo "net    Setup net"
-    echo "fail2ban    Setup fail2ban"
-    echo "check    checkspeed"
-     echo "check_vpn    check vpn"
-     echo "net    Setup net"
-    echo "all           Setup all aboves"
+    echo "sspanel           Setup setup_sspanel"
+    echo "ssr          Setup setup_ssr"
 }
 
 ## =====================================
@@ -48,16 +47,8 @@ usage()
 if [ $# != 0 ]; then
     for arg in $*; do
         case "$arg" in
-            soft)            init_soft;;
-            strongswan)          strongswan_setup;;
-	    ca)          init_ca $2;;
-	    iptables)          setup_iptables;;
-	    strongswanconf)          strongswan_config;;
-	    net)          net;;
-	     fail2ban)          setup_fail2ban;;
-	    check)          checkspeed;;
-	    check_vpn)          check_vpn;;
-	    all)          setup_all;;
+            sspanel)            setup_sspanel;;
+            ssr)          setup_ssr;;
         esac
     done
 else

@@ -13,9 +13,9 @@ AUTH_PASSWORD_ENCRYPTION_TYPE=bcrypt
 // Database
 DB_HOST=mysql.sspacee.com
 DB_PORT = '6666'
-DB_DATABASE = 'vpn@server'
-DB_USERNAME = 'Themass@5296'
-DB_PASSWORD = 'sspanel'
+DB_DATABASE = 'sspanel'
+DB_USERNAME = 'vpn@server'
+DB_PASSWORD = 'Themass@5296'
 
 // Redis
 REDIS_HOST = 'redis.sspacee.com'

@@ -301,6 +301,19 @@ setup_daloradius()
 	pear upgrade-all
 	pear install DB
 }
+setup_php_pdo()
+{
+	cd ${TMP_HOME}
+	cd ${PHP_VERSION}
+	cd ext/pdo
+	${APP_HOME}/php/bin/phpize
+	./configure --with-php-config=${APP_HOME}/php/bin/php-config --enable-pdo=shared
+	make install
+	cd ../../
+	cd ext/pdo_mysql
+	${APP_HOME}/php/bin/phpize
+	make install
+}
 setup_php()
 {
 	
@@ -331,7 +344,9 @@ setup_php()
     --with-zlib --with-xpm-dir --with-freetype-dir --with-mcrypt --with-mhash --with-mysql \
     --with-mysqli --enable-pdo --with-pdo-mysql --with-openssl  --enable-fpm --enable-exif --enable-wddx --enable-zip \
     --enable-bcmath -with-bz2 --enable-calendar --enable-ftp --enable-mbstring --enable-soap --enable-sockets --enable-shmop \
-    --enable-dba --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-debug --enable-maintainer-zts --enable-embed --with-pdo-mysql=/usr
+    --enable-dba --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-debug --enable-maintainer-zts --enable-embed --with-pdo-mysql=mysqlnd \
+    --with-mysqli=mysqlnd --with-mysql=mysqlnd  --enable-mysqlnd 
+
     make -j4
     make install
     cd ${APP_HOME}
@@ -343,6 +358,10 @@ setup_php()
     pear install DB
     echo 'killall php-fpm '
     echo 'profile php'
+    echo "export PHP_PATH=${APP_HOME}/php" >> ~/.profile
+    echo "export PATH=${PHP_PATH}/sbin:${PHP_PATH}/bin:$PATH" >> ~/.profile
+    source ~/.profile
+    
     
 }
 ## -----------------------

@@ -24,6 +24,8 @@ class ImgParse(BaseParse):
     def run(self):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
+        url_org = self.t_obj['url']
+        self.t_obj['url'] = self.t_obj['url'].replace("&", "")
         ops.inertImgChannel(self.t_obj)
         dbVPN.commit()
         channel = self.t_obj['url']

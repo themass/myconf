@@ -6,7 +6,7 @@
     "local_port": 1080,
 
     "password": "529696",
-    "method": "aes-256-cfb",
+    "method": "aes-128-ctr",
     "protocol": "auth_chain_a",
     "protocol_param": "",
     "obfs": "plain",

@@ -301,19 +301,6 @@ setup_daloradius()
 	pear upgrade-all
 	pear install DB
 }
-setup_php_pdo()
-{
-	cd ${TMP_HOME}
-	cd ${PHP_VERSION}
-	cd ext/pdo
-	${APP_HOME}/php/bin/phpize
-	./configure --with-php-config=${APP_HOME}/php/bin/php-config --enable-pdo=shared
-	make install
-	cd ../../
-	cd ext/pdo_mysql
-	${APP_HOME}/php/bin/phpize
-	make install
-}
 setup_php()
 {
 	
@@ -358,9 +345,7 @@ setup_php()
     pear install DB
     echo 'killall php-fpm '
     echo 'profile php'
-    echo "export PHP_PATH=${APP_HOME}/php" >> ~/.profile
-    echo "export PATH=${PHP_PATH}/sbin:${PHP_PATH}/bin:$PATH" >> ~/.profile
-    source ~/.profile
+   
     
     
 }

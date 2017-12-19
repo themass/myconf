@@ -50,9 +50,6 @@ init_ca()
 setup_iptables() 
 {
 	echo $1
-	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o $1 -j MASQUERADE 
-	iptables-save
-	
 }
 
 ## -----------------------

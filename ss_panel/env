@@ -1,0 +1,24 @@
+//  ss-panel v4 Config
+
+ENV = 'prod'
+DEBUG =  'false'
+
+// TimeZone
+APP_TIMEZONE = 'PRC'
+
+// Auth
+AUTH_SALT=
+AUTH_PASSWORD_ENCRYPTION_TYPE=bcrypt
+
+// Database
+DB_HOST=mysql.sspacee.com
+DB_PORT = '6666'
+DB_DATABASE = 'vpn@server'
+DB_USERNAME = 'Themass@5296'
+DB_PASSWORD = 'sspanel'
+
+// Redis
+REDIS_HOST = 'redis.sspacee.com'
+REDIS_PORT = '6380'
+#REDIS_PASSWORD = 'vpn@redis'
+

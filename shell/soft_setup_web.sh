@@ -65,7 +65,7 @@ NGINX_PCRE_VERSION=pcre-8.39
 MYSQL_VERSION=mysql-5.6.34-linux-glibc2.5-x86_64
 RADIUS_VERSION=freeradius-server-2.1.12
 
-PHP_VERSION=php-5.6.29
+PHP_VERSION=php-7.2.0
 
 REDIS_VERSION=redis-3.2.6
 MAVEN_VERSION=apache-maven-3.3.9-bin

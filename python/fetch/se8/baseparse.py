@@ -7,6 +7,8 @@ from BeautifulSoup import BeautifulSoup
 from common import common
 from common import MyQueue
 import re
+import gzip
+import StringIO
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -27,11 +29,22 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(baseurl + url, headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": "https://www.bbb670.com/htm/index.htm"})
-                content = urllib2.urlopen(req, timeout=300).read()
-                soup = BeautifulSoup(content)
+                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": "https://www.ttt338.com/htm/index.htm"})
+                req.encoding = 'utf-8'
+                response = urllib2.urlopen(req, timeout=300)
+                gzipped = response.headers.get(
+                    'Content-Encoding')  # 查看是否服务器是否支持gzip
+                content = response.read()
+                contentstr = content
+                if gzipped:
+                    fio = StringIO.StringIO(content)
+                    f = gzip.GzipFile(fileobj=fio)
+                    contentstr = f.read()
+                    f.close()
+                soup = BeautifulSoup(contentstr)
                 return soup
             except Exception as e:
+                print common.format_exception(e)
                 print '打开页面错误,重试', baseurl + url, '次数', count
                 count = count + 1
 

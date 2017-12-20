@@ -10,7 +10,7 @@ import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://www.ttt662.com"
+baseurl = "https://www.ttt338.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)

@@ -3,7 +3,7 @@
 from baseparse import *
 
 channel_size = 100
-item_page_size = 10000
+item_page_size = 100
 item_commit_size = 5
 
 

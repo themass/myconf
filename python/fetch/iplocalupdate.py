@@ -6,11 +6,14 @@ from common import db_ops
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-url = 'http://ip.taobao.com/service/getIpInfo.php?ip=%s'
+url = 'http://ip.taobao.com/service/getIpInfo.php'
+headers = {'User-Agent':
+           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "https://www.baidu.com"}
 
 
 def getLocal(ip, id):
-    ret = httputil.getData(url % (ip))
+    param = {'ip': ip}
+    ret = httputil.getData(url, param, headers)
     obj = {}
     obj['id'] = id
     if ret['code'] == 0:
@@ -22,12 +25,13 @@ def getLocal(ip, id):
         obj['local'] = ''
     return obj
 if __name__ == '__main__':
-    dbVPN = db.DbVPN()
-    ops = db_ops.DbOps(dbVPN)
-    rows = ops.getAllwannaIplocalnull()
-    print 'need update len=', len(rows)
-    objs = []
-    for row in rows:
-        item = getLocal(row['ip'], row['id'])
-        objs.append(item)
-    ops.updateWannaIpLocal(objs)
+    #     dbVPN = db.DbVPN()
+    #     ops = db_ops.DbOps(dbVPN)
+    #     rows = ops.getAllwannaIplocalnull()
+    #     print 'need update len=', len(rows)
+    #     objs = []
+    #     for row in rows:
+    #         item = getLocal(row['ip'], row['id'])
+    #         objs.append(item)
+    #     ops.updateWannaIpLocal(objs)
+    getLocal('223.72.96.151', 1)

@@ -149,10 +149,10 @@ init_plateform(){
 setup_ndk() 	
 {
 	cd ${APP_HOME}
-	rm -f ${TMP_HOME}/${NDK_VERSION}.tgz
+	rm -f ${TMP_HOME}/${NDK_VERSION}.zip
 	rm -rf ${NDK_VERSION}
-	wget ${URL}/soft/${NDK_VERSION}.tar.bz2 -O ${TMP_HOME}/${NDK_VERSION}.tar.bz2
-	tar -jxvf ${TMP_HOME}/${NDK_VERSION}.tar.bz2
+	wget ${URL}/soft/${NDK_VERSION}.zip -O ${TMP_HOME}/${NDK_VERSION}.zip
+	unzip ${TMP_HOME}/${NDK_VERSION}.zip
 	echo 'profile' ${APP_HOME}/${NDK_VERSION}
 }
 setup_maven(){

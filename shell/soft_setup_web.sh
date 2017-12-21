@@ -9,7 +9,7 @@ TMP_HOME=/home/web/soft
 JDK_VERSION=jdk-8u111
 JDK_DIR=jdk1.8
 
-SDK_NAME_VERSION=android-sdk_r24.0.2-linux
+SDK_NAME_VERSION=android-sdk_r24.4.1-linux
 SDK_VERSION=android-sdk-linux
 SDK_PLATFORM_VERSION=platform-tools_r23.1.0-linux
 

@@ -25,13 +25,13 @@ def getLocal(ip, id):
         obj['local'] = ''
     return obj
 if __name__ == '__main__':
-    #     dbVPN = db.DbVPN()
-    #     ops = db_ops.DbOps(dbVPN)
-    #     rows = ops.getAllwannaIplocalnull()
-    #     print 'need update len=', len(rows)
-    #     objs = []
-    #     for row in rows:
-    #         item = getLocal(row['ip'], row['id'])
-    #         objs.append(item)
-    #     ops.updateWannaIpLocal(objs)
-    getLocal('223.72.96.151', 1)
+    dbVPN = db.DbVPN()
+    ops = db_ops.DbOps(dbVPN)
+    rows = ops.getAllwannaIplocalnull()
+    print 'need update len=', len(rows)
+    objs = []
+    for row in rows:
+        item = getLocal(row['ip'], row['id'])
+        objs.append(item)
+    ops.updateWannaIpLocal(objs)
+    #getLocal('223.72.96.151', 1)

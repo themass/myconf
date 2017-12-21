@@ -35,15 +35,18 @@ def postRequestWithParam(url, data={}, header={}):
 
 
 def getData(url, data={}, header={}):
-    try:
-        datastr = urllib.urlencode(data)
-        url = "%s?%s" % (url, datastr)
-        req = urllib2.Request(url, headers=header)
-        apidata = urllib2.urlopen(req, timeout=DEFULT_TIMEOUT).read()
-        return json.loads(apidata, encoding=DEFULT_ENCODEING)
-    except Exception as e:
-        print common.format_exception(e)
-        raise HTTPException('url=%s' % (url), ex=e)
+    count = 0
+    maxCount = 3
+    while count < maxCount:
+        try:
+            datastr = urllib.urlencode(data)
+            url = "%s?%s" % (url, datastr)
+            req = urllib2.Request(url, headers=header)
+            apidata = urllib2.urlopen(req, timeout=DEFULT_TIMEOUT).read()
+            return json.loads(apidata, encoding=DEFULT_ENCODEING)
+        except Exception as e:
+            print '打开页面错误,重试', 'url=%s' % (url), '次数', count
+            count = count + 1
 
 
 def getText(url, data={}, header={}, isGzip=False):

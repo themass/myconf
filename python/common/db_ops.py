@@ -151,7 +151,7 @@ class DbOps(object):
 
     def getAllwannaIplocalnull(self):
         self.conn.execute(
-            "select id,ip from iwanna where ip is nor null and ip_local is null limit 100")
+            "select id,ip from iwanna where ip is not null and ip_local is null limit 100")
         return self.conn.fetchAll()
 
     def updateWannaIpLocal(self, objs):

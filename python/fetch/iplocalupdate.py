@@ -17,6 +17,7 @@ def getLocal(ip, id):
         data = ret.get('data', {})
         obj['local'] = data.get(
             'country') + '-' + data.get('city') + '-' + data.get('isp')
+        print 'ip=', ip, ' ;local=', obj['local']
     else:
         obj['local'] = ''
     return obj
@@ -24,6 +25,7 @@ if __name__ == '__main__':
     dbVPN = db.DbVPN()
     ops = db_ops.DbOps(dbVPN)
     rows = ops.getAllwannaIplocalnull()
+    print 'need update len=', len(rows)
     objs = []
     for row in rows:
         item = getLocal(row['ip'], row['id'])

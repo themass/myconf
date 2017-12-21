@@ -127,6 +127,7 @@ init_buildtool(){
 	mv ${BUILD_TOOL_P_VERSION_P_4} ${SDK_VERSION}/build-tools/${BUILD_TOOL_P_VERSION_P_P_4}
 }
 init_plateform(){
+	mkdir -p ${SDK_VERSION}/platforms
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1}.zip
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_3}.zip

@@ -86,15 +86,20 @@ setup_jdk()
 setup_sdk() 
 {
 	cd ${APP_HOME}
-#	rm -f ${TMP_HOME}/${SDK_VERSION}.tgz
-#	rm -rf ${SDK_VERSION}
-#	wget ${URL}/soft/${SDK_NAME_VERSION}.tgz -O ${TMP_HOME}/${SDK_VERSION}.tgz
-#	tar -zxvf ${TMP_HOME}/${SDK_VERSION}.tgz 
-#	rm -rf ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip 
-#	wget ${URL}/soft/${SDK_PLATFORM_VERSION}.zip -O ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
-#	unzip ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
-#	mv platform-tools  ${SDK_VERSION}/
-	init_plateform
+	rm -f ${TMP_HOME}/${SDK_VERSION}.tgz
+	rm -rf ${SDK_VERSION}
+	
+	#wget ${URL}/soft/${SDK_NAME_VERSION}.tgz -O ${TMP_HOME}/${SDK_VERSION}.tgz
+	cp /home/web/work/${SDK_NAME_VERSION}.tgz  ${TMP_HOME}/${SDK_VERSION}.tgz
+	
+	tar -zxvf ${TMP_HOME}/${SDK_VERSION}.tgz 
+	rm -rf ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip 
+	#wget ${URL}/soft/${SDK_PLATFORM_VERSION}.zip -O ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
+	cp /home/web/work/${SDK_PLATFORM_VERSION}.zip  ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
+	
+	unzip ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
+	mv platform-tools  ${SDK_VERSION}/
+	#init_plateform
 	#init_buildtool
 	echo 'profile' ${APP_HOME}/${SDK_VERSION} 
 	

@@ -4,6 +4,7 @@ from common import *
 from common.envmod import *
 from common import db_ops
 import sys
+import time
 reload(sys)
 sys.setdefaultencoding('utf8')
 url = 'http://ip.taobao.com/service/getIpInfo.php'
@@ -33,5 +34,6 @@ if __name__ == '__main__':
     for row in rows:
         item = getLocal(row['ip'], row['id'])
         objs.append(item)
+        time.sleep(1)
     ops.updateWannaIpLocal(objs)
     #getLocal('223.72.96.151', 1)

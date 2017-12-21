@@ -148,3 +148,13 @@ class DbOps(object):
         self.conn.execute(
             "select * from host order by com asc,cname desc")
         return self.conn.fetchAll()
+
+    def getAllwannaIplocalnull(self):
+        self.conn.execute(
+            "select id,ip from iwanna where ip is nor null and ip_local is null limit 100")
+        return self.conn.fetchAll()
+
+    def updateWannaIpLocal(self, objs):
+        for obj in objs:
+            self.conn.execute(
+                "update iwanna set ip_local = '%s' where id=%s" % (obj['local'], obj['id']))

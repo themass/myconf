@@ -94,8 +94,8 @@ setup_sdk()
 #	wget ${URL}/soft/${SDK_PLATFORM_VERSION}.zip -O ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
 #	unzip ${TMP_HOME}/${SDK_PLATFORM_VERSION}.zip
 #	mv platform-tools  ${SDK_VERSION}/
-#	init_plateform
-	init_buildtool
+	init_plateform
+	#init_buildtool
 	echo 'profile' ${APP_HOME}/${SDK_VERSION} 
 	
 }

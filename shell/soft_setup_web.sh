@@ -106,10 +106,15 @@ init_buildtool(){
 	rm -f ${TMP_HOME}/${BUILD_TOOL_P_VERSION_3}-linux.zip
 	rm -f ${TMP_HOME}/${BUILD_TOOL_P_VERSION_4}-linux.zip
 	
-	wget ${URL}/soft/${BUILD_TOOL_P_VERSION_1}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_1}.zip
-	wget ${URL}/soft/${BUILD_TOOL_P_VERSION_2}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_2}.zip
-	wget ${URL}/soft/${BUILD_TOOL_P_VERSION_3}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_3}.zip
-	wget ${URL}/soft/${BUILD_TOOL_P_VERSION_4}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_4}.zip
+	#wget ${URL}/soft/${BUILD_TOOL_P_VERSION_1}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_1}.zip
+	#wget ${URL}/soft/${BUILD_TOOL_P_VERSION_2}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_2}.zip
+	#wget ${URL}/soft/${BUILD_TOOL_P_VERSION_3}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_3}.zip
+	#wget ${URL}/soft/${BUILD_TOOL_P_VERSION_4}-linux.zip -O ${TMP_HOME}/${BUILD_TOOL_P_VERSION_4}.zip
+	
+	cp /home/web/work/${BUILD_TOOL_P_VERSION_1}-linux.zip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_1}.zip
+	cp /home/web/work/${BUILD_TOOL_P_VERSION_2}-linux.zip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_2}.zip
+	cp /home/web/work/${BUILD_TOOL_P_VERSION_3}-linux.zip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_3}.zip
+	cp /home/web/work/${BUILD_TOOL_P_VERSION_4}-linux.zip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_4}.zip
 	
 	unzip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_1}.zip  
 	unzip ${TMP_HOME}/${BUILD_TOOL_P_VERSION_2}.zip  
@@ -128,11 +133,18 @@ init_plateform(){
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_4}.zip
 	rm -f ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_5}.zip
 	
-	wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_1}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1}.zip
-	wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_2}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip
-	wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_3}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_3}.zip
-	wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_4}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_4}.zip
-	wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_5}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_5}.zip
+	#wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_1}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1}.zip
+	#wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_2}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip
+	#wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_3}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_3}.zip
+	#wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_4}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_4}.zip
+	#wget ${URL}/soft/${SDK_PLATFORM_P_VERSION_5}.zip -O ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_5}.zip
+	
+	cp /home/web/work/${SDK_PLATFORM_P_VERSION_1}.zip  ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1}.zip
+	cp /home/web/work/${SDK_PLATFORM_P_VERSION_2}.zip  ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip
+	cp /home/web/work/${SDK_PLATFORM_P_VERSION_3}.zip  ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_3}.zip
+	cp /home/web/work/${SDK_PLATFORM_P_VERSION_4}.zip  ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_4}.zip
+	cp /home/web/work/${SDK_PLATFORM_P_VERSION_5}.zip  ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_5}.zip
+	
 	
 	unzip ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_1}.zip  
 	unzip ${TMP_HOME}/${SDK_PLATFORM_P_VERSION_2}.zip  

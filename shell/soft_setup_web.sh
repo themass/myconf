@@ -357,8 +357,8 @@ setup_php()
     cd ${APP_HOME}
     rm php
     ln -s  ${PHP_VERSION} php
-    cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/php/etc
-    cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
+    #cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/php/etc
+    #cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
     mkdir -p ${APP_HOME}/php/lib/php/extensions
     cd ${APP_HOME}/php/lib/php/extensions
     pear install DB

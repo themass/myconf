@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from common import db_ops
-from common import emailutil
+from common import httputil
 from common.envmod import *
 import os
 import re
@@ -9,6 +9,8 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 reg = re.compile(
     r"rtt min/avg/max/mdev = ([0-9\.]+)/([0-9\.]+)/([0-9\.]+)")
+
+url = 'http://api.sspacee.com/vpn/api/noapp/ping.json'
 
 
 def myAlign(string, length=0):
@@ -44,7 +46,6 @@ if __name__ == '__main__':
     #             print '---test ip--%s', item['gateway']
     #             os.popen(cmd)
     errorList = []
-    okList = []
     for item in hosts:
         #         if item['enable'] == 0:
         #             print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])
@@ -53,20 +54,26 @@ if __name__ == '__main__':
         cmd = 'ping  -c2 -w2 %s' % (item['gateway'])
         lines = os.popen(cmd).readlines()
         num = parse(lines)
+
         if item['enable'] == 0:
             if num == 10000:
                 print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])
             else:
                 print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------可用了，请检查 cost:【%-15s】' % (item['com'], myAlign(item['cname'], 7), item['gateway'], num)
-                okList.append("%s:%s" % (item['com'], item['gateway']))
+                errorList.append("%s:%s" % (item['gateway'], 1))
         else:
             print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------cost:【%-15s】' % (item['com'], myAlign(item['cname'], 7), item['gateway'], num)
         if num == 10000 and item['enable'] != 0:
-            errorList.append("%s:%s" % (item['com'], item['gateway']))
+            errorList.append("%s:%s" % (item['gateway'], -1))
     if len(errorList) > 0:
-        emailutil.sendEmailShell(
-            ["liguoqing19861028@163.com"], "VPS-check-error",  ''.join(errorList))
-    if len(okList) > 0:
-        emailutil.sendEmailShell(
-            ["liguoqing19861028@163.com"], "VPS-check-ok",  ''.join(okList))
+        str = ';'.join(errorList)
+        print str
+        data = {}
+        data['pingCheck'] = str
+        print httputil.postRequestWithParam(url, data, {})
+#         emailutil.sendEmailShell(
+#             ["liguoqing19861028@163.com"], "VPS-check-error",  ''.join(errorList))
+#     if len(okList) > 0:
+#         emailutil.sendEmailShell(
+#             ["liguoqing19861028@163.com"], "VPS-check-ok",  ''.join(okList))
     sys.exit()

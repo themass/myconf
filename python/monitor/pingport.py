@@ -64,8 +64,9 @@ if __name__ == '__main__':
         if num == 10000 and item['enable'] != 0:
             errorList.append("%s:%s" % (item['com'], item['gateway']))
     if len(errorList) > 0:
-        emailutil.send_mail(
+        emailutil.sendEmailShell(
             ["liguoqing19861028@163.com"], "VPS-check-error",  ''.join(errorList))
     if len(okList) > 0:
-        emailutil.send_mail(
+        emailutil.sendEmailShell(
             ["liguoqing19861028@163.com"], "VPS-check-ok",  ''.join(okList))
+    sys.exit()

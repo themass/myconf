@@ -8,19 +8,16 @@ import subprocess
 from email.header import Header
 
 
-mailto_list = ['liguoqing19861028@163.com']  # 收件人(列表)
-mail_host = "smtp.163.com"  # 使用的邮箱的smtp服务器地址，这里是163的smtp地址
-mail_user = "liguoqing19861028@163.com"  # 用户名
-mail_pass = "163@themass"  # 密码
-mail_postfix = "163.com"  # 邮箱的后缀，网易就是163.com
-
-
-def sendEmailShell(toNames, subject,  content):
+def sendEmailShell(fromName, toNames, subject, filepath, files, content):
+    fujian = ''
+    if len(files) >= 1:
+        for fileName in files:
+            fujian = fujian + '-a %s' % (os.path.join(filepath, fileName))
     toEmailName = ''
     for name in toNames:
         toEmailName = toEmailName + '%s@163.com;' % (name)
-    commond = r'mail -s %s   -r "%s" %s' % (
-        subject, mail_user, toEmailName)
+    commond = r'mail -s %s %s  -r "%s" %s' % (
+        subject, fujian, fromName, toEmailName)
     ret = subprocess.call(commond, shell=True)
 #
 #
@@ -57,6 +54,12 @@ def sendEmailShell(toNames, subject,  content):
 #         print '发送成功'
 #     except Exception, e:
 #         print str(e)
+
+mailto_list = ['liguoqing19861028@163.com']  # 收件人(列表)
+mail_host = "smtp.163.com"  # 使用的邮箱的smtp服务器地址，这里是163的smtp地址
+mail_user = "liguoqing19861028@163.com"  # 用户名
+mail_pass = "163@themass"  # 密码
+mail_postfix = "163.com"  # 邮箱的后缀，网易就是163.com
 
 
 def send_mail(to_list, sub, content):

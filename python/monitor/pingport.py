@@ -58,13 +58,16 @@ if __name__ == '__main__':
         if item['enable'] == 0:
             if num == 10000:
                 print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])
+                errorList.append("%s:%s" % (item['gateway'], -1))
             else:
                 print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------可用了，请检查 cost:【%-15s】' % (item['com'], myAlign(item['cname'], 7), item['gateway'], num)
                 errorList.append("%s:%s" % (item['gateway'], 1))
         else:
             print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------cost:【%-15s】' % (item['com'], myAlign(item['cname'], 7), item['gateway'], num)
-        if num == 10000 and item['enable'] != 0:
-            errorList.append("%s:%s" % (item['gateway'], -1))
+            if num == 10000:
+                errorList.append("%s:%s" % (item['gateway'], -1))
+            else:
+                errorList.append("%s:%s" % (item['gateway'], 0))
     if len(errorList) > 0:
         str = ';'.join(errorList)
         print str

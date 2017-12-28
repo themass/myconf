@@ -74,9 +74,11 @@ def send_mail(to_list, sub, content):
         server.login(mail_user, mail_pass)  # 登录操作
         server.sendmail(me, to_list, msg.as_string())
         server.close()
+        print '发送邮件成功'
         return True
     except Exception, e:
         print str(e)
+        print '发送邮件失败'
         return False
 if __name__ == '__main__':
     #     toNames = ['liangmeilun', 'yueli', 'chenfengying01',

@@ -58,11 +58,11 @@ if __name__ == '__main__':
                 print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])
             else:
                 print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------可用了，请检查 cost:【%-15s】' % (item['com'], myAlign(item['cname'], 7), item['gateway'], num)
-                okList.append(item['gateway'])
+                okList.append("%s:%s" % (item['com'], item['gateway']))
         else:
             print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------cost:【%-15s】' % (item['com'], myAlign(item['cname'], 7), item['gateway'], num)
         if num == 10000 and item['enable'] != 0:
-            errorList.append(item['gateway'])
+            errorList.append("%s:%s" % (item['com'], item['gateway']))
     if len(errorList) > 0:
         emailutil.send_mail(
             ["liguoqing19861028@163.com"], "VPS-check-error",  ''.join(errorList))

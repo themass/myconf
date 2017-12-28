@@ -1,5 +1,5 @@
-CREATE USER 'radius'@'%' IDENTIFIED BY 'Themass@5296vpn';
-CREATE USER 'vpn@server'@'%' IDENTIFIED BY 'Themass@5296vpn';
+CREATE USER 'radius'@'%' IDENTIFIED BY 'Themass@5296';
+CREATE USER 'vpn@server'@'%' IDENTIFIED BY 'Themass@5296';
 GRANT ALL ON radius.* TO 'vpn@server'@'%';
 GRANT ALL ON vpn.* TO 'vpn@server'@'%';
 GRANT SELECT,INSERT,UPDATE,DELETE ON radius.* TO 'radius'@'%';

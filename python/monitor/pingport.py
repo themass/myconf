@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from common import db_ops
+from common import emailutil
 from common.envmod import *
 import os
 import re
@@ -42,12 +43,28 @@ if __name__ == '__main__':
     #                                               item['port'])
     #             print '---test ip--%s', item['gateway']
     #             os.popen(cmd)
+    errorList = []
+    okList = []
     for item in hosts:
-        if item['enable'] == 0:
-            print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])
-            continue
+        #         if item['enable'] == 0:
+        #             print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])
+        #             continue
 
         cmd = 'ping  -c2 -w2 %s' % (item['gateway'])
         lines = os.popen(cmd).readlines()
         num = parse(lines)
+        if item['enable'] == 0:
+            if num == 10000:
+                print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])
+            else:
+                print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------可用了，请检查 cost:【%-15s】' % (item['com'], myAlign(item['cname'], 7), item['gateway'], num)
+                okList.append(item['gateway'])
         print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------cost:【%-15s】' % (item['com'], myAlign(item['cname'], 7), item['gateway'], num)
+        if num == 10000 and item['enable'] != 0:
+            errorList.append(item['gateway'])
+    if len(errorList) > 0:
+        emailutil.send_mail(
+            ["liguoqing19861028@163.com"], "VPS-check-error",  ''.join(errorList))
+    if len(okList) > 0:
+        emailutil.send_mail(
+            ["liguoqing19861028@163.com"], "VPS-check-ok",  ''.join(okList))

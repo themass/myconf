@@ -100,6 +100,8 @@ class ImgParse(BaseParse):
             picList = soup.findAll(
                 "img", {"class": "img img-responsive lazyimage"})
             for item in picList:
+                if item.get('data-src').count("thumbnail") > 0:
+                    continue
                 pics.append(baseurl + item.get('data-src'))
 
         return pics

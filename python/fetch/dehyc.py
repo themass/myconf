@@ -34,5 +34,5 @@ if __name__ == '__main__':
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
     # sound.SoundParse(queue)
-    text.textParse(queue)
+    # text.textParse(queue)
     video.videoParse(queue)

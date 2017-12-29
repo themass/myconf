@@ -63,7 +63,7 @@ class ImgParse(BaseParse):
             objs = []
             sortType = dateutil.y_m_d()
             for item in divs:
-                imgDiv = item.first("media-image")
+                imgDiv = item.first("div", {"class": "media-image"})
                 print imgDiv
                 if imgDiv != None:
                     obj = {}

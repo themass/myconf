@@ -17,6 +17,7 @@ sys.setdefaultencoding('utf8')
 queue = MyQueue.MyQueue(200000)
 maxCount = 2
 
+parser = baseparse.BaseParse()
 
 class HandleThread(threading.Thread):
 
@@ -35,10 +36,17 @@ class HandleThread(threading.Thread):
             except Exception as e:
                 print common.format_exception(e)
                 pass
-
+def parseImg():
+    obj = {}
+    obj['name'] = 'H漫画-爽啊'
+    obj['baseurl'] = baseparse.baseurl
+    obj['url'] = baseparse.imgChannelurl
+    obj['updateTime'] = datetime.datetime.now()
+    queue.put(img.ImgParse(obj))
 if __name__ == '__main__':
 
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-    video.videoParse(queue)
+    #video.videoParse(queue)
+    img.

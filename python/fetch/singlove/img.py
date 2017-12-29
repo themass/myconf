@@ -27,6 +27,7 @@ class ImgParse(BaseParse):
         channel = url
         for i in range(1, maxPageImg):
             url = (url + imgPageurl) % (i)
+            print url
             count = self.update(url, ops, channel, i)
             dbVPN.commit()
             if count == 0:
@@ -63,6 +64,7 @@ class ImgParse(BaseParse):
             sortType = dateutil.y_m_d()
             for item in divs:
                 imgDiv = item.first("media-image")
+                print imgDiv
                 if imgDiv != None:
                     obj = {}
                     name = imgDiv.first(

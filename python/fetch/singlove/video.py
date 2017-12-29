@@ -34,7 +34,7 @@ class VideoParse(BaseParse):
                         picUrl = baseurl + img.get('data-src')
                         obj['pic'] = picUrl
             divTitle = div.first("div", {"class": "block-layer block-inner"})
-            name = divTitle.first('a').TEXT
+            name = divTitle.first('a').text
             print name
             obj['name'] = name
             videourl = urlparse(obj['url'])

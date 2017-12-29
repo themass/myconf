@@ -128,7 +128,7 @@ class DbOps(object):
 
     def inertVideo(self, obj):
         return self.conn.execute(
-            "insert into  videoitems (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s')"
+            "replace into  videoitems (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path")))
 

@@ -19,6 +19,7 @@ maxCount = 2
 
 parser = baseparse.BaseParse()
 
+
 class HandleThread(threading.Thread):
 
     def __init__(self, name, queue):
@@ -36,6 +37,8 @@ class HandleThread(threading.Thread):
             except Exception as e:
                 print common.format_exception(e)
                 pass
+
+
 def parseImg():
     obj = {}
     obj['name'] = 'H漫画-爽啊'
@@ -48,5 +51,5 @@ if __name__ == '__main__':
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-    #video.videoParse(queue)
-    img.
+    # video.videoParse(queue)
+    parseImg()

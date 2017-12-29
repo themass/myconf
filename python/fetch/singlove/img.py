@@ -58,16 +58,16 @@ class ImgParse(BaseParse):
             print common.format_exception(e)
 
     def fetchImgItemsData(self, url, channel):
+        objs = []
         try:
             divs = self.fetchDataHead(url)
-            objs = []
             sortType = dateutil.y_m_d()
             for item in divs:
                 imgDiv = item.first("div", {"class": "media-image"})
                 print imgDiv
                 if imgDiv != None:
                     obj = {}
-                    name = imgDiv.first(
+                    name = item.first(
                         "div", {"class": "block-layer block-inner"}).first("a").text
                     obj['name'] = name
                     obj['url'] = imgDiv.first("a").get("href")
@@ -86,6 +86,7 @@ class ImgParse(BaseParse):
             return objs
         except Exception as e:
             print common.format_exception(e)
+            return objs
 
     def fetchImgs(self, url):
         pics = []

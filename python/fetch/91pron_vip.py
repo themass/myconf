@@ -1,14 +1,21 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
+import datetime
+import urllib2
 import threading
+from BeautifulSoup import BeautifulSoup
+from common.envmod import *
+from common import common
+from common import typeutil
+from common import db_ops
 from common import MyQueue
-from dehy import *
+from porn91 import *
+import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-# http://www.dehyc.com
 queue = MyQueue.MyQueue(200000)
-thread_count = 5
+maxCount = 2
 
 
 class HandleThread(threading.Thread):
@@ -23,16 +30,15 @@ class HandleThread(threading.Thread):
             try:
                 print queue.qsize()
                 obj = queue.get(timeout=30)
-                obj.run()
+                if obj != None:
+                    obj.run()
             except Exception as e:
-                print threading.current_thread().getName(), '---conti'
+                print common.format_exception(e)
                 pass
 
 if __name__ == '__main__':
 
-    for i in range(0, thread_count):
+    for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-    # sound.SoundParse(queue)
-    # text.textParse(queue)
     video.videoParse(queue)

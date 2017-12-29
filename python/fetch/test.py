@@ -18,11 +18,26 @@ import json
 from urlparse import urlparse
 reload(sys)
 str1 = '''
-{
-"success":true,
-"total":20,
-"msg":""
-}
+var player = flowplayer("#hlsjsvod", {
+    ratio : 9 / 16,
+    fullscreen : true,
+    splash : true,
+    embed : false,
+    key : "$763288046005003",
+    share:false,
+    hlsjs : {
+        maxBufferLength : 20,
+        maxMaxBufferLength : 20,
+        autoStartLoad : true,
+        startFragPrefetch : true
+    },
+    clip: {
+        sources: [
+                                { type: "application/x-mpegurl", src:"http://cdn1.looklook.space/videos/0/80479/80479.240p.m3u8?v=1.1" }
+                        ]
+    }
+});
+
 '''
 if __name__ == '__main__':
     #     name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'
@@ -60,10 +75,13 @@ if __name__ == '__main__':
     #     print 'hostname:', url.hostname
     #     print 'port:', url.port
     #     print 'path:', url.path
-    s = '[12.19] 公司里的巨乳少妇搞来玩一玩[12P]'
-    img_channel_title = re.compile(r"\[[0-9]+P\]")
-    img_channel_date = re.compile(r"\[[0-9\.]+\]")
-    match = img_channel_title.search(s)
-    print match.group(0)
-    match = img_channel_date.search(s)
-    print match.group(0)
+    #     s = '[12.19] 公司里的巨乳少妇搞来玩一玩[12P]'
+    #     img_channel_title = re.compile(r"\[[0-9]+P\]")
+    #     img_channel_date = re.compile(r"\[[0-9\.]+\]")
+    #     match = img_channel_title.search(s)
+    #     print match.group(0)
+    #     match = img_channel_date.search(s)
+    #     print match.group(0)
+    regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')
+    match = regVideo.search(str1)
+    print match.group(1)

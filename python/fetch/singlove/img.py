@@ -95,7 +95,7 @@ class ImgParse(BaseParse):
             soup = self.fetchUrl(fetchUrl)
             active = soup.first("li", {"class": "active"})
             if active == None or active.first("a").text != str(i):
-                print '共 ', i, '页'
+                print '共 ', i, '页', active.first("a").text, '---', i
                 break
             picList = soup.findAll(
                 "img", {"class": "img img-responsive lazyimage"})

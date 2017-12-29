@@ -11,7 +11,7 @@ from BeautifulSoup import BeautifulSoup
 baseurl = "https://69vj.com"
 channel = 'self_69vj'
 header = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "referer": "https://69vj.com/wp-content/plugins/kt/player/player.php"}
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "https://69vj.com/wp-content/plugins/kt/player/player.php"}
 videoUrl = 'https://69vj.com/page/%s'
 maxPage = 20
 maxCount = 3
@@ -22,12 +22,11 @@ class BaseParse(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
-    def fetchUrl(self, url):
+    def fetchUrl(self, url, aheader=header):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(url, headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": "https://www.bbb670.com/htm/index.htm"})
+                req = urllib2.Request(url, headers=aheader)
                 content = urllib2.urlopen(req, timeout=300).read()
                 soup = BeautifulSoup(content)
                 return soup

@@ -93,7 +93,8 @@ class ImgParse(BaseParse):
         for i in range(1, 100):
             fetchUrl = (url + imgUrl) % (i)
             soup = self.fetchUrl(fetchUrl)
-            active = soup.first("li", {"class": "active"})
+            active = soup.first("ul", {"class": "pagination"}).first(
+                "li", {"class": "active"})
             if active == None or active.first("a").text != str(i):
                 print '共 ', i, '页', active.first("a").text, '---', i
                 break

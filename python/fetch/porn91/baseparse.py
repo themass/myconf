@@ -13,7 +13,7 @@ channel = 'self_pai'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'}
 videoUrl = 'http://91.91p18.space/v.php?next=watch&page=%s'
-maxPage = 400
+maxPage = 200
 maxCount = 3
 
 

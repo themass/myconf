@@ -10,7 +10,6 @@ import re
 import sys
 import zlib
 import os
-import pycurl
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "http://www.eroti-cart.com"

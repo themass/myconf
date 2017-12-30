@@ -47,10 +47,12 @@ def parseImg():
     obj['baseurl'] = baseparse.baseurl
     obj['url'] = baseparse.baseurl
     obj['updateTime'] = datetime.datetime.now()
-    queue.put(img.ImgParse(obj))
+    runner = img.ImgParse(obj)
+    runner.run()
+#     queue.put(img.ImgParse(obj))
 if __name__ == '__main__':
 
-    for i in range(0, maxCount):
-        worker = HandleThread("work-%s" % (i), queue)
-        worker.start()
+    #     for i in range(0, maxCount):
+    #         worker = HandleThread("work-%s" % (i), queue)
+    #         worker.start()
     parseImg()

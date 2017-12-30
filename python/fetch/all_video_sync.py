@@ -3,9 +3,9 @@
 import datetime
 import urllib2
 from common.envmod import *
-import vj69
-import ozsese
-import singlove
+import vj69.video
+import ozsese.video
+import singlove.video
 if __name__ == '__main__':
     vj69videop = vj69.video.VideoParse()
     vj69videop.run()

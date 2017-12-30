@@ -62,7 +62,7 @@ class ImgParse(BaseParse):
         try:
             soup = self.fetchUrl(url)
             alist = []
-            divs = soup.first("div", {'class': 'spacer'})
+            divs = soup.findAll("div", {'class': 'spacer'})
             if divs != None:
                 for div in divs:
                     alist.append(div.first("a"))
@@ -80,7 +80,7 @@ class ImgParse(BaseParse):
                 if span == None:
                     continue
                 imgSoup = self.fetchUrl(item.get('href'))
-                return baseurl + imgSoup.first("img")
+                return baseurl + imgSoup.first("img").get("src")
         except Exception as e:
             print common.format_exception(e)
             return None

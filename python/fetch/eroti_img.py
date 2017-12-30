@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from skswk9 import *
+from eroti import *
 import re
 import sys
 import getopt
@@ -19,7 +19,7 @@ queue = MyQueue.MyQueue(200000)
 maxCount = 1
 parser = baseparse.BaseParse()
 
-#激情自拍#
+#艺术黄图#
 
 
 class HandleThread(threading.Thread):
@@ -42,17 +42,15 @@ class HandleThread(threading.Thread):
 
 
 def parseImg():
-    for key, val in baseparse.img_channels.items():
-        obj = {}
-        obj['name'] = key
-        obj['baseurl'] = baseparse.baseurl
-        obj['url'] = val
-        obj['updateTime'] = datetime.datetime.now()
-        queue.put(img.ImgParse(obj))
+    obj = {}
+    obj['name'] = "图片艺术"
+    obj['baseurl'] = baseparse.baseurl
+    obj['url'] = baseparse.baseurl
+    obj['updateTime'] = datetime.datetime.now()
+    queue.put(img.ImgParse(obj))
 if __name__ == '__main__':
 
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
-#     parseImg()
     parseImg()

@@ -3,6 +3,8 @@
 from baseparse import *
 from urlparse import urlparse
 
+# 被墙的
+
 
 class VideoParse(BaseParse):
 

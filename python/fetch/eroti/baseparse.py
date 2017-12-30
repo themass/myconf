@@ -9,6 +9,8 @@ from common import MyQueue
 import re
 import sys
 import zlib
+import os
+import pycurl
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "http://www.eroti-cart.com"
@@ -31,17 +33,20 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(url, headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": "http://www.eroti-cart.com"})
-                req.encoding = 'utf-8'
-                response = urllib2.urlopen(req, timeout=300)
-                gzipped = response.headers.get(
-                    'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('utf8', errors='replace')
-                if gzipped:
-                    content = zlib.decompress(
-                        content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
-                soup = BeautifulSoup(content)
+                #                 req = urllib2.Request(url, headers={
+                #                     'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": "http://www.eroti-cart.com"})
+                #                 req.encoding = 'utf-8'
+                #                 response = urllib2.urlopen(req, timeout=300)
+                #                 gzipped = response.headers.get(
+                #                     'Content-Encoding')  # 查看是否服务器是否支持gzip
+                #                 content = response.read().decode('utf8', errors='replace')
+                #                 if gzipped:
+                #                     content = zlib.decompress(
+                # content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
+                cmd = ("wget %s" % (url))
+                textlist = os.popen(cmd).readlines()
+
+                soup = BeautifulSoup(textlist)
                 return soup
             except Exception as e:
                 print common.format_exception(e)

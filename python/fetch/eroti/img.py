@@ -42,7 +42,9 @@ class ImgParse(BaseParse):
             pics = []
             for i in range(1, maxImgChannelPage):
                 url = url + str(i)
+
                 alist = self.fetchDataHead(url)
+                print '解析', i, "页--", len(alist)
                 for item in alist:
                     pic = self.fetchImgItemData(item.get("href"))
                     if pic == None:

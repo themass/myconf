@@ -15,7 +15,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 queue = MyQueue.MyQueue(200000)
-maxCount = 2
+maxCount = 1
 
 parser = baseparse.BaseParse()
 

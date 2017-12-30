@@ -19,6 +19,8 @@ queue = MyQueue.MyQueue(200000)
 maxCount = 1
 parser = baseparse.BaseParse()
 
+#激情自拍#
+
 
 class HandleThread(threading.Thread):
 

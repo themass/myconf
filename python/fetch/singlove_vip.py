@@ -48,8 +48,10 @@ def parseImg():
     queue.put(img.ImgParse(obj))
 if __name__ == '__main__':
 
-    for i in range(0, maxCount):
-        worker = HandleThread("work-%s" % (i), queue)
-        worker.start()
-    video.videoParse(queue)
+    #     for i in range(0, maxCount):
+    #         worker = HandleThread("work-%s" % (i), queue)
+    #         worker.start()
+    videop = video.VideoParse()
+    videop.run()
+#     video.videoParse(queue)
 #     parseImg()

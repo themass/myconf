@@ -128,15 +128,15 @@ class DbOps(object):
 
     def inertVideo(self, obj):
         return self.conn.execute(
-            "replace into  videoitems (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s')"
+            "replace into  videoitems (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path")))
+                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path"), 'normal'))
 
     def inertVideoWebView(self, obj):
         return self.conn.execute(
-            "replace into  videoitems_webview (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s')"
+            "replace into  videoitems_webview (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path")))
+                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path"), 'webview'))
 
     def inertVideoUser(self, obj):
         return self.conn.execute(

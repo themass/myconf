@@ -38,7 +38,7 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj)
+            ops.inertVideoWebView(obj)
 
         print '69vj video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
@@ -53,15 +53,17 @@ class VideoParse(BaseParse):
             if iframe == None:
                 return None
             url = "http:%s" % (iframe.get("src"))
-            header = {'User-Agent':
-                      'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
-
-            soup = self.fetchUrl(url, header)
-            source = soup.first("source", {"type": "video/mp4"})
-            print source.get("src")
-            if source != None:
-                return source.get("src")
-            return None
+            return url
+        # 下面的是抓取到具体的播放文件
+#             header = {'User-Agent':
+#                       'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
+#
+#             soup = self.fetchUrl(url, header)
+#             source = soup.first("source", {"type": "video/mp4"})
+#             print source.get("src")
+#             if source != None:
+#                 return source.get("src")
+#             return None
         except Exception as e:
             common.format_exception(e)
             return None

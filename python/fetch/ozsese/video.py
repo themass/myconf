@@ -46,24 +46,26 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj)
+            ops.inertVideoWebView(obj)
 
         print 'ozsese video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
     def parseDomVideo(self, url):
-        header = {'User-Agent':
-                  'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
-        try:
-            soup = self.fetchUrl(url, header)
-            source = soup.first("source")
-            if source == None:
-                return None
-            return source.get("src")
-        except Exception as e:
-            common.format_exception(e)
-            return None
+        return url
+    # 下面是抓取具体mp4文件的
+#         header = {'User-Agent':
+#                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
+#         try:
+#             soup = self.fetchUrl(url, header)
+#             source = soup.first("source")
+#             if source == None:
+#                 return None
+#             return source.get("src")
+#         except Exception as e:
+#             common.format_exception(e)
+#             return None
 
 
 def videoParse(queue):

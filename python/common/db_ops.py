@@ -126,6 +126,12 @@ class DbOps(object):
             "upate  imgitems_item set origUrl='%s',compressUrl='%s' where id=%s"
             % (obj.get("origUrl"), obj.get("compress"), obj.get("id")))
 
+    def inertVideoChannel(self, obj):
+        return self.conn.execute(
+            "replace into  videochannel (name,url,baseurl,updateTime,rate,showtype,enable,channel,channelType) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
+            % (
+                obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1, 1, 1, obj.get("channel"), obj.get("channelType")))
+
     def inertVideo(self, obj):
         return self.conn.execute(
             "replace into  videoitems (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s','%s')"
@@ -137,12 +143,6 @@ class DbOps(object):
             "replace into  videoitems_webview (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path"), 'webview'))
-
-    def inertVideoWebView(self, obj):
-        return self.conn.execute(
-            "replace into  videoitems_webview (name,url,channel,pic,updateTime,path) values ('%s','%s','%s','%s','%s','%s')"
-            % (
-                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path")))
 
     def inertVideoUser(self, obj):
         return self.conn.execute(

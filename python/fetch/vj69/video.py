@@ -30,7 +30,7 @@ class VideoParse(BaseParse):
                 continue
             obj['url'] = mp4Url
             videourl = urlparse(obj['url'])
-            obj['path'] = videourl.path
+            obj['path'] = videourl.query
             obj['updateTime'] = datetime.datetime.now()
             obj['pic'] = picUrl
             obj['channel'] = channel

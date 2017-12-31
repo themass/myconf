@@ -53,7 +53,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
 
     def parseDomVideo(self, url):
-        return url
+        return baseurl + url
     # 下面是抓取具体mp4文件的
 #         header = {'User-Agent':
 #                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}

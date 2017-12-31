@@ -15,5 +15,5 @@ if __name__ == '__main__':
     vj69videop = vj69.video.VideoParse()
     vj69videop.run()
 
-    singlovevideop = singlove.video.VideoParse()
-    singlovevideop.run()
+#     singlovevideop = singlove.video.VideoParse()
+#     singlovevideop.run()

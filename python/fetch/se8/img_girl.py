@@ -24,20 +24,20 @@ class ImgGrilParse(BaseParse):
     def run(self):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-#         ops.inertImgChannel(self.t_obj)
-#         dbVPN.commit()
-        url = self.t_obj['url']
-        objs = self.fetchImgGrilChannel(url)
-        for obj in objs:
-            # and obj['url'].find('tubaobao.htm') == -1
-            if obj['url'].find('/') != -1:
-                ops.inertImgChannel(obj)
-                self.t_queue.put(ParsImgChannel(obj))
-                print '更新channel 完成，chennel数据事件加入队列,', obj['url']
-            else:
-                print '错误的url', obj
+        ops.inertImgChannel(self.t_obj)
         dbVPN.commit()
-        dbVPN.close()
+#         url = self.t_obj['url']
+#         objs = self.fetchImgGrilChannel(url)
+#         for obj in objs:
+#             # and obj['url'].find('tubaobao.htm') == -1
+#             if obj['url'].find('/') != -1:
+#                 ops.inertImgChannel(obj)
+#                 self.t_queue.put(ParsImgChannel(obj))
+#                 print '更新channel 完成，chennel数据事件加入队列,', obj['url']
+#             else:
+#                 print '错误的url', obj
+#         dbVPN.commit()
+#         dbVPN.close()
     # 每一项都当成一个channel
 
     def fetchImgGrilChannel(self, url):

@@ -93,6 +93,6 @@ if __name__ == '__main__':
         worker.start()
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
 #     parseSound()
-    parseGirlImg()
+#     parseGirlImg()
 #     parseImg()
     parseText()

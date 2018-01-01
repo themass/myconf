@@ -88,11 +88,11 @@ def parseImg():
         print obj
 if __name__ == '__main__':
     #
-    #     for i in range(0, maxCount):
-    #         worker = HandleThread("work-%s" % (i), queue)
-    #         worker.start()
+    for i in range(0, maxCount):
+        worker = HandleThread("work-%s" % (i), queue)
+        worker.start()
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
-    parseSound()
+#     parseSound()
     parseGirlImg()
-    parseImg()
+#     parseImg()
     parseText()

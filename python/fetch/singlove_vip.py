@@ -45,13 +45,15 @@ def parseImg():
     obj['baseurl'] = baseparse.baseurl
     obj['url'] = baseparse.imgChannelurl
     obj['updateTime'] = datetime.datetime.now()
-    queue.put(img.ImgParse(obj))
+    handle = img.ImgParse(obj)
+    handle.run()
+#     queue.put(img.ImgParse(obj))
 if __name__ == '__main__':
 
     #     for i in range(0, maxCount):
     #         worker = HandleThread("work-%s" % (i), queue)
     #         worker.start()
-    videop = video.VideoParse()
-    videop.run()
-#     video.videoParse(queue)
-#     parseImg()
+    #     videop = video.VideoParse()
+    #     videop.run()
+    #     video.videoParse(queue)
+    parseImg()

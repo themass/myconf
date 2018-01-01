@@ -48,7 +48,9 @@ def parseSound():
     objs = parser.parsHeadText(lis)
     print "解析有声小说 ok----项目=", len(objs)
     for obj in objs:
-        queue.put(sound.ChannelParse(obj, queue))
+        handle = sound.ChannelParse(obj, queue)
+        handle.run()
+#         queue.put(sound.ChannelParse(obj, queue))
 
 
 def parseText():
@@ -56,34 +58,40 @@ def parseText():
     objs = parser.parsHeadText(lis)
     print "解析有情色小说 ok----项目=", len(objs)
     for obj in objs:
-        queue.put(text.TextChannelParse(obj, queue))
+        handle = text.TextChannelParse(obj, queue)
+        handle.run()
+#         queue.put(text.TextChannelParse(obj, queue))
         print obj
 
 
 def parseGirlImg():
-    lis = parser.fetchHead(u"图区")
+    lis = parser.fetchHead(u"撸撸图区")
     objs = parser.parsHeadText(lis)
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:
         if obj.get("name") == "极品美女":
-            queue.put(img_girl.ImgGrilParse(obj, queue))
+            handle = img_girl.ImgGrilParse(obj, queue)
+            handle.run()
+#             queue.put(img_girl.ImgGrilParse(obj, queue))
             print obj
 
 
 def parseImg():
-    lis = parser.fetchHead(u"圖區")
+    lis = parser.fetchHead(u"激情圖區")
     objs = parser.parsHeadText(lis)
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:
         if obj.get("name") != "极品美女":
-            queue.put(img.ImgParse(obj))
+            handle = img.ImgParse(obj)
+            handle.run()
+#             queue.put(img.ImgParse(obj))
         print obj
 if __name__ == '__main__':
-
-    for i in range(0, maxCount):
-        worker = HandleThread("work-%s" % (i), queue)
-        worker.start()
-#     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
+    #
+    #     for i in range(0, maxCount):
+    #         worker = HandleThread("work-%s" % (i), queue)
+    #         worker.start()
+    #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
     parseSound()
     parseGirlImg()
     parseImg()

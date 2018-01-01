@@ -16,7 +16,7 @@ class ImgParse(BaseParse):
         threading.Thread.__init__(self)
         self.t_obj = obj
         self.t_obj['rate'] = 1.1
-        self.t_obj['showType'] = 0
+        self.t_obj['showType'] = 3
 
     def run(self):
         dbVPN = db.DbVPN()
@@ -28,7 +28,7 @@ class ImgParse(BaseParse):
         first = self.parsFirstPage(url)
         print first, url
         if first != None:
-            for i in range(1, 500):
+            for i in range(1, 20):
                 url = first + str(i) + ".htm"
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()

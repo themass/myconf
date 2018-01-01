@@ -19,7 +19,7 @@ baseurl = "https://www.ttt977.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200000)
-maxCount = 20
+maxCount = 3
 
 parser = baseparse.BaseParse()
 
@@ -84,7 +84,7 @@ if __name__ == '__main__':
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
-#     parseSound()
+    parseSound()
     parseGirlImg()
     parseImg()
     parseText()

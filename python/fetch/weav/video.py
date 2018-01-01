@@ -57,9 +57,10 @@ class VideoParse(BaseParse):
             if textarea == None:
                 return None
             match = regVideo.search(textarea.text)
-            print textarea.text
+            print textarea.text, match
             if match == None:
                 return None
+            print match.group(1)
             soup = self.fetchUrl(match.group(1), header)
             videoUrl = soup.first("source")
             if videoUrl == None:

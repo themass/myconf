@@ -9,8 +9,8 @@ from common import db_ops
 from common.envmod import *
 global baseurl
 
-max_page = 10
-list_size = 10
+max_page = 20
+list_size = 100
 
 
 class ChannelParse(BaseParse):

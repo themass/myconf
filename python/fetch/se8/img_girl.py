@@ -19,6 +19,8 @@ class ImgGrilParse(BaseParse):
     def __init__(self, obj, queue):
         threading.Thread.__init__(self)
         self.t_obj = obj
+        self.t_obj['rate'] = 1.1
+        self.t_obj['showType'] = 3
         self.t_queue = queue
 
     def run(self):

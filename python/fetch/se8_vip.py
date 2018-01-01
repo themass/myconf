@@ -81,8 +81,6 @@ def parseImg():
     objs = parser.parsHeadText(lis)
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:
-        obj['rate'] = 1.2
-        obj['showType'] = 0
         if obj.get("name") != "极品美女":
             handle = img.ImgParse(obj)
             handle.run()

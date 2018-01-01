@@ -12,7 +12,7 @@ import zlib
 import os
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "http://www.eroti-cart.com"
+baseurl = "http://www.eroti-cart.com/"
 img_channel_title = re.compile(r"\[[0-9]+P\]")
 img_channel_date = re.compile(r"\[[0-9\.]+\]")
 img_channels = {"唯美艺术家1": "http://www.eroti-cart.com/erotic-paintings-c-27_28?sort=20a&page=", "唯美艺术家2": "http://www.eroti-cart.com/erotic-drawings-c-27_29?sort=20a&page=",

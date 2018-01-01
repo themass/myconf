@@ -30,7 +30,7 @@ class ImgParse(BaseParse):
         # 有分页
         sortType = dateutil.y_m_d()
 #         channel = self.t_obj['url']
-        channel = urlparse(self.t_obj['url']).path
+        channel = urlparse(self.t_obj['url']).netloc
         for name, url in img_channels.items():
             obj = {}
             obj['name'] = name

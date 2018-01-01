@@ -49,7 +49,7 @@ class ChannelParse(BaseParse):
         print "解析有声小说 ok----channl数=", len(objs)
         for obj in objs:
             ops.inertSoundChannel(obj)
-#             self.q.put(FileParse(obj, obj['url']))
+            self.q.put(FileParse(obj, obj['url']))
         return len(objs)
 
     def fetchDataHead(self, url):

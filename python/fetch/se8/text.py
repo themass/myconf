@@ -9,7 +9,7 @@ from baseparse import *
 from common import dateutil
 global baseurl
 
-max_page = 500
+max_page = 10
 
 
 class TextChannelParse(BaseParse):
@@ -29,7 +29,7 @@ class TextChannelParse(BaseParse):
             url = self.t_obj['url']
             channel = url
             first = self.parsFirstPage(url)
-
+            print first
             if first != None:
                 for i in range(1, max_page):
                     url = first + str(i) + ".htm"

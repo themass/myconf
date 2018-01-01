@@ -12,7 +12,7 @@ import StringIO
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://www.ttt338.com"
+baseurl = "https://www.ttt226.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)
@@ -29,7 +29,7 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(baseurl + url, headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": "https://www.ttt338.com/htm/index.htm"})
+                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": baseurl})
                 req.encoding = 'utf-8'
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(
@@ -58,6 +58,7 @@ class BaseParse(threading.Thread):
             menus = soup.findAll("ul", {"class": "nav_menu clearfix"})
             for menu in menus:
                 active = menu.first("li", "active").text
+                print active
                 if active.count(name) > 0:
                     return menu.findAll("li")
         except Exception as e:

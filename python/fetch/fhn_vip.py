@@ -16,7 +16,7 @@ import getopt
 reload(sys)
 sys.setdefaultencoding('utf8')
 queue = MyQueue.MyQueue(200000)
-maxCount = 20
+maxCount = 3
 parser = baseparse.BaseParse()
 
 
@@ -51,12 +51,14 @@ def parseImg():
     objs = parser.fetchHead("tp")
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:
-        queue.put(img.ImgParse(obj))
+        hanle = img.ImgParse(obj)
+        hanle.run()
+#         queue.put(img.ImgParse(obj))
         print obj
 if __name__ == '__main__':
 
-    for i in range(0, maxCount):
-        worker = HandleThread("work-%s" % (i), queue)
-        worker.start()
+    #     for i in range(0, maxCount):
+    #         worker = HandleThread("work-%s" % (i), queue)
+    #         worker.start()
     parseImg()
-    parseText()
+#     parseText()

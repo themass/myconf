@@ -11,6 +11,8 @@ from common import html_parse
 global baseurl
 nameStr = r"<.*>"
 
+max_page = 80
+
 
 class ImgGrilParse(BaseParse):
 
@@ -103,7 +105,7 @@ class ParsImgChannel(BaseParse):
         first = self.parsFirstPage(self.t_obj['url'])
         objs = []
         if first != None:
-            for i in range(1, 60):
+            for i in range(1, max_page):
                 page = first + str(i) + ".htm"
                 items = self.fetchgirlChannelItems(page)
                 if items == None:

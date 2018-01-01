@@ -78,6 +78,7 @@ class ImgParse(BaseParse):
                         obj['fileDate'] = ''
                     name = ahref.text.replace(obj['fileDate'], '')
                     obj['name'] = name
+                    print name
                     obj['url'] = ahref.get('href')
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel

@@ -18,25 +18,7 @@ import json
 from urlparse import urlparse
 reload(sys)
 str1 = '''
-var player = flowplayer("#hlsjsvod", {
-    ratio : 9 / 16,
-    fullscreen : true,
-    splash : true,
-    embed : false,
-    key : "$763288046005003",
-    share:false,
-    hlsjs : {
-        maxBufferLength : 20,
-        maxMaxBufferLength : 20,
-        autoStartLoad : true,
-        startFragPrefetch : true
-    },
-    clip: {
-        sources: [
-                                { type: "application/x-mpegurl", src:"http://cdn1.looklook.space/videos/0/80479/80479.240p.m3u8?v=1.1" }
-                        ]
-    }
-});
+<iframe width="640" height="360" src="https://weav.cc/embed/892fbfd1c5a5b457e577" frameborder="0" allowfullscreen></iframe>
 
 '''
 if __name__ == '__main__':
@@ -82,6 +64,6 @@ if __name__ == '__main__':
     #     print match.group(0)
     #     match = img_channel_date.search(s)
     #     print match.group(0)
-    regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')
+    regVideo = re.compile(r'src="(.*)" frameborder=')
     match = regVideo.search(str1)
     print match.group(1)

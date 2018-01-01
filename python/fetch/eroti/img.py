@@ -9,6 +9,7 @@ from common.envmod import *
 from common import dateutil
 global baseurl
 import sys
+from urlparse import urlparse
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -28,7 +29,8 @@ class ImgParse(BaseParse):
         dbVPN.commit()
         # 有分页
         sortType = dateutil.y_m_d()
-        channel = self.t_obj['url']
+#         channel = self.t_obj['url']
+        channel = urlparse(self.t_obj['url']).path
         for name, url in img_channels.items():
             obj = {}
             obj['name'] = name

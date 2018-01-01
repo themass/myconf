@@ -71,13 +71,13 @@ class DbOps(object):
 
     def inertImgItems(self, obj):
         return self.conn.execute(
-            "insert into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime"), obj.get("sortType")))
 
     def inertImgItems_item(self, obj):
         return self.conn.execute(
-            "insert into  imgitems_item (picUrl,origUrl,itemUrl) values ('%s','%s','%s')"
+            "replace into  imgitems_item (picUrl,origUrl,itemUrl) values ('%s','%s','%s')"
             % (obj.get("picUrl"), obj.get("origUrl"), obj.get("itemUrl")))
 
     def getImgItems_itemUnSyncById(self, ids):

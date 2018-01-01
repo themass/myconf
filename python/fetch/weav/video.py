@@ -61,7 +61,7 @@ class VideoParse(BaseParse):
             if match == None:
                 return None
             print match.group(1)
-            soup = self.fetchUrl(match.group(1), header)
+            soup = self.fetchUrlWithBase(match.group(1), header)
             videoUrl = soup.first("source")
             if videoUrl == None:
                 return None

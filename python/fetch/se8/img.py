@@ -28,7 +28,7 @@ class ImgParse(BaseParse):
         first = self.parsFirstPage(url)
         print first, url
         if first != None:
-            for i in range(1, 20):
+            for i in range(1, 60):
                 url = first + str(i) + ".htm"
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()

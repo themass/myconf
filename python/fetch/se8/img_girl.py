@@ -103,7 +103,7 @@ class ParsImgChannel(BaseParse):
         first = self.parsFirstPage(self.t_obj['url'])
         objs = []
         if first != None:
-            for i in range(1, 10):
+            for i in range(1, 60):
                 page = first + str(i) + ".htm"
                 items = self.fetchgirlChannelItems(page)
                 if items == None:

@@ -7,7 +7,6 @@ from baseparse import *
 from common import db_ops
 from common.envmod import *
 from common import dateutil
-global baseurl
 
 
 class ImgParse(BaseParse):
@@ -31,7 +30,7 @@ class ImgParse(BaseParse):
                 else:
                     url = (url + 'index_%s.html') % (i)
                 print url
-                count = self.update(url, ops, channel, i)
+                count = self.update(baseurl + url, ops, channel, i)
                 dbVPN.commit()
                 if count == 0:
                     break
@@ -49,7 +48,7 @@ class ImgParse(BaseParse):
                         obj = {}
                         obj['name'] = ahref.text
                         obj['baseurl'] = baseurl
-                        obj['url'] = ahref.get('href')
+                        obj['url'] = ahref.get('href').replace(baseurl, '')
                         obj['updateTime'] = datetime.datetime.now()
                         obj['rate'] = 1.2
                         obj['showType'] = 3
@@ -96,12 +95,14 @@ class ImgParse(BaseParse):
                     print name
                     aurl = ahref.get("href")
                     if aurl.count("http") == 0:
-                        aurl = baseurl + aurl
+                        aurl = '/' + aurl
+                    else:
+                        aurl = aurl.replace(baseurl, '')
                     obj['url'] = aurl
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel
                     obj['updateTime'] = item.first("b", {"class": "b1"}).text
-                    pics = self.fetchImgs(obj['url'])
+                    pics = self.fetchImgs(baseurl + obj['url'])
                     if len(pics) == 0:
                         print '没有 图片文件--', obj['url'], '---', url
                         continue
@@ -118,7 +119,7 @@ class ImgParse(BaseParse):
     def fetchImgs(self, url):
         pics = []
         url = url.replace(".html", "")
-        for i in range(1, 70):
+        for i in range(1, 30):
             if i == 1:
                 fetchUrl = url + ".html"
             else:
@@ -128,7 +129,7 @@ class ImgParse(BaseParse):
             active = soup.first("center")
             if active == None:
                 print '共 ', i, '页', '---', 'null---', fetchUrl
-                continue
+                break
             pic = active.first("img")
             pics.append(pic.get('lazysrc'))
 #             num = soup.first("span", {"id", "allnum"})

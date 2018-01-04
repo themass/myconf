@@ -119,7 +119,7 @@ class ImgParse(BaseParse):
     def fetchImgs(self, url):
         pics = []
         url = url.replace(".html", "")
-        for i in range(1, 30):
+        for i in range(1, 50):
             if i == 1:
                 fetchUrl = url + ".html"
             else:

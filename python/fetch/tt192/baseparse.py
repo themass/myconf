@@ -10,7 +10,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
-baseurl = "http://www.192tt.com/"
+baseurl = "http://www.192tt.com"
 channel = 'self_192tt_more'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
@@ -37,7 +37,7 @@ class BaseParse(threading.Thread):
                 return soup
             except Exception as e:
                 print common.format_exception(e)
-                print '打开页面错误,重试', baseurl + url, '次数', count
+                print '打开页面错误,重试',  url, '次数', count
                 count = count + 1
 
         print '打开页面错误,重试3次还是错误', url

@@ -19,7 +19,7 @@ class ImgParse(BaseParse):
         threading.Thread.__init__(self)
         self.t_obj = obj
         self.t_obj['rate'] = 1.1
-        self.t_obj['showType'] = 0
+        self.t_obj['showType'] = 3
 
     def run(self):
         dbVPN = db.DbVPN()
@@ -95,8 +95,10 @@ class ImgParse(BaseParse):
                         print '没有 图片文件--', ahref, '---', url
                         continue
                     obj['picList'] = pics
+                    obj['showType'] = 3
                     obj['pics'] = len(pics)
                     obj['sortType'] = sortType
+                    obj['showType'] = 3
                     print 'url=', obj['url'], 'filedate=', obj['fileDate'], '  图片数量=', len(pics)
                     objs.append(obj)
             return objs

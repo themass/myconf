@@ -48,6 +48,7 @@ def parseImg():
         obj['baseurl'] = baseparse.baseurl
         obj['url'] = val
         obj['updateTime'] = datetime.datetime.now()
+        obj['channel'] = 'porn_sex'
 #         queue.put(img.ImgParse(obj))
         handle = img.ImgParse(obj)
         handle.run()

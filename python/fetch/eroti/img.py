@@ -20,7 +20,7 @@ class ImgParse(BaseParse):
         threading.Thread.__init__(self)
         self.t_obj = obj
         self.t_obj['rate'] = 1.1
-        self.t_obj['showType'] = 0
+        self.t_obj['showType'] = 3
 
     def run(self):
         dbVPN = db.DbVPN()
@@ -30,15 +30,18 @@ class ImgParse(BaseParse):
         # 有分页
         sortType = dateutil.y_m_d()
 #         channel = self.t_obj['url']
-        channel = urlparse(self.t_obj['url']).netloc
+#         channel = urlparse(self.t_obj['baseurl']).netloc
         for name, url in img_channels.items():
             obj = {}
             obj['name'] = name
-            obj['channel'] = channel
+            obj['channel'] = self.t_obj['url']
             obj['updateTime'] = datetime.datetime.now()
             obj['fileDate'] = ''
             obj['baseurl'] = baseurl
-            obj['url'] = url.replace("&", "")
+            obj['showType'] = 3
+#             obj['url'] = url.replace("&", "")
+            obj['url'] = urlparse(self.t_obj['baseurl']).path
+            print obj['url']
 #             obj['pics'] = len(pics)
             obj['sortType'] = sortType
             pics = []

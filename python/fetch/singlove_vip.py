@@ -43,6 +43,7 @@ def parseImg():
     obj = {}
     obj['name'] = 'H漫画-爽啊'
     obj['baseurl'] = baseparse.baseurl
+    obj['channel'] = 'hhh_sex'
     obj['url'] = baseparse.imgChannelurl
     obj['updateTime'] = datetime.datetime.now()
     handle = img.ImgParse(obj)

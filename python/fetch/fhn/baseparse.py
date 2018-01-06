@@ -16,7 +16,7 @@ regPage = '<div id="pages">(.*)</div>'
 regImg = '<img(.*)/>'
 queue = MyQueue.MyQueue(20000)
 maxCount = 5
-maxImgChannelPage = 100
+maxImgChannelPage = 10
 maxTextChannelPage = 150
 
 

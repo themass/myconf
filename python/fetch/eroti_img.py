@@ -45,7 +45,9 @@ def parseImg():
     obj = {}
     obj['name'] = "图片艺术"
     obj['baseurl'] = baseparse.baseurl
-    obj['url'] = baseparse.baseurl
+    obj['url'] = 'eroti-cart'
+    obj['showType'] = 3
+    obj['channel'] = 'hhh_sex'
     obj['updateTime'] = datetime.datetime.now()
     runner = img.ImgParse(obj)
     runner.run()

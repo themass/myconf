@@ -65,15 +65,15 @@ class DbOps(object):
 
     def inertImgChannel(self, obj):
         return self.conn.execute(
-            "replace into  imgchannel (name,baseurl,url,updateTime,rate,pic,showType) values ('%s','%s','%s','%s',%s,'%s',%s)"
+            "replace into  imgchannel (name,baseurl,url,updateTime,rate,pic,showType,channel) values ('%s','%s','%s','%s',%s,'%s',%s,'%s')"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime"), obj.get("rate"), obj.get('pic', ""), obj.get("showType")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime"), obj.get("rate"), obj.get('pic', ""), obj.get("showType"), obj.get("showType"), obj.get("channel")))
 
     def inertImgItems(self, obj):
         return self.conn.execute(
-            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s',%s)"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime"), obj.get("sortType")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime"), obj.get("sortType"), obj.get("showType")))
 
     def inertImgItems_item(self, obj):
         return self.conn.execute(

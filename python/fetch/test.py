@@ -64,6 +64,11 @@ if __name__ == '__main__':
     #     print match.group(0)
     #     match = img_channel_date.search(s)
     #     print match.group(0)
-    regVideo = re.compile(r'src="(.*)" frameborder=')
-    match = regVideo.search(str1)
+#     regVideo = re.compile(r'src="(.*)" frameborder=')
+#     match = regVideo.search(str1)
+#     print match.group(1)
+    
+    str = 'generate_down(movieurl_10_2 + "/new/zw/2018-01/20/qtVjUYUV.mp4");'
+    regVideo = re.compile(r'generate_down\(movieurl_10_2 \+ "(.*)"\);')
+    match = regVideo.search(str)
     print match.group(1)

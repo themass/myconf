@@ -6,6 +6,8 @@ import threading
 from BeautifulSoup import BeautifulSoup
 from common import common
 from common import MyQueue
+from common.envmod import *
+from common import db_ops
 import re
 import gzip
 import StringIO
@@ -18,8 +20,9 @@ mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)
 maxCount = 5
 maxImgPage=10
-maxVideoPage=200
-videoUrl='/htm/sp.htm'
+maxVideoPage=100
+videoUrl='http://m.123456xia.com:888'
+regVideo = re.compile(r'generate_down\(movieurl_10_2 \+ "(.*)"\);')
 class BaseParse(threading.Thread):
 
     def __init__(self):

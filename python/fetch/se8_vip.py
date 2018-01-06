@@ -86,15 +86,25 @@ def parseImg():
             handle.run()
 #             queue.put(img.ImgParse(obj))
         print obj
+def parseVideo():
+    lis = parser.fetchHead(u"在线电影")
+    objs = parser.parsHeadText(lis)
+    print "解析在线视频 ok----项目=", len(objs)
+    for obj in objs:
+        handle = video.VideoParse(obj)
+        handle.run()
+#             queue.put(img.ImgParse(obj))
+        print obj
 def startWork():
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 if __name__ == '__main__':
-    startWork()
+#     startWork()
     
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
 #     parseSound()
-    parseGirlImg()
+#     parseGirlImg()
 #     parseImg()
 #     parseText()
+    parseVideo()

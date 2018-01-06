@@ -130,7 +130,7 @@ class DbOps(object):
         return self.conn.execute(
             "replace into  videochannel (name,url,baseurl,updateTime,rate,showtype,enable,channel,channelType) values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s')"
             % (
-                obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1, 1, 1, obj.get("channel"), obj.get("channelType")))
+                obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType"), 1, obj.get("channel"), obj.get("channelType")))
 
     def inertVideo(self, obj):
         return self.conn.execute(

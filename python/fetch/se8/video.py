@@ -7,49 +7,79 @@ from common import common
 
 class VideoParse(BaseParse):
 
-    def __init__(self):
-        pass
+    def __init__(self,obj):
+        self.t_obj=obj
+        
 
     def run(self):
-        
-        for i in range(1, maxVideoPage):
-            self.videoParse(
-                channel, videoUrl + str(i))
-            print '解析页数 ', videoUrl, ' ---', i, '完成'
+        dbVPN = db.DbVPN()
+        ops = db_ops.DbOps(dbVPN)
+        chs = self.videoChannel()
+        for item in chs:
+            ops.inertVideoChannel(item)
+        print 'se8 video -- channel ok;,len=',len(chs)
+        dbVPN.commit()
+        dbVPN.close()
+        for item in chs:
+            for i in range(1, maxVideoPage):
+                self.videoParse(
+                    item['url'], item['url'] + str(i)+'.htm')
+                print '解析页数 ', item['url'], ' ---', i, '完成'
     
     def videoChannel(self):
-        soup = self.fetchUrl(videoUrl)
-        
+        soup = self.fetchUrl(self.t_obj['url'])
+        tds = soup.findAll('td')
+        channelList =[]
+        for td in tds:
+            ahref = td.first('a')
+            if ahref == None:
+                print '没有频道'
+                continue
+            obj={}
+            obj['name']='超爽自拍'
+            obj['url']=ahref.get('href')
+            obj['baseurl']=baseurl
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=td.first('img').get('src')
+            obj['rate']=1.2
+            obj['showType']=3
+            obj['channel']=self.t_obj['url']
+            obj['showType']=3
+            obj['channelType']='normal'
+            channelList.append(obj)
+        return channelList
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        divs = soup.findAll("div", {"class": "col-sm-6 col-md-4 col-lg-4"})
-        for div in divs:
-            ahref = div.first('a')
-            if ahref != None:
-                obj = {}
-                mp4Url = self.parseDomVideo(ahref.get("href"))
-                if mp4Url == None:
-                    print 'MP4url', ahref.get("href")
-                    continue
-                obj['url'] = mp4Url
-                img = div.first("img")
-                obj['pic'] = img.get('src')
-                obj['name'] = img.get('title')
-                print img.get('title')
-
-                videourl = urlparse(obj['url'])
-                obj['path'] = videourl.path
-                obj['updateTime'] = datetime.datetime.now()
-                obj['channel'] = channel
-                obj['videoType'] = 'normal'
-                dataList.append(obj)
+        div = soup.first("div", {"class": "box movie_list"})
+        if div!=None:
+            lis = div.findAll('li')
+            for li in lis:
+                ahref = li.first('a')
+                if ahref != None:
+                    obj = {}
+                    mp4Url = self.parseDomVideo(ahref.get("href"))
+                    if mp4Url == None:
+                        print 'MP4url', ahref.get("href")
+                        continue
+                    obj['url'] = mp4Url
+                    img = li.first("img")
+                    obj['pic'] = img.get('src')
+                    obj['name'] = li.first("h3").text
+                    print obj['name']
+    
+                    videourl = urlparse(obj['url'])
+                    obj['path'] = videourl.path
+                    obj['updateTime'] = datetime.datetime.now()
+                    obj['channel'] = channel
+                    obj['videoType'] = 'normal'
+                    dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
             ops.inertVideo(obj)
 
-        print 'weav video -- ; channel =', channel, '; len=', len(dataList), url
+        print 'se8 video -- ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
@@ -57,22 +87,17 @@ class VideoParse(BaseParse):
         header = {'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
-            soup = self.fetchUrl(url, header)
-            textarea = soup.first("textarea", {"name": "video_embed_code"})
-            if textarea == None:
-                return None
-            match = regVideo.search(textarea.text)
-            print textarea.text, match
-            if match == None:
-                return None
-            print match.group(1)
-            soup = self.fetchUrlWithBase(match.group(1), header)
-            videoUrl = soup.first("source")
-            if videoUrl == None:
-                return None
-            return videoUrl.get("src")
+            soup = self.fetchUrl(url)
+            scripts = soup.findAll("script", {"type": "text/javascript"})
+            for s in scripts:
+                match = regVideo.search(s.text)
+                print match,s.text
+                if match!=None:
+                    return videoUrl+match.group(1)
+            print '没找到mp4'
+            return None
         except Exception as e:
-            common.format_exception(e)
+            print common.format_exception(e)
             return None
 
 

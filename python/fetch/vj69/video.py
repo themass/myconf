@@ -34,6 +34,7 @@ class VideoParse(BaseParse):
             obj['updateTime'] = datetime.datetime.now()
             obj['pic'] = picUrl
             obj['channel'] = channel
+            obj['videoType'] = 'webview'
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

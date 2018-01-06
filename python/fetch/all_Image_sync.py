@@ -18,7 +18,7 @@ import skswk9_img
 
 
 if __name__ == '__main__':
-    eroti_img.parseImg()
+#    eroti_img.parseImg()
     fhn_vip.parseImg()
     se8_vip.startWork()
     se8_vip.parseGirlImg()
@@ -28,13 +28,5 @@ if __name__ == '__main__':
     
 #     tt192_vip.parseImg()
 
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     vj69videop = vj69.video.VideoParse()
-#     vj69videop.run()
-
-#     singlovevideop = singlove.video.VideoParse()
-#     singlovevideop.run()
 
 

@@ -21,6 +21,7 @@ class ImgGrilParse(BaseParse):
         self.t_obj = obj
         self.t_obj['rate'] = 1.1
         self.t_obj['showType'] = 3
+        self.t_obj['channel'] = 'porn_sex'
         self.t_queue = queue
 
     def run(self):
@@ -61,7 +62,7 @@ class ImgGrilParse(BaseParse):
                 obj['pic'] = None
             obj['updateTime'] = dateutil.y_m_d()
             obj['rate'] = 1.4
-            obj['showType'] = 0
+            obj['showType'] = 3
             obj['name'] = self.fetchImgGrilChannelName(item.get('href'))
             objs.append(obj)
         return objs
@@ -166,6 +167,7 @@ class ParsImgChannel(BaseParse):
         pics = self.fetchImgs(item.get("href"))
         obj['pics'] = len(pics)
         obj['picList'] = pics
+        obj['showType'] = 3
         return obj
 
     def fetchImgs(self, url):

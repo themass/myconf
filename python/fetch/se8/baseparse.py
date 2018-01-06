@@ -17,7 +17,7 @@ reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)
 maxCount = 5
-
+maxImgPage=10
 
 class BaseParse(threading.Thread):
 

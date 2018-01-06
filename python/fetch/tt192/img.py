@@ -52,6 +52,7 @@ class ImgParse(BaseParse):
                         obj['updateTime'] = datetime.datetime.now()
                         obj['rate'] = 1.2
                         obj['showType'] = 3
+                        obj['channel'] = 'meitu_sex'
                         allChannel.append(obj)
         return allChannel
 
@@ -107,6 +108,7 @@ class ImgParse(BaseParse):
                         print '没有 图片文件--', obj['url'], '---', url
                         continue
                     obj['picList'] = pics
+                    obj['showType'] = 3
                     obj['pics'] = len(pics)
                     obj['sortType'] = sortType
                     print 'url=', obj['url'], '  图片数量=', len(pics)

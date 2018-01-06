@@ -86,11 +86,13 @@ def parseImg():
             handle.run()
 #             queue.put(img.ImgParse(obj))
         print obj
-if __name__ == '__main__':
-
+def startWork():
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
+if __name__ == '__main__':
+    startWork()
+    
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
 #     parseSound()
     parseGirlImg()

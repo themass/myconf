@@ -16,7 +16,7 @@ class ImgParse(BaseParse):
         threading.Thread.__init__(self)
         self.t_obj = obj
         self.t_obj['rate'] = 1.1
-        self.t_obj['showType'] = 0
+        self.t_obj['showType'] = 3
 
     def run(self):
         dbVPN = db.DbVPN()
@@ -80,6 +80,7 @@ class ImgParse(BaseParse):
                     obj['picList'] = pics
                     obj['pics'] = len(pics)
                     obj['sortType'] = sortType
+                    obj['showType'] = 3
                     print 'url=', obj['url'], '  图片数量=', len(pics)
                     objs.append(obj)
             return objs

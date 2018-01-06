@@ -18,7 +18,7 @@ img_channels = {"唯美写真": "thread.php?fid=14&page=", "露出激情": "thre
                 "网友自拍": "thread.php?fid=15&page=", "偷窥原创": "thread.php?fid=49&page="}
 queue = MyQueue.MyQueue(20000)
 maxCount = 5
-maxImgChannelPage = 300
+maxImgChannelPage = 5
 
 
 class BaseParse(threading.Thread):

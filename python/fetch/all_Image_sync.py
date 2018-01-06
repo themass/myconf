@@ -19,7 +19,7 @@ import skswk9_img
 
 if __name__ == '__main__':
 #    eroti_img.parseImg()
-    fhn_vip.parseImg()
+#     fhn_vip.parseImg()
     se8_vip.startWork()
     se8_vip.parseGirlImg()
     se8_vip.parseImg()

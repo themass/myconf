@@ -13,7 +13,7 @@ channel = 'web_self_69vj'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "https://69vj.com/wp-content/plugins/kt/player/player.php"}
 videoUrl = 'https://69vj.com/page/%s'
-maxPage = 20
+maxPage = 5
 maxCount = 3
 
 

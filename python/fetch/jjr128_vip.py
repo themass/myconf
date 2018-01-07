@@ -41,7 +41,9 @@ class HandleThread(threading.Thread):
 #     queue.put(img.ImgParse(obj))
 if __name__ == '__main__':
 
-        for i in range(0, maxCount):
-            worker = HandleThread("work-%s" % (i), queue)
-            worker.start()
-        queue.put(text.TextChannelParse(queue))
+#         for i in range(0, maxCount):
+#             worker = HandleThread("work-%s" % (i), queue)
+#             worker.start()
+#         queue.put(text.TextChannelParse(queue))
+    textRun = text.TextChannelParse(queue)
+    textRun.run()

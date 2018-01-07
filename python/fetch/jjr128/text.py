@@ -106,7 +106,7 @@ class TextChannelParse(BaseParse):
     def fetchText(self,url):
         soup = self.fetchUrl(url)
         data = soup.first("div", {"class": "caoporn_main"})
-        print '解析文件 ', self.t_url
+        
         if data != None:
             try:
                 obj = {}
@@ -117,6 +117,7 @@ class TextChannelParse(BaseParse):
                 ops.inertTextItems_item(obj)
                 dbVPN.commit()
                 dbVPN.close()
+                print '解析文件 ', url,'完成'
                 return 1
             except Exception as e:
                 print common.format_exception(e)

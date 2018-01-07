@@ -27,6 +27,8 @@ class TextChannelParse(BaseParse):
             ops.inertTextChannel(channel)
             print channel
         dbVPN.commit()
+        dbVPN.close()
+        
         
         for item in channels:
             print '开始解析频道---',item
@@ -36,15 +38,15 @@ class TextChannelParse(BaseParse):
                 for i in range(1, maxPage):
                     
                     url = (page_url+"-pg-%s.html")%(i)
+                    dbVPN = db.DbVPN()
+                    ops = db_ops.DbOps(dbVPN)
                     count = self.update(url, ops, channel)
                     dbVPN.commit()
+                    dbVPN.close()
                     if count == 0:
                         break
-                dbVPN.close()
             except Exception as e:
                 print common.format_exception(e)
-                dbVPN.commit()
-                dbVPN.close()
     def parsChannelText(self, ahrefs):
         objs = []
         for ahref in ahrefs:

@@ -9,9 +9,6 @@ from baseparse import *
 from common import dateutil
 global baseurl
 
-max_page = 1
-
-
 class TextChannelParse(BaseParse):
 
     def __init__(self,queue):

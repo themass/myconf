@@ -7,7 +7,6 @@ from common import common
 from common import db_ops
 from baseparse import *
 from common import dateutil
-from test.test_ftplib import RETR_DATA
 global baseurl
 
 max_page = 1

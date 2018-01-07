@@ -45,5 +45,8 @@ if __name__ == '__main__':
 #             worker = HandleThread("work-%s" % (i), queue)
 #             worker.start()
 #         queue.put(text.TextChannelParse(queue))
-    textRun = text.TextChannelParse(queue)
-    textRun.run()
+#     textRun = text.TextChannelParse(queue)
+#     textRun.run()
+
+    imgRun = img.ImgParse()
+    imgRun.run()

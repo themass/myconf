@@ -9,7 +9,7 @@ from baseparse import *
 from common import dateutil
 global baseurl
 
-max_page = 15
+max_page = 1
 
 
 class TextChannelParse(BaseParse):
@@ -29,6 +29,7 @@ class TextChannelParse(BaseParse):
         dbVPN.commit()
         
         for item in channels:
+            print '开始解析频道---',item
             try:
                 channel = item['url']
                 page_url = item['url'].replace('.html','')
@@ -122,6 +123,6 @@ class TextItemContentParse(BaseParse):
                 dbVPN.close()
             except Exception as e:
                 print common.format_exception(e)
-            print self.t_url, ' 解析完成'
+#             print self.t_url, ' 解析完成'
 #             return str(data)
 #         return None

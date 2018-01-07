@@ -80,18 +80,21 @@ class TextChannelParse(BaseParse):
             for item in datalist:
                 ahref = item.first("a")
                 if ahref!=None:
-                    obj = {}
-                    obj['fileDate'] = item.first('span').text
-                    name = ahref.text
-                    obj['name'] = name
-                    print name
-                    obj['url'] = ahref.get('href')
-                    obj['baseurl'] = baseurl
-                    obj['channel'] = channel
-                    obj['updateTime'] = datetime.datetime.now()
-                    self.t_queue.put(TextItemContentParse(ahref.get('href')))
-                    obj['sortType'] = sortType
-                    objs.append(obj)
+                    try:
+                        obj = {}
+                        obj['fileDate'] = item.first('span').text
+                        name = ahref.text
+                        obj['name'] = name
+                        print name
+                        obj['url'] = ahref.get('href')
+                        obj['baseurl'] = baseurl
+                        obj['channel'] = channel
+                        obj['updateTime'] = datetime.datetime.now()
+                        self.t_queue.put(TextItemContentParse(ahref.get('href')))
+                        obj['sortType'] = sortType
+                        objs.append(obj)
+                    except Exception as e:   
+                        print  common.format_exception(e)
             return objs
         except Exception as e:
             print common.format_exception(e)

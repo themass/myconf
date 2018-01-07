@@ -106,11 +106,10 @@ class TextChannelParse(BaseParse):
     def fetchText(self,url):
         soup = self.fetchUrl(url)
         data = soup.first("div", {"class": "caoporn_main"})
-        
         if data != None:
             try:
                 obj = {}
-                obj['fileUrl'] = self.t_url
+                obj['fileUrl'] = url
                 obj['file'] = str(data)
                 dbVPN = db.DbVPN()
                 ops = db_ops.DbOps(dbVPN)

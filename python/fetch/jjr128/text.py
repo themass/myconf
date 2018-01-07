@@ -7,6 +7,7 @@ from common import common
 from common import db_ops
 from baseparse import *
 from common import dateutil
+from test.test_ftplib import RETR_DATA
 global baseurl
 
 max_page = 1
@@ -91,7 +92,11 @@ class TextChannelParse(BaseParse):
                         obj['baseurl'] = baseurl
                         obj['channel'] = channel
                         obj['updateTime'] = datetime.datetime.now()
-                        self.t_queue.put(TextItemContentParse(ahref.get('href')))
+#                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
+                        ret = self.fetchText(ahref.get('href'))
+                        if ret==None:
+                            print '没有文章数据',ahref.get('href')
+                            continue
                         obj['sortType'] = sortType
                         objs.append(obj)
                     except Exception as e:   
@@ -99,16 +104,8 @@ class TextChannelParse(BaseParse):
             return objs
         except Exception as e:
             print common.format_exception(e)
-
-
-class TextItemContentParse(BaseParse):
-
-    def __init__(self, url):
-        threading.Thread.__init__(self)
-        self.t_url = url
-
-    def run(self):
-        soup = self.fetchUrl(self.t_url)
+    def fetchText(self,url):
+        soup = self.fetchUrl(url)
         data = soup.first("div", {"class": "caoporn_main"})
         print '解析文件 ', self.t_url
         if data != None:
@@ -121,8 +118,11 @@ class TextItemContentParse(BaseParse):
                 ops.inertTextItems_item(obj)
                 dbVPN.commit()
                 dbVPN.close()
+                return 1
             except Exception as e:
                 print common.format_exception(e)
+        return None
+        
 #             print self.t_url, ' 解析完成'
 #             return str(data)
 #         return None

@@ -59,10 +59,12 @@ class TextChannelParse(BaseParse):
         objs = self.fetchTextData(url, channel)
         print "解析Txt小说 ok----channl=", channel, '  数量=', len(objs)
         for obj in objs:
-            ret = ops.inertTextItems(obj)
-            if ret == None:
-                print 'text 已经存在，解析完毕'
-                return 0
+            try:
+                ret = ops.inertTextItems(obj)
+                if ret == None:
+                    print 'text 已经存在，解析完毕'
+            except Exception as e:   
+                print  common.format_exception(e)
         return len(objs)
 
     def fetchTextData(self, url, channel):

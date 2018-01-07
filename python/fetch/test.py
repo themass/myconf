@@ -68,7 +68,7 @@ if __name__ == '__main__':
 #     match = regVideo.search(str1)
 #     print match.group(1)
     
-    str = 'generate_down(movieurl_10_2 + "/new/zw/2018-01/20/qtVjUYUV.mp4");'
-    regVideo = re.compile(r'generate_down\(movieurl_10_2 \+ "(.*)"\);')
+    str = ",mac_note='',mac_url=unescape('http%3A%2F%2Fvideo.jiagew762.com%3A8091%2F20171114%2FUH9stJAe%2Findex.m3u8');"
+    regVideo = re.compile(r"unescape\('(.*)m3u8'\);")
     match = regVideo.search(str)
     print match.group(1)

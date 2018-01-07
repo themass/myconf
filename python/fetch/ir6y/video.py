@@ -4,6 +4,7 @@ from baseparse import *
 from urlparse import urlparse
 from common import common
 from urllib import unquote
+import time
 
 class VideoParse(BaseParse):
 
@@ -78,6 +79,7 @@ class VideoParse(BaseParse):
             print 'ir6y video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
             dbVPN.commit()
             dbVPN.close()
+            time.sleep(5)
 
     def parseDomVideo(self, url):
         header = {'User-Agent':

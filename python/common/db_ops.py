@@ -71,9 +71,9 @@ class DbOps(object):
 
     def inertImgItems(self, obj):
         return self.conn.execute(
-            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s',%s)"
+            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType,showType,pic) values ('%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s')"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime"), obj.get("sortType"), obj.get("showType")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime"), obj.get("sortType"), obj.get("showType"), obj.get("pic",'')))
 
     def inertImgItems_item(self, obj):
         return self.conn.execute(

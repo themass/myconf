@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//python/common/db_ops.py=utf-8
+encoding//python/common/envmod.py=utf-8
 encoding//python/fetch/all_Image_sync.py=utf-8
 encoding//python/fetch/all_video_sync.py=utf-8
 encoding//python/fetch/eroti/baseparse.py=utf-8
@@ -8,6 +9,9 @@ encoding//python/fetch/eroti_img.py=utf-8
 encoding//python/fetch/fhn/baseparse.py=utf-8
 encoding//python/fetch/fhn/img.py=utf-8
 encoding//python/fetch/fhn_vip.py=utf-8
+encoding//python/fetch/gaoxiaogif/baseparse.py=utf-8
+encoding//python/fetch/gaoxiaogif/img.py=utf-8
+encoding//python/fetch/gaoxiaogif_vip.py=utf-8
 encoding//python/fetch/ir6y/baseparse.py=utf-8
 encoding//python/fetch/ir6y/video.py=utf-8
 encoding//python/fetch/ir6y_vip.py=utf-8

@@ -38,7 +38,7 @@ class ImgParse(BaseParse):
         for i in range(1, maxImgChannelPage):
             url = '/index.html'
             if i!=1:
-                url = self.t_obj['url'].replace('.html','')+'_'+str(i)+'.html'
+                url = url.replace('.html','')+'_'+str(i)+'.html'
             print url
             pics = self.fetchDataHead(url)   
             print '解析',i,'页','len=',len(pics)
@@ -71,9 +71,9 @@ class ImgParse(BaseParse):
             alist = []
             divs = soup.findAll("div", {'id': 'bdshare'})
             for div in divs:
-                data = div.get('data')
+                data = div.get('data').replace("'", "\"").replace(",}", "}")
                 print data
-                alist.append(json.load(data))
+                alist.append(json.loads(data))
             return alist
 
         except Exception as e:

@@ -76,7 +76,7 @@ class ImgParse(BaseParse):
                         obj ={}
                         picUrl= self.fetchImgItemData(ahref.get('href'))
                         if picUrl!=None:
-                            obj['pic']=picUrl
+                            obj['url']=picUrl
                             obj['name'] = li.first('span',{'class':'text'}).text   
                             alist.append(obj)
             return alist

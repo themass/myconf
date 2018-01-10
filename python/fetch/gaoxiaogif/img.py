@@ -49,7 +49,7 @@ class ImgParse(BaseParse):
                 obj['baseurl'] = baseurl
                 obj['showType'] = 3
         #             obj['url'] = url.replace("&", "")
-                obj['url'] = urlparse(item['pic']).path
+                obj['url'] = urlparse(item['url']).path
                 print obj['url']
         #             obj['pics'] = len(pics)
                 obj['pic'] = item['url']

@@ -38,6 +38,7 @@ class ImgParse(BaseParse):
             url = self.t_obj['url']
             if i!=1:
                 url = self.t_obj['url'].replace('.html','')+'_'+str(i)+'.html'
+            print url
             pics = self.fetchDataHead(url)   
             print '解析',i,'页','len=',len(pics)
             for item in pics:
@@ -78,6 +79,7 @@ class ImgParse(BaseParse):
                         if picUrl!=None:
                             obj['url']=picUrl
                             obj['name'] = li.first('span',{'class':'text'}).text   
+                            print obj['name'] 
                             alist.append(obj)
             return alist
 

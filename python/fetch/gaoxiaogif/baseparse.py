@@ -41,14 +41,14 @@ class BaseParse(threading.Thread):
                 req = urllib2.Request(baseurl+url, headers={"Cookie": "zenid=b227c2098ac37d540e4579fb024e9ba9; __utma=62982011.325664695.1514618636.1514618636.1514618636.1; __utmc=62982011; __utmz=62982011.1514618636.1.1.utmcsr=seqing.one|utmccn=(referral)|utmcmd=referral|utmcct=/2059.html; __atuvc=7%7C52; __utmb=62982011.35.10.1514618636",
                                                     "Upgrade-Insecure-Requests": "1",
                                                     'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": baseurl})
-                req.encoding = 'utf-8'
+                req.encoding = 'gbk'
                 opener = urllib2.build_opener()
                 opener.add_handler(SmartRedirectHandler())
                 urllib2.install_opener(opener)
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('utf8', errors='replace')
+                content = response.read().decode('gbk', errors='replace')
                 if gzipped:
                     content = zlib.decompress(
                         content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码

@@ -68,7 +68,8 @@ if __name__ == '__main__':
 #     match = regVideo.search(str1)
 #     print match.group(1)
     
-    str = ",mac_note='',mac_url=unescape('http%3A%2F%2Fvideo.jiagew762.com%3A8091%2F20171114%2FUH9stJAe%2Findex.m3u8');"
-    regVideo = re.compile(r"unescape\('(.*)m3u8'\);")
+    str = "mac_from='Aplayer',mac_server='',mac_note='',mac_url=unescape('%u5f00%u59cb%u64ad%u653e%24http%3A%2F%2Fvideo.jiagew762.com%3A8091%2F20180106%2F7G8ixAL1%2Findex.m3u8'); "
+    regVideo = re.compile(r"mac_url=unescape\('(.*)(http)(.*)'\);")
     match = regVideo.search(str)
-    print match.group(1)
+    str2 = '(.*)'
+    print match.group(2)+match.group(3)

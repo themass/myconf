@@ -21,9 +21,9 @@ class VideoParse(BaseParse):
         dbVPN.close()
         start=1
         for item in chs:
-            if start<=4:
-                start=start+1
-                continue
+#             if start<=4:
+#                 start=start+1
+#                 continue
             print item['name']
             url= item['url'].replace('/1/','')
             for i in range(1, maxPage):

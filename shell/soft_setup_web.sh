@@ -65,7 +65,7 @@ NGINX_PCRE_VERSION=pcre-8.39
 MYSQL_VERSION=mysql-5.6.34-linux-glibc2.5-x86_64
 RADIUS_VERSION=freeradius-server-2.1.12
 
-PHP_VERSION=php-7.2.0
+PHP_VERSION=php-7.1.12
 
 REDIS_VERSION=redis-3.2.6
 MAVEN_VERSION=apache-maven-3.3.9-bin
@@ -324,27 +324,36 @@ setup_php()
 	
 	shelldir=`pwd`
 	cd ${TMP_HOME}
-	#wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
-	#tar -zxvf  bzip2-1.0.6.tar.gz
-	#cd bzip2-1.0.6
-	#make 
-	#sudo make install
-	#echo 'makefile -fPIC'
-	#cd ..
-	#wget http://zlib.net/zlib-1.2.8.tar.gz
-	#tar -zxvf zlib-1.2.8.tar.gz
-	#cd zlib-1.2.8
-	#make 
-	#make install
-	#echo 'makefile -fPIC'
+	wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+	tar -zxvf  bzip2-1.0.6.tar.gz
+	cd bzip2-1.0.6
+	make 
+	sudo make install
+	echo 'makefile -fPIC'
+	cd ..
+	wget http://zlib.net/zlib-1.2.8.tar.gz
+	tar -zxvf zlib-1.2.8.tar.gz
+	cd zlib-1.2.8
+	make 
+	make install
+	echo 'makefile -fPIC'
 	sudo apt-get install libcurl4-gnutls-dev  libvpx-dev libjpeg-dev libpng-dev libXpm-dev libfreetype6-dev  libmcrypt-dev libmhash-dev
-    rm -f ${PHP_VERSION}.tar.bz2  
-    rm -rf ${PHP_VERSION}
-    rm -rf ${APP_HOME}/${PHP_VERSION}
-    wget ${URL}/soft/${PHP_VERSION}.tar.bz2  
-    tar -jxvf ${PHP_VERSION}.tar.bz2  
-    cd ${PHP_VERSION}
-    ./configure --prefix=${APP_HOME}/${PHP_VERSION} --with-config-file-path=${APP_HOME}/${PHP_VERSION}/etc \
+	rm php-7.1.13.tar.bz2
+	wget http://cn.php.net/distributions/php-7.1.13.tar.bz2
+	tar -jxvf php-7.1.13.tar.bz2
+	rm -rf ${APP_HOME}/php-7.1.13
+	rm -rf ${APP_HOME}/php
+	cd php-7.1.13
+	
+    #rm -f ${PHP_VERSION}.tar.bz2  
+    #rm -rf ${PHP_VERSION}
+    #rm -rf ${APP_HOME}/${PHP_VERSION}
+    #wget ${URL}/soft/${PHP_VERSION}.tar.bz2  
+    #tar -jxvf ${PHP_VERSION}.tar.bz2  
+    #cd ${PHP_VERSION}
+    
+    
+    ./configure --prefix=${APP_HOME}/php-7.1.13 --with-config-file-path=${APP_HOME}/php-7.1.13/etc \
     --with-curl --with-pear --with-gd --with-jpeg-dir --with-vpx-dir --with-png-dir \
     --with-zlib --with-xpm-dir --with-freetype-dir --with-mcrypt --with-mhash --with-mysql \
     --with-mysqli --enable-pdo --with-pdo-mysql --with-openssl  --enable-fpm --enable-exif --enable-wddx --enable-zip \
@@ -356,7 +365,7 @@ setup_php()
     make install
     cd ${APP_HOME}
     rm php
-    ln -s  ${PHP_VERSION} php
+    ln -s  php-7.1.13 php
     #cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/php/etc
     #cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
     mkdir -p ${APP_HOME}/php/lib/php/extensions

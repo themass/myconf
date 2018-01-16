@@ -11,3 +11,7 @@ flush privileges;
 #drop user 'radius'@'%';
 #show grants for 'radius'@'%';
 #删除空用户名的记录
+
+
+#CREATE USER 'mysspanel_free'@'%' IDENTIFIED BY 'Sspanel@themass';
+#	GRANT ALL ON sspanel.* TO 'mysspanel_free'@'%';

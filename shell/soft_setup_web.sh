@@ -324,19 +324,19 @@ setup_php()
 	
 	shelldir=`pwd`
 	cd ${TMP_HOME}
-	wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
-	tar -zxvf  bzip2-1.0.6.tar.gz
-	cd bzip2-1.0.6
-	make 
-	sudo make install
-	echo 'makefile -fPIC'
-	cd ..
-	wget http://zlib.net/zlib-1.2.8.tar.gz
-	tar -zxvf zlib-1.2.8.tar.gz
-	cd zlib-1.2.8
-	make 
-	make install
-	echo 'makefile -fPIC'
+	#wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+	#tar -zxvf  bzip2-1.0.6.tar.gz
+	#cd bzip2-1.0.6
+	#make 
+	#sudo make install
+	#echo 'makefile -fPIC'
+	#cd ..
+	#wget http://zlib.net/zlib-1.2.8.tar.gz
+	#tar -zxvf zlib-1.2.8.tar.gz
+	#cd zlib-1.2.8
+	#make 
+	#make install
+	#echo 'makefile -fPIC'
 	sudo apt-get install libcurl4-gnutls-dev  libvpx-dev libjpeg-dev libpng-dev libXpm-dev libfreetype6-dev  libmcrypt-dev libmhash-dev
 	rm php-7.1.13.tar.bz2
 	wget http://cn.php.net/distributions/php-7.1.13.tar.bz2

@@ -30,12 +30,12 @@ if __name__ == '__main__':
 #     weavvideop.run()
 
 #     se8_vip.parseVideo()
-#     ir6yv = ir6y.video.VideoParse()
-#     ir6yv.run()
+    ir6yv = ir6y.video.VideoParse()
+    ir6yv.run()
 #     
 #     yezmw_vip.parseVideo()
-    xoxo164videop = xoxo164.video.VideoParse()
-    xoxo164videop.run()
+#     xoxo164videop = xoxo164.video.VideoParse()
+#     xoxo164videop.run()
 
     
 

@@ -53,6 +53,7 @@ class VideoParse(BaseParse):
         header = {'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
+            print url
             soup = self.fetchUrl(url, header)
             textarea = soup.first("textarea", {"name": "video_embed_code"})
             if textarea == None:

@@ -66,7 +66,7 @@ class VideoParse(BaseParse):
                     img = li.first("img")
                     obj['pic'] = img.get('src')
                     obj['name'] = li.first("h3").text
-                    print obj['name']
+                    print obj['name'],li.first("h3"),mp4Url
     
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path

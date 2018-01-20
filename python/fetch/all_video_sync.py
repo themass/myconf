@@ -29,7 +29,7 @@ if __name__ == '__main__':
 #     weavvideop = weav.video.VideoParse()
 #     weavvideop.run()
 
-#     se8_vip.parseVideo()
+    se8_vip.parseVideo()
     ir6yv = ir6y.video.VideoParse()
     ir6yv.run()
 #     

@@ -91,7 +91,7 @@ class VideoParse(BaseParse):
             scripts = soup.findAll("script", {"type": "text/javascript"})
             for s in scripts:
                 match = regVideo.search(s.text)
-                print match,s.text
+                print '--------',match,s.text
                 if match!=None:
                     return videoUrl+match.group(1)
             print '没找到mp4'

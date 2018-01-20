@@ -45,7 +45,7 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channel']=self.t_obj['url']
             obj['showType']=3
-            obj['channelType']='normal'
+            obj['channelType']='fanqiang'
             channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):

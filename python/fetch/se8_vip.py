@@ -95,6 +95,15 @@ def parseVideo():
         handle.run()
 #             queue.put(img.ImgParse(obj))
         print obj
+def parseVideoRmb():
+    lis = parser.fetchHead(u"手机下载")
+    objs = parser.parsHeadText(lis)
+    print "解析在线视频 ok----项目=", len(objs)
+    for obj in objs:
+        handle = video_rmb.VideoRmbParse(obj)
+        handle.run()
+#             queue.put(img.ImgParse(obj))
+        print obj
 def startWork():
     for i in range(0, maxCount):
         worker = HandleThread("work-%s" % (i), queue)
@@ -107,4 +116,5 @@ if __name__ == '__main__':
 #     parseGirlImg()
 #     parseImg()
 #     parseText()
-    parseVideo()
+#     parseVideo()
+    parseVideoRmb()

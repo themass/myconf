@@ -9,6 +9,8 @@ import ozsese.baseparse
 import singlove.video
 import weav.video
 import se8_vip
+import ir6y.video
+import yezmw_vip
 if __name__ == '__main__':
 
 #webview
@@ -26,7 +28,23 @@ if __name__ == '__main__':
 #     weavvideop = weav.video.VideoParse()
 #     weavvideop.run()
 
-    se8_vip.parseVideo()
+#     se8_vip.parseVideo()
+    ir6yv = ir6y.video.VideoParse()
+    ir6yv.run()
+    
+    yezmw_vip.parseVideo()
+
+
+
+
+
+
+
+
+
+
+
+
 #     singlovevideop = singlove.video.VideoParse()
 #     singlovevideop.run()
 

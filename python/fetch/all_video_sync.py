@@ -11,6 +11,7 @@ import weav.video
 import se8_vip
 import ir6y.video
 import yezmw_vip
+import xoxo164.video
 if __name__ == '__main__':
 
 #webview
@@ -29,13 +30,14 @@ if __name__ == '__main__':
 #     weavvideop.run()
 
 #     se8_vip.parseVideo()
-    ir6yv = ir6y.video.VideoParse()
-    ir6yv.run()
+#     ir6yv = ir6y.video.VideoParse()
+#     ir6yv.run()
+#     
+#     yezmw_vip.parseVideo()
+    xoxo164videop = xoxo164.video.VideoParse()
+    xoxo164videop.run()
+
     
-    yezmw_vip.parseVideo()
-
-
-
 
 
 

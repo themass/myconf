@@ -23,6 +23,9 @@ maxImgPage=10
 maxVideoPage=100
 videoUrl='http://m.123456xia.com:888'
 regVideo = re.compile(r'generate_down\(movieurl_10_2 \+ "(.*)"\);')
+
+rmbvideoUrl='http://down.maomixia.com:888'
+rmbregVideo = re.compile(r'generate_down\(downurl_10_2 \+ "(.*)"\);')
 class BaseParse(threading.Thread):
 
     def __init__(self):

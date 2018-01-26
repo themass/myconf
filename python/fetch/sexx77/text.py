@@ -35,6 +35,7 @@ class TextChannelParse(BaseParse):
                     page_url = item['url']
                     if i!=1:
                         page_url="%s%s%s"%(page_url.replace('.html','-'),i,".html")
+                    print page_url
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
                     count = self.update(page_url, ops, channel)

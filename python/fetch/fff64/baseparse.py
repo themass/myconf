@@ -30,7 +30,7 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(baseurl + url, headers=aheader)
-                content = urllib2.urlopen(req, timeout=300).read()
+                content = urllib2.urlopen(req, timeout=5000).read()
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
@@ -41,7 +41,7 @@ class BaseParse(threading.Thread):
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
     def header(self,name):
-        soup = self.fetchUrl("", None)
+        soup = self.fetchUrl("", header)
         objs =[]
         uls = soup.findAll('ul',{'class':'nav_menu clearfix'})
         for ul in uls:

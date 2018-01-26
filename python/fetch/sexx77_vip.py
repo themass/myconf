@@ -40,5 +40,7 @@ if __name__ == '__main__':
 #     videop = video.VideoParse()
 #     videop.run()
     
-    textop = text.TextChannelParse()
-    textop.run()
+#     textop = text.TextChannelParse()
+#     textop.run()
+    imgop = img.ImgParse()
+    imgop.run()

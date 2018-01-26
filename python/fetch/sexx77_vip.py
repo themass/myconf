@@ -37,5 +37,8 @@ class HandleThread(threading.Thread):
 
 #     queue.put(img.ImgParse(obj))
 if __name__ == '__main__':
-    videop = video.VideoParse()
-    videop.run()
+#     videop = video.VideoParse()
+#     videop.run()
+    
+    textop = text.TextChannelParse()
+    textop.run()

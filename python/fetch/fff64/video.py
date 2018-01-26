@@ -48,6 +48,8 @@ class VideoParse(BaseParse):
                 ahref = li.first('a')
                 if ahref!=None:
                     mp4Url  = self.parseDomVideo(ahref.get("href"))
+                    if mp4Url==None:
+                        continue
                     obj = {}
                     obj['url'] = mp4Url
                     img = ahref.first("img")
@@ -85,7 +87,7 @@ class VideoParse(BaseParse):
                         match = videoApi.search(script.text)
                         if match!=None:
                             return "%s%s%s"%("http:",match.group(1),".m3u8")
-            print '没有mp4'
+            print url,'没有mp4'
             return None
         except Exception as e:
             print common.format_exception(e)

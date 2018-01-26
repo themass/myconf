@@ -48,7 +48,6 @@ class TextChannelParse(BaseParse):
         for obj in objs:
             obj['baseurl'] = baseurl
             obj['updateTime'] = datetime.datetime.now()
-            objs.append(obj)
 
     def update(self, url, ops, channel):
         objs = self.fetchTextData(url, channel)

@@ -22,6 +22,7 @@ class ImgGrilParse(BaseParse):
         self.t_obj['rate'] = 1.1
         self.t_obj['showType'] = 3
         self.t_obj['channel'] = 'porn_sex'
+        self.t_obj['channelType'] = 'porn_sex'
         self.t_queue = queue
 
     def run(self):

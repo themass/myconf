@@ -61,7 +61,7 @@ class VideoParse(BaseParse):
             for obj in dataList:
                 ops.inertVideo(obj)
     
-            print 'ir6y video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+            print 'nomsgus video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
             dbVPN.commit()
             dbVPN.close()
             time.sleep(5)

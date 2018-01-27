@@ -20,14 +20,14 @@ import jjr128_vip
 import sexx77_vip
 import xoxo164_vip
 if __name__ == '__main__':
-    eroti_img.parseImg()
-    singlove_vip.parseImg()
-    #找不到网站
-#     fhn_vip.parseImg()
-    gaoxiaogif_vip.pareImg()
-    sexx77_vip.pareImg()
-    tt192_vip.parseImg()
-    xoxo164_vip.pareImg()
+#     eroti_img.parseImg()
+#     singlove_vip.parseImg()
+#     #找不到网站
+# #     fhn_vip.parseImg()
+#     gaoxiaogif_vip.pareImg()
+#     sexx77_vip.pareImg()
+#     tt192_vip.parseImg()
+#     xoxo164_vip.pareImg()
 
     #需要翻墙
     jjr128_vip.pareImg()
@@ -35,9 +35,9 @@ if __name__ == '__main__':
     
     
     
-    se8_vip.startWork()
-    se8_vip.parseGirlImg()
-    se8_vip.parseImg()
+#     se8_vip.startWork()
+#     se8_vip.parseGirlImg()
+#     se8_vip.parseImg()
 
 
 

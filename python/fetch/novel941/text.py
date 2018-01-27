@@ -71,7 +71,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "archive-posts"})
+            div = soup.first("div", {"id": "archive-posts"})
             if div == None:
                 print '没有数据', url
                 return []

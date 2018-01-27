@@ -104,7 +104,7 @@ class TextChannelParse(BaseParse):
         except Exception as e:
             print common.format_exception(e)
     def fetchText(self,url):
-        soup = self.fetchContentUrlWithBase(url)
+        soup = self.fetchUrlWithBase(url)
         data = soup.first("div", {"class": "entry-content clearfix"})
         if data != None:
             try:

@@ -42,13 +42,10 @@ if __name__ == '__main__':
 #     nomsgus_vip.parseVideo()
 #     sexx77_vip.parseVideo()
 # #     
-    yezmw_vip.parseVideo()
+#     yezmw_vip.parseVideo()
     xoxo164videop = xoxo164.video.VideoParse()
     xoxo164videop.run()
-  
-  
-  
-  
+
     singlovevideop = singlove.video.VideoParse()
     singlovevideop.run()
 

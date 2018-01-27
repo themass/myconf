@@ -34,8 +34,9 @@ class HandleThread(threading.Thread):
             except Exception as e:
                 print common.format_exception(e)
                 pass
-
-#     queue.put(img.ImgParse(obj))
-if __name__ == '__main__':
+def parseVideo():
     videop = video.VideoParse()
     videop.run()
+#     queue.put(img.ImgParse(obj))
+if __name__ == '__main__':
+    parseVideo()

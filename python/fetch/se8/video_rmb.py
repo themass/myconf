@@ -13,7 +13,7 @@ class VideoRmbParse(BaseParse):
         self.t_obj['pic']=''
         self.t_obj['rate']=1.2
         self.t_obj['showType']=3
-        self.t_obj['channel']='/htm/sp.htm'
+        self.t_obj['channel']=obj['url']
         self.t_obj['showType']=3
         self.t_obj['channelType']='fanqiang'
 

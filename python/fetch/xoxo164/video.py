@@ -39,7 +39,7 @@ class VideoParse(BaseParse):
             print ul.text
             if ul!=None :
                 a = ul.first('a')
-                if a!=None and (a.text=='在线视频' or a.text=='视频二区'):
+                if a!=None and (a.text=='在线视频'):# or a.text=='视频二区'):
                     ahrefs = ul.findAll('a')
                     for ahref in ahrefs:
                         if ahref.get('href')!='/':

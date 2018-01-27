@@ -14,7 +14,7 @@ baseurl = "http://yezmw.com"
 channel_pre = 'self_yezmw_'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "http://yezmw.com"}
-maxPage = 20
+maxPage = 40
 maxCount = 3
 regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')
 

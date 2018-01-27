@@ -65,6 +65,7 @@ encoding//python/fetch/weav/baseparse.py=utf-8
 encoding//python/fetch/weav/video.py=utf-8
 encoding//python/fetch/weav_vip.py=utf-8
 encoding//python/fetch/xoxo164/baseparse.py=utf-8
+encoding//python/fetch/xoxo164/img.py=utf-8
 encoding//python/fetch/xoxo164/video.py=utf-8
 encoding//python/fetch/xoxo164_vip.py=utf-8
 encoding//python/fetch/yezmw/baseparse.py=utf-8

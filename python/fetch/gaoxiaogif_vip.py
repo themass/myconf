@@ -37,13 +37,14 @@ class HandleThread(threading.Thread):
             except Exception as e:
                 print common.format_exception(e)
                 pass
-
+def pareImg():
+    imgrun = img.ImgParse()
+    imgrun.run()
 if __name__ == '__main__':
 
     #     for i in range(0, maxCount):
     #         worker = HandleThread("work-%s" % (i), queue)
     #         worker.start()
-    imgrun = img.ImgParse()
-    imgrun.run()
+    pareImg()
 #     video.videoParse(queue)
 #     parseImg()

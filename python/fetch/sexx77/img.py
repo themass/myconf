@@ -103,5 +103,5 @@ class ImgParse(BaseParse):
         pics = []
         for item in picList:
             if item.get('src') != None and item.get('src').endswith("jpg"):
-                pics.append("http:" + item.get('src'))
+                pics.append(item.get('src'))
         return pics

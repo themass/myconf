@@ -34,20 +34,20 @@ if __name__ == '__main__':
 #     weavvideop.run()
 
 
-#     sp1769_vip.parseVideo()
-#     fff64_vip.parseVideo()
+    sp1769_vip.parseVideo()
+    fff64_vip.parseVideo()
 
-#     se8_vip.parseVideo()
+    se8_vip.parseVideo()
 #     nomsgus_vip.parseVideo()
 #     sexx77_vip.parseVideo()
-# #     
-
+# # #     
+# 
 #     xoxo164videop = xoxo164.video.VideoParse()
 #     xoxo164videop.run()
+# # 
+# #     singlovevideop = singlove.video.VideoParse()
+# #     singlovevideop.run()
 # 
-#     singlovevideop = singlove.video.VideoParse()
-#     singlovevideop.run()
-
-    yezmw_vip.parseVideo()
-    ir6yv = ir6y.video.VideoParse()
-    ir6yv.run()
+# #     yezmw_vip.parseVideo()
+#     ir6yv = ir6y.video.VideoParse()
+#     ir6yv.run()

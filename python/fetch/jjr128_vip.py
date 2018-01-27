@@ -37,7 +37,9 @@ class HandleThread(threading.Thread):
             except Exception as e:
                 print common.format_exception(e)
                 pass
-
+def pareImg():
+    imgrun = img.ImgParse()
+    imgrun.run()
 #     queue.put(img.ImgParse(obj))
 if __name__ == '__main__':
 
@@ -48,5 +50,4 @@ if __name__ == '__main__':
 #     textRun = text.TextChannelParse(queue)
 #     textRun.run()
 
-    imgRun = img.ImgParse()
-    imgRun.run()
+    pareImg()

@@ -9,13 +9,12 @@ from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
 import re
-# http://www.dehyc.com
 baseurl = "http://www.xoxo163.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxPage = 40
 maxCount = 3
-maxPageImg = 10
+maxPageImg = 80
 regVideo = re.compile(r"mac_url=unescape\('(.*)(http)(.*)'\);")
 
 

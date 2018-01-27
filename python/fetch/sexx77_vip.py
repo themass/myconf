@@ -38,6 +38,9 @@ def pareImg():
     imgrun = img.ImgParse()
     imgrun.run()
 #     queue.put(img.ImgParse(obj))
+def parseVideo():
+    videop = video.VideoParse()
+    videop.run()
 if __name__ == '__main__':
 #     videop = video.VideoParse()
 #     videop.run()

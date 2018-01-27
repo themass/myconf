@@ -41,10 +41,12 @@ class HandleThread(threading.Thread):
 
 
 #     queue.put(img.ImgParse(obj))
+def parseVideo():
+    videop = video.VideoParse()
+    videop.run()
 if __name__ == '__main__':
 
     #     for i in range(0, maxCount):
     #         worker = HandleThread("work-%s" % (i), queue)
     #         worker.start()
-        videop = video.VideoParse()
-        videop.run()
+    parseVideo()

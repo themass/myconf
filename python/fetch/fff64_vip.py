@@ -36,6 +36,11 @@ class HandleThread(threading.Thread):
                 pass
 
 #     queue.put(img.ImgParse(obj))
-if __name__ == '__main__':
+def parseVideo():
     videop = video.VideoParse()
     videop.run()
+def parseText():
+    textop = text.TextChannelParse()
+    textop.run()
+if __name__ == '__main__':
+    parseText()

@@ -18,7 +18,7 @@ header = {'User-Agent':
 maxPage = 15
 maxCount = 3
 videoApi = re.compile(r'http:(.*).m3u8')
-
+maxTextPage=40
 
 class BaseParse(threading.Thread):
 

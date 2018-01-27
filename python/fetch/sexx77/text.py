@@ -77,9 +77,8 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        obj['fileDate'] = ''
-                        name = ahref.text
-                        obj['name'] = name
+                        obj['fileDate'] = ahref.first('span').text
+                        obj['name'] = ahref.text.replace(obj['fileDate'],'')
                         print name
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl
@@ -99,7 +98,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"class": "content"})
+        data = soup.first("div", {"class": "post"})
         if data != None:
             try:
                 obj = {}

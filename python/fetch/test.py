@@ -72,16 +72,9 @@ if __name__ == '__main__':
 #     regVideo = re.compile(r"mac_url=unescape\('(.*)(http)(.*)'\);")
 #     match = regVideo.search(str)
 #     str2 = '(.*)'
-    str = '''
-    var system ={win:false,mac:false};
-var p = navigator.platform;system.win = p.indexOf("Win") == 0;system.mac = p.indexOf("Mac") == 0;
-if(system.win||system.mac){
-document.writeln("<iframe width=\"100%\" height=\"435\" src=\"http://api.maoyixiang.com/api.php?type=yunbo&url=20170614/Ixej2izK\" frameborder=\"0\" border=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\"></iframe>");
-    }else{
-document.writeln("<iframe width=\"100%\" height=\"240\" src=\"http://api.maoyixiang.com/api.php?type=yunbo&url=20170614/Ixej2izK\" frameborder=\"0\" border=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\"></iframe>");
-        }
-
-    '''
-    videoApi = re.compile(r'http(.*) frameborder=')
-    match = videoApi.search(str)
-    print match.group(1)
+    str = 'document.writeln("<div class=\"nav_bar\" style=\"width:980px;text-align:left\">");'
+    print str
+    print re.sub(r'\"','"',str)
+    print re.sub(r'/\"','"',str)
+    print re.sub(r'\\"','"',str)
+    

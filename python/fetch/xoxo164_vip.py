@@ -39,10 +39,12 @@ class HandleThread(threading.Thread):
                 pass
 
 
-
+def pareVideo():
+    videorun = video.VideoParse()
+    videorun.run()
 def pareImg():
     imgrun = img.ImgParse()
     imgrun.run()
 if __name__ == '__main__':
 
-    pareImg()
+    pareVideo()

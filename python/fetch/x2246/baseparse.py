@@ -18,6 +18,7 @@ header = {'User-Agent':
 maxPage = 40
 maxCount = 3
 maxTextPage=40
+maxPageImg=50
 
 class BaseParse(threading.Thread):
 
@@ -61,6 +62,34 @@ class BaseParse(threading.Thread):
                 for ahref in ahrefs:
                     obj={}
                     if ahref.get('href')!='/' and ahref.text.count("图片")==0 and ahref.text.count("小说")==0 and ahref.text.count("帮助")==0:
+                        obj['url']=ahref.get('href')
+                        obj['name']=ahref.text
+                        objs.append(obj)
+        return objs
+    def headerImg(self):
+        uls = self.header()
+        objs = []
+        for ul in uls:
+            active = ul.first('li',{"class":"active"})
+            if active.text.count('小说')==0:
+                ahrefs = ul.findAll("a")
+                for ahref in ahrefs:
+                    obj={}
+                    if ahref.get('href')!='/' and ahref.text.count("图片")!=0:
+                        obj['url']=ahref.get('href')
+                        obj['name']=ahref.text
+                        objs.append(obj)
+        return objs
+    def headerText(self):
+        uls = self.header()
+        objs = []
+        for ul in uls:
+            active = ul.first('li',{"class":"active"})
+            if active.text.count('小说')!=0:
+                ahrefs = ul.findAll("a")
+                for ahref in ahrefs:
+                    obj={}
+                    if ahref.get('href')!='/':
                         obj['url']=ahref.get('href')
                         obj['name']=ahref.text
                         objs.append(obj)

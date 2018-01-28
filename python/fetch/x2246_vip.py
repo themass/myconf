@@ -17,5 +17,11 @@ sys.setdefaultencoding('utf8')
 def parseVideo():
     videop = video.VideoParse()
     videop.run()
+def parseText():
+    textop = text.TextChannelParse()
+    textop.run()
+def parseImg():
+    imgop = img.ImgParse()
+    imgop.run()
 if __name__ == '__main__':
-    parseVideo()
+    parseImg()

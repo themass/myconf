@@ -23,11 +23,12 @@ class ImgParse(BaseParse):
         dbVPN.commit()
         for obj in channels:
             channel = obj['url']
-            page_url = obj['url'].replace('.html','')
             for i in range(1, maxPageImg ):
-                url = (page_url+"-pg-%s.html")%(i)
-                print url
-                count = self.update(url, ops, channel, i)
+                page_url = obj['url']
+                if i!=1:
+                    page_url="%s%s%s"%(page_url.replace('.html','-'),i,".html")
+                print page_url
+                count = self.update(page_url, ops, channel, i)
                 dbVPN.commit()
                 if count == 0:
                     break

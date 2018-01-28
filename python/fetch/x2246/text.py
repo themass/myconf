@@ -44,7 +44,7 @@ class TextChannelParse(BaseParse):
             except Exception as e:
                 print common.format_exception(e)
     def textChannel(self):
-        objs = self.header("小说专区")
+        objs = self.headerText()
         for obj in objs:
             obj['baseurl']=baseurl
             obj['updateTime']=datetime.datetime.now()
@@ -82,15 +82,14 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        obj['fileDate'] = ''
-                        name = ahref.text
+                        obj['fileDate'] = ahref.first('span').text
+                        name = ahref.text.replace(obj['fileDate'],"")
                         obj['name'] = name
                         print name
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl
                         obj['channel'] = channel
                         obj['updateTime'] = datetime.datetime.now()
-#                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
                         ret = self.fetchText(ahref.get('href'))
                         if ret==None:
                             print '没有文章数据',ahref.get('href')
@@ -104,7 +103,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"class": "box page_body"})
+        data = soup.first("div", {"class": "content"})
         if data != None:
             try:
                 obj = {}

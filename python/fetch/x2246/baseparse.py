@@ -42,9 +42,8 @@ class BaseParse(threading.Thread):
     def header(self):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
-        print "os.path.realpath(__file__)=%s" % os.path.realpath(__file__)
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("x2246\header.html") as f:
+        with open("x2246/header.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         print content

@@ -3,7 +3,7 @@
 from baseparse import *
 from urlparse import urlparse
 from common import common
-
+from urllib import unquote
 
 class VideoParse(BaseParse):
 
@@ -105,7 +105,7 @@ class VideoParse(BaseParse):
                         if script!=None:
                             match = regVideo.search(script.text)
                             if match!=None :
-                                return match.group(2)+match.group(3)
+                                return unquote(match.group(2)+match.group(3))
             print '没找到mp4'
             return None
         except Exception as e:

@@ -26,7 +26,7 @@ class VideoParse(BaseParse):
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         soup = self.fetchUrl('/index.html')
-        ul = soup.first('ul',{'class':'f16 menu-list'})
+        ul = soup.first('ul',{'class':'mdui-list f16 menu-list'})
         channelList =[]
         if ul!=None:
             lis = ul.findAll('li',{'class':'mdui-list-item mdui-ripple'})

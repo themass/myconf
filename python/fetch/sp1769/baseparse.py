@@ -14,7 +14,7 @@ import re
 baseurl = "http://www.1024988.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
-maxPage = 60
+maxPage = 80
 maxCount = 3
 regVideo = re.compile(r'var osrc="(.*)m3u8";')
 
@@ -31,7 +31,7 @@ class BaseParse(threading.Thread):
                 req = urllib2.Request(baseurl + url, headers={
                     'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl})
                 req.encoding = 'utf-8'
-                response = urllib2.urlopen(req, timeout=300)
+                response = urllib2.urlopen(req, timeout=3000)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
                 content = response.read().decode('gbk', errors='replace')

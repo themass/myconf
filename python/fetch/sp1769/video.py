@@ -50,26 +50,28 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        lis = soup.findAll("li", {"class": "video "})
-        for li in lis:
-            ahref = li.first('a')
-            if ahref != None:
-                obj = {}
-                mp4Url = self.parseDomVideo(ahref.get("href"))
-                if mp4Url == None:
-                    print '没有mp4 文件:', ahref.get("href")
-                    continue
-                obj['url'] = mp4Url
-                img = li.first("img")
-                obj['pic'] = img.get('src')
-                obj['name'] = ahref.get('title')
-                print ahref.get('title')
-
-                videourl = urlparse(obj['url'])
-                obj['path'] = videourl.path
-                obj['updateTime'] = datetime.datetime.now()
-                obj['channel'] = channel
-                dataList.append(obj)
+        div = soup.first('div',{"class":"mdui-row-xs-3 mdui-grid-list list-videos"})
+        if div!=None:
+            divs = soup.findAll("div", {"class": "mdui-col"})
+            for item in divs:
+                ahref = item.first('a')
+                if ahref != None:
+                    obj = {}
+                    mp4Url = self.parseDomVideo(ahref.get("href"))
+                    if mp4Url == None:
+                        print '没有mp4 文件:', ahref.get("href")
+                        continue
+                    obj['url'] = mp4Url
+                    img = item.first("img")
+                    obj['pic'] = img.get('src')
+                    obj['name'] = item.first('h3').text
+                    print obj['name'],mp4Url
+    
+                    videourl = urlparse(obj['url'])
+                    obj['path'] = videourl.path
+                    obj['updateTime'] = datetime.datetime.now()
+                    obj['channel'] = channel
+                    dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

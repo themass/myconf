@@ -52,7 +52,7 @@ class VideoParse(BaseParse):
         soup = self.fetchUrl(url)
         div = soup.first('div',{"class":"mdui-row-xs-3 mdui-grid-list list-videos"})
         if div!=None:
-            divs = soup.findAll("div", {"class": "mdui-col"})
+            divs = div.findAll("div", {"class": "mdui-col"})
             for item in divs:
                 ahref = item.first('a')
                 if ahref != None:

@@ -29,10 +29,12 @@ class VideoParse(BaseParse):
         ul = soup.first('ul',{'class':'f16 menu-list'})
         channelList =[]
         if ul!=None:
-            lis = ul.findAll('li',{'class':''})
+            lis = ul.findAll('li',{'class':'mdui-list-item mdui-ripple'})
             for li in lis:
                 ahref = li.first('a')
                 if ahref!=None:
+                    if ahref.text.count('首页')!=0 or ahref.text.count('最新')!=0 or ahref.text.count('活动')!=0 or ahref.text.count('开通')!=0:
+                        continue
                     obj={}
                     obj['name']=ahref.text
                     obj['url']=ahref.get('href')

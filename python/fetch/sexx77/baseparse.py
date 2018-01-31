@@ -18,8 +18,8 @@ header = {'User-Agent':
 maxTextPage = 60
 maxImgChannelPage = 50
 maxCount = 3
-videoApi = re.compile(r'http:(.*).m3u8')
-
+videoApi = re.compile(r'var redirecturl = "(.*)";')
+videoApim3 = re.compile(r'var main = "(.*)";')
 
 class BaseParse(threading.Thread):
 

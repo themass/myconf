@@ -52,7 +52,7 @@ class VideoParse(BaseParse):
                     print obj['name'],mp4UrlList[i],obj['pic']
     
                     videourl = urlparse(obj['url'])
-                    obj['path'] = videourl.path
+                    obj['path'] = videourl.query
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
                     dataList.append(obj)

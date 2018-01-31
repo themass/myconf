@@ -84,12 +84,7 @@ class VideoParse(BaseParse):
                             match = videoApi.search(script.text)
                             if match!=None:
                                 u = "%s%s"%("http",match.group(1).replace('\"',""))
-                                soup = self.fetchUrlWithBase(u, header)
-                                scripts = soup.findAll('script')
-                                for item in scripts:
-                                    matcha = regVideo.search(item.text)
-                                    if matcha!=None:
-                                        urlList.append(matcha.group(1))
+                                return u
             return urlList
         except Exception as e:
             print common.format_exception(e)

@@ -36,7 +36,7 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']=obj['url']
             obj['showType']=3
-            obj['channelType']='normal'
+            obj['channelType']='webview'
         return  objs
     def videoParse(self, channel, url):
         dataList = []
@@ -65,7 +65,7 @@ class VideoParse(BaseParse):
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             for obj in dataList:
-                ops.inertVideo(obj)
+                ops.inertVideoWebView(obj)
     
             print 'sex777 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
             dbVPN.commit()
@@ -84,14 +84,16 @@ class VideoParse(BaseParse):
                     soup = self.fetchUrl(ahref.get('href'), header)
                     iframe = soup.first('iframe')
                     if iframe!=None:
-                        soup = self.fetchUrlWithBase(iframe.get('src'))
-                        scripts = soup.findAll("script")
-                        for script in scripts:
-                            match = videoApi.search(script.text)
-                            if match!=None:
-                                match2 = videoApim3.search(script.text)
-                                if match2!=None:
-                                    return "%s%s"%(match.group(1),match2.group(1))
+                        return iframe.get('src')
+#                     if iframe!=None:
+#                         soup = self.fetchUrlWithBase(iframe.get('src'))
+#                         scripts = soup.findAll("script")
+#                         for script in scripts:
+#                             match = videoApi.search(script.text)
+#                             if match!=None:
+#                                 match2 = videoApim3.search(script.text)
+#                                 if match2!=None:
+#                                     return "%s%s"%(match.group(1),match2.group(1))
             print url,'没有mp4'
             return None
         except Exception as e:

@@ -72,7 +72,7 @@ class VideoParse(BaseParse):
         try:
             urlList =[]
             soup = self.fetchUrl(url, header)
-            ul = soup.first('ul',{"class":'clearfix'})
+            ul = soup.first('ul',{"class":'    '})
             if ul!=None:
                 alist = ul.findAll('a')
                 for ahref in alist:
@@ -84,7 +84,7 @@ class VideoParse(BaseParse):
                             match = videoApi.search(script.text)
                             if match!=None:
                                 u = "%s%s"%("http",match.group(1).replace('\"',""))
-                                return u
+                                urlList.append(u)
             return urlList
         except Exception as e:
             print common.format_exception(e)

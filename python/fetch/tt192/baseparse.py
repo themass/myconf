@@ -16,7 +16,6 @@ header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxPage = 50
 maxCount = 3
-maxPageImg = 10
 regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')
 channel_more = ['http://www.192tt.com/meitu/',
                 'http://www.192tt.com/gc', 'http://www.192tt.com/gq/']

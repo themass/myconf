@@ -8,6 +8,7 @@ from common import db_ops
 from common.envmod import *
 from common import dateutil
 from common import html_parse
+from fetch.profile import *
 global baseurl
 nameStr = r"<.*>"
 

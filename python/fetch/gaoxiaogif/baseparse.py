@@ -13,7 +13,6 @@ import os
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "http://www.gaoxiaogif.com"
-maxImgChannelPage = 20
 maxCount =3
 
 class SmartRedirectHandler(urllib2.HTTPRedirectHandler):

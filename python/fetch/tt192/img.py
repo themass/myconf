@@ -7,7 +7,7 @@ from baseparse import *
 from common import db_ops
 from common.envmod import *
 from common import dateutil
-
+from fetch.profile import *
 
 class ImgParse(BaseParse):
 
@@ -24,7 +24,7 @@ class ImgParse(BaseParse):
         for obj in channels:
             url = obj['url']
             channel = url
-            for i in range(1, maxPageImg):
+            for i in range(1, maxImgPage):
                 if i == 1:
                     url = url + 'index.html'
                 else:

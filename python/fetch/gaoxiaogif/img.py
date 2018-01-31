@@ -11,6 +11,8 @@ global baseurl
 import sys
 import json
 from urlparse import urlparse
+from fetch.profile import *
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -35,7 +37,7 @@ class ImgParse(BaseParse):
         dbVPN.commit()
         # 有分页
         sortType = dateutil.y_m_d()
-        for i in range(1, maxImgChannelPage):
+        for i in range(1, maxImgPage):
             url = '/index.html'
             if i!=1:
                 url = url.replace('.html','')+'_'+str(i)+'.html'

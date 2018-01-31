@@ -20,37 +20,37 @@ import x2246_vip
 if __name__ == '__main__':
 
 #webview
-    for channel, url in ozsese.baseparse.channels.items():
-        ozsesevideop = ozsese.video.VideoParse(channel, url)
-        ozsesevideop.run()
-    vj69videop = vj69.video.VideoParse()
-    vj69videop.run()
-# #     
-# #     
-# #     
-# #     
-# #    #翻墙 
-# #     
-    weavvideop = weav.video.VideoParse()
-    weavvideop.run()
-
-# 
-    sp1769_vip.parseVideo()
-    fff64_vip.parseVideo()
-# 
-    se8_vip.parseVideo()
-    nomsgus_vip.parseVideo()
-    sexx77_vip.parseVideo()
+#     for channel, url in ozsese.baseparse.channels.items():
+#         ozsesevideop = ozsese.video.VideoParse(channel, url)
+#         ozsesevideop.run()
+#     vj69videop = vj69.video.VideoParse()
+#     vj69videop.run()
 # # #     
-#  
-    xoxo164videop = xoxo164.video.VideoParse()
-    xoxo164videop.run()
-# # 
-    singlovevideop = singlove.video.VideoParse()
-    singlovevideop.run()
+# # #     
+# # #     
+# # #     
+# # #    #翻墙 
+# # #     
+#     weavvideop = weav.video.VideoParse()
+#     weavvideop.run()
 # 
-    yezmw_vip.parseVideo()
-    ir6yv = ir6y.video.VideoParse()
-    ir6yv.run()
-    
-    x2246_vip.parseVideo()
+# # 
+#     sp1769_vip.parseVideo()
+#     fff64_vip.parseVideo()
+# # 
+    se8_vip.parseVideo()
+#     nomsgus_vip.parseVideo()
+#     sexx77_vip.parseVideo()
+# # # #     
+# #  
+#     xoxo164videop = xoxo164.video.VideoParse()
+#     xoxo164videop.run()
+# # # 
+#     singlovevideop = singlove.video.VideoParse()
+#     singlovevideop.run()
+# # 
+#     yezmw_vip.parseVideo()
+#     ir6yv = ir6y.video.VideoParse()
+#     ir6yv.run()
+#     
+#     x2246_vip.parseVideo()

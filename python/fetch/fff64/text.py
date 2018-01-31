@@ -84,8 +84,8 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        obj['fileDate'] = ''
-                        name = ahref.text
+                        obj['fileDate'] = ahref.first('span').text
+                        name = ahref.text.replace(obj['fileDate'],'')
                         obj['name'] = name
                         print name
                         obj['url'] = ahref.get('href')

@@ -38,9 +38,9 @@ if __name__ == '__main__':
 #     sp1769_vip.parseVideo()
 #     fff64_vip.parseVideo()
 # # 
-    se8_vip.parseVideo()
+#     se8_vip.parseVideo()
 #     nomsgus_vip.parseVideo()
-#     sexx77_vip.parseVideo()
+    sexx77_vip.parseVideo()
 # # # #     
 # #  
 #     xoxo164videop = xoxo164.video.VideoParse()

@@ -72,9 +72,27 @@ if __name__ == '__main__':
 #     regVideo = re.compile(r"mac_url=unescape\('(.*)(http)(.*)'\);")
 #     match = regVideo.search(str)
 #     str2 = '(.*)'
-    str = 'document.writeln("<div class=\"nav_bar\" style=\"width:980px;text-align:left\">");'
-    print str
-    print re.sub(r'\"','"',str)
-    print re.sub(r'/\"','"',str)
-    print re.sub(r'\\"','"',str)
+    str = '''
+    var hosts = '';
+            var redirecturl = "http://142.0.129.249:3621";
+            var videoid = "2wX9YSIL62w9vWhh";
+            var id = '2wX9YSIL62w9vWhh'
+            var        l = ''
+            var        r= ''
+            var        t= '15'
+            var        d= ''
+            var        u= ''
+            var main = "/ppvod/HAF292rS.m3u8";
+            var xml = "/ppvod/swemlyti";
+            var pic = "1pon/101013_675/1.jpg";
+
+    '''
+    regVideo = re.compile(r'redirecturl = "(.*)";')
+    match = regVideo.search(str)
+    print match
+    print match.group(1)
     
+    videoApim3 = re.compile(r'var main = "(.*)";')
+    match = videoApim3.search(str)
+    print match
+    print match.group(1)

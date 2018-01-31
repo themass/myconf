@@ -17,7 +17,6 @@ sys.setdefaultencoding('utf8')
 baseurl = "http://www.jjr128.com"
 maxCount = 5
 maxPage=15
-maxPageImg = 20
 class BaseParse(threading.Thread):
 
     def __init__(self):

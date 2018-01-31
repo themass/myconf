@@ -20,9 +20,6 @@ img_channels = {"唯美艺术家1": "http://www.eroti-cart.com/erotic-paintings-
 queue = MyQueue.MyQueue(20000)
 maxCount = 5
 
-maxImgChannelPage = 2
-
-
 class SmartRedirectHandler(urllib2.HTTPRedirectHandler):
 
     def http_error_301(self, req, fp, code, msg, headers):

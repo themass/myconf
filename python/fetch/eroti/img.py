@@ -9,6 +9,7 @@ from common.envmod import *
 from common import dateutil
 global baseurl
 import sys
+from fetch.profile import *
 from urlparse import urlparse
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -45,7 +46,7 @@ class ImgParse(BaseParse):
 #             obj['pics'] = len(pics)
             obj['sortType'] = sortType
             pics = []
-            for i in range(1, maxImgChannelPage):
+            for i in range(1, 3):
                 url = url + str(i)
 
                 alist = self.fetchDataHead(url)

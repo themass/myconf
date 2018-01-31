@@ -7,7 +7,7 @@ from baseparse import *
 from common import db_ops
 from common.envmod import *
 from common import dateutil
-
+from fetch.profile import *
 
 class ImgParse(BaseParse):
 
@@ -24,7 +24,7 @@ class ImgParse(BaseParse):
         for obj in channels:
             channel = obj['url']
             page_url = obj['url'].replace('.html','')
-            for i in range(1, maxPageImg):
+            for i in range(1, maxImgPage):
                 url = (page_url+"-pg-%s.html")%(i)
                 print url
                 count = self.update(url, ops, channel, i)

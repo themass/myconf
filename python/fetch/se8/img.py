@@ -7,6 +7,7 @@ from baseparse import *
 from common import db_ops
 from common.envmod import *
 from common import dateutil
+from fetch.profile import *
 global baseurl
 
 

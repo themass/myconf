@@ -7,6 +7,7 @@ from baseparse import *
 from common import db_ops
 from common.envmod import *
 from common import dateutil
+from fetch.profile import *
 global baseurl
 
 
@@ -25,7 +26,7 @@ class ImgParse(BaseParse):
         dbVPN.commit()
         url = self.t_obj['url']
         channel = url
-        for i in range(1, maxPageImg):
+        for i in range(1, maxImgPage):
             url = (url + imgPageurl) % (i)
             print url
             count = self.update(url, ops, channel, i)

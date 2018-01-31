@@ -7,7 +7,7 @@ from baseparse import *
 from common import db_ops
 from common.envmod import *
 from common import dateutil
-
+from fetch.profile import *
 
 class ImgParse(BaseParse):
 
@@ -23,7 +23,7 @@ class ImgParse(BaseParse):
         dbVPN.commit()
         for obj in channels:
             channel = obj['url']
-            for i in range(1, maxPageImg ):
+            for i in range(1, maxImgPage ):
                 page_url = obj['url']
                 if i!=1:
                     page_url="%s%s%s"%(page_url.replace('.html','-'),i,".html")

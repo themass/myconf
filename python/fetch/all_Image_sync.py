@@ -25,9 +25,9 @@ if __name__ == '__main__':
 #     singlove_vip.parseImg()
 #     #找不到网站
 #     fhn_vip.parseImg()
-    gaoxiaogif_vip.pareImg()
-    sexx77_vip.pareImg()
-    tt192_vip.parseImg()
+#     gaoxiaogif_vip.pareImg()
+#     sexx77_vip.pareImg()
+    
     xoxo164_vip.pareImg()
     x2246_vip.parseImg()
     #需要翻墙
@@ -39,6 +39,8 @@ if __name__ == '__main__':
     se8_vip.startWork()
     se8_vip.parseGirlImg()
     se8_vip.parseImg()
+    
+    tt192_vip.parseImg()
 
 
 

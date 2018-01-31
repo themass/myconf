@@ -132,11 +132,11 @@ class DbOps(object):
             % (
                 obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType"), 1, obj.get("channel"), obj.get("channelType")))
 
-    def inertVideo(self, obj):
+    def inertVideo(self, obj,videoType="normal"):
         return self.conn.execute(
             "replace into  videoitems (name,url,channel,pic,updateTime,path,videoType) values ('%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path"), 'normal'))
+                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType))
 
     def inertVideoWebView(self, obj):
         return self.conn.execute(

@@ -88,7 +88,7 @@ class BaseParse(threading.Thread):
                     row['name'] = a.text
                     row['baseurl'] = baseurl
                     row['url'] = a.get('href')
-                    row['channelType'] = 'fanqiang'
+                    row['channelType'] = 'normal'
                     row['updateTime'] = datetime.datetime.now()
                     row['channel'] = channel_pre + a.get('href')
                     ret.append(row)

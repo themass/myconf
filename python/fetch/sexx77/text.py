@@ -7,6 +7,8 @@ from common import common
 from common import db_ops
 from baseparse import *
 from common import dateutil
+from fetch.profile import *
+
 global baseurl
 
 class TextChannelParse(BaseParse):

@@ -41,6 +41,10 @@ def pareImg():
 def parseVideo():
     videop = video.VideoParse()
     videop.run()
+    
+def parseText():
+    textop = text.TextChannelParse()
+    textop.run()
 if __name__ == '__main__':
 #     videop = video.VideoParse()
 #     videop.run()

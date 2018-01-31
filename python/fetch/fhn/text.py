@@ -7,6 +7,8 @@ from common import common
 from common import db_ops
 from baseparse import *
 from common import dateutil
+from fetch.profile import *
+
 global baseurl
 
 
@@ -36,7 +38,7 @@ class TextChannelParse(BaseParse):
             self.update(url, ops, channel)
             dbVPN.commit()
             if first != None:
-                for i in range(2, maxTextChannelPage):
+                for i in range(2, maxTextPage):
                     url = prefixUrl + "index_" + str(i) + ".html"
                     count = self.update(url, ops, channel)
                     dbVPN.commit()

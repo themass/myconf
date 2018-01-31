@@ -41,6 +41,9 @@ def pareImg():
     imgrun = img.ImgParse()
     imgrun.run()
 #     queue.put(img.ImgParse(obj))
+def parseText():
+    textRun = text.TextChannelParse(queue)
+    textRun.run()
 if __name__ == '__main__':
 
 #         for i in range(0, maxCount):

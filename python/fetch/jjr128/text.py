@@ -7,6 +7,8 @@ from common import common
 from common import db_ops
 from baseparse import *
 from common import dateutil
+from fetch.profile import *
+
 global baseurl
 
 class TextChannelParse(BaseParse):
@@ -32,7 +34,7 @@ class TextChannelParse(BaseParse):
             try:
                 channel = item['url']
                 page_url = item['url'].replace('.html','')
-                for i in range(1, maxPage):
+                for i in range(1, maxTextPage):
                     
                     url = (page_url+"-pg-%s.html")%(i)
                     dbVPN = db.DbVPN()

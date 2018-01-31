@@ -40,17 +40,17 @@ if __name__ == '__main__':
 # # 
 #     se8_vip.parseVideo()
 #     nomsgus_vip.parseVideo()
-    sexx77_vip.parseVideo()
+#     sexx77_vip.parseVideo()
 # # # #     
 # #  
-#     xoxo164videop = xoxo164.video.VideoParse()
-#     xoxo164videop.run()
-# # # 
-#     singlovevideop = singlove.video.VideoParse()
-#     singlovevideop.run()
+    xoxo164videop = xoxo164.video.VideoParse()
+    xoxo164videop.run()
 # # 
-#     yezmw_vip.parseVideo()
-#     ir6yv = ir6y.video.VideoParse()
-#     ir6yv.run()
-#     
-#     x2246_vip.parseVideo()
+    singlovevideop = singlove.video.VideoParse()
+    singlovevideop.run()
+# 
+    yezmw_vip.parseVideo()
+    ir6yv = ir6y.video.VideoParse()
+    ir6yv.run()
+     
+    x2246_vip.parseVideo()

@@ -83,7 +83,7 @@ class VideoParse(BaseParse):
                         if script!=None:
                             match = videoApi.search(script.text)
                             if match!=None:
-                                u = "%s%s"%("http",match.group(1).replace('\"',""))
+                                u = "%s%s"%("http",match.group(1).replace('\\',"").replace('\"',""))
                                 urlList.append(u)
             return urlList
         except Exception as e:

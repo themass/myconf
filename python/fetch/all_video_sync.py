@@ -20,11 +20,11 @@ import x2246_vip
 if __name__ == '__main__':
 
 #webview
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     vj69videop = vj69.video.VideoParse()
-#     vj69videop.run()
+    for channel, url in ozsese.baseparse.channels.items():
+        ozsesevideop = ozsese.video.VideoParse(channel, url)
+        ozsesevideop.run()
+    vj69videop = vj69.video.VideoParse()
+    vj69videop.run()
 # # #     
 # # #     
 # # #     

@@ -1,4 +1,4 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
 import datetime
-maxVideoPage=70
+maxVideoPage=2

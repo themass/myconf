@@ -55,11 +55,11 @@ class BaseParse(threading.Thread):
                     obj['url']=ahref.get('href')
                     objs.append(obj)
         return objs
-    def fetchUrlWithBase(self, url, aheader=header):
+    def fetchUrlWithBase(self, url):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(url, headers=aheader)
+                req = urllib2.Request(url, headers=header)
                 content = urllib2.urlopen(req, timeout=300).read()
                 soup = BeautifulSoup(content)
                 return soup

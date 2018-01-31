@@ -36,7 +36,7 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']=obj['url']
             obj['showType']=3
-            obj['channelType']='normal'
+            obj['channelType']='fanqiang'
         return  objs
     def videoParse(self, channel, url):
         dataList = []

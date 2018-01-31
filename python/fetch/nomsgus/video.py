@@ -72,7 +72,7 @@ class VideoParse(BaseParse):
         try:
             urlList =[]
             soup = self.fetchUrl(url, header)
-            ul = soup.first('ul',{"class":'    '})
+            ul = soup.first('ul',{"class":'clearfix'})
             if ul!=None:
                 alist = ul.findAll('a')
                 for ahref in alist:

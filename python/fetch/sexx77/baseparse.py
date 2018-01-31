@@ -71,11 +71,11 @@ class BaseParse(threading.Thread):
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
 
-    def fetchContentUrlWithBase(self, url, aheader=header):
+    def fetchContentUrlWithBase(self, url):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(url, headers=aheader)
+                req = urllib2.Request(url, headers=header)
                 content = urllib2.urlopen(req, timeout=300).read()
                 return content
             except Exception as e:

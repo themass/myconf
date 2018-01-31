@@ -5,7 +5,7 @@ from urlparse import urlparse
 from common import common
 from urllib import unquote
 import time
-
+from fetch.profile import *
 class VideoParse(BaseParse):
 
     def __init__(self):
@@ -21,7 +21,7 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for ch in chs:
-            for i in range(1, maxPage):
+            for i in range(1, maxVideoPage):
                 url= ch['url']
                 if i!=1:
                     url= "%s%s%s"%(ch['url'].replace('.html','-'),i,'.html')

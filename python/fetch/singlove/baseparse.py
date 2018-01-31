@@ -18,7 +18,6 @@ videoUrl = '/?sort=hits_now&page=%s&per-page=24'
 imgChannelurl = "/cartoon/index"
 imgPageurl = "?page=%s&per-page=24"
 imgUrl = "?page=%s&per-page=25"
-maxPage = 40
 maxCount = 3
 maxPageImg = 10
 regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')

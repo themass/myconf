@@ -15,7 +15,6 @@ baseurl = "https://www.2246x.com"
 headerUrl='/js/LayoutIt.js'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
-maxPage = 40
 maxCount = 3
 maxTextPage=40
 maxPageImg=50

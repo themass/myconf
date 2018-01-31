@@ -12,7 +12,6 @@ import re
 baseurl = "http://www.xoxo163.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
-maxPage = 70
 maxCount = 3
 maxPageImg = 80
 regVideo = re.compile(r"mac_url=unescape\('(.*)(http)(.*)'\);")

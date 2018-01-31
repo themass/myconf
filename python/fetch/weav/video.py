@@ -3,7 +3,7 @@
 from baseparse import *
 from urlparse import urlparse
 from common import common
-
+from fetch.profile import *
 
 class VideoParse(BaseParse):
 
@@ -11,7 +11,7 @@ class VideoParse(BaseParse):
         pass
 
     def run(self):
-        for i in range(1, maxPage):
+        for i in range(1, maxVideoPage):
             self.videoParse(
                 channel, videoUrl + str(i))
             print '解析页数 ', videoUrl, ' ---', i, '完成'

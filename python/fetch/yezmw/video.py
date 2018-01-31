@@ -3,7 +3,7 @@
 from baseparse import *
 from urlparse import urlparse
 from common import common
-
+from fetch.profile import *
 
 class VideoParse(BaseParse):
 
@@ -15,7 +15,7 @@ class VideoParse(BaseParse):
         ops = db_ops.DbOps(dbVPN)
         ops.inertVideoChannel(self.t_obj)
         dbVPN.commit()
-        for i in range(1, maxPage):
+        for i in range(1, maxVideoPage):
             self.videoParse(
                 self.t_obj['channel'], (self.t_obj['url'] + "/p/%s") % (i))
             print '解析完成 ', self.t_obj['url'], ' ---', i, '页'

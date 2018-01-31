@@ -5,7 +5,7 @@ from urlparse import urlparse
 from common import common
 from urllib import unquote
 import time
-
+from fetch.profile import *
 class VideoParse(BaseParse):
 
     def __init__(self):
@@ -20,7 +20,7 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         url= channelObj['url'].replace('.html','')
-        for i in range(1, maxPage):
+        for i in range(1, maxVideoPage):
             self.videoParse(channelObj['channel'], (url + "-%s.html") % (i))
             print '解析完成 ', channelObj['channel'], ' ---', i, '页'
     def videoChannel(self):

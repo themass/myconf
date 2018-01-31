@@ -15,7 +15,6 @@ channel = 'self_xsiansix'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "https://xsiansix.com"}
 videoUrl = 'http://www.xsiansix.com/category/性感成人自拍偷拍影片免费在线看/page/%s/'
-maxPage = 40
 maxCount = 3
 regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')
 

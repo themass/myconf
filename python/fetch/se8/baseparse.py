@@ -20,7 +20,6 @@ mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)
 maxCount = 5
 maxImgPage=10
-maxVideoPage=100
 videoUrl='http://m.123456xia.com:888'
 regVideo = re.compile(r'generate_down\(movieurl_10_2 \+ "(.*)"\);')
 

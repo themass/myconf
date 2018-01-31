@@ -3,7 +3,7 @@
 from baseparse import *
 from urlparse import urlparse
 from common import common
-
+from fetch.profile import *
 
 class VideoParse(BaseParse):
 
@@ -13,7 +13,7 @@ class VideoParse(BaseParse):
 
     def run(self):
 
-        for i in range(1, maxPage):
+        for i in range(1, maxVideoPage):
             self.videoParse(self.t_channel, self.t_url % (i))
 
     def videoParse(self, channel, url):

@@ -4,7 +4,7 @@ from baseparse import *
 from urlparse import urlparse
 from common import common
 from urllib import unquote
-
+from fetch.profile import *
 class VideoParse(BaseParse):
 
     def __init__(self):
@@ -26,7 +26,7 @@ class VideoParse(BaseParse):
 #                 continue
             print item['name']
             url= item['url'].replace('/1/','')
-            for i in range(1, maxPage):
+            for i in range(1, maxVideoPage):
                 self.videoParse(item['channel'], (url + "/%s/") % (i))
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):

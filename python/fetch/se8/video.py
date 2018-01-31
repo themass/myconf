@@ -3,7 +3,7 @@
 from baseparse import *
 from urlparse import urlparse
 from common import common
-
+from fetch.profile import *
 
 class VideoParse(BaseParse):
 

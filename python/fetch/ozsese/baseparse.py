@@ -14,7 +14,6 @@ baseurl = "https://ozsese.com/"
 channels = {'web_self_ozsese': "videos.php?page=%s"}
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "https://69vj.com/wp-content/plugins/kt/player/player.php"}
-maxPage = 20
 maxCount = 3
 maxPageImg = 10
 regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')

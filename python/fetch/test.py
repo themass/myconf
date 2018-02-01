@@ -73,10 +73,9 @@ if __name__ == '__main__':
 #     match = regVideo.search(str)
 #     str2 = '(.*)'
     str = '''
-var mac_flag='play',mac_link='/R/15930/zx-{src}-{num}.html', mac_name='瀛︾敓鐨勫濡�2/鎴戝鐢熺殑姣嶄翰2',mac_from='ykyun',mac_server='no',mac_note='',mac_url=unescape('韩语无字$/15930/index.m3u8');
-    '''
+var VideoInfoList="m3u8$$高清点播$http://yj.yongjiu6.com/20180131/VV2is90G/index.m3u8$m3u8$$$微云$$高清点播$3c26f94665744e3c94a628a7573a7ab9$weiyun    '''
     
-    videoApi = re.compile(r"unescape(.*);")
+    videoApi = re.compile(r"http(.*)\.m3u8")
     match = videoApi.search(str)
     print match
     print match.group(1).replace("')","")

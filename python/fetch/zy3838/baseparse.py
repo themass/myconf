@@ -12,11 +12,12 @@ from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
 baseurl = "http://www.3838zy.com"
-baseurlR="www.3838zy.com/R/"
+baseurlR="http://www.3838zy.com/R/"
+jsurl = 'http://j.hs950.com:89'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
-videoApi = re.compile(r'http(.*);')
+videoApi = re.compile(r"unescape(.*);")
 class BaseParse(threading.Thread):
 
     def __init__(self):

@@ -73,11 +73,10 @@ if __name__ == '__main__':
 #     match = regVideo.search(str)
 #     str2 = '(.*)'
     str = '''
-   var mac_flag='play',mac_link='/vod-play-id-9545-src-{src}-num-{num}.html', mac_name='公司面试潜规则',mac_from='8laoyem3u8$$$8laoye',mac_server='no$$$no',mac_note='$$$',mac_url=unescape('韩语中字$/15116/index.m3u8$$$韩语中字$http://j.or2015.com:81/share/x7Ho1dPEmGaJYTRA');
-
+var mac_flag='play',mac_link='/R/15930/zx-{src}-{num}.html', mac_name='瀛︾敓鐨勫濡�2/鎴戝鐢熺殑姣嶄翰2',mac_from='ykyun',mac_server='no',mac_note='',mac_url=unescape('韩语无字$/15930/index.m3u8');
     '''
     
-    videoApi = re.compile(r'http(.*);')
+    videoApi = re.compile(r"unescape(.*);")
     match = videoApi.search(str)
     print match
     print match.group(1).replace("')","")

@@ -64,15 +64,14 @@ class VideoParse(BaseParse):
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
                 dataList.append(obj)
-            dbVPN = db.DbVPN()
-            ops = db_ops.DbOps(dbVPN)
-            for obj in dataList:
-                ops.inertVideo(obj,"webview",baseurl)
-    
-            print 'seman video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
-            dbVPN.commit()
-            dbVPN.close()
-            time.sleep(5)
+        dbVPN = db.DbVPN()
+        ops = db_ops.DbOps(dbVPN)
+        for obj in dataList:
+            ops.inertVideo(obj,"webview",baseurl)
+
+        print 'seman video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        dbVPN.commit()
+        dbVPN.close()
 
     def parseDomVideo(self, url):
         header = {'User-Agent':

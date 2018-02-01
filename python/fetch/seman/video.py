@@ -56,7 +56,7 @@ class VideoParse(BaseParse):
                 obj['url'] = mp4Url
                 img = ahref.first("img")
                 obj['pic'] = img.get('data-original')
-                obj['name'] = ahref.text
+                obj['name'] = ahref.get("title")
                 print obj['name'],mp4Url,obj['pic']
 
                 videourl = urlparse(obj['url'])

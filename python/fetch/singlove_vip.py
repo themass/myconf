@@ -38,7 +38,9 @@ class HandleThread(threading.Thread):
                 print common.format_exception(e)
                 pass
 
-
+def parseVideo():
+    videop = video.VideoParse()
+    videop.run()
 def parseImg():
     obj = {}
     obj['name'] = 'H漫画-爽啊'
@@ -57,4 +59,4 @@ if __name__ == '__main__':
     #     videop = video.VideoParse()
     #     videop.run()
     #     video.videoParse(queue)
-    parseImg()
+#     parseImg()

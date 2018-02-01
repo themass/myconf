@@ -73,26 +73,11 @@ if __name__ == '__main__':
 #     match = regVideo.search(str)
 #     str2 = '(.*)'
     str = '''
-    var hosts = '';
-            var redirecturl = "http://142.0.129.249:3621";
-            var videoid = "2wX9YSIL62w9vWhh";
-            var id = '2wX9YSIL62w9vWhh'
-            var        l = ''
-            var        r= ''
-            var        t= '15'
-            var        d= ''
-            var        u= ''
-            var main = "/ppvod/HAF292rS.m3u8";
-            var xml = "/ppvod/swemlyti";
-            var pic = "1pon/101013_675/1.jpg";
+   var mac_flag='play',mac_link='/vod-play-id-9545-src-{src}-num-{num}.html', mac_name='公司面试潜规则',mac_from='8laoyem3u8$$$8laoye',mac_server='no$$$no',mac_note='$$$',mac_url=unescape('韩语中字$/15116/index.m3u8$$$韩语中字$http://j.or2015.com:81/share/x7Ho1dPEmGaJYTRA');
 
     '''
-    regVideo = re.compile(r'redirecturl = "(.*)";')
-    match = regVideo.search(str)
-    print match
-    print match.group(1)
     
-    videoApim3 = re.compile(r'var main = "(.*)";')
-    match = videoApim3.search(str)
+    videoApi = re.compile(r'http(.*);')
+    match = videoApi.search(str)
     print match
-    print match.group(1)
+    print match.group(1).replace("')","")

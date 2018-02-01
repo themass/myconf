@@ -17,6 +17,7 @@ import nomsgus_vip
 import sexx77_vip
 import sp1769_vip
 import x2246_vip
+import seman_vip
 if __name__ == '__main__':
 
 #webview
@@ -40,7 +41,7 @@ if __name__ == '__main__':
 # # 
 #     se8_vip.parseVideo()
 #     nomsgus_vip.parseVideo()
-    sexx77_vip.parseVideo()
+#     sexx77_vip.parseVideo()
 # # # #     
 # #  
 #     xoxo164videop = xoxo164.video.VideoParse()
@@ -54,3 +55,4 @@ if __name__ == '__main__':
 #     ir6yv.run()
 #      
 #     x2246_vip.parseVideo()
+    seman_vip.parseVideo()

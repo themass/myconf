@@ -94,7 +94,8 @@ class ImgParse(BaseParse):
                     obj['url'] = ahref.get('href')
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel
-                    obj['updateTime'] = item.first('span').text
+                    obj['updateTime'] = datetime.datetime.now()
+                    obj['fileDate'] = item.first('span').text
                     pics = self.fetchImgs(obj['url'])
                     if len(pics) == 0:
                         print '没有 图片文件--', obj['url'], '---', url

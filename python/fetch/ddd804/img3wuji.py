@@ -18,12 +18,11 @@ class ImgParse(BaseParse):
         channels = self.parseChannel()
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-        for channel in channels:
-            ops.inertImgChannelWithChannel(channel,channel['name'])
-        dbVPN.commit()
         for obj in channels:
             channel = obj['name']
             url = obj['url']
+            obj['url']=obj['name']
+            ops.inertImgChannelWithChannel(obj)
             for i in range(1, maxImgPage):
                 if i!=1:
                     url = url.replace('.html',"-")

@@ -8,7 +8,7 @@ from common import db_ops
 from common.envmod import *
 from common import dateutil
 from fetch.profile import *
-
+from urllib import unquote
 class ImgParse(BaseParse):
 
     def __init__(self):
@@ -114,7 +114,7 @@ class ImgParse(BaseParse):
             try:
                 imgs = data.findAll('img')
                 for img in imgs:
-                    pics.append(img.get('src'))
+                    pics.append(unquote(img.get('src')))
             except Exception as e:
                 print common.format_exception(e)
         return pics

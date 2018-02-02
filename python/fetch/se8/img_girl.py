@@ -29,14 +29,12 @@ class ImgGrilParse(BaseParse):
     def run(self):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-        ops.inertImgChannel(self.t_obj)
-        dbVPN.commit()
         url = self.t_obj['url']
         objs = self.fetchImgGrilChannel(url)
         for obj in objs:
             # and obj['url'].find('tubaobao.htm') == -1
             if obj['url'].find('/') != -1:
-                ops.inertImgChannel(obj)
+                ops.inertImgChannelWithChannel(obj,obj['channel'].replace("/?m=",''))
                 self.t_queue.put(ParsImgChannel(obj))
                 print '更新channel 完成，chennel数据事件加入队列,', obj['url']
             else:
@@ -65,6 +63,8 @@ class ImgGrilParse(BaseParse):
             obj['updateTime'] = dateutil.y_m_d()
             obj['rate'] = 1.4
             obj['showType'] = 3
+            self.t_obj['channel'] = 'porn_sex'
+            self.t_obj['channelType'] = 'porn_sex'
             obj['name'] = self.fetchImgGrilChannelName(item.get('href'))
             objs.append(obj)
         return objs
@@ -163,7 +163,7 @@ class ParsImgChannel(BaseParse):
             obj['name'] = obj['name'].replace(obj['fileDate'], '')
         else:
             obj['fileDate'] = ''
-        obj['channel'] = self.t_obj['url']
+        obj['channel'] = self.t_obj['url'].replace("/?m=",'')
         obj['updateTime'] = dateutil.y_m_d()
         obj['baseurl'] = baseurl
         pics = self.fetchImgs(item.get("href"))

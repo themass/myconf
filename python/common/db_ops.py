@@ -68,6 +68,11 @@ class DbOps(object):
             "replace into  imgchannel (name,baseurl,url,updateTime,rate,pic,showType,channel) values ('%s','%s','%s','%s',%s,'%s',%s,'%s')"
             % (
                 obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime"), obj.get("rate"), obj.get('pic', ""), obj.get("showType"), obj.get("channel")))
+    def inertImgChannelWithChannel(self, obj,channel):
+        return self.conn.execute(
+            "replace into  imgchannel (name,baseurl,url,updateTime,rate,pic,showType,channel) values ('%s','%s','%s','%s',%s,'%s',%s,'%s')"
+            % (
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("updateTime"), obj.get("rate"), obj.get('pic', ""), obj.get("showType"), channel))
 
     def inertImgItems(self, obj):
         return self.conn.execute(

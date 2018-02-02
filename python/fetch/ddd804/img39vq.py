@@ -22,7 +22,7 @@ class ImgParse(BaseParse):
             channel = obj['name']
             url = obj['url']
             obj['url']=obj['name']
-            ops.inertImgChannelWithChannel(obj)
+            ops.inertImgChannel(obj)
             for i in range(1, maxImgPage):
                 if i!=1:
                     url = url.replace('index.html',"")

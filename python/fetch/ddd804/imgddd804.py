@@ -27,12 +27,10 @@ class ImgParse(BaseParse):
             for i in range(1, maxImgPage):
                 if i!=1:
                     url = url.replace('index.html',"")
-                    url = "%s%s%s%s"%(url,"list_",211-i,".html")
+                    url = "%s%s%s%s"%(url,"list_",80-i,".html")
                 print url
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()
-                if count == 0:
-                    break
 
     def parseChannel(self):
         objs = self.fetchddd804Head(baseurl1,'图片')

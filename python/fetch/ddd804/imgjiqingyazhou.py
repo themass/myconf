@@ -72,7 +72,7 @@ class ImgParse(BaseParse):
 
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(baseurl2,url)
-        div = soup.first("ul", {"class": "typelist"})
+        div = soup.first("div", {"class": "mainArea"})
         if div == None:
             print '没有数据', url
             return []
@@ -86,7 +86,7 @@ class ImgParse(BaseParse):
                     obj = {}
                     obj['fileDate'] = item.first('span').text
                     name = ahref.text
-                    obj['name'] = name.repalce(obj['fileDate'] ,'')
+                    obj['name'] = name.replace(obj['fileDate'] ,'')
                     print name
                     obj['url'] = ahref.get('href')
                     obj['baseurl'] = baseurl2

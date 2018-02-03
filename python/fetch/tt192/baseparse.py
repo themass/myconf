@@ -17,8 +17,9 @@ header = {'User-Agent':
 maxPage = 50
 maxCount = 3
 regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')
-channel_more = ['http://www.192tt.com/meitu/',
-                'http://www.192tt.com/gc', 'http://www.192tt.com/gq/']
+# channel_more = ['http://www.192tt.com/meitu/',
+#                 'http://www.192tt.com/gc', 'http://www.192tt.com/gq/', 'http://www.192tt.com/hz/']
+channel_more = [ 'http://www.192tt.com/hz/']
 
 
 class BaseParse(threading.Thread):

@@ -51,6 +51,7 @@ class ImgParse(BaseParse):
                     imgitem['pic'] = pics[0]
                     imgitem['url'] = '%s%s'%('wowant.com/xieegif/',i)
                     ops.inertImgItems(imgitem)
+                    dbVPN.commit()
                     print '一次提交',imgitem['url'],len(pics)
                     try:
                         for picItem in imgitem['picList']:
@@ -58,6 +59,7 @@ class ImgParse(BaseParse):
                             item['itemUrl'] = imgitem['url']
                             item['picUrl'] = picItem
                             ops.inertImgItems_item(item)
+                        dbVPN.commit()
                     except Exception as e:
                         print common.format_exception(e)
                     pics=[]

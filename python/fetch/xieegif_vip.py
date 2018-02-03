@@ -29,7 +29,7 @@ def parserneihanImg():
     imgop = imgneihanpa.ImgParse()
     imgop.run()
 if __name__ == '__main__':
-    parsewowantImg()
-    parserneihanImg()
-#     parsehugao8Img()
+#     parsewowantImg()
+#     parserneihanImg()
+    parsehugao8Img()
 #     parseratooImg()

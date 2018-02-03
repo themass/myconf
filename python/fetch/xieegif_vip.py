@@ -19,6 +19,9 @@ sys.setdefaultencoding('utf8')
 def parsewowantImg():
     imgop = imgwowant.ImgParse()
     imgop.run()
-
+def parsehugao8Img():
+    imgop = imghugao8.ImgParse()
+    imgop.run()
 if __name__ == '__main__':
-    parsewowantImg()
+#     parsewowantImg()
+    parsehugao8Img()

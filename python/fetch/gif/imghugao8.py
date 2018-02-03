@@ -76,8 +76,13 @@ class ImgParse(BaseParse):
         data = soup.findAll("div", {"class": "picBox"})
         for obj in data:
             try:
-                img = obj.first('img')
-                pics.append(img.get('src'))
+                ahref = obj.first('a')
+                soup = self.fetchUrl(ahref.get('href'))
+                div  = soup.first('div',{'id':'plink'})
+                if div!=None:
+                    img  = div.first('img')
+                    if img!=None:
+                        pics.append(img.get('src').replace('.jpg','.gif'))
             except Exception as e:
                 print common.format_exception(e)
         return pics

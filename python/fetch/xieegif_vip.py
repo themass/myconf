@@ -25,7 +25,11 @@ def parsehugao8Img():
 def parseratooImg():
     imgop = imgratoo.ImgParse()
     imgop.run()
+def parserneihanImg():
+    imgop = imgneihanpa.ImgParse()
+    imgop.run()
 if __name__ == '__main__':
 #     parsewowantImg()
 #     parsehugao8Img()
-    parseratooImg()
+#     parseratooImg()
+    parserneihanImg()

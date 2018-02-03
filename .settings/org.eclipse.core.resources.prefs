@@ -34,6 +34,7 @@ encoding//python/fetch/gaoxiaogif_vip.py=utf-8
 encoding//python/fetch/gif/__init__.py=utf-8
 encoding//python/fetch/gif/baseparse.py=utf-8
 encoding//python/fetch/gif/imghugao8.py=utf-8
+encoding//python/fetch/gif/imgneihanpa.py=utf-8
 encoding//python/fetch/gif/imgratoo.py=utf-8
 encoding//python/fetch/gif/imgwowant.py=utf-8
 encoding//python/fetch/ir6y/baseparse.py=utf-8

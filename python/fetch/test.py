@@ -16,7 +16,10 @@ import os
 import sys
 import json
 from urlparse import urlparse
+from urllib import unquote
+import sys
 reload(sys)
+sys.setdefaultencoding('utf8')
 str1 = '''
 <iframe width="640" height="360" src="https://weav.cc/embed/892fbfd1c5a5b457e577" frameborder="0" allowfullscreen></iframe>
 
@@ -75,7 +78,9 @@ if __name__ == '__main__':
     str = '''
 var VideoInfoList="m3u8$$高清点播$http://yj.yongjiu6.com/20180131/VV2is90G/index.m3u8$m3u8$$$微云$$高清点播$3c26f94665744e3c94a628a7573a7ab9$weiyun    '''
     
-    videoApi = re.compile(r"http(.*)\.m3u8")
-    match = videoApi.search(str)
-    print match
-    print match.group(1).replace("')","")
+#     videoApi = re.compile(r"http(.*)\.m3u8")
+#     match = videoApi.search(str)
+#     print match
+#     print match.group(1).replace("')","")
+    src ="http://nbvvv.8iwvsl.com/120203/p01/%E9%A8%B7%E5%A9%A6%E7%9A%84%E6%9C%A8%E7%93%9C%E5%A5%B6%E4%B9%B3%E4%BA%A4%E6%9C%8D%E5%8B%99[9P]/01.jpg";
+    print unquote(src)

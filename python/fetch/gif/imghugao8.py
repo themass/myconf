@@ -44,18 +44,24 @@ class ImgParse(BaseParse):
                 pics.extend(imgs)
                 if len(imgs)==0:
                     break
-            imgitem['picList'] = pics
-            imgitem['pics'] = len(pics)
-            imgitem['pic'] = pics[0]
-            ops.inertImgItems(imgitem)
-            try:
-                for picItem in imgitem['picList']:
-                    item = {}
-                    item['itemUrl'] = obj['url']
-                    item['picUrl'] = picItem
-                    ops.inertImgItems_item(item)
-            except Exception as e:
-                print common.format_exception(e)
+                if i%2==0:
+                    imgitem['picList'] = pics
+                    imgitem['pics'] = len(pics)
+                    imgitem['pic'] = pics[0]
+                    imgitem['url'] = '%s%s'%('hugao8.com/category/gao-gif/',i)
+                    ops.inertImgItems(imgitem)
+                    dbVPN.commit()
+                    try:
+                        for picItem in imgitem['picList']:
+                            item = {}
+                            item['itemUrl'] = imgitem['url']
+                            item['picUrl'] = picItem
+                            ops.inertImgItems_item(item)
+                        dbVPN.commit()
+                    
+                    except Exception as e:
+                        print common.format_exception(e)
+                    pics=[]
         dbVPN.commit()
     def parseChannel(self):
         objs = []

@@ -31,5 +31,5 @@ def parserneihanImg():
 if __name__ == '__main__':
 #     parsewowantImg()
 #     parserneihanImg()
-    parsehugao8Img()
-#     parseratooImg()
+#     parsehugao8Img()
+    parseratooImg()

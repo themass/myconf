@@ -26,9 +26,9 @@ class ImgParse(BaseParse):
             url = obj['baseurl']
             ops.inertImgChannel(obj)
             imgitem = {}
-            imgitem['name'] = '搞笑gif动态'
-            imgitem['url'] = 'hugao8.com/category/gao-gif/'
-            imgitem['baseurl'] = baseurl2
+            imgitem['name'] = '邪恶gif'
+            imgitem['url'] = 'wowant.com/xieegif'
+            imgitem['baseurl'] = baseurl1
             imgitem['channel'] = channel
             imgitem['updateTime'] = datetime.datetime.now()
             imgitem['fileDate'] = ''
@@ -37,7 +37,7 @@ class ImgParse(BaseParse):
             pics = []
             for i in range(1, maxImgPage):
                 if i!=1:
-                    url = "%s%s%s%s"%(obj['baseurl'],"page/",i,"/")
+                    url = "%s%s%s%s"%(obj['baseurl'],"p_",i,".html")
                 imgs = self.fetchImgs(url)
                 print len(imgs),url
                 pics.extend(imgs)
@@ -62,27 +62,22 @@ class ImgParse(BaseParse):
         print '需要解析的channel=', obj.get('url')
         obj['name']='邪恶GIF'
         obj['url']='xiee_GIF'
-        obj['baseurl']=baseurl2
+        obj['baseurl']=baseurl1
         obj['updateTime'] = datetime.datetime.now()
         obj['rate'] = 1.2
         obj['showType'] = 3
-        obj['channel'] = 'gaoxiao_gif'
+        obj['channel'] = 'porn_sex'
         objs.append(obj)
         return objs
 
     def fetchImgs(self, url):
         pics = []
         soup = self.fetchUrl(url)
-        data = soup.findAll("div", {"class": "picBox"})
+        data = soup.findAll("div", {"class": "wowant_tu"})
         for obj in data:
             try:
-                ahref = obj.first('a')
-                soup = self.fetchUrl(ahref.get('href'))
-                div  = soup.first('div',{'id':'plink'})
-                if div!=None:
-                    img  = div.first('img')
-                    if img!=None:
-                        pics.append(img.get('src').replace('.jpg','.gif'))
+                img = obj.first('img')
+                pics.append(img.get('src'))
             except Exception as e:
                 print common.format_exception(e)
         return pics

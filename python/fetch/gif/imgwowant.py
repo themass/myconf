@@ -28,7 +28,7 @@ class ImgParse(BaseParse):
             dbVPN.commit()
             imgitem = {}
             imgitem['name'] = '邪恶gif'
-            imgitem['url'] = 'wowant.com/xieegif'
+            imgitem['url'] = 'wowant.com/xieegif/'
             imgitem['baseurl'] = baseurl1
             imgitem['channel'] = channel
             imgitem['updateTime'] = datetime.datetime.now()
@@ -44,18 +44,21 @@ class ImgParse(BaseParse):
                 pics.extend(imgs)
                 if len(imgs)==0:
                     break
-            imgitem['picList'] = pics
-            imgitem['pics'] = len(pics)
-            imgitem['pic'] = pics[0]
-            ops.inertImgItems(imgitem)
-            try:
-                for picItem in imgitem['picList']:
-                    item = {}
-                    item['itemUrl'] = obj['url']
-                    item['picUrl'] = picItem
-                    ops.inertImgItems_item(item)
-            except Exception as e:
-                print common.format_exception(e)
+            if i%2==0:
+                imgitem['picList'] = pics
+                imgitem['pics'] = len(pics)
+                imgitem['pic'] = pics[0]
+                imgitem['url'] = '%s%s'%('wowant.com/xieegif/',i)
+                ops.inertImgItems(imgitem)
+                try:
+                    for picItem in imgitem['picList']:
+                        item = {}
+                        item['itemUrl'] = imgitem['url']
+                        item['picUrl'] = picItem
+                        ops.inertImgItems_item(item)
+                except Exception as e:
+                    print common.format_exception(e)
+                pics=[]
         dbVPN.commit()
     def parseChannel(self):
         objs = []

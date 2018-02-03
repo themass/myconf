@@ -20,10 +20,11 @@ class ImgParse(BaseParse):
         ops = db_ops.DbOps(dbVPN)
         for obj in channels:
             channel = obj['name']
-            url = obj['url']
+            page_url = obj['url']
             obj['url']=obj['name']
             ops.inertImgChannel(obj)
             for i in range(1, maxImgPage):
+                url = page_url
                 if i!=1:
                     url = url.replace('.html',"-")
                     url = "%s%s%s"%(url,i,".html")

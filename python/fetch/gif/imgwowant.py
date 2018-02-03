@@ -67,7 +67,7 @@ class ImgParse(BaseParse):
         obj['updateTime'] = datetime.datetime.now()
         obj['rate'] = 1.2
         obj['showType'] = 3
-        obj['channel'] = 'porn_sex'
+        obj['channel'] = 'gaoxiao_gif'
         objs.append(obj)
         return objs
 

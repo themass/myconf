@@ -30,6 +30,6 @@ def parserneihanImg():
     imgop.run()
 if __name__ == '__main__':
 #     parsewowantImg()
-    parsehugao8Img()
-#     parseratooImg()
+#     parsehugao8Img()
+    parseratooImg()
 #     parserneihanImg()

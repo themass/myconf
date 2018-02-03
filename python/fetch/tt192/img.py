@@ -41,19 +41,24 @@ class ImgParse(BaseParse):
         allChannel = []
         for div in divs:
             alist = div.findAll('a')
+            start = False
             for ahref in alist:
                 for need in channel_more:
                     if ahref.get('href').count(need) > 0:
-                        print '需要解析的channel=', ahref.get('href')
-                        obj = {}
-                        obj['name'] = ahref.text
-                        obj['baseurl'] = baseurl
-                        obj['url'] = ahref.get('href').replace(baseurl, '')
-                        obj['updateTime'] = datetime.datetime.now()
-                        obj['rate'] = 1.2
-                        obj['showType'] = 3
-                        obj['channel'] = 'meitu_sex'
-                        allChannel.append(obj)
+                        if ahref.text=='糖果画报':
+                            start=True
+                        
+                        if start==True:
+                            print '需要解析的channel=', ahref.get('href')
+                            obj = {}
+                            obj['name'] = ahref.text
+                            obj['baseurl'] = baseurl
+                            obj['url'] = ahref.get('href').replace(baseurl, '')
+                            obj['updateTime'] = datetime.datetime.now()
+                            obj['rate'] = 1.2
+                            obj['showType'] = 3
+                            obj['channel'] = 'meitu_sex'
+                            allChannel.append(obj)
         return allChannel
 
     def update(self, url, ops, channel, i):

@@ -29,8 +29,8 @@ def parse3wujiImg():
     imgop = img3wuji.ImgParse()
     imgop.run()
 if __name__ == '__main__':
-#     parse3wujiImg()
+    parse3wujiImg()
 #     parse39vqImg()
 #      
-    parsedddImg()
-#     parsejiqingyazhouImg()
+#     parsedddImg()
+    parsejiqingyazhouImg()

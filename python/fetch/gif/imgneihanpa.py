@@ -24,7 +24,8 @@ class ImgParse(BaseParse):
         for obj in channels:
             channel = obj['url']
             url = obj['baseurl']
-#             ops.inertImgChannel(obj)
+            ops.inertImgChannel(obj)
+            dbVPN.commit()
             imgitem = {}
             imgitem['name'] = '内涵gif'
             imgitem['url'] = 'neihanpa.com/gif'
@@ -55,7 +56,7 @@ class ImgParse(BaseParse):
                     ops.inertImgItems_item(item)
             except Exception as e:
                 print common.format_exception(e)
-    
+        dbVPN.commit()
     def parseChannel(self):
         objs = []
         obj={}

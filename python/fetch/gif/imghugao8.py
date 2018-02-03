@@ -24,7 +24,7 @@ class ImgParse(BaseParse):
         for obj in channels:
             channel = obj['url']
             url = obj['baseurl']
-            ops.inertImgChannel(obj)
+#             ops.inertImgChannel(obj)
             imgitem = {}
             imgitem['name'] = '搞笑gif动态'
             imgitem['url'] = 'hugao8.com/category/gao-gif/'

@@ -26,7 +26,7 @@ class ImgParse(BaseParse):
             for i in range(1, maxImgPage):
                 if i!=1:
                     url = url.replace('index.html',"")
-                    url = "%s%s%s%s"%(url,"list_",80-i,".html")
+                    url = "%s%s%s%s"%(url,"list_",100-i,".html")
                 print url
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()
@@ -83,7 +83,6 @@ class ImgParse(BaseParse):
                     obj = {}
                     name = ahref.text
                     obj['name'] = name
-                    print name
                     obj['url'] = ahref.get('href')
                     obj['baseurl'] = baseurl1
                     obj['channel'] = channel
@@ -97,7 +96,8 @@ class ImgParse(BaseParse):
                     obj['showType'] = 3
                     obj['pics'] = len(pics)
                     obj['sortType'] = sortType
-                    print 'url=', obj['url'], '  图片数量=', len(pics)
+                    obj['pic'] = pics[0]
+                    print name,pics[0],'  url=', obj['url'], '  图片数量=', len(pics)
                     objs.append(obj)
                 except Exception as e:
                     print common.format_exception(e)

@@ -37,7 +37,7 @@ class ImgParse(BaseParse):
             pics = []
             for i in range(1, maxImgPage):
                 if i!=1:
-                    url = "%s%s%s%s"%(obj['baseurl'].replace('.html','_'),i,".html")
+                    url = "%s%s%s"%(obj['baseurl'].replace('.html','_'),i,".html")
                 imgs = self.fetchImgs(url)
                 print len(imgs),url
                 pics.extend(imgs)

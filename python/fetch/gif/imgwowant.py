@@ -50,6 +50,7 @@ class ImgParse(BaseParse):
                 imgitem['pic'] = pics[0]
                 imgitem['url'] = '%s%s'%('wowant.com/xieegif/',i)
                 ops.inertImgItems(imgitem)
+                print '一次提交',imgitem['url']
                 try:
                     for picItem in imgitem['picList']:
                         item = {}

@@ -50,6 +50,7 @@ class ImgParse(BaseParse):
                     imgitem['url'] = '%s%s'%('ratoo.net/a/gif/',i)
                     ops.inertImgItems(imgitem)
                     dbVPN.commit()
+                    print '一次提交',imgitem['url']
                     try:
                         for picItem in imgitem['picList']:
                             item = {}

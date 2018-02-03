@@ -86,7 +86,6 @@ class ImgParse(BaseParse):
                     obj['fileDate'] = item.first('span').text
                     name = ahref.text
                     obj['name'] = name.replace(obj['fileDate'],'')
-                    print obj['name']
                     obj['url'] = ahref.get('href')
                     obj['baseurl'] = baseurl5
                     obj['channel'] = channel
@@ -100,7 +99,7 @@ class ImgParse(BaseParse):
                     obj['showType'] = 3
                     obj['pics'] = len(pics)
                     obj['sortType'] = sortType
-                    print 'url=', obj['url'], '  图片数量=', len(pics)
+                    print name,pics[0],'  url=', obj['url'], '  图片数量=', len(pics)
                     objs.append(obj)
                 except Exception as e:
                     print common.format_exception(e)

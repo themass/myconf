@@ -44,6 +44,7 @@ class ImgParse(BaseParse):
                 pics.extend(imgs)
                 if len(imgs)==0:
                     break
+                print (i%2)
                 if i%2==0:
                     imgitem['picList'] = pics
                     imgitem['pics'] = len(pics)

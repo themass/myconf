@@ -33,9 +33,14 @@ class VideoParse(BaseParse):
         soup = self.fetchUrl('/')
         div  = soup.first('div',{'class':'hypoSub clear'})
         channelList =[]
+        start = False
         if div!=None:
             ahrefs = div.findAll('a')
             for ahref in ahrefs:
+                if ahref.text.count('战争片')==0 and start==False:
+                    continue
+                start = True
+                    
                 obj={}
                 obj['name']=ahref.text
                 obj['url']=ahref.get('href')

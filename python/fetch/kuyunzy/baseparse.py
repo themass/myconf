@@ -88,5 +88,5 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', baseurl+url
         return ''
-p = BaseParse()
-print p.fetchContentUrlWithBase("/list/?37-1.html", header)
+# p = BaseParse()
+# print p.fetchContentUrlWithBase("/list/?37-1.html", header)

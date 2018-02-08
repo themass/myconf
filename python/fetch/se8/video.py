@@ -43,7 +43,7 @@ class VideoParse(BaseParse):
             obj['pic']=td.first('img').get('src')
             obj['rate']=1.2
             obj['showType']=3
-            obj['channel']=ahref.get('href')
+            obj['channel']="www.233cf.com"+ahref.get('href')
             obj['showType']=3
             obj['channelType']='fanqiang'
             channelList.append(obj)

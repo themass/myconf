@@ -74,13 +74,13 @@ class BaseParse(threading.Thread):
                     'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl})
                 req.encoding = 'utf-8'
                 response = urllib2.urlopen(req, timeout=300)
-                content = response.read().decode('gbk', errors='replace')
+                content = response.read()
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
                 if gzipped:
                     content = zlib.decompress(
                         content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
-                return content
+                return content.decode('utf-8', errors='replace')
             except Exception as e:
                 print common.format_exception(e)
                 print '打开页面错误,重试', baseurl+url, '次数', count

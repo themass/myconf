@@ -36,11 +36,11 @@ class BaseParse(threading.Thread):
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('utf8', errors='replace')
+                content = response.read()
                 if gzipped:
                     content = zlib.decompress(
                         content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
-                soup = BeautifulSoup(content)
+                soup = BeautifulSoup(content.decode('utf8', errors='replace'))
                 return soup
             except Exception as e:
                 print common.format_exception(e)
@@ -80,7 +80,7 @@ class BaseParse(threading.Thread):
                 if gzipped:
                     content = zlib.decompress(
                         content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
-                return content.decode('utf-8', errors='replace')
+                return content
             except Exception as e:
                 print common.format_exception(e)
                 print '打开页面错误,重试', baseurl+url, '次数', count

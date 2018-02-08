@@ -40,7 +40,7 @@ class BaseParse(threading.Thread):
                 if gzipped:
                     content = zlib.decompress(
                         content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
-                soup = BeautifulSoup(content.decode('utf8', errors='replace'))
+                soup = BeautifulSoup(content.decode('gbk', errors='replace'))
                 return soup
             except Exception as e:
                 print common.format_exception(e)

@@ -67,15 +67,15 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(url, headers=aheader)
+                req = urllib2.Request(baseurl+url, headers=aheader)
                 content = urllib2.urlopen(req, timeout=300).read()
                 return content
             except Exception as e:
                 print common.format_exception(e)
-                print '打开页面错误,重试', url, '次数', count
+                print '打开页面错误,重试', baseurl+url, '次数', count
                 count = count + 1
 
-        print '打开页面错误,重试3次还是错误', url
+        print '打开页面错误,重试3次还是错误', baseurl+url
         return ''
 
     

@@ -6,6 +6,8 @@ from common import common
 from urllib import unquote
 import time
 from fetch.profile import *
+from urllib import unquote
+
 class VideoParse(BaseParse):
 
     def __init__(self):
@@ -17,60 +19,53 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print '1769 video -- channel ok;,len=',len(chs)
+        print '17ishare video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            url= item['url'].replace('1.html','')
             for i in range(1, maxVideoPage):
-                self.videoParse(item['channel'], (url + "%s.html") % (i))
+                url= item['url']
+                if i!=1:
+                    url= "%s%s%s"%(item['url'].replace('.html','-'),i,".html")
+                self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
-        soup = self.fetchUrl('/')
-        ul = soup.first('ul',{'class':'nav-online'})
-        channelList =[]
-        if ul!=None:
-            ahrefs = ul.findAll('a')
-            for ahref in ahrefs:
-                obj={}
-                obj['name']=ahref.text
-                if obj['name']=='在线视频':
-                    continue
-                obj['url']=ahref.get('href')
-                obj['baseurl']=baseurl
-                obj['updateTime']=datetime.datetime.now()
-                obj['pic']=''
-                obj['rate']=1.2
-                obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.get('href')
-                obj['showType']=3
-                obj['channelType']='normal'
-                channelList.append(obj)
+        channelList=[]
+        obj={}
+        obj['name']='剧情2'
+        obj['url']="/vodtypehtml/1.html"
+        obj['baseurl']=baseurl
+        obj['updateTime']=datetime.datetime.now()
+        obj['pic']=''
+        obj['rate']=1.2
+        obj['channel']=baseurl.replace("http://", "").replace("https://", "")+'/vodtypehtml/1.html';
+        obj['showType']=3
+        obj['channelType']='movie'
+        channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "list_video"})
-        if div!=None:
-            lis = div.findAll('li')
-            for li in lis:
-                ahref = li.first('a')
-                if ahref != None:
-                    obj = {}
-                    mp4Url = self.parseDomVideo(ahref.get("href"))
-                    if mp4Url == None:
-                        print '没有mp4 文件:', ahref.get("href")
-                        continue
-                    obj['url'] = mp4Url
-                    img = li.first("img")
-                    obj['pic'] = img.get('src')
-                    obj['name'] = img.get('alt')
-                    print img.get('alt')
-    
-                    videourl = urlparse(obj['url'])
-                    obj['path'] = videourl.path
-                    obj['updateTime'] = datetime.datetime.now()
-                    obj['channel'] = channel
-                    dataList.append(obj)
+        lis = soup.findAll("div",{"class":'movie-item'})
+        for li in lis:
+            ahref = li.first('a')
+            if ahref != None:
+                obj = {}
+                mp4Url = self.parseDomVideo(ahref.get("href"))
+                if mp4Url == None:
+                    print '没有mp4 文件:', ahref.get("href")
+                    continue
+                obj['url'] = mp4Url
+                img = li.first("img")
+                obj['pic'] = baseurl+img.get('src')
+                obj['name'] = img.get('title')
+                print img.get('title')
+
+                videourl = urlparse(obj['url'])
+                obj['path'] = videourl.path
+                obj['updateTime'] = datetime.datetime.now()
+                obj['channel'] = channel
+                dataList.append(obj)
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             for obj in dataList:
@@ -84,22 +79,23 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         header = {'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
+        videos = []
         try:
             soup = self.fetchUrl(url, header)
-            div = soup.first("div",{'class':'playBar'})
-            if div!=None:
-                ahref = div.first('a')
-                if ahref!=None:
-                    soup = self.fetchUrl(ahref.get('href'), header)
-                    play_video = soup.first('div',{'class':'play_video'})
-                    if play_video!=None:
-                        script = play_video.first('script')
-                        if script!=None:
-                            match = regVideo.search(script.text)
-                            if match!=None:
-                                return unquote(match.group(1))+'m3u8'
+            divs = soup.findAll("div",{'class':'panel panel-default resource-list ptab ptabw'})
+            for div in divs:
+                span = div.first('span')
+                if span!=None:
+                    if span.text('手机')!=0:
+                        ahrefs = soup.findAll('a')
+                        for ahref in ahrefs:
+                            soup = self.fetchUrl(ahref.get('href'), header)
+                            movieid = soup.first('td',{"class":"movieid"})
+                            script = movieid.first('script')
+                            content = self.fetchContentUrlWithBase(script.get("src"),header)
+                            content = unquote(str(content))
             print '没找到mp4'
-            return None
+            return videos
         except Exception as e:
             print common.format_exception(e)
             return None

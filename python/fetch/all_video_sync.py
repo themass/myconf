@@ -61,7 +61,7 @@ if __name__ == '__main__':
 #     seman_vip.parseVideo()
 #     zy3838_vip.parseVideo()
 #     ttkyy_vip.parseVideo()
-    ax98_vip.parseVideo()
+#     ax98_vip.parseVideo()
     
     #xsian
     #ttkyy

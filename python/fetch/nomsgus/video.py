@@ -33,7 +33,7 @@ class VideoParse(BaseParse):
         obj['rate']=1.2
         obj['channel']=baseurl.replace("http://", "").replace("https://", "")+videolUrl
         obj['showType']=3
-        obj['channelType']='lunli'
+        obj['channelType']='movie'
         return  obj
     def videoParse(self, channel, url):
         dataList = []

@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
-baseurl = "http://www.17ishare.com"
+baseurl = "http://www.kuyunzy.cc"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
@@ -33,7 +33,7 @@ class BaseParse(threading.Thread):
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('utf8', errors='replace')
+                content = response.read()
                 if gzipped:
                     content = zlib.decompress(
                         content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码

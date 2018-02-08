@@ -12,7 +12,7 @@ import re
 # http://www.dehyc.com
 baseurl = "https://weav.cc"
 videoUrl = "/videos?page="
-channel = 'weav.cc    self_weav'
+channel = 'weav.ccself_weav'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3

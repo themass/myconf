@@ -10,6 +10,9 @@ from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
 import re
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 # http://www.dehyc.com
 baseurl = "http://www.kuyunzy.cc"
 header = {'User-Agent':
@@ -33,10 +36,7 @@ class BaseParse(threading.Thread):
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read()
-                info = response.info()
-                charset = info.getparam('charset')
-                content = content.decode(charset, 'ignore')
+                content = response.read().decode('utf8', errors='replace')
                 if gzipped:
                     content = zlib.decompress(
                         content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
@@ -70,8 +70,16 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl+url, headers=aheader)
-                content = urllib2.urlopen(req, timeout=300).read()
+                req = urllib2.Request(baseurl + url, headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl})
+                req.encoding = 'utf-8'
+                response = urllib2.urlopen(req, timeout=300)
+                content = response.read().decode('utf8', errors='replace')
+                gzipped = response.headers.get(
+                    'Content-Encoding')  # 查看是否服务器是否支持gzip
+                if gzipped:
+                    content = zlib.decompress(
+                        content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
                 return content
             except Exception as e:
                 print common.format_exception(e)
@@ -80,5 +88,5 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', baseurl+url
         return ''
-
-    
+p = BaseParse()
+print p.fetchContentUrlWithBase("/list/?37-1.html", header)

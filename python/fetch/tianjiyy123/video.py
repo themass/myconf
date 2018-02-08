@@ -90,7 +90,6 @@ class VideoParse(BaseParse):
                     div = soup.first('div',{'class':"info clearfix"})
                     content = unquote(str(div.text)).split("$")
                     for item in content:
-                        print item
                         match = regVideo.search(item)
                         if match!=None:
                             return "http"+match.group(1)+'m3u8'

@@ -39,7 +39,7 @@ class VideoParse(BaseParse):
         obj['rate']=1.2
         obj['channel']=obj['url']
         obj['showType']=3
-        obj['channelType']='normal'
+        obj['channelType']='fanqiang'
         objs.append(obj)
         return  objs
     def videoParse(self, channel, url):

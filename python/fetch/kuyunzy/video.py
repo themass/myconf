@@ -45,7 +45,7 @@ class VideoParse(BaseParse):
                 obj['rate']=1.2
                 obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.get('href').replace("?", "")
                 obj['showType']=3
-                obj['channelType']='normal'
+                obj['channelType']='movie'
                 channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):

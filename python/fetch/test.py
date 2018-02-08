@@ -76,11 +76,10 @@ if __name__ == '__main__':
 #     match = regVideo.search(str)
 #     str2 = '(.*)'
     str = '''
-var VideoInfoList="m3u8$$高清点播$http://yj.yongjiu6.com/20180131/VV2is90G/index.m3u8$m3u8$$$微云$$高清点播$3c26f94665744e3c94a628a7573a7ab9$weiyun    '''
-    
-#     videoApi = re.compile(r"http(.*)\.m3u8")
-#     match = videoApi.search(str)
-#     print match
-#     print match.group(1).replace("')","")
-    src ="http://nbvvv.8iwvsl.com/120203/p01/%E9%A8%B7%E5%A9%A6%E7%9A%84%E6%9C%A8%E7%93%9C%E5%A5%B6%E4%B9%B3%E4%BA%A4%E6%9C%8D%E5%8B%99[9P]/01.jpg";
-    print unquote(src)
+var mac_flag='play',mac_link='/g/41818/{src}/{num}.html', mac_name='速度与激情8',mac_from='m3u8',mac_server='no',mac_note='',mac_url=unescape('HD1280%u9ad8%u6e05%u4e2d%u5b57%u97e9%u7248$http://fuli.yazyzw.com/20170603/XgwO7tMy/index.m3u8#BD1280%u9ad8%u6e05%u4e2d%u82f1%u53cc%u5b57%u7248$http://hao.zuida-youku.com/20170609/NoFPAsy5/index.m3u8');
+''' 
+    videoApi = re.compile(r"http(.*)\.m3u8")
+    match = videoApi.search(str)
+    print match
+    print match.group(1).replace("')","")
+    print unquote(str)

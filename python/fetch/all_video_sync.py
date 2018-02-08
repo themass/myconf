@@ -53,7 +53,7 @@ if __name__ == '__main__':
 #     singlovevideop = singlove.video.VideoParse()
 #     singlovevideop.run()
 # # 
-    yezmw_vip.parseVideo()
+#     yezmw_vip.parseVideo()
 #     ir6yv = ir6y.video.VideoParse()
 #     ir6yv.run()
 #       

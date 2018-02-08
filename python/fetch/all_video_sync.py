@@ -21,6 +21,8 @@ import seman_vip
 import zy3838_vip
 import ttkyy_vip
 import ax98_vip
+import kuyunzy_vip
+import tianjiyy123_vip
 if __name__ == '__main__':
 
 # #webview
@@ -62,6 +64,8 @@ if __name__ == '__main__':
 #     zy3838_vip.parseVideo()
 #     ttkyy_vip.parseVideo()
 #     ax98_vip.parseVideo()
+    kuyunzy_vip.parseVideo()
+    tianjiyy123_vip.parseVideo()
     
     #xsian
     #ttkyy

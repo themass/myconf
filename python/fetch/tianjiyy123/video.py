@@ -19,19 +19,17 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 'kuyunzy video -- channel ok;,len=',len(chs)
+        print 'tianjiyy123 video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
-                url= item['url']
-                if i!=1:
-                    url= "%s%s%s"%(item['url'].replace('.html','-'),i,".html")
+                url= "%s%s%s"%(item['url'].replace('1-------.html',''),i,"---0-0---.html")
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
-        soup = self.fetchUrl('/')
-        div  = soup.first('div',{'class':'hypoSub clear'})
+        soup = self.fetchUrl('/dianying/')
+        div  = soup.first('dd',{'class':'clearfix'})
         channelList =[]
         if div!=None:
             ahrefs = div.findAll('a')
@@ -51,7 +49,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        lis = soup.findAll("td",{"align":'left'})
+        lis = soup.findAll("li",{"class":'col-md-2 col-sm-3 col-xs-4'})
         for li in lis:
             ahref = li.first('a')
             if ahref != None:
@@ -61,9 +59,9 @@ class VideoParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                obj['pic'] = ''
-                obj['name'] = ahref.text.replace("&nbsp;","")
-                print obj['name'],mp4Url
+                obj['pic'] = ahref.get("data-original")
+                obj['name'] = ahref.get("title")
+                print obj['name'],mp4Url,obj['pic']
 
                 videourl = urlparse(obj['url'])
                 obj['path'] = videourl.path
@@ -75,7 +73,7 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj)
 
-        print 'kuyunzy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'tianjiyy123 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
@@ -84,11 +82,18 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
-            inputs = soup.findAll("input",{'name':'copy_yah'})
-            for input in inputs:
-                value = input.get('value')
-                if value.count('.m3u8')!=0:
-                    return value
+            playlist1 = soup.first("div",{'id':'playlist1'})
+            if playlist1!=None:
+                ahref = playlist1.first('a')
+                if ahref!=None:
+                    soup = self.fetchUrl(ahref.get('href'), header)
+                    div = soup.first('div',{'class':"info clearfix"})
+                    content = unquote(str(div.text)).split("$")
+                    for item in content:
+                        print item
+                        match = regVideo.search(item)
+                        if match!=None:
+                            return "http"+match.group(1)+'m3u8'
             print '没找到mp4'
             return None
         except Exception as e:

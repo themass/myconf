@@ -89,7 +89,7 @@ class BaseParse(threading.Thread):
                     row['url'] = a.get('href')
                     row['channelType'] = 'normal'
                     row['updateTime'] = datetime.datetime.now()
-                    row['channel'] = channel_pre + a.get('href')
+                    row['channel'] = baseurl.replace("http://", "").replace("https://", "")+channel_pre + a.get('href')
                     ret.append(row)
             return ret
         except Exception as e:

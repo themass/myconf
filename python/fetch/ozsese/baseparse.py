@@ -11,7 +11,7 @@ from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
 baseurl = "https://ozsese.com/"
-channels = {'web_self_ozsese': "videos.php?page=%s"}
+channels = {'ozsese.com/web_self_ozsese': "videos.php?page=%s"}
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "https://69vj.com/wp-content/plugins/kt/player/player.php"}
 maxCount = 3

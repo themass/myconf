@@ -60,8 +60,7 @@ class VideoParse(BaseParse):
             obj['name'] = ahref.get('title')
             print obj['name'],mp4Url,obj['pic']
 
-            videourl = urlparse(obj['url'])
-            obj['path'] = videourl.path
+            obj['path'] = obj['name']+channel
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
             dataList.append(obj)

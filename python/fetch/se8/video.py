@@ -23,7 +23,7 @@ class VideoParse(BaseParse):
         for item in chs:
             for i in range(1, maxVideoPage):
                 self.videoParse(
-                    item['url'], item['url'] + str(i)+'.htm')
+                    item['channel'], item['url'] + str(i)+'.htm')
                 print '解析页数 ', item['url'], ' ---', i, '完成'
     
     def videoChannel(self):
@@ -92,8 +92,8 @@ class VideoParse(BaseParse):
             for s in scripts:
                 match = regVideo.search(s.text)
                 if match!=None:
-                    print '--------',match,s.text
-                    return videoUrl+match.group(1)
+                    print '--------',match.group(2)
+                    return urlMap.get(match.group(1))+str(match.group(2))
             print '没找到mp4'
             return None
         except Exception as e:

@@ -68,13 +68,14 @@ if __name__ == '__main__':
 #---------------------------------------------------------------------------- 
 #             movie
 #     tianjiyy123_vip.parseVideo()
-#     kuyunzy_vip.parseVideo()
+#     
 #     
     
 #     zy3838_vip.parseVideo()
 #     nomsgus_vip.parseVideo()
 #     ttkyy_vip.parseVideo()
     seman_vip.parseVideo()
+    kuyunzy_vip.parseVideo()
      
     #xsian
     #ttkyy

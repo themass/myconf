@@ -41,14 +41,9 @@ class ImgParse(BaseParse):
         allChannel = []
         for div in divs:
             alist = div.findAll('a')
-            start = False
             for ahref in alist:
                 for need in channel_more:
                     if ahref.get('href').count(need) > 0:
-                        if ahref.text=='糖果画报':
-                            start=True
-                        
-                        if start==True:
                             print '需要解析的channel=', ahref.get('href')
                             obj = {}
                             obj['name'] = ahref.text

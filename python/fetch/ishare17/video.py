@@ -65,11 +65,12 @@ class VideoParse(BaseParse):
                 obj['path'] = videourl.path
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
+                obj['baseurl'] = baseurl
                 dataList.append(obj)
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             for obj in dataList:
-                ops.inertVideo(obj)
+                ops.inertVideo(obj,"normal",baseurl)
     
             print 'ir6y video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
             dbVPN.commit()

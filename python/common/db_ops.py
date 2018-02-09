@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 import MySQLdb
-
+import dateutil
 
 class DbOps(object):
 
@@ -138,10 +138,11 @@ class DbOps(object):
                 obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType"), 1, obj.get("channel"), obj.get("channelType")))
 
     def inertVideo(self, obj,videoType="normal",baseUrl=''):
+        sortType = dateutil.y_m_d()
         return self.conn.execute(
-            "replace into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseUrl) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseUrl,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl))
+                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl,sortType))
 
     def inertVideoWebView(self, obj):
         return self.conn.execute(

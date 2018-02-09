@@ -39,11 +39,12 @@ class VideoParse(BaseParse):
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
                 obj['videoType'] = 'normal'
+                obj['baseurl'] = baseurl
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj)
+            ops.inertVideo(obj,"normal",baseurl)
 
         print 'weav video -- ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

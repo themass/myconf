@@ -88,6 +88,18 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url)
+            divs = soup.findAll("div",{"class":"mox"})
+            for div in divs:
+                SPAN = div.first("span")
+                if SPAN!=None:
+                    if SPAN.text=='在线播放':
+                        soup = self.fetchUrl(div.first("a").get("href"))
+                        scripts = soup.findAll("script", {"type": "text/javascript"})
+                        for s in scripts:
+                            match = m3u8regVideo.search(s.text)
+                            if match!=None:
+                                print '--------',match.group(2)
+                                return urlMap.get(match.group(1))+str(match.group(2))
             scripts = soup.findAll("script", {"type": "text/javascript"})
             for s in scripts:
                 match = regVideo.search(s.text)

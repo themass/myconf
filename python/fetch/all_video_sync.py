@@ -41,8 +41,8 @@ if __name__ == '__main__':
 #     weavvideop.run()
 # #  
 # # # 
-#     sp1769_vip.parseVideo()
-#     fff64_vip.parseVideo()
+    sp1769_vip.parseVideo()
+    fff64_vip.parseVideo()
 
 # # ------------------------------------------------------------------
 # #     se8_vip.parseVideo()
@@ -65,11 +65,11 @@ if __name__ == '__main__':
 ##---------------------------------------------------------------------------- 
 #             movie
 #     kuyunzy_vip.parseVideo()
-    tianjiyy123_vip.parseVideo()
-    seman_vip.parseVideo()
-    ttkyy_vip.parseVideo()
-    zy3838_vip.parseVideo()
-    nomsgus_vip.parseVideo()
+#     tianjiyy123_vip.parseVideo()
+#     seman_vip.parseVideo()
+#     ttkyy_vip.parseVideo()
+#     zy3838_vip.parseVideo()
+#     nomsgus_vip.parseVideo()
     
     #xsian
     #ttkyy

@@ -56,20 +56,20 @@ if __name__ == '__main__':
 #     singlovevideop = singlove.video.VideoParse()
 #     singlovevideop.run()
 # # --------------------------------------------------------------------------
-    yezmw_vip.parseVideo()
-    ir6yv = ir6y.video.VideoParse()
-    ir6yv.run()
-       
-    x2246_vip.parseVideo()
-    ax98_vip.parseVideo()
+#     yezmw_vip.parseVideo()
+#     ir6yv = ir6y.video.VideoParse()
+#     ir6yv.run()
+#        
+#     x2246_vip.parseVideo()
+#     ax98_vip.parseVideo()
 ##---------------------------------------------------------------------------- 
 #             movie
 #     kuyunzy_vip.parseVideo()
-#     tianjiyy123_vip.parseVideo()
-#     seman_vip.parseVideo()
-#     ttkyy_vip.parseVideo()
-#     zy3838_vip.parseVideo()
-#     nomsgus_vip.parseVideo()
+    tianjiyy123_vip.parseVideo()
+    seman_vip.parseVideo()
+    ttkyy_vip.parseVideo()
+    zy3838_vip.parseVideo()
+    nomsgus_vip.parseVideo()
     
     #xsian
     #ttkyy

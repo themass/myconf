@@ -34,6 +34,7 @@ class VideoParse(BaseParse):
         uls = soup.findAll('ul',{'class':'nav_menu clearfix'})
         print uls
         channelList =[]
+        start = False
         for ul in uls:
             ul.first('li',{'class':'active'})
             print ul.text
@@ -43,17 +44,20 @@ class VideoParse(BaseParse):
                     ahrefs = ul.findAll('a')
                     for ahref in ahrefs:
                         if ahref.get('href')!='/':
-                            obj={}
-                            obj['name']=ahref.text
-                            obj['url']=ahref.get('href')
-                            obj['baseurl']=baseurl
-                            obj['updateTime']=datetime.datetime.now()
-                            obj['pic']=''
-                            obj['rate']=1.2
-                            obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.get('href')
-                            obj['showType']=3
-                            obj['channelType']='normal'
-                            channelList.append(obj)
+                            if ahref.text=='群交自慰':
+                                start=True
+                            if start==True:
+                                obj={}
+                                obj['name']=ahref.text
+                                obj['url']=ahref.get('href')
+                                obj['baseurl']=baseurl
+                                obj['updateTime']=datetime.datetime.now()
+                                obj['pic']=''
+                                obj['rate']=1.2
+                                obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.get('href')
+                                obj['showType']=3
+                                obj['channelType']='normal'
+                                channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []

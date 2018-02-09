@@ -59,7 +59,7 @@ class VideoRmbParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj)
+            ops.inertVideo(obj,"normal",baseurl)
 
         print 'se8 video -- ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

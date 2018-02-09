@@ -44,6 +44,7 @@ class VideoParse(BaseParse):
                 obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.get('href')
                 obj['showType']=3
                 obj['channelType']='normal'
+                obj['baseurl'] = baseurl
                 channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
@@ -74,7 +75,7 @@ class VideoParse(BaseParse):
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             for obj in dataList:
-                ops.inertVideo(obj)
+                ops.inertVideo(obj,"normal",baseurl)
     
             print 'ir6y video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
             dbVPN.commit()

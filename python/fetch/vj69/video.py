@@ -35,11 +35,12 @@ class VideoParse(BaseParse):
             obj['pic'] = picUrl
             obj['channel'] = channel
             obj['videoType'] = 'webview'
+            obj['baseurl'] = baseurl
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,'webview')
+            ops.inertVideo(obj,'webview',baseurl)
 
         print '69vj video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

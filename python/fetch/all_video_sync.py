@@ -67,8 +67,8 @@ if __name__ == '__main__':
 #     urbanhenta_vip.parseVideo()
 ##---------------------------------------------------------------------------- 
 #             movie
-    kuyunzy_vip.parseVideo()
     tianjiyy123_vip.parseVideo()
+    kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()
     ttkyy_vip.parseVideo()
     zy3838_vip.parseVideo()

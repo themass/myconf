@@ -84,7 +84,7 @@ class BaseParse(threading.Thread):
                 a = li.first('a')
                 print a
                 if a != None and a.text.find('首页') == -1:
-                    if a.txt=='制服中文av':
+                    if a.text=='制服中文av':
                         start=True
                     if start==True:
                         row = {}

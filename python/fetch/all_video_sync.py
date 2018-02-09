@@ -59,17 +59,17 @@ if __name__ == '__main__':
 # # # --------------------------------------------------------------------------
 #     yezmw_vip.parseVideo()
 # #        
-#     x2246_vip.parseVideo()
+    x2246_vip.parseVideo()
 #     ax98_vip.parseVideo()
 
 #     ir6yv = ir6y.video.VideoParse()
 #     ir6yv.run()
-#     urbanhenta_vip.parseVideo()
+    urbanhenta_vip.parseVideo()
 #---------------------------------------------------------------------------- 
 #             movie
-    tianjiyy123_vip.parseVideo()
-    kuyunzy_vip.parseVideo()
-    
+#     tianjiyy123_vip.parseVideo()
+#     kuyunzy_vip.parseVideo()
+#     
     
 #     zy3838_vip.parseVideo()
 #     nomsgus_vip.parseVideo()

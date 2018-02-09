@@ -45,7 +45,7 @@ if __name__ == '__main__':
 #     fff64_vip.parseVideo()
 # # 
 # #     se8_vip.parseVideo()
-#     nomsgus_vip.parseVideo()
+#     
 #     sexx77_vip.parseVideo()
 # # # #     
 # #  
@@ -60,12 +60,15 @@ if __name__ == '__main__':
 #     ir6yv.run()
 #       
 #     x2246_vip.parseVideo()
-#     seman_vip.parseVideo()
-#     zy3838_vip.parseVideo()
-#     ttkyy_vip.parseVideo()
 #     ax98_vip.parseVideo()
+
+#             movie
     kuyunzy_vip.parseVideo()
     tianjiyy123_vip.parseVideo()
+    seman_vip.parseVideo()
+    ttkyy_vip.parseVideo()
+    zy3838_vip.parseVideo()
+    nomsgus_vip.parseVideo()
     
     #xsian
     #ttkyy

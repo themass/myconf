@@ -26,23 +26,23 @@ import tianjiyy123_vip
 if __name__ == '__main__':
 
 # #webview
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     vj69videop = vj69.video.VideoParse()
-#     vj69videop.run()
+    for channel, url in ozsese.baseparse.channels.items():
+        ozsesevideop = ozsese.video.VideoParse(channel, url)
+        ozsesevideop.run()
+    vj69videop = vj69.video.VideoParse()
+    vj69videop.run()
 # # #     
 # # #     
 # # #     
 # # #     
 # # #    #翻墙 
 # # #     
-#     weavvideop = weav.video.VideoParse()
-#     weavvideop.run()
+    weavvideop = weav.video.VideoParse()
+    weavvideop.run()
 #  
 # # 
-#     sp1769_vip.parseVideo()
-#     fff64_vip.parseVideo()
+    sp1769_vip.parseVideo()
+    fff64_vip.parseVideo()
 # # 
 # #     se8_vip.parseVideo()
 #     
@@ -63,12 +63,12 @@ if __name__ == '__main__':
 #     ax98_vip.parseVideo()
 
 #             movie
-    kuyunzy_vip.parseVideo()
-    tianjiyy123_vip.parseVideo()
-    seman_vip.parseVideo()
-    ttkyy_vip.parseVideo()
-    zy3838_vip.parseVideo()
-    nomsgus_vip.parseVideo()
+#     kuyunzy_vip.parseVideo()
+#     tianjiyy123_vip.parseVideo()
+#     seman_vip.parseVideo()
+#     ttkyy_vip.parseVideo()
+#     zy3838_vip.parseVideo()
+#     nomsgus_vip.parseVideo()
     
     #xsian
     #ttkyy

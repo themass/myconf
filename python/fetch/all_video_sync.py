@@ -24,6 +24,7 @@ import ax98_vip
 import kuyunzy_vip
 import tianjiyy123_vip
 import urbanhenta_vip
+import kump4_vip
 if __name__ == '__main__':
 
 # #webview
@@ -76,6 +77,7 @@ if __name__ == '__main__':
 #     ttkyy_vip.parseVideo()
     seman_vip.parseVideo()
     kuyunzy_vip.parseVideo()
+    kump4_vip.parseVideo()
      
     #xsian
     #ttkyy

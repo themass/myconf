@@ -18,7 +18,7 @@ def get_status_code(url):
 
 if __name__ == '__main__':
     fh = open('../txt/video.txt')
-    output = open('/var/video_out.txt', 'w')
+    output = open('/home/web/var/video_out.txt', 'w')
     for line in fh.readlines():
         line.replace('\n', "").replace('\r', '')
         contents = line.split(",")

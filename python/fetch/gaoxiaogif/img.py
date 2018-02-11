@@ -44,23 +44,22 @@ class ImgParse(BaseParse):
             print url
             pics = self.fetchDataHead(url)   
             print '解析',i,'页','len=',len(pics)
+            obj = {}
+            obj['name'] = pics[0]['text']
+            print obj['name']
+            obj['channel'] = "gaoxiaogif.com"
+            obj['updateTime'] = datetime.datetime.now()
+            obj['fileDate'] = ''
+            obj['baseurl'] = baseurl
+            obj['showType'] = 3
+    #             obj['url'] = url.replace("&", "")
+            obj['url'] =  sortType+url
+    #             obj['pics'] = len(pics)
+            obj['pic'] = pics[0]['pic']
+            obj['sortType'] = sortType
+            obj['pics'] = len(pics)
+            ops.inertImgItems(obj)
             for item in pics:
-                obj = {}
-                obj['name'] = item['text']
-                print obj['name']
-                obj['channel'] = self.t_obj['url']
-                obj['updateTime'] = datetime.datetime.now()
-                obj['fileDate'] = ''
-                obj['baseurl'] = baseurl
-                obj['showType'] = 3
-        #             obj['url'] = url.replace("&", "")
-                obj['url'] = urlparse(item['pic']).path
-        #             obj['pics'] = len(pics)
-                obj['pic'] = item['pic']
-                obj['sortType'] = sortType
-                pics = []
-                obj['pics'] = 1
-                ops.inertImgItems(obj)
                 picitem = {}
                 picitem['itemUrl'] = obj['url']
                 picitem['picUrl'] = item['pic']

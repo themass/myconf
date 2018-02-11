@@ -26,6 +26,8 @@ if __name__ == '__main__':
         contents = linestr.split(",")
         status = get_status_code(contents[1],contents[2]) 
        
-        ret = "%s%s%s%s"%(contents[0],"->",status,"\n")
-        print ret
+        ret = "%s%s%s%s%s%s%s%s"%(contents[0],"->",status,"->",contents[2],"->",contents[1],"\n")
+        print ret,"------------------------",contents[2],"---",contents[1]
         output.write(ret)   
+    output.close()
+    fh.close()

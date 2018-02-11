@@ -22,8 +22,8 @@ if __name__ == '__main__':
     fh = open('../txt/video.txt')
     output = open('/home/web/var/video_out.txt', 'w')
     for line in fh.readlines():
-        line.replace('\n', "").replace('\r', '')
-        contents = line.split(",")
+        linestr = line.replace('\n', "").replace('\r', '')
+        contents = linestr.split(",")
         status = get_status_code(contents[1],contents[2]) 
        
         ret = "%s%s%s%s"%(contents[0],"->",status,"\n")

@@ -45,7 +45,7 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channel']="www.233cf.com"+ahref.get('href')
             obj['showType']=3
-            obj['channelType']='fanqiang'
+            obj['channelType']='normal'
             channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):

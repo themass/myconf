@@ -72,7 +72,6 @@ class VideoParse(BaseParse):
             print 'fff64 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
             dbVPN.commit()
             dbVPN.close()
-            time.sleep(5)
 
     def parseDomVideo(self, url):
         header = {'User-Agent':

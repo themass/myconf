@@ -76,7 +76,6 @@ class HandleThread(threading.Thread):
                     except Exception as e:
                         print obj['picUrl'], common.format_exception(e)
                 self.updateImgUrl(itemUrls.keys())
-                time.sleep(5)
             print '结束同步', channel
 
     def getImgs(self, channel, start, end):

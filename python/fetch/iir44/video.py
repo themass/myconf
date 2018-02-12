@@ -17,25 +17,27 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print '1769 video -- channel ok;,len=',len(chs)
+        print '44iir video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            url= item['url'].replace('1.html','')
             for i in range(1, maxVideoPage):
-                self.videoParse(item['channel'], (url + "%s.html") % (i))
+                url= item['url']
+                if i!=1:
+                    url = "%s%s%s"%(url.replace('.html','-'),i,'.html')
+                self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         soup = self.fetchUrl('/')
-        ul = soup.first('ul',{'class':'nav-online'})
+        ul = soup.first('div',{'id':'menu'})
         channelList =[]
         if ul!=None:
             ahrefs = ul.findAll('a')
             for ahref in ahrefs:
                 obj={}
-                obj['name']=ahref.text
-                if obj['name']=='在线视频':
+                if ahref.get('href')=="/":
                     continue
+                obj['name']=ahref.text
                 obj['url']=ahref.get('href')
                 obj['baseurl']=baseurl
                 obj['updateTime']=datetime.datetime.now()
@@ -44,13 +46,12 @@ class VideoParse(BaseParse):
                 obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.get('href')
                 obj['showType']=3
                 obj['channelType']='normal'
-                obj['baseurl'] = baseurl
                 channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "list_video"})
+        div = soup.first("ul", {"class": "list_videor"})
         if div!=None:
             lis = div.findAll('li')
             for li in lis:
@@ -65,7 +66,7 @@ class VideoParse(BaseParse):
                     img = li.first("img")
                     obj['pic'] = img.get('src')
                     obj['name'] = img.get('alt')
-                    print img.get('alt')
+                    print obj['name'],mp4Url,obj['pic']
     
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path
@@ -77,7 +78,7 @@ class VideoParse(BaseParse):
             for obj in dataList:
                 ops.inertVideo(obj,"normal",baseurl)
     
-            print 'ir6y video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+            print '44iir video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
             dbVPN.commit()
             dbVPN.close()
 
@@ -95,9 +96,10 @@ class VideoParse(BaseParse):
                     if play_video!=None:
                         script = play_video.first('script')
                         if script!=None:
-                            match = regVideo.search(script.text)
+                            text = unquote(self.fetchContentUrl(script.get('src'), header))
+                            match = regVideo.search(text)
                             if match!=None:
-                                videoUrl =unquote(match.group(2))
+                                videoUrl =match.group(2)
                                 return "%s%s%s"%("http",videoUrl,'m3u8')
             print '没找到mp4'
             return None

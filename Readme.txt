@@ -1,3 +1,9 @@
+useradd -r -m -s /bin/bash web
+chmod 777 /etc/sudoers
+ echo 'web  ALL=(ALL)    ALL' >> /etc/sudoers  
+chmod 440 /etc/sudoers
+ap
+
 mkdir -p /home/web/install
 cd /home/web/install 
 wget https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2
@@ -20,10 +26,19 @@ make && make install
 cd /home/web/local/
 rm python2.7
 ln -s python2.7.10 python2.7
+
+
+
 echo 'export PYTHONE_HOME=/home/web/local/python2.7' >> ~/.bash_profile
 echo 'export PATH=$PYTHONE_HOME/bin:/$PATH'  >> ~/.bash_profile
-echo 'export PYTHONPATH=/home/web/server/python-script'  >> ~/.bash_profile
+echo 'export PYTHONPATH=/home/web/work/myconf/python'  >> ~/.bash_profile
 source ~/.bash_profile
+
+
+echo 'export PYTHONE_HOME=/home/web/local/python2.7' >> ~/.profile
+echo 'export PATH=$PYTHONE_HOME/bin:/$PATH'  >> ~/.profile
+echo 'export PYTHONPATH=/home/web/work/myconf/python'  >> ~/.profile
+source ~/.profile
 
 
 cd /home/web/install

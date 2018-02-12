@@ -79,22 +79,18 @@ class BaseParse(threading.Thread):
                 return None
             lis = menu.findAll("li")
             ret = []
-            start = False
             for li in lis:
                 a = li.first('a')
                 print a
                 if a != None and a.text.find('首页') == -1:
-                    if a.text=='制服中文av':
-                        start=True
-                    if start==True:
-                        row = {}
-                        row['name'] = a.text
-                        row['baseurl'] = baseurl
-                        row['url'] = a.get('href')
-                        row['channelType'] = 'normal'
-                        row['updateTime'] = datetime.datetime.now()
-                        row['channel'] = baseurl.replace("http://", "").replace("https://", "")+channel_pre + a.get('href')
-                        ret.append(row)
+                    row = {}
+                    row['name'] = a.text
+                    row['baseurl'] = baseurl
+                    row['url'] = a.get('href')
+                    row['channelType'] = 'normal'
+                    row['updateTime'] = datetime.datetime.now()
+                    row['channel'] = baseurl.replace("http://", "").replace("https://", "")+channel_pre + a.get('href')
+                    ret.append(row)
             return ret
         except Exception as e:
             print common.format_exception(e)

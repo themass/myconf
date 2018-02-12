@@ -19,11 +19,7 @@ class VideoParse(BaseParse):
         print 'xoxo164 video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
-        start=1
         for item in chs:
-#             if start<=4:
-#                 start=start+1
-#                 continue
             print item['name']
             url= item['url'].replace('/1/','')
             for i in range(1, maxVideoPage):

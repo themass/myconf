@@ -52,6 +52,8 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         div = soup.first("ul", {"class": "list_videor"})
+        if div==None:
+            div = soup.first("ul", {"class": "list_video"})
         if div!=None:
             lis = div.findAll('li')
             for li in lis:

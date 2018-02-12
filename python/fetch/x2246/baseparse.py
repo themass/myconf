@@ -52,7 +52,6 @@ class BaseParse(threading.Thread):
     def headerVideo(self):
         uls = self.header()
         objs = []
-        start = False
         for ul in uls:
             active = ul.first('li',{"class":"active"})
             if active.text.count('小说')==0:
@@ -61,12 +60,9 @@ class BaseParse(threading.Thread):
                     
                     obj={}
                     if ahref.get('href')!='/' and ahref.text.count("图片")==0 and ahref.text.count("小说")==0 and ahref.text.count("帮助")==0:
-                        if ahref.text =='美颜中出':
-                            start = True
-                        if start==True:
-                            obj['url']=ahref.get('href')
-                            obj['name']=ahref.text
-                            objs.append(obj)
+                        obj['url']=ahref.get('href')
+                        obj['name']=ahref.text
+                        objs.append(obj)
         return objs
     def headerImg(self):
         uls = self.header()

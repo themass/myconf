@@ -28,53 +28,53 @@ import kump4_vip
 if __name__ == '__main__':
 
 # #webview
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     vj69videop = vj69.video.VideoParse()
-#     vj69videop.run()
+    for channel, url in ozsese.baseparse.channels.items():
+        ozsesevideop = ozsese.video.VideoParse(channel, url)
+        ozsesevideop.run()
+    vj69videop = vj69.video.VideoParse()
+    vj69videop.run()
 # # # #     
 # # # #     
 # # # #     
 # # # #     
 # # # #    #翻墙 
 # # # #     
-#     weavvideop = weav.video.VideoParse()
-#     weavvideop.run()
+    weavvideop = weav.video.VideoParse()
+    weavvideop.run()
 # #  
 # # # 
-#     sp1769_vip.parseVideo()
-#     fff64_vip.parseVideo()
+    sp1769_vip.parseVideo()
+    fff64_vip.parseVideo()
 
 # # ------------------------------------------------------------------
-#     se8_vip.parseVideo()
-#     
-#     sexx77_vip.parseVideo()
+    se8_vip.parseVideo()
+     
+    sexx77_vip.parseVideo()
 # # # #     
 # #  
-#     xoxo164videop = xoxo164.video.VideoParse()
-#     xoxo164videop.run()
+    xoxo164videop = xoxo164.video.VideoParse()
+    xoxo164videop.run()
 # # # 
-#     singlovevideop = singlove.video.VideoParse()
-#     singlovevideop.run()
+    singlovevideop = singlove.video.VideoParse()
+    singlovevideop.run()
 # # # --------------------------------------------------------------------------
-#     yezmw_vip.parseVideo()
-# #        
-#     x2246_vip.parseVideo()
-#     ax98_vip.parseVideo()
-
-#     ir6yv = ir6y.video.VideoParse()
-#     ir6yv.run()
-#     urbanhenta_vip.parseVideo()
+    yezmw_vip.parseVideo()
+#        
+    x2246_vip.parseVideo()
+    ax98_vip.parseVideo()
+ 
+    ir6yv = ir6y.video.VideoParse()
+    ir6yv.run()
+    urbanhenta_vip.parseVideo()
 #---------------------------------------------------------------------------- 
 #             movie
-#     tianjiyy123_vip.parseVideo()
+    tianjiyy123_vip.parseVideo()
 #     
 #     
     
-#     zy3838_vip.parseVideo()
-#     nomsgus_vip.parseVideo()
-#     ttkyy_vip.parseVideo()
+    zy3838_vip.parseVideo()
+    nomsgus_vip.parseVideo()
+    ttkyy_vip.parseVideo()
     seman_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kump4_vip.parseVideo()

@@ -29,7 +29,7 @@ if __name__ == '__main__':
     for line in fh.readlines():
         linestr = line.replace('\n', "").replace('\r', '')
         contents = linestr.split(",")
-        if contents[2]=='http://yezmw.com':
+        if contents[2]!='http://yezmw.com':
             status = get_status_code(contents[1],contents[2]) 
             ret = "%s%s%s%s%s%s%s%s"%(contents[0],"->",status,"->",contents[2],"->",contents[1],"\n")
             print ret

@@ -1,6 +1,8 @@
 import httplib
 from urlparse import urlparse
 import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 def get_status_code(url,baseurl):
     """ This function retreives the status code of a website by requesting
         HEAD data from the host. This means that it only requests the headers.

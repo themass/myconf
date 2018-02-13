@@ -22,7 +22,7 @@ def get_status_code(url,baseurl):
 
 if __name__ == '__main__':
     if len(sys.argv)!=3:
-        print '请输入参数  输入文件，输出文件'
+        print 'args error ; inpt file, out putfile'
         return
     fh = open("%s%s"%('../txt/',sys.argv[1]))
     output = open("%s%s"%('/home/web/var/',sys.argv[2]), 'w')

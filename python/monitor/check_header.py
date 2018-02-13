@@ -9,7 +9,7 @@ def get_status_code(url,baseurl):
     """
     try:
         videourl = urlparse(url)
-        conn = httplib.HTTPConnection(videourl.hostname,port=videourl.port,timeout=3000)
+        conn = httplib.HTTPConnection(videourl.hostname,port=videourl.port,timeout=2000)
         headers={
                     'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": baseurl}
         conn.request("HEAD", videourl.path,headers=headers)
@@ -26,7 +26,6 @@ if __name__ == '__main__':
         contents = linestr.split(",")
         if contents[2]=='http://yezmw.com':
             status = get_status_code(contents[1],contents[2]) 
-           
             ret = "%s%s%s%s%s%s%s%s"%(contents[0],"->",status,"->",contents[2],"->",contents[1],"\n")
             print ret
             output.write(ret)   

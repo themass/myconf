@@ -1,6 +1,6 @@
 import httplib
 from urlparse import urlparse
-
+import sys
 def get_status_code(url,baseurl):
     """ This function retreives the status code of a website by requesting
         HEAD data from the host. This means that it only requests the headers.
@@ -19,8 +19,11 @@ def get_status_code(url,baseurl):
         return None
 
 if __name__ == '__main__':
-    fh = open('../txt/video.txt')
-    output = open('/home/web/var/video_out4.txt', 'w')
+    if len(sys.argv)!=3:
+        print '请输入参数  输入文件，输出文件'
+        return
+    fh = open("%s%s"%('../txt/',sys.argv[1]))
+    output = open("%s%s"%('/home/web/var/',sys.argv[2]), 'w')
     for line in fh.readlines():
         linestr = line.replace('\n', "").replace('\r', '')
         contents = linestr.split(",")

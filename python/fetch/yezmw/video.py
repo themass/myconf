@@ -15,7 +15,7 @@ class VideoParse(BaseParse):
         ops = db_ops.DbOps(dbVPN)
         ops.inertVideoChannel(self.t_obj)
         dbVPN.commit()
-        for i in range(1, maxVideoPage):
+        for i in range(10, maxVideoPage):
             self.videoParse(
                 self.t_obj['channel'], (self.t_obj['url'] + "/p/%s") % (i))
             print '解析完成 ', self.t_obj['url'], ' ---', i, '页'

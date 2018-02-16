@@ -20,26 +20,6 @@ queue = MyQueue.MyQueue(20000)
 filePATH = "/home/file/book/"
 filePATHWeb = "/home/file/book_web/"
 filePATHHtml = "/home/file/book_html/"
-
-
-class HandleThread(threading.Thread):
-
-    def __init__(self, name, queue):
-        threading.Thread.__init__(self, name=name)
-        self.t_name = name
-        self.t_queue = queue
-
-    def run(self):
-        while(True):
-            try:
-                print queue.qsize()
-                obj = queue.get(timeout=30)
-                obj.run()
-            except Exception as e:
-                print threading.current_thread().getName(), '---conti'
-                pass
-
-
 class ChannelFetch(threading.Thread):
 
     def __init__(self, item):
@@ -99,9 +79,6 @@ def getAllChannel():
     dbVPN.close()
 if __name__ == '__main__':
 
-    #     for i in range(0, 1):
-    #         worker = HandleThread("work-%s" % (i), queue)
-    #         worker.start()
     #     getAllChannel()
     item = {}
     item['url'] = "test"

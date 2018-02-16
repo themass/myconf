@@ -25,6 +25,9 @@ import kuyunzy_vip
 import tianjiyy123_vip
 import urbanhenta_vip
 import kump4_vip
+import iir44_vip
+import tzzy1399_vip
+import wuji3_vip
 if __name__ == '__main__':
 
 # #webview
@@ -65,7 +68,11 @@ if __name__ == '__main__':
  
     ir6yv = ir6y.video.VideoParse()
     ir6yv.run()
-    urbanhenta_vip.parseVideo()
+#     urbanhenta_vip.parseVideo()
+
+    iir44_vip.parseVideo()
+    tzzy1399_vip.parseVideo()
+    wuji3_vip.parseVideo()
 #---------------------------------------------------------------------------- 
 #             movie
     tianjiyy123_vip.parseVideo()

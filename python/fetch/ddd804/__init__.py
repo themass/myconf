@@ -3,4 +3,4 @@
 """
 通用包，包含数据库连接、锁和通用方法
 """
-__all__ = ["baseparse","text",'imgddd804','imgjiqingyazhou','img39vq','img3wuji']
+__all__ = ["baseparse",'imgddd804','imgjiqingyazhou','img39vq','img3wuji']

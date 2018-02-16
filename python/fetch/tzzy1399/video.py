@@ -32,14 +32,9 @@ class VideoParse(BaseParse):
         channelList =[]
         if ul!=None:
             ahrefs = ul.findAll('a')
-            start = False
             for ahref in ahrefs:
                 obj={}
                 if ahref.get('href')=="/" or ahref.text=='在线视频':
-                    continue
-                if '人妻熟女'==ahref.text:
-                    start=True
-                if start!=True:
                     continue
                 obj['name']=ahref.text
                 obj['url']=ahref.get('href')

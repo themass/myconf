@@ -13,8 +13,7 @@ global baseurl
 
 class TextChannelParse(BaseParse):
 
-    def __init__(self,queue):
-        self.t_queue=queue
+    def __init__(self):
     
     def run(self):
         ahrefs = self.fetchHead('小说')
@@ -92,7 +91,6 @@ class TextChannelParse(BaseParse):
                         obj['baseurl'] = baseurl
                         obj['channel'] = channel
                         obj['updateTime'] = datetime.datetime.now()
-#                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
                         ret = self.fetchText(ahref.get('href'))
                         if ret==None:
                             print '没有文章数据',ahref.get('href')

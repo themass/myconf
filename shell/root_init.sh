@@ -27,7 +27,7 @@ run_check()
 {
 	ps -aux|grep mysqld_safe |grep -v grep  
 	ps -aux|grep nginx |grep -v grep
-	ps -aux|grep free |grep -v grep
+	ps -aux|grep radiusd |grep -v grep
 	ps -aux|grep ipsec |grep -v grep
 	ps -aux|grep tomcat |grep -v grep
 	ps -aux|grep redis |grep -v grep

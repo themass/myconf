@@ -8,8 +8,6 @@ import eroti_img
 #美图
 import tt192_vip
 #黄土
-import fhn_vip
-#黄土
 import se8_vip
 #漫画
 import singlove_vip
@@ -20,19 +18,20 @@ import jjr128_vip
 import sexx77_vip
 import xoxo164_vip
 import x2246_vip
+import ddd804_vip
+import xieegif_vip
 if __name__ == '__main__':
-#     eroti_img.parseImg()
-#     singlove_vip.parseImg()
+    eroti_img.parseImg()
+    singlove_vip.parseImg()
 #     #找不到网站
-#     fhn_vip.parseImg()
-#     gaoxiaogif_vip.pareImg()
-#     sexx77_vip.pareImg()
+    gaoxiaogif_vip.pareImg()
+    sexx77_vip.pareImg()
     
-#     xoxo164_vip.pareImg()
-#     x2246_vip.parseImg()
+    xoxo164_vip.pareImg()
+    x2246_vip.parseImg()
 #     #需要翻墙
-#     jjr128_vip.pareImg()
-#     skswk9_img.parseImg()
+    jjr128_vip.pareImg()
+    skswk9_img.parseImg()
     
     
     
@@ -41,6 +40,15 @@ if __name__ == '__main__':
     se8_vip.parseImg()
     
     tt192_vip.parseImg()
+    ddd804_vip.parse3wujiImg()
+    ddd804_vip.parse39vqImg()
+    ddd804_vip.parsedddImg()
+    ddd804_vip.parsejiqingyazhouImg()
+    
+    xieegif_vip.parsewowantImg()
+    xieegif_vip.parserneihanImg()
+    xieegif_vip.parsehugao8Img()
+    xieegif_vip.parseratooImg()
 
 
 

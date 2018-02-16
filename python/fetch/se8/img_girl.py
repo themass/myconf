@@ -63,8 +63,8 @@ class ImgGrilParse(BaseParse):
             obj['updateTime'] = dateutil.y_m_d()
             obj['rate'] = 1.4
             obj['showType'] = 3
-            self.t_obj['channel'] = 'porn_sex'
-            self.t_obj['channelType'] = 'porn_sex'
+            obj['channel'] = 'porn_sex'
+            obj['channelType'] = 'porn_sex'
             obj['name'] = self.fetchImgGrilChannelName(item.get('href'))
             objs.append(obj)
         return objs

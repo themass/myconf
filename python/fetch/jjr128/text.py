@@ -14,6 +14,7 @@ global baseurl
 class TextChannelParse(BaseParse):
 
     def __init__(self):
+        pass
     
     def run(self):
         ahrefs = self.fetchHead('小说')

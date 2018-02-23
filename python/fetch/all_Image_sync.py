@@ -39,7 +39,7 @@ if __name__ == '__main__':
     se8_vip.parseGirlImg()
     se8_vip.parseImg()
     
-    tt192_vip.parseImg()
+    
     ddd804_vip.parse3wujiImg()
     ddd804_vip.parse39vqImg()
     ddd804_vip.parsedddImg()
@@ -49,6 +49,8 @@ if __name__ == '__main__':
     xieegif_vip.parserneihanImg()
     xieegif_vip.parsehugao8Img()
     xieegif_vip.parseratooImg()
+    
+    tt192_vip.parseImg()
 
 
 

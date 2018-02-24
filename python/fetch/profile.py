@@ -3,4 +3,4 @@
 import datetime
 maxVideoPage=2
 maxImgPage = 2
-maxTextPage=3
+maxTextPage=2

@@ -174,7 +174,7 @@ net()
 ## -----------------------
 setup_fail2ban() 
 {
-    apt-get install fail2ban sendmail
+    apt-get install -y fail2ban sendmail
     cp ../monitor/jail.conf /etc/fail2ban/
     service fail2ban restart
 }

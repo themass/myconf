@@ -25,7 +25,7 @@ if __name__ == '__main__':
 #     singlove_vip.parseImg()
 # #     #找不到网站
     gaoxiaogif_vip.pareImg()
-    sexx77_vip.pareImg()
+#     sexx77_vip.pareImg()
      
     xoxo164_vip.pareImg()
     x2246_vip.parseImg()
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     xieegif_vip.parsehugao8Img()
     xieegif_vip.parseratooImg()
     
-    tt192_vip.parseImg()
+#     tt192_vip.parseImg()
 
 
 

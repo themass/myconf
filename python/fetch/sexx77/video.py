@@ -34,7 +34,7 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']=baseurl.replace("http://", "").replace("https://", "")+obj['url']
+            obj['channel']="www.sexx77.com"+obj['url']
             obj['showType']=3
             obj['channelType']='webview'
         return  objs

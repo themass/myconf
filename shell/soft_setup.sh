@@ -175,7 +175,8 @@ init_radius_client()
 # influxdb 先设置密码，再打开鉴权
 #CREATE USER admin WITH PASSWORD 'themass529696'
 #GRANT ALL PRIVILEGES TO admin
-# CREATE RETENTION POLICY "10_day" ON "telegraf" DURATION 10d REPLICATION 1 DEFAULT
+# CREATE RETENTION POLICY "15_day" ON "telegraf" DURATION 10d REPLICATION 1 DEFAULT
+#CREATE RETENTION POLICY "20_day" ON "vpn_monitor" DURATION 10d REPLICATION 1 DEFAULT
 #influx -username 'admin' -password 'themass529696'
 ###
 setup_influx()

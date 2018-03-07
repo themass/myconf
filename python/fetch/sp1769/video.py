@@ -34,7 +34,7 @@ class VideoParse(BaseParse):
             for li in lis:
                 ahref = li.first('a')
                 if ahref!=None:
-                    if ahref.text.count('首页')!=0 or ahref.text.count('最新')!=0 or ahref.text.count('活动')!=0 or ahref.text.count('开通')!=0:
+                    if ahref.text.count('首页')!=0 or ahref.text.count('最新')!=0 or  ahref.text.count('免费')!=0 or ahref.text.count('活动')!=0 or ahref.text.count('开通')!=0:
                         continue
                     obj={}
                     obj['name']=ahref.text

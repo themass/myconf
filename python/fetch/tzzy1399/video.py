@@ -21,8 +21,7 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            #TODO 90是临时的
-            for i in range(1, 90):
+            for i in range(1, maxVideoPage):
                 url= item['url']
                 url = "%s%s%s"%(url.replace('.html','-p-'),i,'.html')
                 self.videoParse(item['channel'], url)

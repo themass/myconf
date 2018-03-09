@@ -21,17 +21,17 @@ import x2246_vip
 import ddd804_vip
 import xieegif_vip
 if __name__ == '__main__':
-#     eroti_img.parseImg()
-#     singlove_vip.parseImg()
-# #     #找不到网站
-#     gaoxiaogif_vip.pareImg()
-# #     sexx77_vip.pareImg()
-#      
-#     xoxo164_vip.pareImg()
-#     x2246_vip.parseImg()
-# #     #需要翻墙
-#     jjr128_vip.pareImg()
-#     skswk9_img.parseImg()
+    eroti_img.parseImg()
+    singlove_vip.parseImg()
+#     #找不到网站
+    gaoxiaogif_vip.pareImg()
+#     sexx77_vip.pareImg()
+      
+    xoxo164_vip.pareImg()
+    x2246_vip.parseImg()
+#     #需要翻墙
+    jjr128_vip.pareImg()
+    skswk9_img.parseImg()
 #     
 #     
     

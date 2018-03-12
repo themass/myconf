@@ -91,7 +91,7 @@ class ImgParse(BaseParse):
 
     def fetchImgs(self, url):
         pics = []
-        for i in range(1, 100):
+        for i in range(1, maxImgPage):
             fetchUrl = (url + imgUrl) % (i)
             soup = self.fetchUrl(fetchUrl)
             active = soup.first("ul", {"class": "pagination"}).first(

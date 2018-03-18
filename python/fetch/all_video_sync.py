@@ -70,7 +70,7 @@ if __name__ == '__main__':
 #     ir6yv.run()
 #     ##urbanhenta_vip.parseVideo()
  
-    iir44_vip.parseVideo()
+    ###iir44_vip.parseVideo()
     tzzy1399_vip.parseVideo()
     wuji3_vip.parseVideo()
 # #---------------------------------------------------------------------------- 

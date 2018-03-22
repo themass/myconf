@@ -27,17 +27,17 @@ if __name__ == '__main__':
 #     gaoxiaogif_vip.pareImg()
 # #     sexx77_vip.pareImg()
 #       
-#     xoxo164_vip.pareImg()
-#     x2246_vip.parseImg()
-# #     #需要翻墙
-#     jjr128_vip.pareImg()
-#     skswk9_img.parseImg()
-# #     
-# #     
+    xoxo164_vip.pareImg()
+    x2246_vip.parseImg()
+#     #需要翻墙
+    jjr128_vip.pareImg()
+    skswk9_img.parseImg()
 #     
-#     se8_vip.startWork()
-#     se8_vip.parseGirlImg()
-#     se8_vip.parseImg()
+#     
+     
+    se8_vip.startWork()
+    se8_vip.parseGirlImg()
+    se8_vip.parseImg()
     
     
     ddd804_vip.parse3wujiImg()

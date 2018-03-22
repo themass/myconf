@@ -30,45 +30,45 @@ import tzzy1399_vip
 import wuji3_vip
 if __name__ == '__main__':
  
-# # # #webview
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     vj69videop = vj69.video.VideoParse()
-#     vj69videop.run()
-# # # # # #     
-# # # # # #     
-# # # # # #     
-# # # # # #     
-# # # # # #    #翻墙 
-# # # # # #     
-#     weavvideop = weav.video.VideoParse()
-#     weavvideop.run()
-# # # #  
-# # # # # 
-#     sp1769_vip.parseVideo()
-#     fff64_vip.parseVideo()
-# #  
-# # # ------------------------------------------------------------------
-#     ##se8_vip.parseVideo()
-       
-#     sexx77_vip.parseVideo()
-# # # # # #     
-# # # #  
-#     xoxo164videop = xoxo164.video.VideoParse()
-#     xoxo164videop.run()
+# # #webview
+    for channel, url in ozsese.baseparse.channels.items():
+        ozsesevideop = ozsese.video.VideoParse(channel, url)
+        ozsesevideop.run()
+    vj69videop = vj69.video.VideoParse()
+    vj69videop.run()
+# # # # #     
+# # # # #     
+# # # # #     
+# # # # #     
+# # # # #    #翻墙 
+# # # # #     
+    weavvideop = weav.video.VideoParse()
+    weavvideop.run()
+# # #  
 # # # # 
-#     singlovevideop = singlove.video.VideoParse()
-#     singlovevideop.run()
-# # # # --------------------------------------------------------------------------
-#     yezmw_vip.parseVideo()
-# #        
-#     x2246_vip.parseVideo()
-#     ax98_vip.parseVideo()
-#    
-#     ####ir6yv = ir6y.video.VideoParse()
-#     ir6yv.run()
-#     ##urbanhenta_vip.parseVideo()
+    sp1769_vip.parseVideo()
+    fff64_vip.parseVideo()
+#  
+# # ------------------------------------------------------------------
+    ##se8_vip.parseVideo()
+        
+#     sexx77_vip.parseVideo()
+# # # # #     
+# # #  
+    xoxo164videop = xoxo164.video.VideoParse()
+    xoxo164videop.run()
+# # # 
+    singlovevideop = singlove.video.VideoParse()
+    singlovevideop.run()
+# # # --------------------------------------------------------------------------
+    yezmw_vip.parseVideo()
+#        
+    x2246_vip.parseVideo()
+    ax98_vip.parseVideo()
+    
+    ####ir6yv = ir6y.video.VideoParse()
+    ####ir6yv.run()
+    ##urbanhenta_vip.parseVideo()
  
     ###iir44_vip.parseVideo()
     tzzy1399_vip.parseVideo()

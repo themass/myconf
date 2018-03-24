@@ -46,7 +46,7 @@ if __name__ == '__main__':
 #     weavvideop.run()
 # # #  
 # # # # 
-    sp1769_vip.parseVideo()
+#     sp1769_vip.parseVideo()
     fff64_vip.parseVideo()
 #  
 # # ------------------------------------------------------------------

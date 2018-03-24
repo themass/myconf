@@ -50,7 +50,7 @@ if __name__ == '__main__':
 #     fff64_vip.parseVideo()
 #  
 # # ------------------------------------------------------------------
-    se8_vip.parseVideo()
+#     se8_vip.parseVideo()
         
     sexx77_vip.parseVideo()
 # # # # #     

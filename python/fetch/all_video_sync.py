@@ -42,8 +42,8 @@ if __name__ == '__main__':
 # # # # #     
 # # # # #    #翻墙 
 # # # # #     
-    weavvideop = weav.video.VideoParse()
-    weavvideop.run()
+#     weavvideop = weav.video.VideoParse()
+#     weavvideop.run()
 # # #  
 # # # # 
     sp1769_vip.parseVideo()

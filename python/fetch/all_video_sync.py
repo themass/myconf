@@ -50,9 +50,9 @@ if __name__ == '__main__':
     fff64_vip.parseVideo()
 #  
 # # ------------------------------------------------------------------
-    ##se8_vip.parseVideo()
+    se8_vip.parseVideo()
         
-#     sexx77_vip.parseVideo()
+    sexx77_vip.parseVideo()
 # # # # #     
 # # #  
     xoxo164videop = xoxo164.video.VideoParse()
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     ####ir6yv.run()
     ##urbanhenta_vip.parseVideo()
  
-    ###iir44_vip.parseVideo()
+    ##iir44_vip.parseVideo()
     tzzy1399_vip.parseVideo()
     wuji3_vip.parseVideo()
 # #---------------------------------------------------------------------------- 

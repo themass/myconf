@@ -13,7 +13,7 @@ import re
 baseurl = "http://yezmw.com"
 channel_pre = 'self_yezmw_'
 header = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "http://yezmw.com"}
+          'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html) (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "http://yezmw.com"}
 maxCount = 3
 regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')
 

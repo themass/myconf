@@ -65,7 +65,7 @@ class VideoParse(BaseParse):
             dz = soup.first("div", {"class": "dz"})
             if dz == None:
                 return None
-            return dz.first('p').text
+            return dz.first('button').get("value")
         except Exception as e:
             common.format_exception(e)
             return None

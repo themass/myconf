@@ -31,11 +31,11 @@ import wuji3_vip
 if __name__ == '__main__':
  
 # # #webview
-    for channel, url in ozsese.baseparse.channels.items():
-        ozsesevideop = ozsese.video.VideoParse(channel, url)
-        ozsesevideop.run()
-    vj69videop = vj69.video.VideoParse()
-    vj69videop.run()
+#     for channel, url in ozsese.baseparse.channels.items():
+#         ozsesevideop = ozsese.video.VideoParse(channel, url)
+#         ozsesevideop.run()
+#     vj69videop = vj69.video.VideoParse()
+#     vj69videop.run()
 # # # # # #     
 # # # # # #     
 # # # # # #     
@@ -46,11 +46,11 @@ if __name__ == '__main__':
 # #     weavvideop.run()
 # # # #  
 # # # # # 
-    sp1769_vip.parseVideo()
+#     sp1769_vip.parseVideo()
     fff64_vip.parseVideo()
   
 # ------------------------------------------------------------------
-    se8_vip.parseVideo()
+#     se8_vip.parseVideo()
         
     sexx77_vip.parseVideo()
 # # # # #     

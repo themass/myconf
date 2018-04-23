@@ -30,7 +30,7 @@ if __name__ == '__main__':
     xoxo164_vip.pareImg()
     x2246_vip.parseImg()
 #     #需要翻墙
-    jjr128_vip.pareImg()
+#     jjr128_vip.pareImg()
     skswk9_img.parseImg()
 #     
 #     

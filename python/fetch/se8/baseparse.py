@@ -14,7 +14,7 @@ import StringIO
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://www.773cf.com"
+baseurl = "https://www.811cf.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)
@@ -22,8 +22,8 @@ maxCount = 5
 videoUrl='http://m.123456xia.com:888'
 m3u8regVideo = re.compile(r"var playurl=(.*)\+'(.*)';")
 regVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
-urlMap={"movieurl_10_2":"http://m.123456xia.com:888","movieurl_24k_2":"http://m.123456xia.com:888","movieurl_new_2":"http://m.123456xia.com:888",
-        "movieurl_69_2":"http://m.123456xia.com:888","m3u8url_10_2":"https://768ii.com","m3u8url_24k_2":"https://768ii.com","m3u8url_new_2":"https://768ii.com"}
+urlMap={"movieurl_10_2":"http://666.maomixia666.com:888","movieurl_24k_2":"http://666.maomixia666.com:888","movieurl_new_2":"http://666.maomixia666.com:888",
+        "movieurl_69_2":"http://666.maomixia666.com:888","m3u8url_10_2":"https://768ii.com","m3u8url_24k_2":"https://768ii.com","m3u8url_new_2":"https://768ii.com"}
 rmbvideoUrl='http://down.maomixia.com:888'
 rmbregVideo = re.compile(r'generate_down\(downurl_10_2 \+ "(.*)"\);')
 class BaseParse(threading.Thread):

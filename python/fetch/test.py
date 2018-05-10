@@ -35,7 +35,7 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     print content
 if __name__ == '__main__':
-    fetchUrl("http://www.zxdy.cc/list/11-p-1-0.html")
+    fetchUrl("http://zanquye.com")
     #     name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'
     #     strName = name.replace(
     #         "<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")

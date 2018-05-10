@@ -34,19 +34,19 @@ class VideoParse(BaseParse):
         div = soup.first("div",{"id":"j-nav-type1"})
         ahrefs = div.findAll("a")
         channelList = []
-        for ahref in ahrefs:
-            if ahref.text!="全部":
-                obj={}
-                obj['url']=ahref.get('href')
-                obj['baseurl']=baseurl
-                obj['updateTime']=datetime.datetime.now()
-                obj['pic']=''
-                obj['rate']=0.7
-                obj['channel']=obj['name']=ahref.text+"片"
-                obj['showType']=1
-                obj['channelType']='movie'
-                obj['page']=20
-                channelList.append(obj)
+#         for ahref in ahrefs:
+#             if ahref.text!="全部":
+#                 obj={}
+#                 obj['url']=ahref.get('href')
+#                 obj['baseurl']=baseurl
+#                 obj['updateTime']=datetime.datetime.now()
+#                 obj['pic']=''
+#                 obj['rate']=0.7
+#                 obj['channel']=obj['name']=ahref.text+"片"
+#                 obj['showType']=1
+#                 obj['channelType']='movie'
+#                 obj['page']=20
+#                 channelList.append(obj)
                 
         obj={}
         obj['url']='/vod-show-id-10.html'

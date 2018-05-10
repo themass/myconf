@@ -68,7 +68,7 @@ class VideoParse(BaseParse):
                 obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
                 obj['updateTime'] = datetime.datetime.now()
                 if mp4Url.count("m3u8")==0:
-                    obj['videoType'] = "movie"
+                    obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"
                 obj['channel'] = channel
@@ -103,8 +103,8 @@ class VideoParse(BaseParse):
                                 match = regVideo.search(item)
                                 if match!=None: 
                                     return "http"+match.group(1)+'m3u8'
-                                elif content.count(regVideoYun)>0:
-                                    return content
+                                elif item.count(regVideoYun)>0:
+                                    return item
             print '没找到mp4'
             return None
         except Exception as e:

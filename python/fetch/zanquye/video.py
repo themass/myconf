@@ -66,15 +66,19 @@ class VideoParse(BaseParse):
                 obj['pic'] = baseurl+img.get("src")
                 obj['name'] = img.get("alt")
                 obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
-                print obj['path'],obj['url'],obj['pic']
                 obj['updateTime'] = datetime.datetime.now()
+                if mp4Url.count("m3u8")==0:
+                    obj['videoType'] = "movie"
+                else:
+                    obj['videoType'] = "normal"
                 obj['channel'] = channel
                 obj['baseurl'] = baseurl
+                print obj['videoType'],obj['url'],obj['pic']
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,obj['videoType'],baseurl)
 
         print 'zanquye video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
@@ -93,13 +97,14 @@ class VideoParse(BaseParse):
                     player = soup.first("div",{"class":"player"})
                     if player!=None:
                         script = player.first("script")
-                        print script
                         if script!=None:
                             content = unquote(str(script.text)).split("$")
                             for item in content:
                                 match = regVideo.search(item)
                                 if match!=None: 
                                     return "http"+match.group(1)+'.m3u8'
+                                elif content.count(regVideoYun)>0:
+                                    return content
             print '没找到mp4'
             return None
         except Exception as e:

@@ -36,17 +36,18 @@ class VideoParse(BaseParse):
         if div!=None:
             ahrefs = div.findAll('a')
             for ahref in ahrefs:
-                obj={}
-                obj['name']=ahref.text
-                obj['url']=ahref.get('href')
-                obj['baseurl']=baseurl
-                obj['updateTime']=datetime.datetime.now()
-                obj['pic']=''
-                obj['rate']=0.7
-                obj['channel']=obj['name']=ahref.text
-                obj['showType']=1
-                obj['channelType']='movie'
-                channelList.append(obj)
+                if ahref.text=="伦理片" or ahref.text=="激情福利":
+                    obj={}
+                    obj['name']=ahref.text
+                    obj['url']=ahref.get('href')
+                    obj['baseurl']=baseurl
+                    obj['updateTime']=datetime.datetime.now()
+                    obj['pic']=''
+                    obj['rate']=0.7
+                    obj['channel']=obj['name']=ahref.text
+                    obj['showType']=1
+                    obj['channelType']='movie'
+                    channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []

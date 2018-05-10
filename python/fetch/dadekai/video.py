@@ -19,7 +19,7 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 'zanquye video -- channel ok;,len=',len(chs)
+        print 'dadekai video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
@@ -31,7 +31,7 @@ class VideoParse(BaseParse):
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         soup = self.fetchUrl('/')
-        div  = soup.first('ul',{'class':'newmenu'})
+        div  = soup.first('div',{'class':'newmenu'})
         channelList =[]
         if div!=None:
             ahrefs = div.findAll('a')
@@ -51,7 +51,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        lis = soup.findAll("li",{"class":'col-md-2 col-sm-2 col-xs-4 text-center sea-vod-img-new sea-col'})
+        lis = soup.findAll("div",{"class":'listCover'})
         for li in lis:
             ahref = li.first('a')
             if ahref != None:
@@ -79,7 +79,7 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj,obj['videoType'],baseurl)
 
-        print 'zanquye video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'dadekai video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
@@ -87,8 +87,7 @@ class VideoParse(BaseParse):
       
         try:
             soup = self.fetchUrl(url)
-            tabContent = soup.first("div",{"class":"tab-content"})
-            div = tabContent.first("div")
+            div = soup.first("div",{"class":"videourl"})
             if div!=None:
                 ahref = div.first("a")
                 if ahref!=None:

@@ -66,7 +66,7 @@ class VideoParse(BaseParse):
                 obj['name'] = img.get("alt")
                 obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
                 obj['updateTime'] = datetime.datetime.now()
-                if mp4Url.count("m3u8")==0:
+                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                     obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"

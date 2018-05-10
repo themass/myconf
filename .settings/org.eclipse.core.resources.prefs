@@ -3,6 +3,7 @@ encoding//python/common/dateutil.py=utf-8
 encoding//python/common/db_ops.py=utf-8
 encoding//python/common/envmod.py=utf-8
 encoding//python/common/prod/db.py=utf-8
+encoding//python/common/test/db.py=utf-8
 encoding//python/fetch/69vj_vip.py=utf-8
 encoding//python/fetch/all_Image_sync.py=utf-8
 encoding//python/fetch/all_text_sync.py=utf-8

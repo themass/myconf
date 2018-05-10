@@ -19,7 +19,7 @@ aheader = {'Upgrade-Insecure-Requests':"1",'Cookie':"Hm_lvt_9f04e2e5b7ea2ef678f7
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*)m3u8")
-regVideoYun = ".share."
+regVideoYun = "/share/"
 
 class BaseParse(threading.Thread):
 

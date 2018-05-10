@@ -36,7 +36,8 @@ class VideoParse(BaseParse):
         if div!=None:
             ahrefs = div.findAll('a')
             for ahref in ahrefs:
-                if ahref.text=="伦理片" or ahref.text=="激情福利":
+#                 if ahref.text=="伦理片" or ahref.text=="激情福利":
+                if ahref.text=="激情福利":
                     obj={}
                     obj['name']=ahref.text
                     obj['url']=ahref.get('href')

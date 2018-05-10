@@ -35,7 +35,7 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     print content
 if __name__ == '__main__':
-    fetchUrl("http://www.dadekai.cc")
+    fetchUrl("http://18x.56pp.net/index.php?m=vod-list-id-6-pg-1-order--by--class--year--letter--area--lang-.html")
     str = "https://cdn.zypll.com/share/o942dUmbVNWYcvLE"
     print str.count("cdn.zypll")
     #     name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'

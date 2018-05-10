@@ -31,6 +31,7 @@ import wuji3_vip
 import zanquye_vip
 import diediaody_vip
 import dadekai_vip
+import upianku_vip
 if __name__ == '__main__':
  
 # # #webview
@@ -92,5 +93,6 @@ if __name__ == '__main__':
     zanquye_vip.parseVideo()
     diediaody_vip.parseVideo()
     dadekai_vip.parseVideo()
+    upianku_vip.parseVideo()
     #xsian
     #ttkyy

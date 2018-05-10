@@ -14,12 +14,12 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 # http://www.dehyc.com
-baseurl = "http://www.zanquye.com"
+baseurl = "http://www.dadekai.cc"
 aheader = {'Upgrade-Insecure-Requests':"1",'Cookie':"Hm_lvt_9f04e2e5b7ea2ef678f7a1983a6bfa03=1525932820; PHPSESSID=35os0mtgdqa8ftg3a3voqtmk20; Hm_lpvt_9f04e2e5b7ea2ef678f7a1983a6bfa03=1525956313",'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*)m3u8")
-regVideoYun = ".share."
+regVideoYun = "cdn.zypll"
 
 class BaseParse(threading.Thread):
 

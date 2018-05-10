@@ -23,7 +23,7 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            for i in range(1, maxVideoPage):
+            for i in range(1, item['page']):
                 url= item['url']
                 if i!=1:
                     url= "%s%s%s"%(item['url'].replace('.html','-'),i,".html")
@@ -45,6 +45,25 @@ class VideoParse(BaseParse):
                 obj['channel']=obj['name']=ahref.text+"片"
                 obj['showType']=1
                 obj['channelType']='movie'
+                obj['page']=20
+                channelList.append(obj)
+                
+        soup = self.fetchUrl("/vod-show-id-10.html")
+        div = soup.first("div",{"id":"j-nav-type1"})
+        ahrefs = div.findAll("a")
+        channelList = []
+        for ahref in ahrefs:
+            if ahref.text=="全部":
+                obj={}
+                obj['url']=ahref.get('href')
+                obj['baseurl']=baseurl
+                obj['updateTime']=datetime.datetime.now()
+                obj['pic']=''
+                obj['rate']=0.7
+                obj['channel']=obj['name']='美女福利'
+                obj['showType']=1
+                obj['channelType']='movie'
+                obj['page']=80
                 channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):

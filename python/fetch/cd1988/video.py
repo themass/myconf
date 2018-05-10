@@ -107,8 +107,11 @@ class VideoParse(BaseParse):
                     playerall = soup.first("div",{"class":"playerall"})
                     script  = playerall.first("script")
                     if script !=None:
-#                         content = self.fetchContentUrlWithBase(script.get("src"))
+                        url = script.get("src")
                         content = unquote(str(script.text))
+                        if url!=None:
+                            content = self.fetchContentUrlWithBase(script.get("src"))
+                            content = unquote(str(content))
                         match = regVideo.search(content)
                         if match!=None:
                             obj = json.loads(match.group(1))

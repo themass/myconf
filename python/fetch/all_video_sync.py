@@ -79,7 +79,7 @@ if __name__ == '__main__':
 #     
 #     
       
-    zy3838_vip.parseVideo()
+##    zy3838_vip.parseVideo()
     nomsgus_vip.parseVideo()
     ttkyy_vip.parseVideo()
     seman_vip.parseVideo()

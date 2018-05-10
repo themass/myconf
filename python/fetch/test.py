@@ -35,7 +35,9 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     print content
 if __name__ == '__main__':
-    fetchUrl("http://zanquye.com")
+#     fetchUrl("http://zanquye.com")
+    str = "https://cdn.zypll.com/share/o942dUmbVNWYcvLE"
+    print str.count("cdn.zypll")
     #     name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'
     #     strName = name.replace(
     #         "<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")

@@ -19,41 +19,38 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 'zanquye video -- channel ok;,len=',len(chs)
+        print 'dadekai video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
                 url= item['url']
-                if i!=1:
-                    url= "%s%s%s"%(item['url'].replace('.html','-'),i,".html")
+                page = "%s%s"%('pg-',i)
+                url= item['url'].replace('pg-1',page)
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
-        soup = self.fetchUrl('/')
-        div  = soup.first('ul',{'class':'dropdown-menu'})
-        channelList =[]
-        if div!=None:
-            ahrefs = div.findAll('a')
-            for ahref in ahrefs:
-#                 if ahref.text=="伦理片" or ahref.text=="激情福利":
-                if ahref.text=="激情福利":
-                    obj={}
-                    obj['name']=ahref.text
-                    obj['url']=ahref.get('href')
-                    obj['baseurl']=baseurl
-                    obj['updateTime']=datetime.datetime.now()
-                    obj['pic']=''
-                    obj['rate']=0.7
-                    obj['channel']=obj['name']=ahref.text
-                    obj['showType']=1
-                    obj['channelType']='movie'
-                    channelList.append(obj)
+        ahrefs = self.header()
+        channelList = []
+        for ahref in ahrefs:
+            obj={}
+            obj['url']=ahref.get('href')
+            obj['baseurl']=baseurl
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=''
+            obj['rate']=0.7
+            obj['channel']=obj['name']=ahref.text+"2"
+            obj['showType']=1
+            obj['channelType']='movie'
+            channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
+        print url
         dataList = []
         soup = self.fetchUrl(url)
-        lis = soup.findAll("li",{"class":'col-md-2 col-sm-2 col-xs-4 text-center sea-vod-img-new sea-col'})
+        print soup.findAll("ul")
+        ul  = soup.first("ul",{"class":'v_list'})
+        lis = ul.findAll("li")
         for li in lis:
             ahref = li.first('a')
             if ahref != None:
@@ -64,7 +61,7 @@ class VideoParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = ahref.first("img")
-                obj['pic'] = baseurl+img.get("src")
+                obj['pic'] = img.get("data-original")
                 obj['name'] = img.get("alt")
                 obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
                 obj['updateTime'] = datetime.datetime.now()
@@ -81,7 +78,7 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj,obj['videoType'],baseurl)
 
-        print 'zanquye video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'dadekai video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
@@ -89,13 +86,12 @@ class VideoParse(BaseParse):
       
         try:
             soup = self.fetchUrl(url)
-            tabContent = soup.first("div",{"class":"tab-content"})
-            div = tabContent.first("div")
+            div = soup.first("div",{"class":"mlist scroll"})
             if div!=None:
                 ahref = div.first("a")
                 if ahref!=None:
                     soup = self.fetchUrl(ahref.get("href"))
-                    player = soup.first("div",{"class":"player"})
+                    player = soup.first("div",{"class":"play_wrap"})
                     if player!=None:
                         script = player.first("script")
                         if script!=None:

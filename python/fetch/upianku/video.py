@@ -5,6 +5,7 @@ from urlparse import urlparse
 from common import common
 from urllib import unquote
 import time
+import json
 from fetch.profile import *
 from urllib import unquote
 
@@ -19,31 +20,32 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 'dadekai video -- channel ok;,len=',len(chs)
+        print 'upianku video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
                 url= item['url']
                 if i!=1:
-                    url= "%s%s%s"%(item['url'].replace('.html','-'),i,".html")
+                    url= "%s%s%s%s"%(item['url'],"index",i,".html")
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         soup = self.fetchUrl('/')
-        div  = soup.first('div',{'class':'newmenu'})
+        divs  = soup.findAll('div',{'class':'nav-c-share clearfix'})
         channelList =[]
+        div = divs[1]
         if div!=None:
             ahrefs = div.findAll('a')
             for ahref in ahrefs:
-                if ahref.text=="伦理片" or ahref.text=="微电影":
+                if ahref.get('href')!="/dianying/":
                     obj={}
                     obj['url']=ahref.get('href')
                     obj['baseurl']=baseurl
                     obj['updateTime']=datetime.datetime.now()
                     obj['pic']=''
                     obj['rate']=0.7
-                    obj['channel']=obj['name']=ahref.text+"2"
+                    obj['channel']=obj['name']=ahref.text
                     obj['showType']=1
                     obj['channelType']='movie'
                     channelList.append(obj)
@@ -51,7 +53,8 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        lis = soup.findAll("div",{"class":'listCover'})
+        div = soup.first("div",{"class":'filtrate-container-body'})
+        lis = div.findAll("li")
         for li in lis:
             ahref = li.first('a')
             if ahref != None:
@@ -62,11 +65,11 @@ class VideoParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = ahref.first("img")
-                obj['pic'] = baseurl+img.get("src")
+                obj['pic'] = img.get("data-url")
                 obj['name'] = img.get("alt")
                 obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
                 obj['updateTime'] = datetime.datetime.now()
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                if mp4Url.count("m3u8")==0:
                     obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"
@@ -79,7 +82,7 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj,obj['videoType'],baseurl)
 
-        print 'dadekai video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'upianku video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
@@ -87,22 +90,35 @@ class VideoParse(BaseParse):
       
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div",{"class":"videourl"})
+            div = soup.first("div",{"class":"details-con2-body"})
             if div!=None:
                 ahref = div.first("a")
                 if ahref!=None:
                     soup = self.fetchUrl(ahref.get("href"))
-                    player = soup.first("div",{"class":"player"})
+                    player = soup.first("div",{"class":"player-box details-body"})
                     if player!=None:
                         script = player.first("script")
                         if script!=None:
-                            content = unquote(str(script.text)).split("$")
-                            for item in content:
-                                match = regVideo.search(item)
-                                if match!=None: 
-                                    return "http"+match.group(1)+'m3u8'
-                                elif item.count(regVideoYun)>0:
-                                    return item
+                            content = unquote(str(script.text))
+                            match = regVideo.search(content)
+                            if match!=None:
+                                obj = json.loads(match.group(1))
+                                data = obj.get('Data',[])
+                                urlData = []
+                                for item in data:
+                                    itemData = item.get('playurls',[])
+                                    for itemUrl in itemData:
+                                        for itemurlOne in itemUrl:
+                                            if itemurlOne.count('http')>0:
+                                                urlData.append(itemurlOne)
+                                for item in urlData:
+                                    if item.count('m3u8'):
+                                        return item
+                                for item in urlData:
+                                    if item.count('/share/'):
+                                        return item
+                                if len(urlData)>0:
+                                    return urlData[0]
             print '没找到mp4'
             return None
         except Exception as e:

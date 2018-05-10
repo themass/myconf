@@ -36,18 +36,17 @@ class VideoParse(BaseParse):
         if div!=None:
             ahrefs = div.findAll('a')
             for ahref in ahrefs:
-                if ahref.text=="伦理片":
-                    obj={}
-                    obj['name']=ahref.text
-                    obj['url']=ahref.get('href')
-                    obj['baseurl']=baseurl
-                    obj['updateTime']=datetime.datetime.now()
-                    obj['pic']=''
-                    obj['rate']=0.7
-                    obj['channel']=obj['name']=ahref.text
-                    obj['showType']=1
-                    obj['channelType']='movie'
-                    channelList.append(obj)
+                obj={}
+                obj['name']=ahref.text
+                obj['url']=ahref.get('href')
+                obj['baseurl']=baseurl
+                obj['updateTime']=datetime.datetime.now()
+                obj['pic']=''
+                obj['rate']=0.7
+                obj['channel']=obj['name']=ahref.text
+                obj['showType']=1
+                obj['channelType']='movie'
+                channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []
@@ -90,9 +89,10 @@ class VideoParse(BaseParse):
                 ahref = div.first("a")
                 if ahref!=None:
                     soup = self.fetchUrl(ahref.get("href"))
-                    player = soup.first("player")
+                    player = soup.first("div",{"class":"player"})
                     if player!=None:
                         script = player.first("script")
+                        print script
                         if script!=None:
                             content = unquote(str(script.text)).split("$")
                             for item in content:

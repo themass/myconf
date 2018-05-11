@@ -136,6 +136,7 @@ encoding//python/fetch/tofile.py=utf-8
 encoding//python/fetch/tt192/baseparse.py=utf-8
 encoding//python/fetch/tt192/img.py=utf-8
 encoding//python/fetch/tt192_vip.py=utf-8
+encoding//python/fetch/tt80_vip.py=utf-8
 encoding//python/fetch/ttkyy/baseparse.py=utf-8
 encoding//python/fetch/ttkyy/video.py=utf-8
 encoding//python/fetch/ttkyy_vip.py=utf-8

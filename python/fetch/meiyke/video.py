@@ -92,7 +92,7 @@ class VideoParse(BaseParse):
             iframe = soup.first("iframe")
             if iframe!=None:
                 aherf = iframe.get("src")
-                shell = "%s %s"%("wget -q ",aherf)
+                shell = "%s %s"%("wget ",aherf)
                 ret = os.popen(shell).read()
                 print ret
                 if len(ret)>0:

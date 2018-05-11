@@ -11,6 +11,8 @@ from common import db_ops
 from common import MyQueue
 from common import dateutil
 from common import html_parse
+from selenium import webdriver
+import requests  
 import re
 import os
 import sys
@@ -39,7 +41,11 @@ if __name__ == '__main__':
 #     str = "$play=encrypt(https://youku.cdn-tudou.com/20180508/5819_7b1f8025/index.m38, 'E', $key);"
 #     match = regVideo.search(str)
 #     print match
-    print os.popen("wget http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").read()
+#     print os.popen("wget http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").read()
+    driver = webdriver.Chrome()
+    driver.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
+    print driver.page_source
+#     print requests.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").text
 #     fetchUrl("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
 #     str = "https://cdn.zypll.com/share/o942dUmbVNWYcvLE"
 #     print str.count("cdn.zypll")

@@ -38,14 +38,14 @@ class VideoParse(BaseParse):
             for ahref in ahrefs:
                 if ahref.text!='首页':
                     obj={}
-                    obj['name']=ahref.text
+                    obj['name']=ahref.text+"-浏览器打开"
                     obj['url']=ahref.get('href')
                     obj['baseurl']=baseurl
                     obj['updateTime']=datetime.datetime.now()
                     obj['pic']=''
                     obj['rate']=0.7
-                    obj['channel']=obj['name']=ahref.text
-                    obj['showType']=1
+                    obj['channel']=ahref.text
+                    obj['showType']=3
                     obj['channelType']='movie'
                     channelList.append(obj)
         return channelList

@@ -25,7 +25,7 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 
                 if i!=1:
-                    url= "/%s%s%s%s"%(item['url'].replace(".html","-"),i,".html")
+                    url= "/%s%s%s%s"%(item['url'],"index-",i,".htm")
                 print url
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
@@ -48,39 +48,36 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "channel"})
-        uls = div.findAll('li')
+        div = soup.first("div", {"class": "vodlist_l box"})
+        uls = div.findAll('ul')
         for ul in uls:
+            obj = {}
             ahref = ul.first('a')
             if ahref!=None:
-                mp4Urls = self.parseDomVideo(ahref.get("href"))
-                if len(mp4Urls)==0:
+                mp4Url = self.parseDomVideo(ahref.get("href"))
+                if mp4Url == None:
                     print '没有mp4 文件:', ahref.get("href")
                     continue
-                index = 1
-                for mp4Url in mp4Urls:
-                    obj = {}
-                    obj['url'] = mp4Url
-                    img = ahref.first('img')
-                    obj['pic'] = img.get("data-original")
-                    obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")+str(index)
-                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                        obj['videoType'] = "webview"
-                    else:
-                        obj['videoType'] = "normal"
-                    index = index+1
-                    obj['baseurl'] = baseurl
-                    videourl = urlparse(obj['url'])
-                    obj['path'] = videourl.path
-                    obj['updateTime'] = datetime.datetime.now()
-                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                        obj['videoType'] = "webview"
-                    else:
-                        obj['videoType'] = "normal"
-                    obj['channel'] = channel
-                    obj['baseurl'] = baseurl
-                    print obj['videoType'],obj['url'],obj['pic']
-                    dataList.append(obj)
+                obj['url'] = mp4Url
+                img = ahref.first('img')
+                obj['pic'] = img.get("data-original")
+                obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")
+                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                    obj['videoType'] = "webview"
+                else:
+                    obj['videoType'] = "normal"
+                obj['baseurl'] = baseurl
+                videourl = urlparse(obj['url'])
+                obj['path'] = videourl.path
+                obj['updateTime'] = datetime.datetime.now()
+                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                    obj['videoType'] = "webview"
+                else:
+                    obj['videoType'] = "normal"
+                obj['channel'] = channel
+                obj['baseurl'] = baseurl
+                print obj['videoType'],obj['url'],obj['pic']
+                dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -95,8 +92,7 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
-            div = soup.first("div",{'class':'playlist'})
-            mp4Urls = []
+            div = soup.first("div",{'class':'playlist wbox'})
             if div!=None:
                 ahref = div.first('a')
                 if ahref!=None:
@@ -105,13 +101,28 @@ class VideoParse(BaseParse):
                     if play_video!=None:
                         script = play_video.first('script')
                         if script!=None:
-                            content = self.fetchContentUrl(script.get('src'), header)
-                            contents = unquote(str(content).replace("#", "$")).split("$")
-                            for item in contents:
-                                match = regVideo.search(item)
-                                if match!=None:
-                                    mp4Urls.append("%s%s%s"%("http",match.group(1),"m3u8"))
-            return mp4Urls
+                            content = unquote(str(script.text))
+                            match = regVideo.search(content)
+                            if match!=None:
+                                obj = json.loads(match.group(1))
+                                data = obj.get('Data',[])
+                                urlData = []
+                                for item in data:
+                                    itemData = item.get('playurls',[])
+                                    for itemUrl in itemData:
+                                        for itemurlOne in itemUrl:
+                                            if itemurlOne.count('http')>0:
+                                                urlData.append(itemurlOne)
+                                for item in urlData:
+                                    if item.count('m3u8'):
+                                        return item
+                                for item in urlData:
+                                    if item.count('/share/'):
+                                        return item
+                                if len(urlData)>0:
+                                    return urlData[0]
+            print '没找到mp4'
+            return None
         except Exception as e:
             print common.format_exception(e)
             return None

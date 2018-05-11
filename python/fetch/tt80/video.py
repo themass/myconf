@@ -25,7 +25,7 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 
                 if i!=1:
-                    url= "/%s%s%s%s"%(item['url'],"index-",i,".htm")
+                    url= "/%s%s%s%s"%(item['url'].replace(".html","-"),i,".html")
                 print url
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
@@ -48,36 +48,39 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "vodlist_l box"})
-        uls = div.findAll('ul')
+        div = soup.first("div", {"class": "channel"})
+        uls = div.findAll('li')
         for ul in uls:
-            obj = {}
             ahref = ul.first('a')
             if ahref!=None:
-                mp4Url = self.parseDomVideo(ahref.get("href"))
-                if mp4Url == None:
+                mp4Urls = self.parseDomVideo(ahref.get("href"))
+                if len(mp4Urls)==0:
                     print '没有mp4 文件:', ahref.get("href")
                     continue
-                obj['url'] = mp4Url
-                img = ahref.first('img')
-                obj['pic'] = img.get("data-original")
-                obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                    obj['videoType'] = "webview"
-                else:
-                    obj['videoType'] = "normal"
-                obj['baseurl'] = baseurl
-                videourl = urlparse(obj['url'])
-                obj['path'] = videourl.path
-                obj['updateTime'] = datetime.datetime.now()
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                    obj['videoType'] = "webview"
-                else:
-                    obj['videoType'] = "normal"
-                obj['channel'] = channel
-                obj['baseurl'] = baseurl
-                print obj['videoType'],obj['url'],obj['pic']
-                dataList.append(obj)
+                index = 1
+                for mp4Url in mp4Urls:
+                    obj = {}
+                    obj['url'] = mp4Url
+                    img = ahref.first('img')
+                    obj['pic'] = img.get("data-original")
+                    obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")+str(index)
+                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                        obj['videoType'] = "webview"
+                    else:
+                        obj['videoType'] = "normal"
+                    index = index+1
+                    obj['baseurl'] = baseurl
+                    videourl = urlparse(obj['url'])
+                    obj['path'] = videourl.path
+                    obj['updateTime'] = datetime.datetime.now()
+                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                        obj['videoType'] = "webview"
+                    else:
+                        obj['videoType'] = "normal"
+                    obj['channel'] = channel
+                    obj['baseurl'] = baseurl
+                    print obj['videoType'],obj['url'],obj['pic']
+                    dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -88,11 +91,12 @@ class VideoParse(BaseParse):
         dbVPN.close()
 
     def parseDomVideo(self, url):
-        header = {'User-Agent':
+        header = {"Cookie":"UM_distinctid=1634dc359232a8-0bb5fc4253d1fa-454c092b-1fa400-1634dc359262b6; PHPSESSID=bsmjidrh538n8g1tdgma49d5b4; CNZZDATA1263540662=1817384014-1526013810-null%7C1526060398; mac_history=%7Bvideo%3A%5B%7B%22name%22%3A%22%u5934%u53F7%u73A9%u5BB6%22%2C%22link%22%3A%22/dv/14210/14210.html%22%2C%22typename%22%3A%22%u79D1%u5E7B%u7247%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22http%3A//img1.doubanio.com/view/photo/s_ratio_poster/public/p2516578307.jpg%22%7D%2C%7B%22name%22%3A%22%u7F8E%u8DB3%u7F8E%u5973%u89C6%u989120180509%20%5B11%5D%22%2C%22link%22%3A%22/dv/15880/15880.html%22%2C%22typename%22%3A%22%u798F%u5229%u89C6%u9891%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22https%3A//156zy.suyunbo.tv/2018/05/10/OcQt8szOetreqzP1/screenshot1.jpg%22%7D%2C%7B%22name%22%3A%22%u7F6A%u4EBA%u4E0E%u9F99%u5171%u821E%22%2C%22link%22%3A%22/dv/15959/15959.html%22%2C%22typename%22%3A%22%u52A8%u6F2B%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22http%3A//img3.doubanio.com/view/photo/s_ratio_poster/public/p2516380082.jpg%22%7D%2C%7B%22name%22%3A%22%u8D85%u80FD%u529B%u8005%22%2C%22link%22%3A%22/dv/8319/8319.html%22%2C%22typename%22%3A%22%u79D1%u5E7B%u7247%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22http%3A//p6.qhimg.com/d/dy_4a648e5fbf851bbb569686b63b725ce3.jpg%22%7D%2C%7B%22name%22%3A%22%u7FA4%u9E1F%u4E4B%u5730%22%2C%22link%22%3A%22/dv/15951/15951.html%22%2C%22typename%22%3A%22%u5267%u60C5%u7247%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22http%3A//img3.doubanio.com/view/photo/s_ratio_poster/public/p2518129996.jpg%22%7D%2C%7B%22name%22%3A%22%u7F8E%u8DB3%u7F8E%u5973%u89C6%u989120180510%20%5B1%5D%22%2C%22link%22%3A%22/dv/15943/15943.html%22%2C%22typename%22%3A%22%u798F%u5229%u89C6%u9891%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22https%3A//156zy.suyunbo.tv/2018/05/11/5fVQnezSjpep3uzG/screenshot1.jpg%22%7D%2C%7B%22name%22%3A%22%u63BA%u5047%u65F6%u4EE3%22%2C%22link%22%3A%22/dv/15856/15856.html%22%2C%22typename%22%3A%22%u4F26%u7406%u7535%u5F71%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22http%3A//ww1.sinaimg.cn/large/006K6oEIgy1fr5fm10vobj3068095wh0.jpg%22%7D%2C%7B%22name%22%3A%22%u597D%u5973%u5B69%22%2C%22link%22%3A%22/dv/2386/2386.html%22%2C%22typename%22%3A%22%u4F26%u7406%u7535%u5F71%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22http%3A//img3.doubanio.com/view/movie_poster_cover/lpst/public/p2480898061.jpg%22%7D%2C%7B%22name%22%3A%22%u7F8E%u8DB3%u7F8E%u5973%u89C6%u989120180509%20%5B13%5D%22%2C%22link%22%3A%22/dv/15882/15882.html%22%2C%22typename%22%3A%22%u798F%u5229%u89C6%u9891%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22https%3A//156zy.suyunbo.tv/2018/05/10/XFxghJelyOibTiLt/screenshot1.jpg%22%7D%2C%7B%22name%22%3A%22%u6FC0%u6218%u67CF%u6797%22%2C%22link%22%3A%22/dv/2667/2667.html%22%2C%22typename%22%3A%22%u4F26%u7406%u7535%u5F71%22%2C%22typelink%22%3A%22/dv/-pg-1.html%22%2C%22pic%22%3A%22http%3A//img1.doubanio.com/view/movie_poster_cover/lpst/public/p2389656488.jpg%22%7D%5D%7D; yunsuo_session_verify=66f53834bfa109844cac87609cd3e8d2; yunsuo_leech_key=36","Upgrade-Insecure-Requests":1,'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
-            div = soup.first("div",{'class':'playlist wbox'})
+            div = soup.first("div",{'class':'playlist'})
+            mp4Urls = []
             if div!=None:
                 ahref = div.first('a')
                 if ahref!=None:
@@ -101,28 +105,13 @@ class VideoParse(BaseParse):
                     if play_video!=None:
                         script = play_video.first('script')
                         if script!=None:
-                            content = unquote(str(script.text))
-                            match = regVideo.search(content)
-                            if match!=None:
-                                obj = json.loads(match.group(1))
-                                data = obj.get('Data',[])
-                                urlData = []
-                                for item in data:
-                                    itemData = item.get('playurls',[])
-                                    for itemUrl in itemData:
-                                        for itemurlOne in itemUrl:
-                                            if itemurlOne.count('http')>0:
-                                                urlData.append(itemurlOne)
-                                for item in urlData:
-                                    if item.count('m3u8'):
-                                        return item
-                                for item in urlData:
-                                    if item.count('/share/'):
-                                        return item
-                                if len(urlData)>0:
-                                    return urlData[0]
-            print '没找到mp4'
-            return None
+                            content = self.fetchContentUrl(script.get('src'), header)
+                            contents = unquote(str(content)).replace("#", "$").split("$")
+                            for item in contents:
+                                match = regVideo.search(item)
+                                if match!=None:
+                                    mp4Urls.append("%s%s%s"%("http",match.group(1),"m3u8"))
+            return mp4Urls
         except Exception as e:
             print common.format_exception(e)
             return None

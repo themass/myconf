@@ -30,6 +30,7 @@ import tzzy1399_vip
 import wuji3_vip
 import zanquye_vip
 import diediaody_vip
+import tiantianyao_vip
 import dadekai_vip
 import upianku_vip
 import meiyke_vip
@@ -96,5 +97,6 @@ if __name__ == '__main__':
     dadekai_vip.parseVideo()
     upianku_vip.parseVideo()
     meiyke_vip.parseVideo()
+    tiantianyao_vip.parseVideo()
     #xsian
     #ttkyy

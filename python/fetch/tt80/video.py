@@ -97,6 +97,8 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url, header)
             div = soup.first("div",{'class':'playlist'})
             mp4Urls = []
+            mp4Urlsm3 = []
+            mp4Urlsshare = []
             if div!=None:
                 ahref = div.first('a')
                 if ahref!=None:
@@ -110,7 +112,16 @@ class VideoParse(BaseParse):
                             for item in contents:
                                 match = regVideo.search(item)
                                 if match!=None:
-                                    mp4Urls.append("%s%s%s"%("http",match.group(1),"m3u8"))
+                                    mp4Urlsm3.append("%s%s%s"%("http",match.group(1),"m3u8"))
+                            for item in contents:
+                                if item.count(regVideoyun)>0:
+                                    mp4Urlsshare.append(item)
+                                    continue
+                            if len(mp4Urlsm3)>0:
+#                                 mp4Urls.extend(mp4Urlsm3)
+                                return mp4Urls
+                            else:
+                                mp4Urls.extend(mp4Urlsshare)
             return mp4Urls
         except Exception as e:
             print common.format_exception(e)

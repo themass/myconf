@@ -42,11 +42,11 @@ if __name__ == '__main__':
 #     match = regVideo.search(str)
 #     print match
 #     print os.popen("wget http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").read()
-    driver = webdriver.Chrome()
-    driver.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
-    print driver.page_source
+#     driver = webdriver.Chrome()
+#     driver.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
+#     print driver.page_source
 #     print requests.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").text
-#     fetchUrl("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
+    fetchUrl("http://www.80tt.cc/upload/playdata/20170814/2386/2386.js")
 #     str = "https://cdn.zypll.com/share/o942dUmbVNWYcvLE"
 #     print str.count("cdn.zypll")
     #     name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'

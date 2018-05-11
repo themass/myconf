@@ -16,6 +16,7 @@ header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*)m3u8")
+regVideoyun = '/share/'
 
 
 class BaseParse(threading.Thread):

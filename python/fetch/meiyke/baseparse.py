@@ -29,13 +29,13 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl + url, headers=aheader)
+                req = urllib2.Request(url, headers=aheader)
                 content = urllib2.urlopen(req, timeout=5000).read()
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
                 print common.format_exception(e)
-                print '打开页面错误,重试', baseurl + url, '次数', count
+                print '打开页面错误,重试', url, '次数', count
                 count = count + 1
 
         print '打开页面错误,重试3次还是错误', url
@@ -61,7 +61,7 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl+url, headers={
+                req = urllib2.Request(url, headers={
                     'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl})
                 req.encoding = 'utf-8'
                 response = urllib2.urlopen(req, timeout=300)

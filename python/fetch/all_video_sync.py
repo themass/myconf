@@ -36,12 +36,12 @@ import upianku_vip
 import meiyke_vip
 if __name__ == '__main__':
  
-# # #webview
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     vj69videop = vj69.video.VideoParse()
-#     vj69videop.run()
+# #webview
+    for channel, url in ozsese.baseparse.channels.items():
+        ozsesevideop = ozsese.video.VideoParse(channel, url)
+        ozsesevideop.run()
+    vj69videop = vj69.video.VideoParse()
+    vj69videop.run()
 # # # # # # #     
 # # # # # # #     
 # # # # # # #     
@@ -52,8 +52,8 @@ if __name__ == '__main__':
 # # #     weavvideop.run()
 # # # # #  
 # # # # # # 
-#     sp1769_vip.parseVideo()
-#     fff64_vip.parseVideo()
+    sp1769_vip.parseVideo()
+    fff64_vip.parseVideo()
 #   
 # # ------------------------------------------------------------------
 #     se8_vip.parseVideo()
@@ -85,18 +85,18 @@ if __name__ == '__main__':
 #     
 #     
       
-##    zy3838_vip.parseVideo()
-    nomsgus_vip.parseVideo()
+#    zy3838_vip.parseVideo()
+#     nomsgus_vip.parseVideo()
     ttkyy_vip.parseVideo()
     seman_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kump4_vip.parseVideo()
-    
-    zanquye_vip.parseVideo()
-    diediaody_vip.parseVideo()
-    dadekai_vip.parseVideo()
-    upianku_vip.parseVideo()
-    meiyke_vip.parseVideo()
-    tiantianyao_vip.parseVideo()
+#     
+#     zanquye_vip.parseVideo()
+#     diediaody_vip.parseVideo()
+#     dadekai_vip.parseVideo()
+#     upianku_vip.parseVideo()
+#     meiyke_vip.parseVideo()
+#     tiantianyao_vip.parseVideo()
     #xsian
     #ttkyy

@@ -78,8 +78,8 @@ class VideoParse(BaseParse):
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-#         for obj in dataList:
-#             ops.inertVideo(obj,obj['videoType'],baseurl)
+        for obj in dataList:
+            ops.inertVideo(obj,obj['videoType'],baseurl)
 
         print 'duotv video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
@@ -92,15 +92,16 @@ class VideoParse(BaseParse):
             iframe = soup.first("iframe")
             if iframe!=None:
                 aherf = iframe.get("src")
-                shell = "%s %s"%("wget ",aherf)
-                ret = os.popen(shell).read()
-                print ret
-                if len(ret)>0:
-                    for item in ret:
-                        item = unquote(str(item))
-                        match = regVideo.search(item)
-                        if match!=None:
-                            return 'http'+match.group(1)
+                return aherf
+#                 shell = "%s %s"%("wget ",aherf)
+#                 ret = os.popen(shell).read()
+#                 print ret
+#                 if len(ret)>0:
+#                     for item in ret:
+#                         item = unquote(str(item))
+#                         match = regVideo.search(item)
+#                         if match!=None:
+#                             return 'http'+match.group(1)
             print '没找到mp4'
             return None
         except Exception as e:

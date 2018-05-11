@@ -69,14 +69,9 @@ class VideoParse(BaseParse):
                     else:
                         obj['videoType'] = "normal"
                     index = index+1
-                    obj['baseurl'] = baseurl
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path
                     obj['updateTime'] = datetime.datetime.now()
-                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                        obj['videoType'] = "webview"
-                    else:
-                        obj['videoType'] = "normal"
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
                     print obj['videoType'],obj['url'],obj['pic']
@@ -108,7 +103,7 @@ class VideoParse(BaseParse):
                         script = play_video.first('script')
                         if script!=None:
                             content = self.fetchContentUrl(script.get('src'), header)
-                            contents = unquote(str(content)).replace("#", "$").split("$")
+                            contents = unquote(str(content)).replace("#", "$").replace("');", "").split("$")
                             for item in contents:
                                 match = regVideo.search(item)
                                 if match!=None:

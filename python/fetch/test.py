@@ -35,11 +35,12 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     print content
 if __name__ == '__main__':
-    regVideo = re.compile(r"encrypt\((.*), 'E', \$key\);")
-    str = "$play=encrypt(https://youku.cdn-tudou.com/20180508/5819_7b1f8025/index.m38, 'E', $key);"
-    match = regVideo.search(str)
-    print match
-#     fetchUrl("http://18x.56pp.net/index.php?m=vod-list-id-6-pg-1-order--by--class--year--letter--area--lang-.html")
+#     regVideo = re.compile(r"encrypt\((.*), 'E', \$key\);")
+#     str = "$play=encrypt(https://youku.cdn-tudou.com/20180508/5819_7b1f8025/index.m38, 'E', $key);"
+#     match = regVideo.search(str)
+#     print match
+    print os.popen("wget http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").read()
+#     fetchUrl("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
 #     str = "https://cdn.zypll.com/share/o942dUmbVNWYcvLE"
 #     print str.count("cdn.zypll")
     #     name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'

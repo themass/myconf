@@ -25,7 +25,7 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 
                 if i!=1:
-                    url= "/%s%s%s%s"%(item['url'].replace(".html","-"),i,".html")
+                    url= "/%s%s%s"%(item['url'].replace(".html","-"),i,".html")
                 print url
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'

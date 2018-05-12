@@ -53,11 +53,11 @@ class VideoParse(BaseParse):
         for ul in uls:
             ahref = ul.first('a')
             if ahref!=None:
-                if ahref.get("href").count('938')>0:
-                    img = ahref.first('img')
-                    mp4Urls = self.parseDomVideo(ahref.get("href"))
-                    print img.get('alt'),ahref.get("href"),mp4Urls
-                continue
+#                 if ahref.get("href").count('938')>0:
+#                     img = ahref.first('img')
+#                     mp4Urls = self.parseDomVideo(ahref.get("href"))
+#                     print img.get('alt'),ahref.get("href"),mp4Urls
+#                 continue
                 mp4Urls = self.parseDomVideo(ahref.get("href"))
                 if len(mp4Urls)==0:
                     print '没有mp4 文件:', ahref.get("href")

@@ -22,7 +22,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url = item['url']
-            for i in range(1, maxVideoPage):
+            for i in range(59, maxVideoPage):
                 
                 if i!=1:
                     url= "/%s%s%s"%(item['url'].replace(".html","-"),i,".html")
@@ -56,7 +56,7 @@ class VideoParse(BaseParse):
                 if ahref.get("href").count('938')>0:
                     img = ahref.first('img')
                     mp4Urls = self.parseDomVideo(ahref.get("href"))
-                    print img.get('alt'),mp4Urls
+                    print img.get('alt'),ahref.get("href"),mp4Urls
                 continue
                 mp4Urls = self.parseDomVideo(ahref.get("href"))
                 if len(mp4Urls)==0:

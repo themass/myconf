@@ -22,7 +22,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url = item['url']
-            for i in range(13, maxVideoPage):
+            for i in range(1, maxVideoPage):
                 
                 if i!=1:
                     url= "/%s%s%s"%(item['url'].replace(".html","-"),i,".html")

@@ -61,7 +61,7 @@ class VideoParse(BaseParse):
                 for mp4Url in mp4Urls:
                     indexP =''
                     if len(mp4Urls)>0:
-                        indexP=str(index)
+                        indexP="%s%s"%("-",index)
                     obj = {}
                     obj['url'] = mp4Url
                     img = ahref.first('img')
@@ -72,8 +72,7 @@ class VideoParse(BaseParse):
                     else:
                         obj['videoType'] = "normal"
                     index = index+1
-                    videourl = urlparse(obj['url'])
-                    obj['path'] = videourl.path
+                    obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
@@ -116,8 +115,7 @@ class VideoParse(BaseParse):
                                     mp4Urlsshare.append(item)
                                     continue
                             if len(mp4Urlsm3)>0:
-#                                 mp4Urls.extend(mp4Urlsm3)
-                                return mp4Urls
+                                mp4Urls.extend(mp4Urlsm3)
                             else:
                                 mp4Urls.extend(mp4Urlsshare)
             return mp4Urls

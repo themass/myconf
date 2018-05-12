@@ -22,7 +22,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url = item['url']
-            for i in range(5, maxVideoPage):
+            for i in range(13, maxVideoPage):
                 
                 if i!=1:
                     url= "/%s%s%s"%(item['url'].replace(".html","-"),i,".html")
@@ -53,17 +53,20 @@ class VideoParse(BaseParse):
         for ul in uls:
             ahref = ul.first('a')
             if ahref!=None:
-                mp4Urls = self.parseDomVideo("/dv/938/938.html")
+                mp4Urls = self.parseDomVideo(ahref.get("src"))
                 if len(mp4Urls)==0:
 #                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 index = 1
                 for mp4Url in mp4Urls:
+                    indexP =''
+                    if len(mp4Urls)>0:
+                        indexP=str(index)
                     obj = {}
                     obj['url'] = mp4Url
                     img = ahref.first('img')
                     obj['pic'] = img.get("data-original")
-                    obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")+str(index)
+                    obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")+indexP
                     if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                         obj['videoType'] = "webview"
                     else:

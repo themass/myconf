@@ -60,7 +60,7 @@ class VideoParse(BaseParse):
                 index = 1
                 for mp4Url in mp4Urls:
                     indexP =''
-                    if len(mp4Urls)>0:
+                    if len(mp4Urls)>1:
                         indexP="%s%s"%("-",index)
                     obj = {}
                     obj['url'] = mp4Url

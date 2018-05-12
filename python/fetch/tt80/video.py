@@ -53,7 +53,7 @@ class VideoParse(BaseParse):
         for ul in uls:
             ahref = ul.first('a')
             if ahref!=None:
-                mp4Urls = self.parseDomVideo(ahref.get("src"))
+                mp4Urls = self.parseDomVideo(ahref.get("href"))
                 if len(mp4Urls)==0:
 #                     print '没有mp4 文件:', ahref.get("href")
                     continue

@@ -55,7 +55,7 @@ class VideoParse(BaseParse):
             if ahref!=None:
                 mp4Urls = self.parseDomVideo(ahref.get("href"))
                 if len(mp4Urls)==0:
-#                     print '没有mp4 文件:', ahref.get("href")
+                    print '没有mp4 文件:', ahref.get("href")
                     continue
                 index = 1
                 for mp4Url in mp4Urls:
@@ -76,7 +76,7 @@ class VideoParse(BaseParse):
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
-                    print obj['name'],obj['url'],obj['pic']
+                    print obj['name']
                     dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
@@ -105,7 +105,7 @@ class VideoParse(BaseParse):
                         script = play_video.first('script')
                         if script!=None:
                             content = self.fetchContentUrl(script.get('src'), header)
-                            contents = unquote(str(content)).replace("#", "$").replace("');", "").split("$")
+                            contents = unquote(str(content)).replace("#", "$").replace("');", "$").replace("unescape", "$").replace("('", "$").split("$")
                             for item in contents:
                                 match = regVideo.search(item)
                                 if match!=None:

@@ -17,7 +17,7 @@ header = {'User-Agent':
 maxCount = 3
 regVideo = re.compile(r"http(.*)m3u8")
 regVideoyun = '/share/'
-
+regVideoyun2 = re.compile(r"unescape\('(.*)'\);")
 
 class BaseParse(threading.Thread):
 

@@ -93,12 +93,12 @@ if __name__ == '__main__':
     kuyunzy_vip.parseVideo()
     kump4_vip.parseVideo()
 #     
-#     zanquye_vip.parseVideo()
-#     diediaody_vip.parseVideo()
-#     dadekai_vip.parseVideo()
-#     upianku_vip.parseVideo()
-#     meiyke_vip.parseVideo()
-#     tiantianyao_vip.parseVideo()
+    zanquye_vip.parseVideo()
+    diediaody_vip.parseVideo()
+    dadekai_vip.parseVideo()
+    upianku_vip.parseVideo()
+    meiyke_vip.parseVideo()
+    tiantianyao_vip.parseVideo()
 tt80_vip.parseVideo()
     #xsian
     #ttkyy

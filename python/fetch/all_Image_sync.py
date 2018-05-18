@@ -50,7 +50,7 @@ if __name__ == '__main__':
     xieegif_vip.parsehugao8Img()
     xieegif_vip.parseratooImg()
     
-#     tt192_vip.parseImg()
+    tt192_vip.parseImg()
 
 
 

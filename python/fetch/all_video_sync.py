@@ -38,11 +38,11 @@ import tt80_vip
 if __name__ == '__main__':
  
 # #webview
-    for channel, url in ozsese.baseparse.channels.items():
-        ozsesevideop = ozsese.video.VideoParse(channel, url)
-        ozsesevideop.run()
-    vj69videop = vj69.video.VideoParse()
-    vj69videop.run()
+#     for channel, url in ozsese.baseparse.channels.items():
+#         ozsesevideop = ozsese.video.VideoParse(channel, url)
+#         ozsesevideop.run()
+#     vj69videop = vj69.video.VideoParse()
+#     vj69videop.run()
 # # # # # # #     
 # # # # # # #     
 # # # # # # #     
@@ -99,6 +99,6 @@ if __name__ == '__main__':
     upianku_vip.parseVideo()
     meiyke_vip.parseVideo()
     tiantianyao_vip.parseVideo()
-tt80_vip.parseVideo()
+    tt80_vip.parseVideo()
     #xsian
     #ttkyy

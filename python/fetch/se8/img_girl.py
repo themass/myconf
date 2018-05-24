@@ -12,7 +12,7 @@ from fetch.profile import *
 global baseurl
 nameStr = r"<.*>"
 
-max_page = 80
+max_page = 10
 
 
 class ImgGrilParse(BaseParse):
@@ -123,18 +123,16 @@ class ParsImgChannel(BaseParse):
 
     def fetchgirlChannelItems(self, url):
         soup = self.fetchUrl(url)
-        div = soup.find("div", {"class": 'box movie_list'})
+        div = soup.find("ul", {"class": 'movieList'})
         objs = []
         if div != None:
-            ul = div.find('ul')
-            if ul != None:
-                alist = ul.findAll("a")
-                for item in alist:
-                    if item.get("href").count("tubaobaolist") > 0:
-                        objs.extend(self.fetchTubaobaoList(item.get("href")))
-                        continue
-                    obj = self.fetchgirlChannelItemsOne(item)
-                    objs.append(obj)
+            alist = div.findAll("a")
+            for item in alist:
+                if item.get("href").count("tubaobaolist") > 0:
+                    objs.extend(self.fetchTubaobaoList(item.get("href")))
+                    continue
+                obj = self.fetchgirlChannelItemsOne(item)
+                objs.append(obj)
         return objs
 
     def fetchTubaobaoList(self, url):
@@ -174,7 +172,7 @@ class ParsImgChannel(BaseParse):
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)
-        picData = soup.first("div", {"class": "content"})
+        picData = soup.first("div", {"class": "picContent"})
         if picData == None:
             return []
         picList = picData.findAll("img")

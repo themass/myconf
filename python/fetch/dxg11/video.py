@@ -60,8 +60,11 @@ class VideoParse(BaseParse):
                         continue
                     obj['url'] = mp4Url
                     img = ahref.first("img")
-                    obj['pic'] = baseurl+img.get("src")
-                    obj['name'] = img.get("alt")
+                    if img!=None:
+                        obj['pic'] = baseurl+img.get("src")
+                    else:
+                        obj['pic']=""
+                    obj['name'] = ahref.get("title")
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path
                     obj['updateTime'] = datetime.datetime.now()
@@ -71,7 +74,7 @@ class VideoParse(BaseParse):
                         obj['videoType'] = "normal"
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
-                    print obj['videoType'],obj['url'],obj['pic']
+                    print obj['name'],obj['url'],obj['pic']
                     dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

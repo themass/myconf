@@ -77,7 +77,7 @@ def parseGirlImg():
 
 
 def parseImg():
-    lis = parser.fetchHead(u"激情圖區")
+    lis = parser.fetchHead(u"激情图区")
     objs = parser.parsHeadText(lis)
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:
@@ -109,12 +109,12 @@ def startWork():
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 if __name__ == '__main__':
-#     startWork()
+    startWork()
     
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
 #     parseSound()
-#     parseGirlImg()
-#     parseImg()
+    parseGirlImg()
+    parseImg()
 #     parseText()
     parseVideo()
 #     parseVideoRmb()

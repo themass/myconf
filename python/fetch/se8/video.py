@@ -51,7 +51,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "box movie_list"})
+        div = soup.first("ul", {"class": "movieList"})
         if div!=None:
             lis = div.findAll('li')
             for li in lis:
@@ -66,7 +66,7 @@ class VideoParse(BaseParse):
                     img = li.first("img")
                     obj['pic'] = img.get('src')
                     obj['name'] = li.first("h3").text
-                    print obj['name'],li.first("h3"),mp4Url
+                    print obj['name'],mp4Url
     
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path

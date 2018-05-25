@@ -16,7 +16,7 @@ header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"var down_url = 'https://d.9xxav.com(.*)mp4';")
-videoBase="https://d.eeoai.com"
+videoBase="http://d.eeoai.com"
 class BaseParse(threading.Thread):
 
     def __init__(self):

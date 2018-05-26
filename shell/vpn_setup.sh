@@ -190,8 +190,8 @@ setup_all()
     init_ca	$ip
     dev=$(get_netdev)
     setup_iptables $dev
-    setup_fail2ban
-    net
+    #setup_fail2ban
+    #net
 }
 get_ip(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )

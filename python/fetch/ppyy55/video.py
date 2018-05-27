@@ -24,7 +24,7 @@ class VideoUserParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= "/%s%s%s"%(item['url'].replace("1.html",""),i,".html")
                 print url
-                self.videoParse(item['channel'], url)
+                self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         ahrefs = self.header()
@@ -57,7 +57,7 @@ class VideoUserParse(BaseParse):
             obj['channelType']='normal'
             channelList.append(obj)
         return channelList
-    def videoParse(self, channel, url):
+    def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
         div = soup.first("div", {"class": "box movie_list"})
@@ -83,7 +83,7 @@ class VideoUserParse(BaseParse):
                 obj['path'] = "ppyy55"+videourl.path
                 obj['rate'] = 1.2
                 obj['updateTime'] = datetime.datetime.now()
-                obj['userId'] = channel
+                obj['userId'] = userId
                 obj['baseUrl'] = baseurl
                 obj['showType'] = 3
                 if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:

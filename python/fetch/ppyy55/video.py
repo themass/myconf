@@ -43,7 +43,6 @@ class VideoUserParse(BaseParse):
             obj['channelType']='normal'
             channelList.append(obj)
         ahrefs = self.header2()
-        channelList = []
         for ahref in ahrefs:
             obj={}
             obj['name']=ahref.text

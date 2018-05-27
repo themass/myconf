@@ -112,7 +112,7 @@ class VideoUserParse(BaseParse):
                             for item in texts:
                                 match = shareVideo.search(item)
                                 if match!=None:
-                                    videoUrl ="%s%s%s"%(match.group(1),"/share/",match.group(2))
+                                    videoUrl ="%s%s%s%s"%("http",match.group(1),"/share/",match.group(2))
                                     return videoUrl
             print '没找到mp4'
             return None
@@ -120,5 +120,3 @@ class VideoUserParse(BaseParse):
             print common.format_exception(e)
             return None
 
-def videoParse(queue):
-    queue.put(VideoParse())

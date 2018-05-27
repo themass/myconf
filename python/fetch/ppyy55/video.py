@@ -59,9 +59,11 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = ahref.first("img")
-                obj['pic'] = baseurl+img.get("src")
+                if img.get("src").count("http")==0:
+                    obj['pic'] = baseurl+img.get("src")
+                else:
+                    obj['pic'] = img.get("src")
                 obj['name'] = img.get('alt')
-                print obj['name'],mp4Url,obj['pic']
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "ppyy55"+videourl.path
@@ -74,6 +76,7 @@ class VideoUserParse(BaseParse):
                     obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"
+                print obj['videoType'],obj['name'],mp4Url,obj['pic']
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

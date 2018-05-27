@@ -69,6 +69,10 @@ class VideoUserParse(BaseParse):
                 obj['updateTime'] = datetime.datetime.now()
                 obj['userId'] = channel
                 obj['baseUrl'] = baseurl
+                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                    obj['videoType'] = "webview"
+                else:
+                    obj['videoType'] = "normal"
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
@@ -101,6 +105,11 @@ class VideoUserParse(BaseParse):
                                 if match!=None:
                                     videoUrl =match.group(1)
                                     return "%s%s%s"%("http",videoUrl,'m3u8')
+                            for item in texts:
+                                match = shareVideo.search(item)
+                                if match!=None:
+                                    videoUrl ="%s%s%s"%(match.group(1),"/share/",match.group(2))
+                                    return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:

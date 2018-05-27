@@ -37,7 +37,22 @@ class VideoUserParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']=ahref.text
+            obj['channel']='人气女优'
+            obj['userId']=ahref.text
+            obj['showType']=3
+            obj['channelType']='normal'
+            channelList.append(obj)
+        ahrefs = self.header2()
+        channelList = []
+        for ahref in ahrefs:
+            obj={}
+            obj['name']=ahref.text
+            obj['url']=ahref.get('href')
+            obj['baseurl']=baseurl
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=''
+            obj['rate']=1.2
+            obj['channel']='ppyy55-all'
             obj['userId']=ahref.text
             obj['showType']=3
             obj['channelType']='normal'

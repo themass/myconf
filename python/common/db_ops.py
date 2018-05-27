@@ -152,9 +152,9 @@ class DbOps(object):
 
     def inertVideoUser(self, obj):
         return self.conn.execute(
-            "replace into  video_user (name,pic,userId,rate,updateTime) values ('%s','%s','%s','%s','%s')"
+            "replace into  video_user (name,pic,userId,rate,updateTime,channel) values ('%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime")))
+                obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("channel")))
 
     def inertVideoUserItem(self, obj):
         return self.conn.execute(

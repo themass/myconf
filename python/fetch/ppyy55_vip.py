@@ -23,5 +23,5 @@ def parseVideo():
     videop = video2.VideoParse()
     videop.run()
 if __name__ == '__main__':
-#     parseUserVideo()
-    parseVideo()
+    parseUserVideo()
+#     parseVideo()

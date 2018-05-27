@@ -110,7 +110,7 @@ class VideoParse(BaseParse):
                                 match = shareVideo.search(item)
                                 if match!=None:
                                     videoUrl ="%s%s%s"%(match.group(1),"/share/",match.group(2))
-                                    return "%s%s%s"%("http",videoUrl,'m3u8')
+                                    return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:

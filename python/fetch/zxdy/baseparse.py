@@ -36,7 +36,7 @@ class BaseParse(threading.Thread):
                 content = response.read().decode('utf8', errors='replace')
                 if gzipped:
                     content = zlib.decompress(
-                        content, zlib.MAX_WBITS|16)  # 解压缩，得到网页源码
+                        content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:

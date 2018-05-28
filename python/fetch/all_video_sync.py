@@ -110,9 +110,9 @@ if __name__ == '__main__':
 #     diediaody_vip.parseVideo()
 #     dadekai_vip.parseVideo()
 #     upianku_vip.parseVideo()
-    meiyke_vip.parseVideo()
-    sp878_vip.parseVideo()
-    tiantianyao_vip.parseVideo()
+#     meiyke_vip.parseVideo()
+#     sp878_vip.parseVideo()
+#     tiantianyao_vip.parseVideo()
     # 速度较好
     tt80_vip.parseVideo()
     pp56_vip.parseVideo()

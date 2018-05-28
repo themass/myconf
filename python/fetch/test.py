@@ -46,21 +46,22 @@ if __name__ == '__main__':
 #     driver.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
 #     print driver.page_source
 #     print requests.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").text
-    content = fetchUrl("https://www.878sp.com/Html/92/index-2.html")
-    m = re.findall("<!--(.*?)-->",content)
-    print m
-    if m!=None:
-        for i in m:
-            print i
-            content = content.replace(i,"")
-    content = content.replace("<!---->","")
-    regVideo = re.compile(r"<div class=\"box movie_list\">(.*?)</div>")
-    m = regVideo.search(content) 
+    content = fetchUrl("http://www.80tt.cc//dv/16.html")
     print content
-    if m!=None:
-        print m.group(0)
-    str = re.sub("<!--(.*?)-->", content, "")
-    str = content.replace("<!--[if lt IE 9 ]>.*<![endif]-->","")
+#     m = re.findall("<!--(.*?)-->",content)
+#     print m
+#     if m!=None:
+#         for i in m:
+#             print i
+#             content = content.replace(i,"")
+#     content = content.replace("<!---->","")
+#     regVideo = re.compile(r"<div class=\"box movie_list\">(.*?)</div>")
+#     m = regVideo.search(content) 
+#     print content
+#     if m!=None:
+#         print m.group(0)
+#     str = re.sub("<!--(.*?)-->", content, "")
+#     str = content.replace("<!--[if lt IE 9 ]>.*<![endif]-->","")
 #     str = "https://cdn.zypll.com/share/o942dUmbVNWYcvLE"
 #     print str.count("cdn.zypll")
     #     name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'

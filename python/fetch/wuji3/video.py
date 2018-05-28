@@ -54,7 +54,7 @@ class VideoParse(BaseParse):
                     obj = {}
                     obj['url'] = mp4Url
                     img = li.first("img")
-                    pic = img.get('src')
+                    pic = img.get('data-original')
                     obj['pic'] = pic
                     obj['name'] = li.first("h3").text
                     print obj['name'],mp4Url,obj['pic']
@@ -84,9 +84,8 @@ class VideoParse(BaseParse):
                 ahref = div.first('a')
                 if ahref!=None:
                     soup = self.fetchUrl(ahref.get('href'), header)
-                    player_l = soup.first("div",{"class":"player_l"})
-                    if player_l!=None:
-                        script = player_l.first('script')
+                    scripts = soup.findAll('script')
+                    for script in scripts:
                         if script!=None:
                             match = videoApi.search(unquote(script.text))
                             if match!=None:

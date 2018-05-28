@@ -17,12 +17,12 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print '998tiantianyao video -- channel ok;,len=',len(chs)
+        print 'tt80 video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
             url = item['url']
-            for i in range(59, maxVideoPage):
+            for i in range(1, maxVideoPage):
                 
                 if i!=1:
                     url= "/%s%s%s"%(item['url'].replace(".html","-"),i,".html")
@@ -128,5 +128,3 @@ class VideoParse(BaseParse):
             print common.format_exception(e)
             return None
 
-def videoParse(queue):
-    queue.put(VideoParse())

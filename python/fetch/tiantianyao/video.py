@@ -48,8 +48,8 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "vodlist_l box"})
-        uls = div.findAll('ul')
+        div = soup.first("div", {"class": "right"})
+        uls = div.findAll('div',{"class":"cl"})
         for ul in uls:
             obj = {}
             ahref = ul.first('a')
@@ -60,7 +60,7 @@ class VideoParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = ahref.first('img')
-                obj['pic'] = img.get("data-original")
+                obj['pic'] = img.get("src")
                 obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")
                 if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                     obj['videoType'] = "webview"
@@ -92,7 +92,7 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
-            div = soup.first("div",{'class':'playlist wbox'})
+            div = soup.first("div",{'class':'playurl'})
             if div!=None:
                 ahref = div.first('a')
                 if ahref!=None:

@@ -95,17 +95,17 @@ if __name__ == '__main__':
 # # #             movie
 #     tianjiyy123_vip.parseVideo()
 
-    zxdy_vip.parseVideo()
-    ttkyy_vip.parseVideo()
-    seman_vip.parseVideo()
-    kuyunzy_vip.parseVideo()
-    kump4_vip.parseVideo()
-    vj69_vip.paserVideo()
-    
-    xoxo164_vip.pareVideo()
-    tzzy1399_vip.parseVideo()
-    miaobosp_vip.parseVideo()
-    duotv_vip.parseVideo()
+#     zxdy_vip.parseVideo()
+#     ttkyy_vip.parseVideo()
+#     seman_vip.parseVideo()
+#     kuyunzy_vip.parseVideo()
+#     kump4_vip.parseVideo()
+#     vj69_vip.paserVideo()
+#     
+#     xoxo164_vip.pareVideo()
+#     tzzy1399_vip.parseVideo()
+#     miaobosp_vip.parseVideo()
+#     duotv_vip.parseVideo()
     zanquye_vip.parseVideo()
     diediaody_vip.parseVideo()
     dadekai_vip.parseVideo()

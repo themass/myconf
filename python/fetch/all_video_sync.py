@@ -16,7 +16,6 @@ import fff64_vip
 import nomsgus_vip
 import sexx77_vip
 import sp1769_vip
-import x2246_vip
 import seman_vip
 import zy3838_vip
 import ttkyy_vip
@@ -26,41 +25,56 @@ import tianjiyy123_vip
 import urbanhenta_vip
 import kump4_vip
 import iir44_vip
-import tzzy1399_vip
 import wuji3_vip
 import zanquye_vip
 import diediaody_vip
 import tiantianyao_vip
+import duotv_vip
 import dadekai_vip
 import upianku_vip
 import meiyke_vip
 import tt80_vip
 import dxg11_vip
 import mastv54_vip
+import ggfuil_vip
+import hanpian_vip
+import miaobosp_vip
+import pp56_vip
+import ppyy55_vip
+import sp878_vip
+import tzzy1399_vip
+import vj69_vip
+import x2246_vip
+import xoxo164_vip
+import zxdy_vip
+import zy3838_vip
 if __name__ == '__main__':
+
+    ####ir6yv = ir6y.video.VideoParse()
+    ####ir6yv.run()
+    ##urbanhenta_vip.parseVideo()
  
+    ##iir44_vip.parseVideo()
 # #webview
 #     for channel, url in ozsese.baseparse.channels.items():
 #         ozsesevideop = ozsese.video.VideoParse(channel, url)
 #         ozsesevideop.run()
 #     vj69videop = vj69.video.VideoParse()
 #     vj69videop.run()
+#se8_vip.parseVideo()
+      
+#    zy3838_vip.parseVideo()
+#     nomsgus_vip.parseVideo()
 # # # # # # #     
 # # # # # # #     
 # # # # # # #     
 # # # # # # #     
-# # # # # # #    #翻墙 
-# # # # # # #     
-# # #     weavvideop = weav.video.VideoParse()
-# # #     weavvideop.run()
 # # # # #  
 # # # # # # 
     sp1769_vip.parseVideo()
     fff64_vip.parseVideo()
 #   
 # # ------------------------------------------------------------------
-#     se8_vip.parseVideo()
-        
     sexx77_vip.parseVideo()
 # # # # #     
 # # #  
@@ -71,39 +85,37 @@ if __name__ == '__main__':
     singlovevideop.run()
 # # # --------------------------------------------------------------------------
     yezmw_vip.parseVideo()
-#        
     x2246_vip.parseVideo()
     ax98_vip.parseVideo()
-    
-    ####ir6yv = ir6y.video.VideoParse()
-    ####ir6yv.run()
-    ##urbanhenta_vip.parseVideo()
- 
-    ##iir44_vip.parseVideo()
-    tzzy1399_vip.parseVideo()
     wuji3_vip.parseVideo()
 # #---------------------------------------------------------------------------- 
 # #             movie
     tianjiyy123_vip.parseVideo()
-#     
-#     
-      
-#    zy3838_vip.parseVideo()
-#     nomsgus_vip.parseVideo()
+
+    zxdy_vip.parseVideo()
     ttkyy_vip.parseVideo()
     seman_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kump4_vip.parseVideo()
-#     
+    vj69_vip.paserVideo()
+    
+    xoxo164_vip.pareVideo()
+    tzzy1399_vip.parseVideo()
+    miaobosp_vip.parseVideo()
+    duotv_vip.parseVideo()
     zanquye_vip.parseVideo()
     diediaody_vip.parseVideo()
     dadekai_vip.parseVideo()
     upianku_vip.parseVideo()
     meiyke_vip.parseVideo()
+    sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()
     tt80_vip.parseVideo()
-    
+    pp56_vip.parseVideo()
+    ggfuil_vip.parseVideo()
+    hanpian_vip.parseVideo()
     dxg11_vip.parseVideo()
     mastv54_vip.parseVideo()
-    #xsian
-    #ttkyy
+    ppyy55_vip.parseUserVideo()
+    
+    

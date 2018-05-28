@@ -28,9 +28,9 @@ class DbOps(object):
 
     def inertTextItems(self, obj):
         return self.conn.execute(
-            "replace into  textitems (name,baseurl,url,channel,fileDate,updateTime,sortType) values ('%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  textitems (name,baseurl,url,channel,fileDate,updateTime,sortType,channelName) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("updateTime"), obj.get("sortType")))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("updateTime"), obj.get("sortType"), obj.get("channelName","")))
 
     def inertTextItems_item(self, obj):
         return self.conn.execute(
@@ -76,9 +76,9 @@ class DbOps(object):
 
     def inertImgItems(self, obj):
         return self.conn.execute(
-            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType,showType,pic) values ('%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s')"
+            "replace into  imgitems (name,baseurl,url,channel,fileDate,pics,updateTime,sortType,showType,pic,channelName) values ('%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s')"
             % (
-                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime"), obj.get("sortType"), obj.get("showType"), obj.get("pic",'')))
+                obj.get("name"), obj.get("baseurl"), obj.get("url"), obj.get("channel"), obj.get("fileDate"), obj.get("pics"), obj.get("updateTime"), obj.get("sortType"), obj.get("showType"), obj.get("pic",''), obj.get("channelName",'')))
 
     def inertImgItems_item(self, obj):
         return self.conn.execute(
@@ -152,9 +152,9 @@ class DbOps(object):
 
     def inertVideoUser(self, obj):
         return self.conn.execute(
-            "replace into  video_user (name,pic,userId,rate,updateTime,channel) values ('%s','%s','%s','%s','%s','%s')"
+            "replace into  video_user (name,pic,userId,rate,updateTime,channel,showType) values ('%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("channel")))
+                obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("channel"), obj.get("showType")))
 
     def inertVideoUserItem(self, obj):
         return self.conn.execute(

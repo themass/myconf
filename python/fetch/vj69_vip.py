@@ -14,7 +14,8 @@ import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-
-if __name__ == '__main__':
+def paserVideo():
     videop = video.VideoParse()
     videop.run()
+if __name__ == '__main__':
+    paserVideo()

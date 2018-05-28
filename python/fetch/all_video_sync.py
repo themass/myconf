@@ -114,7 +114,7 @@ if __name__ == '__main__':
 #     sp878_vip.parseVideo()
 #     tiantianyao_vip.parseVideo()
     # 速度较好
-    tt80_vip.parseVideo()
+#     tt80_vip.parseVideo()
 #     pp56_vip.parseVideo()
     ggfuil_vip.parseVideo()
     hanpian_vip.parseVideo()

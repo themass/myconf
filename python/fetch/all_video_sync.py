@@ -48,6 +48,7 @@ import x2246_vip
 import xoxo164_vip
 import zxdy_vip
 import zy3838_vip
+import avhome11_vip
 if __name__ == '__main__':
 
     ####ir6yv = ir6y.video.VideoParse()
@@ -90,11 +91,12 @@ if __name__ == '__main__':
 #     yezmw_vip.parseVideo()
 #     x2246_vip.parseVideo()
 #     ax98_vip.parseVideo()
-    wuji3_vip.parseVideo()
+###    wuji3_vip.parseVideo()
 # # #---------------------------------------------------------------------------- 
 # # #             movie
     tianjiyy123_vip.parseVideo()
-
+    
+#     tzzy1399_vip.parseVideo()
 #     zxdy_vip.parseVideo()
 #     ttkyy_vip.parseVideo()
 #     seman_vip.parseVideo()
@@ -121,6 +123,7 @@ if __name__ == '__main__':
 #     dxg11_vip.parseVideo()
 #     mastv54_vip.parseVideo()
 #     se8_vip.parseVideo()
+    avhome11_vip.parseVideo()
 #     ppyy55_vip.parseUserVideo()
     
     

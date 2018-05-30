@@ -2,5 +2,5 @@
 # -*- coding: utf-8 -*-
 import datetime
 maxVideoPage=20
-maxImgPage = 2
+maxImgPage = 10
 maxTextPage=2

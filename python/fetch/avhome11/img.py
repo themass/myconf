@@ -27,19 +27,25 @@ class ImgParse(BaseParse):
             for i in range(1, maxImgPage):
                 url = obj['url']
                 if i!=1:
-                    url="%s%s%s"%(url.replace('.html','-'),i,".html")
+                    url= "/%s%s%s%s"%(obj['url'],"index-",i,".html")
+                print url
                 count = self.update(url, ops, obj['url'], i)
                 dbVPN.commit()
                 if count == 0:
                     break
     def parseChannel(self):
-        objs = self.header("激情图区")
-        for obj in objs:
+        ahrefs = self.header("header2.html")
+        objs = []
+        for ahref in ahrefs:
+            obj = {}
+            obj['name']= ahref.text
+            obj['url']=ahref.get("href")
             obj['baseurl'] = baseurl
             obj['updateTime'] = datetime.datetime.now()
             obj['rate'] = 1.1
-            obj['showType'] = 0
+            obj['showType'] = 3
             obj['channel'] = 'porn_sex'
+            objs.append(obj)
         return objs
     def update(self, url, ops, channel, i):
         objs = self.fetchImgItemsData(url, channel)
@@ -59,9 +65,9 @@ class ImgParse(BaseParse):
     def fetchDataHead(self, url):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "box list channel"})
+            div = soup.first("div", {"id": "text_list"})
             if div != None:
-                return div.findAll('li')
+                return div.findAll('a')
             return []
 
         except Exception as e:
@@ -73,13 +79,12 @@ class ImgParse(BaseParse):
             print url, ";itemsLen=", len(lis)
             objs = []
             sortType = dateutil.y_m_d()
-            for item in lis:
-                ahref = item.first("a")
+            for ahref in lis:
                 obj = {}
-                obj['fileDate'] = ''
-                obj['name'] = ahref.text
+                obj['name'] = ahref.get("title")
                 print obj['name']
                 obj['url'] = ahref.get('href')
+                obj['fileDate'] = ahref.first("span").text
                 obj['baseurl'] = baseurl
                 obj['channel'] = channel
                 obj['updateTime'] = datetime.datetime.now()
@@ -99,7 +104,7 @@ class ImgParse(BaseParse):
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)
-        picData = soup.first("div", {"class": "box pic_text"})
+        picData = soup.first("div", {"id": "picture"})
         picList = picData.findAll("img")
         pics = []
         for item in picList:

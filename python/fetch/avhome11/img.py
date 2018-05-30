@@ -67,7 +67,7 @@ class ImgParse(BaseParse):
             soup = self.fetchUrl(url)
             div = soup.first("div", {"id": "text_list"})
             if div != None:
-                return div.findAll('a')
+                return div.findAll('li')
             return []
 
         except Exception as e:
@@ -79,25 +79,27 @@ class ImgParse(BaseParse):
             print url, ";itemsLen=", len(lis)
             objs = []
             sortType = dateutil.y_m_d()
-            for ahref in lis:
-                obj = {}
-                obj['name'] = ahref.get("title")
-                print obj['name']
-                obj['url'] = ahref.get('href')
-                obj['fileDate'] = ahref.first("span").text
-                obj['baseurl'] = baseurl
-                obj['channel'] = channel
-                obj['updateTime'] = datetime.datetime.now()
-                pics = self.fetchImgs(ahref.get('href'))
-                if len(pics) == 0:
-                    print '没有 图片文件--', ahref, '---', url
-                    continue
-                obj['picList'] = pics
-                obj['pics'] = len(pics)
-                obj['sortType'] = sortType
-                obj['showType'] = 3
-                print 'url=', obj['url'], 'filedate=', obj['fileDate'], '  图片数量=', len(pics)
-                objs.append(obj)
+            for li in lis:
+                ahref = li.first("a")
+                if ahref!=None:
+                    obj = {}
+                    obj['name'] = ahref.get("title")
+                    print obj['name']
+                    obj['url'] = ahref.get('href')
+                    obj['fileDate'] = ahref.first("span").text
+                    obj['baseurl'] = baseurl
+                    obj['channel'] = channel
+                    obj['updateTime'] = datetime.datetime.now()
+                    pics = self.fetchImgs(ahref.get('href'))
+                    if len(pics) == 0:
+                        print '没有 图片文件--', ahref, '---', url
+                        continue
+                    obj['picList'] = pics
+                    obj['pics'] = len(pics)
+                    obj['sortType'] = sortType
+                    obj['showType'] = 3
+                    print 'url=', obj['url'], 'filedate=', obj['fileDate'], '  图片数量=', len(pics)
+                    objs.append(obj)
             return objs
         except Exception as e:
             print common.format_exception(e)

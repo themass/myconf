@@ -112,7 +112,7 @@ if __name__ == '__main__':
     
     
 ##    vj69_vip.paserVideo()
-    xoxo164_vip.pareVideo()
+#####    xoxo164_vip.pareVideo()
     tzzy1399_vip.parseVideo()
     miaobosp_vip.parseVideo()
     # 速度较好

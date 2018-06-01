@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
 
     
-    fff64_vip.parseVideo()
+###    fff64_vip.parseVideo()
 
     sexx77_vip.parseVideo()
 

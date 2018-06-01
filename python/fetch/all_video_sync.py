@@ -75,7 +75,7 @@ if __name__ == '__main__':
 # # # # # # 
 
 
-    sp1769_vip.parseVideo()
+    
     fff64_vip.parseVideo()
 
     sexx77_vip.parseVideo()
@@ -118,6 +118,8 @@ if __name__ == '__main__':
     hanpian_vip.parseVideo()
     dxg11_vip.parseVideo()
     mastv54_vip.parseVideo()
+    
+    sp1769_vip.parseVideo()
     se8_vip.parseVideo()
     avhome11_vip.parseVideo()
     ppyy55_vip.parseUserVideo()

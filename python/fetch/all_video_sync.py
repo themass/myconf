@@ -56,6 +56,9 @@ if __name__ == '__main__':
     ##urbanhenta_vip.parseVideo()
  ##    wuji3_vip.parseVideo()
 ###    duotv_vip.parseVideo()
+##xoxo164videop = xoxo164.video.VideoParse()
+##    xoxo164videop.run()
+ 
 # #webview
 #     for channel, url in ozsese.baseparse.channels.items():
 #         ozsesevideop = ozsese.video.VideoParse(channel, url)
@@ -80,9 +83,7 @@ if __name__ == '__main__':
 
     sexx77_vip.parseVideo()
 
-    xoxo164videop = xoxo164.video.VideoParse()
-    xoxo164videop.run()
- 
+    
     singlovevideop = singlove.video.VideoParse()
     singlovevideop.run()
 

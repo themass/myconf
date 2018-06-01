@@ -17,8 +17,14 @@ class TextChannelParse(BaseParse):
         pass
     
     def run(self):
-        objs = self.header("情色小说")
-        self.parsChannelText(objs)
+        ahrefs = self.header("header2.html")
+        objs = []
+        for ahref in ahrefs:
+            obj = {}
+            obj['name']= ahref.text
+            obj['url']= ahref.get("href")
+            obj['baseurl'] = baseurl
+            obj['updateTime'] = datetime.datetime.now()
         
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
@@ -27,31 +33,24 @@ class TextChannelParse(BaseParse):
             print channel
         dbVPN.commit()
         dbVPN.close()
-        
-        
         for item in objs:
             print '开始解析频道---',item
-            try:
+            try :
                 channel = item['url']
                 for i in range(1, maxTextPage):
-                    page_url = item['url']
-                    if i!=1:
-                        page_url="%s%s%s"%(page_url.replace('.html','-'),i,".html")
-                    print page_url
-                    dbVPN = db.DbVPN()
-                    ops = db_ops.DbOps(dbVPN)
-                    count = self.update(page_url, ops, channel)
-                    dbVPN.commit()
-                    dbVPN.close()
-                    if count == 0:
-                        break
+                    url = obj['url']
+                if i!=1:
+                    url= "/%s%s%s%s"%(obj['url'],"index-",i,".html")
+                print url
+                dbVPN = db.DbVPN()
+                ops = db_ops.DbOps(dbVPN)
+                count = self.update(url, ops, channel)
+                dbVPN.commit()
+                dbVPN.close()
+                if count == 0:
+                    break
             except Exception as e:
                 print common.format_exception(e)
-    def parsChannelText(self, objs):
-        for obj in objs:
-            obj['baseurl'] = baseurl
-            obj['updateTime'] = datetime.datetime.now()
-
     def update(self, url, ops, channel):
         objs = self.fetchTextData(url, channel)
         print "解析Txt小说 ok----channl=", channel, '  数量=', len(objs)

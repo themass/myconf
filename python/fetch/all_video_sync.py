@@ -107,8 +107,8 @@ if __name__ == '__main__':
 #     dadekai_vip.parseVideo()
 #     upianku_vip.parseVideo()
 #     meiyke_vip.parseVideo()
-#     sp878_vip.parseVideo()
-#     tiantianyao_vip.parseVideo()
+    sp878_vip.parseVideo()
+    tiantianyao_vip.parseVideo()
     
     
 ##    vj69_vip.paserVideo()
@@ -124,8 +124,8 @@ if __name__ == '__main__':
 #     mastv54_vip.parseVideo()
      
 ###    sp1769_vip.parseVideo()
-    se8_vip.parseVideo()
-    avhome11_vip.parseVideo()
-    ppyy55_vip.parseUserVideo()
+#     se8_vip.parseVideo()
+#     avhome11_vip.parseVideo()
+#     ppyy55_vip.parseUserVideo()
     
     

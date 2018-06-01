@@ -80,30 +80,27 @@ if __name__ == '__main__':
 
     
 ###    fff64_vip.parseVideo()
+####zxdy_vip.parseVideo()
 
-    sexx77_vip.parseVideo()
 
-    
-    singlovevideop = singlove.video.VideoParse()
-    singlovevideop.run()
 
-    yezmw_vip.parseVideo()
-    x2246_vip.parseVideo()
-    ax98_vip.parseVideo()
-
-    tianjiyy123_vip.parseVideo()
-    
-    tzzy1399_vip.parseVideo()
-    zxdy_vip.parseVideo()
-    ttkyy_vip.parseVideo()
-    seman_vip.parseVideo()
-    kuyunzy_vip.parseVideo()
-    kump4_vip.parseVideo()
-    vj69_vip.paserVideo()
-     
-    xoxo164_vip.pareVideo()
-    tzzy1399_vip.parseVideo()
-    miaobosp_vip.parseVideo()
+#     sexx77_vip.parseVideo()
+#     singlovevideop = singlove.video.VideoParse()
+#     singlovevideop.run()
+# 
+#     yezmw_vip.parseVideo()
+#     x2246_vip.parseVideo()
+#     ax98_vip.parseVideo()
+# 
+#     tianjiyy123_vip.parseVideo()
+#     
+#     tzzy1399_vip.parseVideo()
+#     
+#     ttkyy_vip.parseVideo()
+#     seman_vip.parseVideo()
+#     kuyunzy_vip.parseVideo()
+#     kump4_vip.parseVideo()
+   
 
     zanquye_vip.parseVideo()
     diediaody_vip.parseVideo()
@@ -112,17 +109,23 @@ if __name__ == '__main__':
     meiyke_vip.parseVideo()
     sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()
-    # 速度较好
-    tt80_vip.parseVideo()
-    pp56_vip.parseVideo()
-    ggfuil_vip.parseVideo()
-    hanpian_vip.parseVideo()
-    dxg11_vip.parseVideo()
-    mastv54_vip.parseVideo()
     
-    sp1769_vip.parseVideo()
-    se8_vip.parseVideo()
-    avhome11_vip.parseVideo()
-    ppyy55_vip.parseUserVideo()
+    
+#     vj69_vip.paserVideo()
+#     xoxo164_vip.pareVideo()
+#     tzzy1399_vip.parseVideo()
+#     miaobosp_vip.parseVideo()
+#     # 速度较好
+#     tt80_vip.parseVideo()
+#     pp56_vip.parseVideo()
+#     ggfuil_vip.parseVideo()
+#     hanpian_vip.parseVideo()
+#     dxg11_vip.parseVideo()
+#     mastv54_vip.parseVideo()
+#     
+#     sp1769_vip.parseVideo()
+#     se8_vip.parseVideo()
+#     avhome11_vip.parseVideo()
+#     ppyy55_vip.parseUserVideo()
     
     

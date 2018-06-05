@@ -84,19 +84,19 @@ if __name__ == '__main__':
 
 
  
-    sexx77_vip.parseVideo()
-    singlovevideop = singlove.video.VideoParse()
-    singlovevideop.run()
- 
-    yezmw_vip.parseVideo()
-    x2246_vip.parseVideo()
-    ax98_vip.parseVideo()
- 
-    tianjiyy123_vip.parseVideo()
-     
-    tzzy1399_vip.parseVideo()
-     
-    ttkyy_vip.parseVideo()
+#     sexx77_vip.parseVideo()
+#     singlovevideop = singlove.video.VideoParse()
+#     singlovevideop.run()
+#  
+#     yezmw_vip.parseVideo()
+#     x2246_vip.parseVideo()
+#     ax98_vip.parseVideo()
+#  
+#     tianjiyy123_vip.parseVideo()
+#      
+#     tzzy1399_vip.parseVideo()
+#      
+#     ttkyy_vip.parseVideo()
     seman_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kump4_vip.parseVideo()

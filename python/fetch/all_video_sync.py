@@ -102,10 +102,10 @@ if __name__ == '__main__':
 #     kump4_vip.parseVideo()
 #     
 #  
-    zanquye_vip.parseVideo()
-    diediaody_vip.parseVideo()
-    dadekai_vip.parseVideo()
-    upianku_vip.parseVideo()
+#     zanquye_vip.parseVideo()
+#     diediaody_vip.parseVideo()
+#     dadekai_vip.parseVideo()
+#     upianku_vip.parseVideo()
     meiyke_vip.parseVideo()
     sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()

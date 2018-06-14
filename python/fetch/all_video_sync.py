@@ -124,7 +124,7 @@ if __name__ == '__main__':
 #     mastv54_vip.parseVideo()
      
 ###    sp1769_vip.parseVideo()
-    se8_vip.parseVideo()
+#     se8_vip.parseVideo()
     avhome11_vip.parseVideo()
     ppyy55_vip.parseUserVideo()
 #     

@@ -111,7 +111,7 @@ if __name__ == '__main__':
 #     tiantianyao_vip.parseVideo()
     
     
-    vj69_vip.paserVideo()
+#     #vj69_vip.paserVideo()
 ###    xoxo164_vip.pareVideo()
     tzzy1399_vip.parseVideo()
     miaobosp_vip.parseVideo()

@@ -118,10 +118,10 @@ if __name__ == '__main__':
     ###速度较好
 ####    tt80_vip.parseVideo()
 ###    pp56_vip.parseVideo()
-    ggfuil_vip.parseVideo()
-    hanpian_vip.parseVideo()
-    dxg11_vip.parseVideo()
-    mastv54_vip.parseVideo()
+#     ggfuil_vip.parseVideo()
+#     hanpian_vip.parseVideo()
+#     dxg11_vip.parseVideo()
+#     mastv54_vip.parseVideo()
      
 ###    sp1769_vip.parseVideo()
     se8_vip.parseVideo()

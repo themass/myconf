@@ -49,6 +49,7 @@ import xoxo164_vip
 import zxdy_vip
 import zy3838_vip
 import avhome11_vip
+import s58589_vip
 if __name__ == '__main__':
 
     ####ir6yv = ir6y.video.VideoParse()
@@ -127,5 +128,6 @@ if __name__ == '__main__':
 #     se8_vip.parseVideo()
     avhome11_vip.parseVideo()
     ppyy55_vip.parseUserVideo()
+    s58589_vip.parseVideo()
 #     
 #     

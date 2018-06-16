@@ -17,7 +17,7 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 's58589 video -- channel ok;,len=',len(chs)
+        print 'lushibi video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
@@ -42,13 +42,14 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.text
             obj['showType']=3
-            obj['channelType']='webview'
+            obj['channelType']='normal'
             channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        metas = soup.findAll("li", {"class": "yun yun-large border-gray"})
+        ul = soup.first("ul",{"class":"poster"})
+        metas = ul.findAll("li")
         for meta in metas:
             obj = {}
             ahref = meta.first("a")
@@ -57,8 +58,8 @@ class VideoParse(BaseParse):
                 print '没有mp4 文件:', ahref.get("href")
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = meta.first('img').get("data-original")
-            obj['name'] = ahref.get("title").replace("，快播，大香蕉","").replace("_chunk_1,快播云资源","").replace("成人影院","")
+            obj['pic'] = meta.first('img').get("src")
+            obj['name'] = ahref.first("h2").text
 
             videourl = urlparse(obj['url'])
             obj['path'] = videourl.path
@@ -76,33 +77,28 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj,obj['videoType'],baseurl)
 
-        print 's58589 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'lushibi video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url, header)
-            div = soup.first("div",{'class':'playlist jsplist clearfix'})
+            div = soup.first("div",{'class':'main_box py20'})
             if div!=None:
-                ahref = div.first('a')
-                if ahref!=None:
-                    soup = self.fetchUrl(ahref.get('href'), header)
-                    play_video = soup.first('div',{'class':'video-info fn-left'})
-                    if play_video!=None:
-                        script = play_video.first('script')
-                        if script!=None:
-                            text = unquote(script.text.replace("\"","").replace("\/","/"))
-                            texts = text.split(",")
-                            for item in texts:
-                                match = regVideo.search(item)
-                                if match!=None:
-                                    videoUrl =match.group(1)
-                                    return "%s%s%s"%("http",videoUrl,'m3u8')
-                                match = regVideo2.search(item)
-                                if match!=None:
-                                    videoUrl =match.group(1)
-                                    return videoUrl
+                script = div.first('script')
+                if script!=None:
+                    text = unquote(script.text.replace("\"","").replace("\/","/"))
+                    texts = text.split(",")
+                    for item in texts:
+                        match = regVideo.search(item)
+                        if match!=None:
+                            videoUrl =match.group(1)
+                            return "%s%s%s"%("http",videoUrl,'m3u8')
+                        match = regVideo2.search(item)
+                        if match!=None:
+                            videoUrl =match.group(1)
+                            return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:

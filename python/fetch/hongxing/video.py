@@ -63,7 +63,7 @@ class VideoUserParse(BaseParse):
                     obj['pic'] = baseurl+img.get("src")
                 else:
                     obj['pic'] = img.get("src")
-                obj['name'] = img.get('alt')
+                obj['name'] = img.get('alt').replace("'","")
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "hongxing"+videourl.path

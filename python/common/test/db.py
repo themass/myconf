@@ -3,10 +3,11 @@
 from common.base.data_base import DataBase
 
 db_host = '127.0.0.1'
-db_port = 3308
-db_user = 'vpn@server'
-db_passwd = 'Themass@5296'
+db_port = 3306
+db_user = 'root'
+db_passwd = 'root'
 db_vpn = 'vpn'
+
 
 
 class DbVPN(DataBase):

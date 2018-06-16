@@ -28,6 +28,7 @@ class VideoParse(BaseParse):
                 print url
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
+                time.sleep(1)
     def videoChannel(self):
         ahrefs = self.header()
         channelList = []
@@ -80,8 +81,6 @@ class VideoParse(BaseParse):
         dbVPN.close()
 
     def parseDomVideo(self, url):
-        header = {'User-Agent':
-                  'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
             div = soup.first("div",{'class':'playlist jsplist clearfix'})

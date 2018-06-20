@@ -51,11 +51,11 @@ class VideoParse(BaseParse):
             lowHls = item.get("low-hls")
             mp4Url = None
             if lowHls!=None and lowHls!='':
-                mp4Url = lowHls.replace("http://ss2.999cdn.us","http://cdn.viparts.net/src2")
+                mp4Url = lowHls.replace("http://ss2.999cdn.us","http://cdn.viparts.net/src2").replace("http://sss.999cdn.us","http://cdn.viparts.net/src2")
             else:
                 source = item.get("sources_me",{})
                 for key,val in source.items():
-                    mp4Url = val.replace("http://ss2.999cdn.us","http://cdn.viparts.net/src2")
+                    mp4Url = val.replace("http://ss2.999cdn.us","http://cdn.viparts.net/src2").replace("http://sss.999cdn.us","http://cdn.viparts.net/src2")
             if mp4Url == None:
                 print '没有mp4 文件:',item['id']
                 continue

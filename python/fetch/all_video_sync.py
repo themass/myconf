@@ -101,7 +101,7 @@ def pase5():
     dxg11_vip.parseVideo()
     mastv54_vip.parseVideo()
 def pase6():
-    se8_vip.parseVideo()
+#     se8_vip.parseVideo()
     lusibi_vip.parseVideo()
     hongxing_vip.parseVideo()
     s58589_vip.parseVideo()

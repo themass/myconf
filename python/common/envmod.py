@@ -13,7 +13,7 @@ def usage():
     print "-c", "  :  ", "val=count ,multithread thread count"
     print "-h", "  :  ", "help"
     sys.exit()
-options, args = getopt.getopt(sys.argv[1:], "e:m:c:h:i:p")
+options, args = getopt.getopt(sys.argv[1:], "e:m:c:h:i:p:")
 prodEnv = False
 mod = False
 onceCount = 0

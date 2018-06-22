@@ -19,6 +19,7 @@ mod = False
 onceCount = 0
 multi = False
 multiCount = 0
+argsMap = {}
 for name, val in options:
     print name, val
     if name in ("-e"):
@@ -34,6 +35,8 @@ for name, val in options:
         multiCount = int(val)
     elif name in ("-h"):
         usage()
+    else:
+        argsMap[name]=val
 if prodEnv:
     from prod import *
 else:

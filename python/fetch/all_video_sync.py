@@ -50,6 +50,64 @@ import zxdy_vip
 import zy3838_vip
 import avhome11_vip
 import s58589_vip
+import hongxing_vip
+import lusibi_vip
+import s58589_vip
+
+def pase1():
+    #webview
+    for channel, url in ozsese.baseparse.channels.items():
+        ozsesevideop = ozsese.video.VideoParse(channel, url)
+        ozsesevideop.run()
+    vj69videop = vj69.video.VideoParse()
+    vj69videop.run()
+ 
+    zy3838_vip.parseVideo()
+    nomsgus_vip.parseVideo()
+def pase2():
+    sexx77_vip.parseVideo()
+    singlovevideop = singlove.video.VideoParse()
+    singlovevideop.run()
+  
+    yezmw_vip.parseVideo()
+    x2246_vip.parseVideo()
+    ax98_vip.parseVideo()
+  
+    tianjiyy123_vip.parseVideo()
+    tzzy1399_vip.parseVideo()
+def pase3():
+    ttkyy_vip.parseVideo()
+    seman_vip.parseVideo()
+    kuyunzy_vip.parseVideo()
+    kump4_vip.parseVideo()
+def pase4():
+    zanquye_vip.parseVideo()
+    diediaody_vip.parseVideo()
+    dadekai_vip.parseVideo()
+    upianku_vip.parseVideo()
+    meiyke_vip.parseVideo()
+    sp878_vip.parseVideo()
+    tiantianyao_vip.parseVideo()
+def pase5():
+    #     #vj69_vip.paserVideo()
+###    xoxo164_vip.pareVideo()
+    tzzy1399_vip.parseVideo()
+    miaobosp_vip.parseVideo()
+    ###速度较好
+####    tt80_vip.parseVideo()
+###    pp56_vip.parseVideo()
+    ggfuil_vip.parseVideo()
+    hanpian_vip.parseVideo()
+    dxg11_vip.parseVideo()
+    mastv54_vip.parseVideo()
+def pase6():
+    se8_vip.parseVideo()
+    lusibi_vip.parseVideo()
+    hongxing_vip.parseVideo()
+    s58589_vip.parseVideo()
+    avhome11_vip.parseVideo()
+    ppyy55_vip.parseUserVideo()
+    s58589_vip.parseVideo()
 if __name__ == '__main__':
 
     ####ir6yv = ir6y.video.VideoParse()
@@ -59,75 +117,22 @@ if __name__ == '__main__':
 ###    duotv_vip.parseVideo()
 ##xoxo164videop = xoxo164.video.VideoParse()
 ##    xoxo164videop.run()
- 
-# #webview
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     vj69videop = vj69.video.VideoParse()
-#     vj69videop.run()
-
-#
-#    zy3838_vip.parseVideo()
-#     nomsgus_vip.parseVideo()
     ##iir44_vip.parseVideo()
-# # # # # # #     
-# # # # # # #     
-# # # # # # #     
-# # # # # # #     
-# # # # #  
-# # # # # # 
-
-
-    
 ###    fff64_vip.parseVideo()
 ####zxdy_vip.parseVideo()
-
-
- 
-#     sexx77_vip.parseVideo()
-#     singlovevideop = singlove.video.VideoParse()
-#     singlovevideop.run()
- 
-#     yezmw_vip.parseVideo()
-#     x2246_vip.parseVideo()
-#     ax98_vip.parseVideo()
- 
-#     tianjiyy123_vip.parseVideo()
-     
-#     tzzy1399_vip.parseVideo()
-     
-#     ttkyy_vip.parseVideo()
-#     seman_vip.parseVideo()
-#     kuyunzy_vip.parseVideo()
-#     kump4_vip.parseVideo()
-    
- 
-#     zanquye_vip.parseVideo()
-#     diediaody_vip.parseVideo()
-#     dadekai_vip.parseVideo()
-#     upianku_vip.parseVideo()
-#     meiyke_vip.parseVideo()
-#     sp878_vip.parseVideo()
-#     tiantianyao_vip.parseVideo()
-    
-    
-#     #vj69_vip.paserVideo()
-###    xoxo164_vip.pareVideo()
-    tzzy1399_vip.parseVideo()
-    miaobosp_vip.parseVideo()
-    ###速度较好
-####    tt80_vip.parseVideo()
-###    pp56_vip.parseVideo()
-#     ggfuil_vip.parseVideo()
-#     hanpian_vip.parseVideo()
-#     dxg11_vip.parseVideo()
-#     mastv54_vip.parseVideo()
-     
 ###    sp1769_vip.parseVideo()
-#     se8_vip.parseVideo()
-    avhome11_vip.parseVideo()
-    ppyy55_vip.parseUserVideo()
-    s58589_vip.parseVideo()
-#     
-#     
+    val = argsMap.get("pase",0)
+    if int(val)==1:
+        pase1()
+    elif int(val)==2:
+        pase2()
+    elif int(val)==3:
+        pase3()
+    elif int(val)==4:
+        pase4()
+    elif int(val)==5:
+        pase5()
+    elif int(val)==6:
+        pase6()
+    else:
+        print val,'error val'

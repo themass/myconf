@@ -135,4 +135,4 @@ if __name__ == '__main__':
     elif int(val)==6:
         pase6()
     else:
-        print val,'error val'
+        print val,'error val',argsMap

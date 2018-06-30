@@ -12,6 +12,7 @@ from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
 baseurl = "http://cn.ax98.ws"
+baseurl2="https://avhd101.com"
 #'/hd','/chinese',
 urlList =['/uncensored']
 header = {'User-Agent':
@@ -28,13 +29,13 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl + url, headers=aheader)
+                req = urllib2.Request(baseurl2 + url, headers=aheader)
                 content = urllib2.urlopen(req, timeout=5000).read()
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
                 print common.format_exception(e)
-                print '打开页面错误,重试', baseurl + url, '次数', count
+                print '打开页面错误,重试', baseurl2 + url, '次数', count
                 count = count + 1
 
         print '打开页面错误,重试3次还是错误', url

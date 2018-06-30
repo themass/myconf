@@ -40,7 +40,8 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        lis = soup.findAll("li", {"itemprop": "itemListElement"})
+        ul = soup.first("ul",{"class":"list clearfix"})
+        lis = ul.findAll("li")
         for li in lis:
             ahref = li.first('a')
             if ahref!=None:

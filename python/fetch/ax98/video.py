@@ -41,7 +41,8 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         lis = soup.findAll("li", {"itemprop": "itemListElement"})
-        print soup
+        print soup.findAll("li")
+        
         for li in lis:
             ahref = li.first('a')
             if ahref!=None:

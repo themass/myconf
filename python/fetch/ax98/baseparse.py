@@ -31,7 +31,6 @@ class BaseParse(threading.Thread):
                 req = urllib2.Request(baseurl + url, headers=aheader)
                 content = urllib2.urlopen(req, timeout=5000).read()
                 soup = BeautifulSoup(content)
-                print content
                 return soup
             except Exception as e:
                 print common.format_exception(e)

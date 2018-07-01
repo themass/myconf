@@ -21,7 +21,7 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            for i in range(1, maxVideoPage):
+            for i in range(1, 200):
                 url = '/'
                 if i!=1:
                     url= "%s%s%s"%('/',i,"/")

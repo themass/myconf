@@ -10,11 +10,11 @@ import sexx77_vip
 import x2246_vip
 import jjr128_vip
 if __name__ == '__main__':
-    fff64_vip.parseText()
-    novel941_vip.parseText()
-    sexx77_vip.parseText()
-    x2246_vip.parseText()
-    jjr128_vip.parseText()
+#     fff64_vip.parseText()
+#     novel941_vip.parseText()
+#     sexx77_vip.parseText()
+#     x2246_vip.parseText()
+#     jjr128_vip.parseText()
     
     se8_vip.startWork()
     se8_vip.parseText()

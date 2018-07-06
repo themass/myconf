@@ -54,7 +54,7 @@ def parseSound():
 
 
 def parseText():
-    lis = parser.fetchHead(u"情色小说")
+    lis = parser.fetchHead(u"情色小說")
     objs = parser.parsHeadText(lis)
     print "解析有情色小说 ok----项目=", len(objs)
     for obj in objs:

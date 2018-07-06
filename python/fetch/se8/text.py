@@ -57,7 +57,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("ul", {"class": "box list channel"})
+            div = soup.first("div", {"class": "box list channel"})
             if div == None:
                 print '没有数据', url
                 return []

@@ -109,7 +109,7 @@ def startWork():
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 if __name__ == '__main__':
-    startWork()
+#     startWork()
     
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
 #     parseSound()

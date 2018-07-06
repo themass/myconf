@@ -62,7 +62,7 @@ class BaseParse(threading.Thread):
         try:
             url = "/htm/index.htm"
             soup = self.fetchUrl(url)
-            menus = soup.findAll("ul", {"class": "menu mt5"})
+            menus = soup.findAll("ul", {"class": "nav_menu clearfix"})
             for menu in menus:
                 active = menu.first("li", "active").text
                 print active

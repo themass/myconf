@@ -44,19 +44,19 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channelType']='qh_all'
             channelList.append(obj)
-        ahrefs = self.header("header2.html")
-        for ahref in ahrefs:
-            obj={}
-            obj['name']=ahref.get("title").replace("av","")
-            obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl2
-            obj['updateTime']=datetime.datetime.now()
-            obj['pic']=''
-            obj['rate']=1.2
-            obj['channel']='qh'+ahref.get("title").replace("av","")
-            obj['showType']=3
-            obj['channelType']='qh_all'
-            channelList.append(obj)
+#         ahrefs = self.header("header2.html")
+#         for ahref in ahrefs:
+#             obj={}
+#             obj['name']=ahref.get("title").replace("av","")
+#             obj['url']=ahref.get('href')
+#             obj['baseurl']=baseurl2
+#             obj['updateTime']=datetime.datetime.now()
+#             obj['pic']=''
+#             obj['rate']=1.2
+#             obj['channel']='qh'+ahref.get("title").replace("av","")
+#             obj['showType']=3
+#             obj['channelType']='qh_all'
+#             channelList.append(obj)
         ahrefs = self.header("header3.html")
         for ahref in ahrefs:
             obj={}
@@ -92,10 +92,7 @@ class VideoParse(BaseParse):
             obj['path'] = 'qh_'+videourl.path
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
-            if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                obj['videoType'] = "webview"
-            else:
-                obj['videoType'] = "normal"
+            obj['videoType'] = "webview"
             obj['baseurl'] = baseurl
             print obj['name'],obj['videoType'],obj['url'],obj['pic']
             dataList.append(obj)
@@ -121,7 +118,7 @@ class VideoParse(BaseParse):
                         match = regVideo.search(item)
                         if match!=None:
                             videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
+                            return "%s%s%s%s"%("http://qsv.jxckplayer.xyz/yun/?vid=","http",videoUrl,'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

@@ -84,11 +84,11 @@ class VideoParse(BaseParse):
             if mp4Url == None:
                 print '没有mp4 文件:', ahref.get("href")
                 continue
-            obj['url'] = mp4Url
+            obj['url'] = "http://qsv.jxckplayer.xyz/yun/?vid="+mp4Url
             obj['pic'] = meta.first('img').get("src")
             obj['name'] = meta.first('img').get("alt")
 
-            videourl = urlparse(obj['url'])
+            videourl = urlparse(mp4Url)
             obj['path'] = 'qh_'+videourl.path
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
@@ -118,7 +118,7 @@ class VideoParse(BaseParse):
                         match = regVideo.search(item)
                         if match!=None:
                             videoUrl =match.group(1)
-                            return "%s%s%s%s"%("http://qsv.jxckplayer.xyz/yun/?vid=","http",videoUrl,'m3u8')
+                            return "%s%s%s"%("http",videoUrl,'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

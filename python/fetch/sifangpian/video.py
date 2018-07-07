@@ -57,7 +57,7 @@ class VideoParse(BaseParse):
                 print '没有mp4 文件:', ahref.get("href")
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = baseurl+meta.first('img').get("data-original")
+            obj['pic'] = meta.first('img').get("data-original")
             obj['name'] = meta.first('img').get("alt")
 
             videourl = urlparse(mp4Url)

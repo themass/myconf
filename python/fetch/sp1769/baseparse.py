@@ -7,15 +7,17 @@ import threading
 from common.envmod import *
 from common import db_ops
 from common import common
-import threading
+import threading,os
 from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
 baseurl = "http://www.1024988.com"
 header = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', 
+          'Cookie':'Hm_lvt_a7dbcd0d5fd2dbdc43e5060c94acaa09=1527844837; PHPSESSID=g8ueibtojgjuub262ae109m2j1; Hm_lvt_c0060128b5e4b5b38a10be83f06960fd=1530951178; msvod_from_url=CXHdyI37jSHtNtnU%2FGBkOiMfjYp75b9bAMxJauXJEbCph8pO90GzNwM; msvod_user_id=sTLyUSP2KKex0l%2FenE0; msvod_user_login=0BUv%2FRmatXLtwy8ku6E2s8cfhsoQfkASdur2QcWy8wZb0twm3WRbkA; msvod_pl_token=A_FO9jJ79ZZkyVFTBxw1KLmX; Hm_lpvt_c0060128b5e4b5b38a10be83f06960fd=1530951284; msvod_token=_pF0%2FpHf%2FPEKXfOFQGGwSyOE'
+          ,"Referer": baseurl}
 maxCount = 3
-regVideo = re.compile(r'var osrc="(.*)m3u8";')
+regVideo = re.compile(r'var osrc="(.*?)m3u8";')
 
 
 class BaseParse(threading.Thread):
@@ -23,12 +25,11 @@ class BaseParse(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
-    def fetchUrl(self, url, aheader=header):
+    def fetchUrl(self, url):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl + url, headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl})
+                req = urllib2.Request(baseurl + url, headers=header)
                 req.encoding = 'utf-8'
                 response = urllib2.urlopen(req, timeout=3000)
                 gzipped = response.headers.get(
@@ -47,11 +48,11 @@ class BaseParse(threading.Thread):
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
 
-    def fetchUrlWithBase(self, url, aheader=header):
+    def fetchUrlWithBase(self, url):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(url, headers=aheader)
+                req = urllib2.Request(url, headers=header)
                 content = urllib2.urlopen(req, timeout=300).read()
                 soup = BeautifulSoup(content)
                 return soup
@@ -62,12 +63,22 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
-
-    def fetchContentUrlWithBase(self, url, aheader=header):
+    def header(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("sp1769/header.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        print content
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
+    def fetchContentUrlWithBase(self, url):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(url, headers=aheader)
+                req = urllib2.Request(url, headers=header)
                 content = urllib2.urlopen(req, timeout=300).read()
                 return content
             except Exception as e:

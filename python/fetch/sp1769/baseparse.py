@@ -18,7 +18,7 @@ header = {'User-Agent':
           ,"Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r'var osrc="(.*?)m3u8";')
-
+namereg = re.compile(r"(&#[0-9]*;)+")
 
 class BaseParse(threading.Thread):
 

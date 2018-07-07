@@ -53,6 +53,8 @@ import s58589_vip
 import hongxing_vip
 import lusibi_vip
 import s58589_vip
+import qh_vip
+import sifangpian_vip
 
 def pase1():
     #webview
@@ -108,6 +110,8 @@ def pase6():
     avhome11_vip.parseVideo()
     ppyy55_vip.parseUserVideo()
     s58589_vip.parseVideo()
+    qh_vip.parseVideo()
+    sifangpian_vip.parseVideo()
 if __name__ == '__main__':
 
     ####ir6yv = ir6y.video.VideoParse()

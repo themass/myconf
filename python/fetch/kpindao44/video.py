@@ -47,7 +47,9 @@ class VideoParse(BaseParse):
         return channelList
     def videoParse(self, channel, url):
         dataList = []
+        print 'start'
         soup = self.fetchUrl(url)
+        print 'end'
         ul = soup.first("ul",{"class":"panel-list"})
         metas = ul.findAll("li")
         for meta in metas:
@@ -96,7 +98,7 @@ class VideoParse(BaseParse):
                         match = regVideo.search(item)
                         if match!=None:
                             videoUrl =match.group(1)
-                        return "%s%s%s"%("http",videoUrl,'m3u8')
+                            return "%s%s%s"%("http",videoUrl,'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

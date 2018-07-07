@@ -3,6 +3,7 @@
 from baseparse import *
 from urlparse import urlparse
 from common import common
+from fetch.profile import *
 
 
 class VideoRmbParse(BaseParse):
@@ -13,7 +14,7 @@ class VideoRmbParse(BaseParse):
         self.t_obj['pic']=''
         self.t_obj['rate']=1.2
         self.t_obj['showType']=3
-        self.t_obj['channel']=obj['url']
+        self.t_obj['channel']="se8_"+obj['url']
         self.t_obj['showType']=3
         self.t_obj['channelType']='fanqiang'
 
@@ -24,9 +25,9 @@ class VideoRmbParse(BaseParse):
         print 'se8 video -- channel ok;,len=1'
         dbVPN.commit()
         dbVPN.close()
-        for i in range(1, maxVideoPage):
+        for i in range(1,maxVideoPage):
             self.videoParse(
-                self.t_obj['url'], self.t_obj['url'] + str(i)+'.htm')
+                self.t_obj['channel'], self.t_obj['url'] + str(i)+'.htm')
             print '解析页数 ', self.t_obj['url'], ' ---', i, '完成'
     
     def videoParse(self, channel, url):
@@ -48,7 +49,7 @@ class VideoRmbParse(BaseParse):
                     img = li.first("img")
                     obj['pic'] = img.get('src')
                     obj['name'] = li.first("h3").text
-                    print obj['name'],li.first("h3"),mp4Url
+                    print channel,obj['name'],mp4Url,obj['pic']
     
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path
@@ -74,8 +75,7 @@ class VideoRmbParse(BaseParse):
             for s in scripts:
                 match = rmbregVideo.search(s.text)
                 if match!=None:
-                    print '--------',match,s.text
-                    return rmbvideoUrl+match.group(1)
+                    return rmbvideoUrl+str(match.group(2))
             print '没找到mp4'
             return None
         except Exception as e:

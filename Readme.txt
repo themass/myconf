@@ -2,6 +2,7 @@ useradd -r -m -s /bin/bash web
 chmod 777 /etc/sudoers
  echo 'web  ALL=(ALL)    ALL' >> /etc/sudoers  
 chmod 440 /etc/sudoers
+passwd web 
 ap
 
 mkdir -p /home/web/install

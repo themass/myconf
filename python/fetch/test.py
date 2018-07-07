@@ -37,17 +37,21 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     return content
 if __name__ == '__main__':
+    regVideo = re.compile(r"(&#[0-9]*;)+")
+    str = "美女演绎极致诱惑 &#48120;&#45376;&#45716;&#44537;&#51201;.."
+    match = regVideo.search(str)
+    print match.group()
 #     regVideo = re.compile(r"encrypt\((.*), 'E', \$key\);")
 #     str = "$play=encrypt(https://youku.cdn-tudou.com/20180508/5819_7b1f8025/index.m38, 'E', $key);"
 #     match = regVideo.search(str)
-#     print match
+#     print matc
 #     print os.popen("wget http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").read()
 #     driver = webdriver.Chrome()
 #     driver.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
 #     print driver.page_source
 #     print requests.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").text
-    content = fetchUrl("http://www.80tt.cc//dv/16.html")
-    print content
+#     content = fetchUrl("http://www.80tt.cc//dv/16.html")
+#     print content
 #     m = re.findall("<!--(.*?)-->",content)
 #     print m
 #     if m!=None:

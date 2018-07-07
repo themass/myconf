@@ -39,6 +39,7 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channelType']='1769_all'
             channelList.append(obj)
+        channelList.reverse()
         return  channelList
     def videoParse(self, channel, url):
         dataList = []
@@ -57,7 +58,13 @@ class VideoParse(BaseParse):
                     obj['url'] = mp4Url
                     img = item.first("img")
                     obj['pic'] = img.get('src')
-                    obj['name'] = item.first('h3').text
+                    name = item.first('h3').text.replace(" ","")
+                    match = namereg.search(name)
+                    if match !=None:
+                        name = name.replace(match.group(),"")
+                        if name=="":
+                            name = "日韩爽片"
+                    obj['name'] = name
                     print obj['name'],mp4Url,obj['pic']
     
                     videourl = urlparse(obj['url'])

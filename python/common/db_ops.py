@@ -138,7 +138,7 @@ class DbOps(object):
                 obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType",3), 1, obj.get("channel").replace(".com",'-'), obj.get("channelType")))
 
     def inertVideo(self, obj,videoType="normal",baseUrl=''):
-        sortType = "2018-07-06"
+        sortType = dateutil.y_m_d()
         return self.conn.execute(
             "replace into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseUrl,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (

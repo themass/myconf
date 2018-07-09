@@ -26,8 +26,10 @@ class VideoParse(BaseParse):
                 if i!=1:
                     url= "%s%s%s%s"%(item['url'],"index-",i,".html")
                 print url
-                self.videoParse(item['channel'], url,item['baseurl'])
+                count = self.videoParse(item['channel'], url,item['baseurl'])
                 print '解析完成 ', item['baseurl'],item['channel'], ' ---', i, '页'
+                if count ==0:
+                    break
                 time.sleep(1)
     def videoChannel(self):
         channelList = []
@@ -51,7 +53,7 @@ class VideoParse(BaseParse):
         soup = self.fetchUrl(url)
         ul = soup.first("div",{"class":"box movie_list"})
         if ul==None:
-            continue
+            return 0
         metas = ul.findAll("li")
         for meta in metas:
             obj = {}
@@ -80,6 +82,7 @@ class VideoParse(BaseParse):
         print 'qh video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        return len(dataList)
 
     def parseDomVideo(self, base,url):
         try:

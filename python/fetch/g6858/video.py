@@ -50,6 +50,8 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         ul = soup.first("div",{"class":"box movie_list"})
+        if ul==None:
+            continue
         metas = ul.findAll("li")
         for meta in metas:
             obj = {}

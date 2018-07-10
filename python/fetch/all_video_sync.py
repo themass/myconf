@@ -56,6 +56,7 @@ import s58589_vip
 import qh_vip
 import sifangpian_vip
 import bt2n_vip
+import xbshare_vip
 
 def pase1():
     #webview
@@ -83,6 +84,7 @@ def pase3():
     seman_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kump4_vip.parseVideo()
+    xbshare_vip.parseVideo()
 def pase4():
     zanquye_vip.parseVideo()
     diediaody_vip.parseVideo()

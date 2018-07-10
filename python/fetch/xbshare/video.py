@@ -26,9 +26,10 @@ class VideoParse(BaseParse):
                 if i!=1:
                     url= "%s%s%s"%(item['url'].replace(".html","-pg-"),i,".html")
                 print url
-                self.videoParse(item['channel'], url)
+                count = self.videoParse(item['channel'], url)
                 print '解析完成 ', item['baseurl'],item['channel'], ' ---', i, '页'
-                time.sleep(1)
+                if count ==0:
+                    break
     def videoChannel(self):
         channelList = []
         ahrefs = self.header("header.html")
@@ -49,6 +50,8 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         metas = soup.findAll("div",{"class":"col-xs-12 col-sm-6 col-md-6 col-lg-4"})
+        if len(metas)==0:
+            return 0
         for meta in metas:
             obj = {}
             ahref = meta.first("a")
@@ -76,7 +79,7 @@ class VideoParse(BaseParse):
         print 'xshare video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-
+        return len(dataList)
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url)

@@ -11,6 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
+nameChannel = {"乱伦":"乱伦小说","都市":"都市激情","武侠":"武侠古典","人妻":"人妻交换","另类":"另类小说","家庭":"家庭乱伦","性爱":"性爱技巧","情色":"情色笑话","校园":"校园春色","性爱":"性爱技巧"}
 baseurl = "https://www.6858g.com/"
 
 header = {'Cookie':'UM_distinctid=163a67e76662dd-061c8c9af4c49b-454c092b-1fa400-163a67e7668392; CNZZDATA4033785=cnzz_eid%3D195820722-1527501775-%26ntime%3D1527508095; CNZZDATA1263493226=264016099-1527504192-%7C1527507999','User-Agent':

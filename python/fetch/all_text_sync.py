@@ -10,6 +10,8 @@ import sexx77_vip
 import x2246_vip
 import jjr128_vip
 import g6858_vip
+import aaw51_vip
+import seshu_vip
 if __name__ == '__main__':
 #     fff64_vip.parseText()
 #     novel941_vip.parseText()
@@ -17,5 +19,7 @@ if __name__ == '__main__':
 #     x2246_vip.parseText()
 #     jjr128_vip.parseText()
     g6858_vip.parseText()
+    aaw51_vip.parseText()
+    seshu_vip.parseText()
     se8_vip.startWork()
     se8_vip.parseText()

@@ -80,7 +80,7 @@ class TextChannelParse(BaseParse):
                 return []
             datalist = div.findAll("li")
             objs = []
-            sortType = "2018-07-12"
+            sortType = dateutil.y_m_d()
             for item in datalist:
                 ahref = item.first("a")
                 if ahref!=None:

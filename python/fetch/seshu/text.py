@@ -30,9 +30,9 @@ class TextChannelParse(BaseParse):
             try:
                 channel = item['url']
                 url = item['url']
-                for i in range(1, maxTextPage ):
+                for i in range(1, maxTextPage):
                     if i!=1:
-                        url= "%s%s%s%s"%(item['url'].replace(".html",""),"index-",i,".html")
+                        url= "%s%s%s%s"%(item['url'].replace(".html",""),"-page-",i,".html")
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
                     count = self.update(url, ops, channel)
@@ -74,13 +74,19 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "box list channel"})
+            div = soup.first("div", {"class": "art_sheet list"})
             if div == None:
                 print '没有数据', url
                 return []
-            datalist = div.findAll("li")
+            div = div.first("div",{"class":"main"})
+            if div == None:
+                print '没有数据', url
+                return []
+            datalist = div.findAll("div")
             objs = []
-            sortType = dateutil.y_m_d()
+#             sortType = dateutil.y_m_d()
+            sortType = '2017-07-12'
+
             for item in datalist:
                 ahref = item.first("a")
                 if ahref!=None:
@@ -92,7 +98,7 @@ class TextChannelParse(BaseParse):
                         else:
                             obj['fileDate'] = ''
                         name = ahref.text.replace(obj['fileDate'], '')
-                        obj['name'] = name.replace("【完】","")
+                        obj['name'] = ahref.get("title")
                         print name
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl
@@ -111,7 +117,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url,header)
-        data = soup.first("div", {"class": "content"})
+        data = soup.first("div", {"id": "article"})
         if data != None:
             try:
                 obj = {}

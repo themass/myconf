@@ -3,9 +3,9 @@
 ## Version setting
 ## -----------------------
 URL=http://file.sspacee.com
-APP_HOME=/root/local
-WEB_HOME=/root/webroot
-TMP_HOME=/root/soft
+APP_HOME=/home/web/local
+WEB_HOME=/home/web/webroot
+TMP_HOME=/home/web/soft
 JDK_VERSION=jdk-8u111
 JDK_DIR=jdk1.8
 
@@ -25,7 +25,7 @@ SDK_PLATFORM_P_VERSION_P_3=android-5.0
 SDK_PLATFORM_P_VERSION_P_4=android-5.1.1
 SDK_PLATFORM_P_VERSION_P_5=android-6.0
 
-SDK_PLATFORM_P_VERSION_P_P_1=android-17
+SDK_PLATFORM_P_VERSION_P_P_1=android-17x
 SDK_PLATFORM_P_VERSION_P_P_2=android-19
 SDK_PLATFORM_P_VERSION_P_P_3=android-21
 SDK_PLATFORM_P_VERSION_P_P_4=android-22

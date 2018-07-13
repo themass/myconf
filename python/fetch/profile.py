@@ -1,6 +1,5 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
-import datetime
-maxVideoPage=60
+maxVideoPage=2
 maxImgPage = 3
 maxTextPage=15

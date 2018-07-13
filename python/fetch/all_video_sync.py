@@ -109,7 +109,6 @@ def pase6():
 #     se8_vip.parseVideo()
     lusibi_vip.parseVideo()
     hongxing_vip.parseVideo()
-    s58589_vip.parseVideo()
     avhome11_vip.parseVideo()
     ppyy55_vip.parseUserVideo()
     s58589_vip.parseVideo()

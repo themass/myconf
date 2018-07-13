@@ -108,6 +108,5 @@ class ImgParse(BaseParse):
         picList = picData.findAll("img")
         pics = []
         for item in picList:
-            if item.get('src') != None and item.get('src').endswith("jpg"):
-                pics.append(item.get('data-original'))
+            pics.append(item.get('data-original'))
         return pics

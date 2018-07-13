@@ -23,5 +23,5 @@ def parseText():
     textpo = text.TextChannelParse()
     textpo.run()
 if __name__ == '__main__':
-    parseText()
+#     parseText()
     parseVideo()

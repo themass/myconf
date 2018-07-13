@@ -26,6 +26,6 @@ def parseImg():
     imgop = img.ImgParse()
     imgop.run()
 if __name__ == '__main__':
-#     parseText()
+    parseText()
 #     parseVideo()
-    parseImg()
+#     parseImg()

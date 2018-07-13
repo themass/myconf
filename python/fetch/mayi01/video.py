@@ -8,6 +8,8 @@ import time
 from fetch.profile import *
 class VideoUserParse(BaseParse):
 
+# http://sexbee1.top//getToken.php 
+#update video_user_item set url = CONCAT(url,"?sign=e1515bba4e1eebe4fda44c0fd569b988") where baseurl = "http://sexbee1.top/"
     def __init__(self):
         pass
 

@@ -109,12 +109,12 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(baseurl+"/"+url,header)
-        data = soup.first("div", {"class": "novelContent"})
+        data = soup.first("input", {"class": "novelContentInput"})
         if data != None:
             try:
                 obj = {}
                 obj['fileUrl'] = url
-                obj['file'] = str(data)
+                obj['file'] = str(data.get("value"))
                 dbVPN = db.DbVPN()
                 ops = db_ops.DbOps(dbVPN)
                 ops.inertTextItems_item(obj)

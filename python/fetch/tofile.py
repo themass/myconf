@@ -31,8 +31,8 @@ class ChannelFetch(threading.Thread):
         try:
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
-#             sortType = dateutil.y_m_d()
-            sortType = "2018-07-13"
+            sortType = dateutil.y_m_d()
+#             sortType = "2018-07-13"
             for i in range(0, 20000):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
                 ret = ops.getTextChannelItemsById(i, sortType)
@@ -42,12 +42,12 @@ class ChannelFetch(threading.Thread):
                 print '开始写入 channel ：', self.t_item["url"],
                 cloase = False
                 for item in ret:
-                    path = filePATH + str(item['id']) + ".txt"
-                    if os.path.exists(path) == False:
-                        output = open(path, 'w')
-                        output.write(item['file'])
-                        output.close()
-                        print '写完文件：' + path
+#                     path = filePATH + str(item['id']) + ".txt"
+#                     if os.path.exists(path) == False:
+#                         output = open(path, 'w')
+#                         output.write(item['file'])
+#                         output.close()
+#                         print '写完文件：' + path
 #                     path = filePATHWeb + str(item['id']) + ".txt"
 #                     if os.path.exists(path) == False:
 #                         output = open(path, 'w')
@@ -55,11 +55,11 @@ class ChannelFetch(threading.Thread):
 #                         output.close()
 #                         print '写完文件：' + path
                     path = filePATHHtml + str(item['id']) + ".html"
-                    if os.path.exists(path) == False:
-                        output = open(path, 'w')
-                        output.write(
-                            html_parse.txtToHtml(html_parse.filter_tags(item['file'])))
-                        output.close()
+#                     if os.path.exists(path) == False:
+                    output = open(path, 'w')
+                    output.write(
+                        html_parse.txtToHtml(html_parse.filter_tags(item['file'])))
+                    output.close()
                     print '写完文件：' + path
                 print '写完页', i
             print 'channel ：', self.t_item["url"], '同步完成 len=', len(ret)

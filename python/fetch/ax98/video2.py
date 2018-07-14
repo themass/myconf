@@ -22,7 +22,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in urlList:
             for i in range(1, maxVideoPage):
-                url= "%s%s%s"%(item,'?page=',i)
+                url= "%s%s%s"%("/",'?page=',i)
                 print url
                 self.videoParse(chs['channel'], url)
                 print '解析完成 ', chs['channel'], ' ---', i, '页'
@@ -30,7 +30,7 @@ class VideoParse(BaseParse):
         obj={}
         obj['name']='1分钟极速欣赏'
         obj['url']='one_minute'
-        obj['baseurl']=baseurl2
+        obj['baseurl']=baseurl
         obj['updateTime']=datetime.datetime.now()
         obj['pic']=''
         obj['rate']=1.2 
@@ -40,9 +40,8 @@ class VideoParse(BaseParse):
         return obj
     def videoParse(self, channel, url):
         dataList = []
-        soup = self.fetchUrl(url)
-        ul = soup.first("ul",{"class":"list clearfix"})
-        lis = ul.findAll("li")
+        soup = self.fetchUrl2(url)
+        lis = soup.findAll("li",{"itemprop":"itemListElement"})
         for li in lis:
             ahref = li.first('a')
             if ahref!=None:
@@ -52,7 +51,7 @@ class VideoParse(BaseParse):
                 obj = {}
                 obj['url'] = mp4Url
                 img = li.first("img")
-                pic = img.get('data-src')
+                pic = img.get('src')
                 if pic==None:
                     pic=img.get('src')
                 obj['pic'] = pic
@@ -62,7 +61,7 @@ class VideoParse(BaseParse):
                 videourl = urlparse(obj['url'])
                 obj['path'] = videourl.path
                 obj['updateTime'] = datetime.datetime.now()
-                obj['channel'] = channel2
+                obj['channel'] = channel
                 obj['baseurl'] = baseurl
                 dataList.append(obj)
         dbVPN = db.DbVPN()
@@ -76,12 +75,10 @@ class VideoParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(url, header)
+            soup = self.fetchUrl2(url, header)
             source = soup.first('source')
             if source!=None:
-                match = videoApi.search(source.get('src'))
-                if match!=None:
-                    return "%s%s%s"%("http",match.group(1),".m3u8")
+                return source.get('src')
             print url,'没有mp4'
             return None
         except Exception as e:

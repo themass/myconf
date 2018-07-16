@@ -37,10 +37,14 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     return content
 if __name__ == '__main__':
-    regVideo = re.compile(r'getmovurl\.html", {id:(.*?),td:(.*?)},')
-    str = '$.post("/index/getmovurl.html", {id:15699,td:2},'
-    match = regVideo.search(str)
-    print match.group(1),match.group(2)
+#     regVideo = re.compile(r'getmovurl\.html", {id:(.*?),td:(.*?)},')
+#     str = '$.post("/index/getmovurl.html", {id:15699,td:2},'
+#     match = regVideo.search(str)
+#     print match.group(1),match.group(2)
+    iframeVideo = re.compile(r"videourl+(.*)\.htm")
+    str = 'document.write(\'<iframe src="\'+videourl+\'/htm/mp4playiframe3/2704.htm" width="100%" frameborder="0" scrolling="no"></iframe>\');'
+    match = iframeVideo.search(str)
+    print match,match.group(1)
 #     regVideo = re.compile(r"encrypt\((.*), 'E', \$key\);")
 #     str = "$play=encrypt(https://youku.cdn-tudou.com/20180508/5819_7b1f8025/index.m38, 'E', $key);"
 #     match = regVideo.search(str)

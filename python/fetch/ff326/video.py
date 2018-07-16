@@ -75,7 +75,7 @@ class VideoUserParse(BaseParse):
                     obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"
-                print obj['videoType'],obj['name'],mp4Url,obj['pic']
+                print obj['name'],mp4Url
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
@@ -101,7 +101,6 @@ class VideoUserParse(BaseParse):
                         match = iframeVideo.search(text)
                         if match!=None:
                             iframeurl = match.group(1).replace("'","").replace("+","").replace(" ","")+".htm"
-                            print iframeurl
                             soup = self.fetchUrl(iframeurl)
                             scripts = soup.findAll("script")
                             for script in scripts:

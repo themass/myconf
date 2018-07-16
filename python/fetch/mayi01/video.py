@@ -9,7 +9,7 @@ from fetch.profile import *
 class VideoUserParse(BaseParse):
 
 # http://sexbee1.top//getToken.php 
-#update video_user_item set url = CONCAT(url,"?sign=e1515bba4e1eebe4fda44c0fd569b988") where baseurl = "http://sexbee1.top/"
+#update video_user_item set url = replace(url,"?sign=f3d7823eba0ab084f41cb71b8debb3e9web","?sign=f3d7823eba0ab084f41cb71b8debb3e9") where baseurl = "http://sexbee1.top/"
     def __init__(self):
         pass
 

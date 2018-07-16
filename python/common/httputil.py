@@ -33,7 +33,15 @@ def postRequestWithParam(url, data={}, header={}):
     except Exception as e:
         raise HTTPException('url=%s' % (url), ex=e)
 
-
+def postData(url, data={}, header={}):
+    try:
+        datastr = urllib.urlencode(data)
+        req = urllib2.Request(url, headers=header)
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
+        resp = opener.open(req, datastr, timeout=DEFULT_TIMEOUT).read()
+        return resp
+    except Exception as e:
+        raise HTTPException('url=%s' % (url), ex=e)
 def getData(url, data={}, header={}):
     count = 0
     maxCount = 3

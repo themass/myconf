@@ -12,6 +12,7 @@ import jjr128_vip
 import g6858_vip
 import aaw51_vip
 import seshu_vip
+import mayi01_vip
 if __name__ == '__main__':
 #     fff64_vip.parseText()
 #     novel941_vip.parseText()
@@ -23,3 +24,4 @@ if __name__ == '__main__':
     seshu_vip.parseText()
     se8_vip.startWork()
     se8_vip.parseText()
+    mayi01_vip.parseText()

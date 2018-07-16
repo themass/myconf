@@ -20,6 +20,7 @@ import xoxo164_vip
 import x2246_vip
 import ddd804_vip
 import xieegif_vip
+import mayi01_vip
 if __name__ == '__main__':
 # #     eroti_img.parseImg()
 #     singlove_vip.parseImg()
@@ -50,6 +51,7 @@ if __name__ == '__main__':
     xieegif_vip.parseratooImg()
     
     tt192_vip.parseImg()
+    mayi01_vip.parseImg()
 
 
 

@@ -57,6 +57,7 @@ import qh_vip
 import sifangpian_vip
 import bt2n_vip
 import xbshare_vip
+import mayi01_vip
 
 def pase1():
     #webview
@@ -115,6 +116,7 @@ def pase6():
     qh_vip.parseVideo()
     sifangpian_vip.parseVideo()
     bt2n_vip.parseVideo()
+    mayi01_vip.parseVideo()
 if __name__ == '__main__':
 
     ####ir6yv = ir6y.video.VideoParse()

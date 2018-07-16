@@ -37,10 +37,10 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     return content
 if __name__ == '__main__':
-    regVideo = re.compile(r"(&#[0-9]*;)+")
-    str = "美女演绎极致诱惑 &#48120;&#45376;&#45716;&#44537;&#51201;.."
+    regVideo = re.compile(r'getmovurl\.html", {id:(.*?),td:(.*?)},')
+    str = '$.post("/index/getmovurl.html", {id:15699,td:2},'
     match = regVideo.search(str)
-    print match.group()
+    print match.group(1),match.group(2)
 #     regVideo = re.compile(r"encrypt\((.*), 'E', \$key\);")
 #     str = "$play=encrypt(https://youku.cdn-tudou.com/20180508/5819_7b1f8025/index.m38, 'E', $key);"
 #     match = regVideo.search(str)

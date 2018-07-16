@@ -46,7 +46,7 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"id": "main"})
+        div = soup.first("div", {"class": "thumbs"})
         if div!=None:
             lis = div.findAll("a")
             for ahref in lis:

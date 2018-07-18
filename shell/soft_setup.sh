@@ -10,7 +10,7 @@ URL=http://file.sspacee.com
 APP_HOME=/root/local
 TMP_HOME=/root/soft
 
-MYSQL_VERSION=mysql-5.6.34-linux-glibc2.5-x86_64
+MYSQL_VERSION=mysql-5.6.40-linux-glibc2.12-x86_64
 RADIUS_VERSION=freeradius-server-2.1.12
 
 mkdir -p ${APP_HOME}
@@ -87,13 +87,14 @@ setup_user() {
 ## Setup MySQL
 ## -----------------------
 setup_mysql() {
+#https://cdn.mysql.com//Downloads/MySQL-5.6/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz
 	shelldir=`pwd`
     useradd -r -m -s /bin/bash mysql
     cd ${TMP_HOME}
     rm -f ${MYSQL_VERSION}.tar.gz
     rm -rf ${APP_HOME}/${MYSQL_VERSION}
     rm -rf /home/mysql/db_data/*
-    wget ${URL}/soft/${MYSQL_VERSION}.tar.gz
+    #wget ${URL}/soft/${MYSQL_VERSION}.tar.gz
     cd ${APP_HOME}
     tar zxvf ${TMP_HOME}/${MYSQL_VERSION}.tar.gz
     rm -rf /home/mysql/mysql

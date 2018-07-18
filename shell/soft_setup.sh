@@ -95,6 +95,7 @@ setup_mysql() {
     rm -rf ${APP_HOME}/${MYSQL_VERSION}
     rm -rf /home/mysql/db_data/*
     #wget ${URL}/soft/${MYSQL_VERSION}.tar.gz
+    wget https://cdn.mysql.com//Downloads/MySQL-5.6/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz
     cd ${APP_HOME}
     tar zxvf ${TMP_HOME}/${MYSQL_VERSION}.tar.gz
     rm -rf /home/mysql/mysql

@@ -164,6 +164,12 @@ setup_radius()
 	echo  ' test  radiusd -X'
 	echo 'radtest vpn themass localhost 1812 testing123'
 	echo 'service freeradius stop'
+	
+	#https://blog.csdn.net/laoxiao1987/article/details/16980147
+	#http://www-2w.blog.163.com/blog/static/979315182011930114916789/
+	#http://wiki.freeradius.org/guide/FAQ
+	#ln -s /usr/local/mysql/bin/mysql_config /usr/local/bin/mysql_config
+	# vi /etc/ld.so.conf  find  / -name libmysqlclient*    ldconfig
 }
 init_radius_client()
 {

@@ -6,7 +6,7 @@ URL=http://file.sspacee.com
 APP_HOME=/home/web/local
 WEB_HOME=/home/web/webroot
 TMP_HOME=/home/web/soft
-JDK_VERSION=jdk-8u111
+JDK_VERSION=jdk-8u181-linux-x64
 JDK_DIR=jdk1.8
 
 SDK_NAME_VERSION=android-sdk_r24.4.1-linux
@@ -82,6 +82,9 @@ setup_jdk()
     wget ${URL}/soft/${JDK_VERSION}.tar.gz -O ${TMP_HOME}/${JDK_VERSION}.tar.gz
     tar -zxvf ${TMP_HOME}/${JDK_VERSION}.tar.gz 
 	echo 'profile' ${APP_HOME}/${JDK_VERSION}
+	mkdir -p /home/web/var/log/ 
+	mkdir -p /home/web/var/run/
+	mkdir -p /home/web/var/log/vpn/
 }
 setup_sdk() 
 {
@@ -292,6 +295,7 @@ setup_nginx() {
     rm ${APP_HOME}/nginx/conf/nginx.conf
     cp ../nginx/conf/nginx.conf ${APP_HOME}/nginx/conf/nginx.conf
     cp ../nginx/server ${APP_HOME}/nginx/conf/ -r
+    echo "mkdir -p /home/web/var/log/  /home/web/var/run/"
 
 }
 strongswan_android() 

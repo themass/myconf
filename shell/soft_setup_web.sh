@@ -182,6 +182,7 @@ setup_maven(){
 }
 setup_redis() 
 {
+#http://download.redis.io/releases/redis-4.0.10.tar.gz	
 	shelldir=`pwd`
 	cd ${TMP_HOME}
 	rm -rf ${APP_HOME}/${REDIS_VERSION}

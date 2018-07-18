@@ -145,12 +145,12 @@ setup_radius()
 	make install
 	cd ${shelldir}
 	echo ${shelldir}
-	mysqladmin -u root -p create radius
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
-	mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
-	mysql -u root -p < ../radius/radius.sql
+	#mysqladmin -u root -p create radius
+	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
+	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql
+	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
+	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
+	#mysql -u root -p < ../radius/radius.sql
 	cp ../radius/default /usr/local/etc/raddb/sites-enabled/
 	cp ../radius/inner-tunnel /usr/local/etc/raddb/sites-enabled/
 	cp ../radius/sql.conf /usr/local/etc/raddb/

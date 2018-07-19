@@ -48,7 +48,7 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"id": "movie_list"})
+        div = soup.first("div", {"id": "box movie_list"})
         if div!=None:
             lis = div.findAll("li")
             for li in lis:
@@ -92,7 +92,7 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url)
-            adiv = soup.first("th")
+            adiv = soup.first("div",{"class":"film_bar clearfix"})
             if adiv!=None:
                 ahref = adiv.first("a")
                 if ahref!=None:

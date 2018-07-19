@@ -12,7 +12,7 @@ from BeautifulSoup import BeautifulSoup
 import re
 import os
 baseurl = "https://mayi01.xyz"
-baseurlVideo = "http://sexbee1.top/"
+baseurlVideo = "http://mf58.top/"
 baseurlImg = "http://zptu1.xyz"
 header = {'Cookie':'UM_distinctid=163a67e76662dd-061c8c9af4c49b-454c092b-1fa400-163a67e7668392; CNZZDATA4033785=cnzz_eid%3D195820722-1527501775-%26ntime%3D1527508095; CNZZDATA1263493226=264016099-1527504192-%7C1527507999','User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}

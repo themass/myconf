@@ -140,7 +140,7 @@ class DbOps(object):
     def inertVideo(self, obj,videoType="normal",baseUrl=''):
         sortType = dateutil.y_m_d()
         return self.conn.execute(
-            "replace into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseUrl,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseurl,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("url"), obj.get("channel").replace(".com",'-'), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl,sortType))
 
@@ -152,13 +152,13 @@ class DbOps(object):
 
     def inertVideoUser(self, obj):
         return self.conn.execute(
-            "replace into  video_user (name,pic,userId,rate,updateTime,channel,showType) values ('%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  video_user (name,pic,userId,rate,updateTime,channel,showType,baseurl) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("channel"), obj.get("showType")))
+                obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("channel"), obj.get("showType"), obj.get("baseUrl")))
 
     def inertVideoUserItem(self, obj):
         return self.conn.execute(
-            "replace into  video_user_item (name,pic,url,userId,rate,updateTime,path,baseUrl,videoType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  video_user_item (name,pic,url,userId,rate,updateTime,path,baseurl,videoType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("pic"), obj.get("url"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("path"), obj.get("baseUrl"), obj.get("videoType"), obj.get("showType")))
 

@@ -117,7 +117,7 @@ setup_iptables()
 	#service iptables restart
 	#systemctl restart iptables
 	iptables-save
-	#iptables-restore
+	#iptables-restore  https://blog.csdn.net/hack8/article/details/6772958
 	#tcpdump -s 0 -n -i eth0 'esp or udp and (port 500 or port 4500)'
 }
 #net

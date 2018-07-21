@@ -26,7 +26,7 @@ if __name__ == '__main__':
 # # #     #找不到网站
 # #     sexx77_vip.pareImg()
 # #       
-    xoxo164_vip.pareImg()
+###     xoxo164_vip.pareImg()
     x2246_vip.parseImg()
 # #     #需要翻墙
     jjr128_vip.pareImg()

@@ -14,7 +14,7 @@ import StringIO
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "http://www.gcp155.com"
+baseurl = "http://www.gcp156.com"
 maxCount = 5
 class BaseParse(threading.Thread):
 

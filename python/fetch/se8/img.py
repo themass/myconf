@@ -101,7 +101,7 @@ class ImgParse(BaseParse):
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)
-        picData = soup.first("div", {"class": "picContent"})
+        picData = soup.first("div", {"class": "box pic_text"})
         picList = picData.findAll("img")
         pics = []
         for item in picList:

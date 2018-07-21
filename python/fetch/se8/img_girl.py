@@ -123,7 +123,7 @@ class ParsImgChannel(BaseParse):
 
     def fetchgirlChannelItems(self, url):
         soup = self.fetchUrl(url)
-        div = soup.find("ul", {"class": 'movieList'})
+        div = soup.find("ul", {"class": 'box movie_list'})
         objs = []
         if div != None:
             alist = div.findAll("a")
@@ -137,7 +137,7 @@ class ParsImgChannel(BaseParse):
 
     def fetchTubaobaoList(self, url):
         soup = self.fetchUrl(url)
-        div = soup.find("div", {"class": 'box list channel'})
+        div = soup.find("div", {"class": 'box movie_list'})
         objs = []
         if div != None:
             ul = div.find('ul')

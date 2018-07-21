@@ -34,7 +34,7 @@ class ImgGrilParse(BaseParse):
         for obj in objs:
             # and obj['url'].find('tubaobao.htm') == -1
             if obj['url'].find('/') != -1:
-                ops.inertImgChannelWithChannel(obj,obj['channel'].replace("/?m=",''),obj['name'])
+                ops.inertImgChannelWithChannel(obj,obj['channel'].replace("/?m=",''))
                 self.t_queue.put(ParsImgChannel(obj))
                 print '更新channel 完成，chennel数据事件加入队列,', obj['url']
             else:

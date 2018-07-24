@@ -112,7 +112,7 @@ def pase5():
     hanpian_vip.parseVideo()
     
 def pase6():
-    se8_vip.parseVideo()
+    #se8_vip.parseVideo()
     ppyy55_vip.parseUserVideo()
     s58589_vip.parseVideo()
     qh_vip.parseVideo()

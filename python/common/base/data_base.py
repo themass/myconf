@@ -30,6 +30,10 @@ class DataBase(object):
 
             return self.cur.execute(query, args)
         except Exception as e:
+            error = common.format_exception(e)
+            if error.count("Duplicate entry")>0:
+                print query
+                return None
             print common.format_exception(e), query
             return None
 

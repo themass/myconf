@@ -15,7 +15,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 #662cf
-baseurl = "https://www.187cf.com/"
+baseurl = "https://www.873cf.com/"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)

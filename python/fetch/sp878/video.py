@@ -88,7 +88,7 @@ class VideoParse(BaseParse):
                     match = regVideo.search(text)
                     if match!=None:
                         videoUrl =match.group(1)
-                        return videoBase+videoUrl+"mp4"
+                        return "http"+videoUrl+"mp4"
             print '没找到mp4'
             return None
         except Exception as e:

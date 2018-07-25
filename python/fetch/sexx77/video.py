@@ -55,13 +55,13 @@ class VideoParse(BaseParse):
                     img = ahref.first("img")
                     obj['pic'] = img.get('src')
                     obj['name'] = li.first('h3').text
-                    print obj['name'],mp4Url,obj['pic']
-    
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
+                    
+                    print obj['name'],mp4Url,obj['pic']
                     if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                         obj['videoType'] = "webview"
                     else:
@@ -88,7 +88,7 @@ class VideoParse(BaseParse):
                     soup = self.fetchUrl(ahref.get('href'), header)
                     iframe = soup.first('iframe')
                     if iframe!=None:
-                        return iframe.get('src')
+                        return baseurl+iframe.get('src')
 #                     if iframe!=None:
 #                         soup = self.fetchUrlWithBase(iframe.get('src'))
 #                         scripts = soup.findAll("script")

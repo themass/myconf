@@ -82,14 +82,16 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url, header)
             div = soup.first("div",{"class":"film_bar clearfix"})
             if div!=None:
-                soup = self.fetchUrl(div.first("a").get("href"), header)
-                ul = soup.first("textarea",{"name":"video_embed_code"})
-                if ul!=None:
-                    text = ul.text
-                    match = regVideo.search(text)
-                    if match!=None:
-                        videoUrl =match.group(1)
-                        return videoUrl
+                ahrefs = div.findAll("a")
+                for ahref in ahrefs:
+                    soup = self.fetchUrl(ahref.get("href"), header)
+                    ul = soup.first("textarea",{"name":"video_embed_code"})
+                    if ul!=None:
+                        text = ul.text
+                        match = regVideo.search(text)
+                        if match!=None:
+                            videoUrl =match.group(1)
+                            return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:

@@ -17,11 +17,13 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
+        ops.deleteVideoItems(baseurl)
+        
         print 'zoo video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            for i in range(1, 200):
+            for i in range(1, 40):
                 url = '/'
                 if i!=1:
                     url= "%s%s%s"%('/',i,"/")

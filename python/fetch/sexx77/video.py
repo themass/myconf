@@ -24,7 +24,7 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= ch['url']
                 if i!=1:
-                    url= "%s%s%s"%(ch['url'].replace('.html','-'),i,'.html')
+                    url= "%s%s%s%s"%(ch['url'],"page/",i,'/')
                 self.videoParse(ch['channel'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -36,7 +36,7 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']="www.sexx77.com"+obj['url']
             obj['showType']=3
-            obj['channelType']='webview'
+            obj['channelType']='normal'
         return  objs
     def videoParse(self, channel, url):
         dataList = []
@@ -62,11 +62,15 @@ class VideoParse(BaseParse):
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
+                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                        obj['videoType'] = "webview"
+                    else:
+                        obj['videoType'] = "normal"
                     dataList.append(obj)
             dbVPN = db.DbVPN()
             ops = db_ops.DbOps(dbVPN)
             for obj in dataList:
-                ops.inertVideo(obj,"webview",baseurl)
+                ops.inertVideo(obj,obj['videoType'],baseurl)
     
             print 'sex777 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
             dbVPN.commit()

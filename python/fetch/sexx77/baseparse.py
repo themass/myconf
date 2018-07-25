@@ -18,7 +18,9 @@ header = {'User-Agent':
 maxCount = 3
 videoApi = re.compile(r'var redirecturl = "(.*)";')
 videoApim3 = re.compile(r'var main = "(.*)";')
+import ssl
 
+context = ssl._create_unverified_context()
 class BaseParse(threading.Thread):
 
     def __init__(self):
@@ -30,13 +32,13 @@ class BaseParse(threading.Thread):
             try:
                 if url.count("http")==0:
                     url = baseurl + url
-                req = urllib2.Request(url, headers=aheader)
+                req = urllib2.Request(url, headers=aheader,context=context)
                 content = urllib2.urlopen(req, timeout=5000).read()
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
                 print common.format_exception(e)
-                print '打开页面错误,重试', baseurl + url, '次数', count
+                print '打开页面错误,重试', url, '次数', count
                 count = count + 1
 
         print '打开页面错误,重试3次还是错误', url

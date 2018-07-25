@@ -69,7 +69,7 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,"webview",baseurl)
 
         print 'sp878 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
@@ -88,7 +88,7 @@ class VideoParse(BaseParse):
                     match = regVideo.search(text)
                     if match!=None:
                         videoUrl =match.group(1)
-                        return "http"+videoUrl+"mp4"
+                        return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:

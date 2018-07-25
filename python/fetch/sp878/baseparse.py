@@ -15,8 +15,7 @@ baseurl = "http://www.053sp.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
-regVideo = re.compile(r"var down_url = 'http(.*)mp4';")
-videoBase="http://d.eeoai.com"
+regVideo = re.compile(r'src="(.*?)" frameborder=')
 class BaseParse(threading.Thread):
 
     def __init__(self):

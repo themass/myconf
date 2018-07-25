@@ -23,8 +23,9 @@ maxCount = 5
 videoUrl='http://m.123456xia.com:888'
 m3u8regVideo = re.compile(r"var playurl=(.*)\+'(.*)';")
 regVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
-urlMap={"movieurl_10_2":"http://555.maomixia555.com:888","movieurl_24k_2":"http://555.maomixia555.com:888","movieurl_new_2":"http://555.maomixia555.com:888",
-        "movieurl_69_2":"http://555.maomixia555.com:888","m3u8url_10_2":"https://768ii.com","m3u8url_24k_2":"https://768ii.com","m3u8url_new_2":"https://768ii.com"}
+urlMap={"m3u8url_10":"https://768ii.com","m3u8url_24k":"https://768ii.com","m3u8url_new":"https://768ii.com",
+        "m3u8url_69":"https://768ii.com","m3u8url_10_2":"https://768ii.com","m3u8url_24k_2":"https://768ii.com",
+        "m3u8url_new_2":"https://768ii.com","m3u8url_69_2 ":"https://768ii.com"}
 rmbvideoUrl='http://555.maomixia555.com:888'
 rmbregVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
 class BaseParse(threading.Thread):

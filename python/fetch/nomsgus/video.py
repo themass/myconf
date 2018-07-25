@@ -33,7 +33,7 @@ class VideoParse(BaseParse):
         obj['rate']=1.2
         obj['channel']=obj['name']
         obj['showType']=3
-        obj['channelType']='movie'
+        obj['channelType']='sanji'
         return  obj
     def videoParse(self, channel, url):
         dataList = []
@@ -49,7 +49,7 @@ class VideoParse(BaseParse):
                     img = ahref.first("img")
                     obj['pic'] = img.get('data-original')
                     obj['name'] = "%s-%s"%(ahref.get('title'),i)
-                    obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
+                    obj['path'] = "%s%s%s"%("nomsgus","-",obj['name'])
                     print obj['path'],obj['url'],obj['pic']
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel

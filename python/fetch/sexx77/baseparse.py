@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
-baseurl = "http://www.segui1.xyz/"
+baseurl = "https://www.88guise.com/"
 videolUrl='/stli_gthdrdbn/29.html'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
@@ -28,7 +28,9 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl + url, headers=aheader)
+                if url.count("http")==0:
+                    url = baseurl + url
+                req = urllib2.Request(url, headers=aheader)
                 content = urllib2.urlopen(req, timeout=5000).read()
                 soup = BeautifulSoup(content)
                 return soup

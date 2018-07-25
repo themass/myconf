@@ -80,15 +80,12 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
-            ul = soup.first("ul",{"class":"downurl"})
-            scripts = ul.findAll('script')
-            for script in scripts:
-                if script.text!=None:
-                    text = script.text
-                    match = regVideo.search(text)
-                    if match!=None:
-                        videoUrl =match.group(1)
-                        return videoUrl
+            ul = soup.first("textarea",{"name":"video_embed_code"})
+            text = ul.text
+            match = regVideo.search(text)
+            if match!=None:
+                videoUrl =match.group(1)
+                return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:

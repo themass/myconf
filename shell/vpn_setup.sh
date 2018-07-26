@@ -17,7 +17,7 @@ init_soft()
 	mkdir -p ${WORKDIR}
 	mkdir -p ${TMP_HOME}
 	apt-get update
-	apt-get install -y sysstat vim build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear aptitude
+	apt-get install -y sysstat vim build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear aptitude
 	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev  curl   libmysqlclient-dev 
 	apt-get install libcurl4-gnutls-dev
 }

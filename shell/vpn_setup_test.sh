@@ -4,14 +4,10 @@
 ## -----------------------
 
 
-WORKDIR=/root/work
-TMP_HOME=/root/soft
-PWD=`pwd`
-#ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $1}'|tr -d "addr:"`
 init_soft() 
 {
-	mkdir -p ${WORKDIR}
-	mkdir -p ${TMP_HOME}
+	mkdir -p /root/work
+	mkdir -p /root/soft
 	apt-get update
 	apt-get install -y sysstat vim build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear aptitude
 	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev  curl   libmysqlclient-dev 
@@ -22,14 +18,14 @@ init_soft()
 ## -----------------------
 check_vpn() 
 {
-    	iptables -L 
+    iptables -L 
 	ipsec status | grep Associations
 	ps -aux| grep fail | grep -v 'grep'
 	ps -aux| grep telegraf| grep -v 'grep'
 }
 checkspeed()
 {
-	cd ${TMP_HOME}
+	cd /root/soft
 	wget https://raw.githubusercontent.com/wn789/Superspeed/master/superbench.sh
 	bash superbench.sh
 	wget  https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py 
@@ -39,7 +35,7 @@ strongswan_setup()
 {
 
 	#sudo apt-get install strongswan strongswan-pki libcharon-extra-plugins libstrongswan-extra-plugins
-	cd ${TMP_HOME}
+	cd /root/soft
 	wget http://download.strongswan.org/strongswan-5.6.0.tar.bz2 --no-check-certificate
 	tar -jxvf strongswan-5.6.0.tar.bz2 && cd strongswan-5.6.0
 	./configure --prefix=/usr --sysconfdir=/etc  --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap  --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2  --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls
@@ -63,7 +59,7 @@ strongswan_config()
 	#cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
 	#cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	
-	cd ${WORKDIR}/myconf/shell
+	cd /root/work/myconf/shell
 	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
 	cp  ../strongswan_conf/ipsec.conf /etc/ipsec.conf
     
@@ -80,7 +76,7 @@ strongswan_config()
 #ca setup
 init_ca() 
 {
-	cd ${TMP_HOME}
+	cd /root/soft
 	mkdir -p ca
 	cd ca
 	echo "C=CN, O=timeline, CN=$1"

@@ -1,10 +1,12 @@
-#!/bin/bash
-## -----------------------
-## Version setting
-## -----------------------
+#init soft
+
+#http://it.zhaozhao.info/archives/41127
+#https://segmentfault.com/a/1190000002540601
+#http://www.cnblogs.com/hyzhou/category/336618.html
 WORKDIR=/root/work
 TMP_HOME=/root/soft
 PWD=`pwd`
+#ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $1}'|tr -d "addr:"`
 init_soft() 
 {
 	mkdir -p ${WORKDIR}
@@ -35,8 +37,8 @@ checkspeed()
 strongswan_setup() 
 {
 	cd ${TMP_HOME}
-	wget http://download.strongswan.org/strongswan-5.6.3.tar.bz2 --no-check-certificate
-	tar -jxvf strongswan-5.6.3.tar.bz2 && cd strongswan-5.6.3
+	wget http://download.strongswan.org/strongswan-5.6.0.tar.bz2 --no-check-certificate
+	tar -jxvf strongswan-5.6.0.tar.bz2 && cd strongswan-5.6.0
 	./configure --prefix=/usr --sysconfdir=/etc  --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap  --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2  --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls
 	make && make install
 	ipsec start 
@@ -44,19 +46,19 @@ strongswan_setup()
 }
 strongswan_config() 
 {
-	##unzip strongswan_conf.zip
-	##dos2unix strongswan_conf/ipsec.conf
-	##dos2unix strongswan_conf/charon.conf
-	##dos2unix strongswan_conf/ipsec.secrets
-	##
-	##cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-	##cp  strongswan_conf/ipsec.conf /etc/ipsec.conf
-    ##
-	##cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
-	##cp  strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
-    ##
-	##cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-	##cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
+	#unzip strongswan_conf.zip
+	#dos2unix strongswan_conf/ipsec.conf
+	#dos2unix strongswan_conf/charon.conf
+	#dos2unix strongswan_conf/ipsec.secrets
+	#
+	#cp  /etc/ipsec.conf /etc/ipsec.conf.bak
+	#cp  strongswan_conf/ipsec.conf /etc/ipsec.conf
+    #
+	#cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
+	#cp  strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
+    #
+	#cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
+	#cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	
 	cd ${WORKDIR}/myconf/shell
 	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
@@ -72,7 +74,7 @@ strongswan_config()
 	
 	ipsec restart
 }
-##ca setup
+#ca setup
 init_ca() 
 {
 	cd ${TMP_HOME}
@@ -99,7 +101,7 @@ init_ca()
 }
 
 
-## iptables
+# iptables
 setup_iptables() 
 {
 	iptables -A INPUT -p udp --dport 500 -j ACCEPT 
@@ -110,13 +112,13 @@ setup_iptables()
 	ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
 	ip6tables -A INPUT -p udp --dport 4500 -j ACCEPT
 	ip6tables -A INPUT -m frag -m connmark --mark 0x42 -j ACCEPT
-	##为避免VPS重启后NAT功能失效，可以把如上5行命令添加到 /etc/rc.local 文件中，添加在exit那一行之前即可。
-	##service iptables save
-	##service iptables restart
-	##systemctl restart iptables
+	#为避免VPS重启后NAT功能失效，可以把如上5行命令添加到 /etc/rc.local 文件中，添加在exit那一行之前即可。
+	#service iptables save
+	#service iptables restart
+	#systemctl restart iptables
 	iptables-save
-	##iptables-restore  https://blog.csdn.net/hack8/article/details/6772958
-	##tcpdump -s 0 -n -i eth0 'esp or udp and (port 500 or port 4500)'
+	#iptables-restore  https://blog.csdn.net/hack8/article/details/6772958
+	#tcpdump -s 0 -n -i eth0 'esp or udp and (port 500 or port 4500)'
 }
 #net
 # vi /etc/sysctl.conf
@@ -155,11 +157,11 @@ net()
 	cat /etc/sysctl.conf
 	sysctl -p
 	
-	##其中最后的hybla是为高延迟网络（如美国，欧洲）准备的算法，需要内核支持，测试内核是否支持，在终端输入：
-	##sysctl net.ipv4.tcp_available_congestion_control
-	##如果结果中有hybla，则证明你的内核已开启hybla，如果没有hybla，可以用命令modprobe tcp_hybla开启。
+	#其中最后的hybla是为高延迟网络（如美国，欧洲）准备的算法，需要内核支持，测试内核是否支持，在终端输入：
+	#sysctl net.ipv4.tcp_available_congestion_control
+	#如果结果中有hybla，则证明你的内核已开启hybla，如果没有hybla，可以用命令modprobe tcp_hybla开启。
 
-		##对于低延迟的网络（如日本，香港等），可以使用htcp，可以非常显著的提高速度，首先使用modprobe tcp_htcp开启，再将net.ipv4.tcp_congestion_control = hybla改为net.ipv4.tcp_congestion_control = htcp，建议EC2日本用户使用这个算法。
+		#对于低延迟的网络（如日本，香港等），可以使用htcp，可以非常显著的提高速度，首先使用modprobe tcp_htcp开启，再将net.ipv4.tcp_congestion_control = hybla改为net.ipv4.tcp_congestion_control = htcp，建议EC2日本用户使用这个算法。
 
 	echo "*               soft    nofile           512000"  >> /etc/security/limits.conf
 	echo "*               hard    nofile          1024000"  >> /etc/security/limits.conf

@@ -5,7 +5,6 @@
 WORKDIR=/root/work
 TMP_HOME=/root/soft
 PWD=`pwd`
-##ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $1}'|tr -d "addr:"`
 init_soft() 
 {
 	mkdir -p ${WORKDIR}

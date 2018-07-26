@@ -12,8 +12,8 @@ init_soft()
 	mkdir -p ${WORKDIR}
 	mkdir -p ${TMP_HOME}
 	apt-get update
-	apt-get install -y sysstat vim build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear aptitude	#缂栬瘧鐜
-	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev  curl   libmysqlclient-dev #缂栬瘧鎵�闇�瑕佺殑杞欢
+	apt-get install -y sysstat vim build-essential lrzsz  tree dstat git dos2unix unzip libtalloc2   libtalloc-dev libxml2-dev php-pear aptitude
+	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev  curl   libmysqlclient-dev 
 	apt-get install libcurl4-gnutls-dev
 }
 ## -----------------------
@@ -114,7 +114,6 @@ setup_iptables()
 	ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
 	ip6tables -A INPUT -p udp --dport 4500 -j ACCEPT
 	ip6tables -A INPUT -m frag -m connmark --mark 0x42 -j ACCEPT
-	#涓洪伩鍏峍PS閲嶅惎鍚嶯AT鍔熻兘澶辨晥锛屽彲浠ユ妸濡備笂5琛屽懡浠ゆ坊鍔犲埌 /etc/rc.local 鏂囦欢涓紝娣诲姞鍦╡xit閭ｄ竴琛屼箣鍓嶅嵆鍙��
 	#service iptables save
 	#service iptables restart
 	#systemctl restart iptables
@@ -130,25 +129,17 @@ net()
 	echo "net.ipv4.tcp_syncookies = 1"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_tw_reuse = 1"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_tw_recycle = 0"  >>  /etc/sysctl.conf
-	echo "#鍚戝杩炴帴鐨勭鍙ｈ寖鍥�"  >>  /etc/sysctl.conf
 	echo "net.ipv4.ip_local_port_range = 1024 65000 "  >>  /etc/sysctl.conf
-	echo "#绀篠YN闃熷垪鐨勯暱搴︼紝榛樿涓�1024锛屽姞澶ч槦鍒楅暱搴︿负8192锛屽彲浠ュ绾虫洿澶氱瓑寰呰繛鎺ョ殑缃戠粶杩炴帴鏁�"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_max_syn_backlog = 8192 "  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_max_tw_buckets = 5000"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_keepalive_time = 1200"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_fin_timeout = 30"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_max_tw_buckets = 5000"  >>  /etc/sysctl.conf
-	echo "#TCP鎺ユ敹缂撳啿澶у皬锛屽搴旀渶灏忋�侀粯璁ゃ�佹渶澶�"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_rmem = 4096 87380 4194304"  >>  /etc/sysctl.conf
-	echo "#TCP鍙戦�佺紦鍐插ぇ灏忥紝瀵瑰簲鏈�灏忋�侀粯璁ゃ�佹渶澶�"  >>  /etc/sysctl.conf
 	echo "net.ipv4.tcp_wmem = 4096 16384 4194304"  >>  /etc/sysctl.conf
-	echo "#鏈�澶у彂閫佸鎺ュ瓧缂撳啿鍖哄ぇ灏�"  >>  /etc/sysctl.conf
 	echo "net.core.rmem_max = 16777216"  >>  /etc/sysctl.conf
-	echo "#鏈�澶ф帴鏀跺鎺ュ瓧缂撳啿鍖哄ぇ灏�"  >>  /etc/sysctl.conf
 	echo "net.core.wmem_max = 16777216"  >>  /etc/sysctl.conf
-	echo "#褰撶綉缁滄帴鍙ｆ帴鏀堕�熺巼姣斿唴鏍稿鐞嗗揩鏃跺厑璁稿彂鍒伴槦鍒楃殑鏁版嵁鍖呮暟鐩�"  >>  /etc/sysctl.conf
 	echo "net.core.netdev_max_backlog = 262144"  >>  /etc/sysctl.conf
-	echo "#绯荤粺鍚屾椂鍙戣捣鐨凾CP杩炴帴濞勶紝瓒呰繃瀵艰嚧杩炴帴瓒呮椂鎴栭噸浼�"  >>  /etc/sysctl.conf
 	echo "net.core.somaxconn = 262144"  >>  /etc/sysctl.conf
 	echo "net.ipv4.ip_forward = 1"  >>  /etc/sysctl.conf
 	echo "net.ipv6.conf.all.forwarding=1"  >>  /etc/sysctl.conf
@@ -159,12 +150,7 @@ net()
 	cat /etc/sysctl.conf
 	sysctl -p
 	
-	#鍏朵腑鏈�鍚庣殑hybla鏄负楂樺欢杩熺綉缁滐紙濡傜編鍥斤紝娆ф床锛夊噯澶囩殑绠楁硶锛岄渶瑕佸唴鏍告敮鎸侊紝娴嬭瘯鍐呮牳鏄惁鏀寔锛屽湪缁堢杈撳叆锛�
 	#sysctl net.ipv4.tcp_available_congestion_control
-	#濡傛灉缁撴灉涓湁hybla锛屽垯璇佹槑浣犵殑鍐呮牳宸插紑鍚痟ybla锛屽鏋滄病鏈塰ybla锛屽彲浠ョ敤鍛戒护modprobe tcp_hybla寮�鍚��
-
-		#瀵逛簬浣庡欢杩熺殑缃戠粶锛堝鏃ユ湰锛岄娓瓑锛夛紝鍙互浣跨敤htcp锛屽彲浠ラ潪甯告樉钁楃殑鎻愰珮閫熷害锛岄鍏堜娇鐢╩odprobe tcp_htcp寮�鍚紝鍐嶅皢net.ipv4.tcp_congestion_control = hybla鏀逛负net.ipv4.tcp_congestion_control = htcp锛屽缓璁瓻C2鏃ユ湰鐢ㄦ埛浣跨敤杩欎釜绠楁硶銆�
-
 	echo "*               soft    nofile           512000"  >> /etc/security/limits.conf
 	echo "*               hard    nofile          1024000"  >> /etc/security/limits.conf
 	echo "ulimit -SHn 1024000"  >> /root/.profile

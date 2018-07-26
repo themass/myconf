@@ -1,3 +1,8 @@
+#!/bin/bash
+## -----------------------
+## Version setting
+## -----------------------
+
 #init soft
 
 #http://it.zhaozhao.info/archives/41127

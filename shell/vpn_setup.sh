@@ -1,4 +1,7 @@
-#init soft
+#!/bin/bash
+## -----------------------
+## Version setting
+## -----------------------
 
 #http://it.zhaozhao.info/archives/41127
 #https://segmentfault.com/a/1190000002540601

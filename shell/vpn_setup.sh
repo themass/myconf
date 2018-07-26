@@ -3,11 +3,6 @@
 ## Version setting
 ## -----------------------
 
-#init soft
-
-#http://it.zhaozhao.info/archives/41127
-#https://segmentfault.com/a/1190000002540601
-#http://www.cnblogs.com/hyzhou/category/336618.html
 WORKDIR=/root/work
 TMP_HOME=/root/soft
 PWD=`pwd`

@@ -68,7 +68,7 @@ def pase1():
     vj69videop = vj69.video.VideoParse()
     vj69videop.run()
  
-#     zy3838_vip.parseVideo()
+    zy3838_vip.parseVideo()
     nomsgus_vip.parseVideo()
     lusibi_vip.parseVideo()
     hongxing_vip.parseVideo()
@@ -97,10 +97,11 @@ def pase4():
     diediaody_vip.parseVideo()
     dadekai_vip.parseVideo()
     upianku_vip.parseVideo()
+    
+def pase5():
     meiyke_vip.parseVideo()
     sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()
-def pase5():
     #     #vj69_vip.paserVideo()
 ###    xoxo164_vip.pareVideo()
     tzzy1399_vip.parseVideo()
@@ -112,7 +113,7 @@ def pase5():
     hanpian_vip.parseVideo()
     
 def pase6():
-    #se8_vip.parseVideo()
+    se8_vip.parseVideo()
     ppyy55_vip.parseUserVideo()
     s58589_vip.parseVideo()
     qh_vip.parseVideo()

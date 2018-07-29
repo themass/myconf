@@ -2,4 +2,4 @@
 # -*- coding: utf-8 -*-
 maxVideoPage=2
 maxImgPage = 2
-maxTextPage=3
+maxTextPage=20

@@ -132,6 +132,8 @@ class DbOps(object):
             % (obj.get("origUrl"), obj.get("compress"), obj.get("id")))
     def deleteVideoItems(self,baseurl):
         self.conn.execute("delete from videoitems where baseurl='%s'"%(baseurl))
+    def updateVideoItemsChannelType(self):
+        self.conn.execute("update videoitems i set channelType=(select channelType from videochannel c where i.channel=c.channel limit 1)")
     def inertVideoChannel(self, obj):
         try:
             return self.conn.execute(

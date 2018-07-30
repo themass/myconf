@@ -31,6 +31,11 @@ class VideoParse(BaseParse):
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
                 time.sleep(1)
+        dbVPN = db.DbVPN()
+        ops = db_ops.DbOps(dbVPN)
+        ops.updateVideoItemsChannelType()
+        dbVPN.commit()
+        dbVPN.close()
     def videoChannel(self):
         channelList = []
         obj={}

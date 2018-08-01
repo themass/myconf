@@ -268,6 +268,7 @@ encoding//python/fetch/zy3838/baseparse.py=utf-8
 encoding//python/fetch/zy3838/video.py=utf-8
 encoding//python/fetch/zy3838_vip.py=utf-8
 encoding//python/monitor/check_header.py=utf-8
+encoding//shell/ipsecstatus.sh=UTF-8
 encoding//shell/soft_setup.sh=UTF-8
 encoding//shell/vpn_setup.sh=UTF-8
 encoding//strongswan_conf/charon.conf=UTF-8

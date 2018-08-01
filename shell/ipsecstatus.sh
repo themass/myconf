@@ -2,7 +2,7 @@
 ## -----------------------
 ## Version setting
 ## -----------------------
-source /etc/profile
+. /etc/profile
 status() 
 {
 	/usr/sbin/ipsec status | grep Associations 

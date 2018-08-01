@@ -16,6 +16,19 @@ init_soft()
 	aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev  curl   libmysqlclient-dev #编译所需要的软件
 	apt-get install libcurl4-gnutls-dev
 }
+setup_telegraf()
+{
+	shelldir=`pwd`
+	cd ${TMP_HOME}
+	rm ${TMP_HOME}/telegraf_1.4.2-1_amd64.deb
+	wget https://dl.influxdata.com/telegraf/releases/telegraf_1.4.2-1_amd64.deb
+	sudo dpkg -i telegraf_1.4.2-1_amd64.deb
+	cd ${shelldir}
+	echo ${shelldir}
+	
+	cp ../monitor/telegraf.conf /etc/telegraf/
+	service telegraf restart
+}
 ## -----------------------
 ## Setup all aboves
 ## -----------------------
@@ -193,6 +206,18 @@ setup_all()
     setup_iptables $dev
     setup_fail2ban
     net
+    setup_telegraf
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    echo "crotab-----------------------------"
+    
 }
 get_ip(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
@@ -223,6 +248,7 @@ usage()
      echo "check_vpn    check vpn"
      echo "net    Setup net"
     echo "all           Setup all aboves"
+    echo "telegraf          Setup telegraf"
 }
 
 ## =====================================
@@ -240,6 +266,7 @@ if [ $# != 0 ]; then
 	     fail2ban)          setup_fail2ban;;
 	    check)          checkspeed;;
 	    check_vpn)          check_vpn;;
+	    telegraf)         setup_telegraf;;
 	    all)          setup_all;;
         esac
     done

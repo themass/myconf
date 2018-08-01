@@ -273,4 +273,5 @@ encoding//shell/soft_setup.sh=UTF-8
 encoding//shell/vpn_setup.sh=UTF-8
 encoding//strongswan_conf/charon.conf=UTF-8
 encoding//strongswan_conf/ipsec.conf=UTF-8
+encoding/<project>=UTF-8
 encoding/strongswan_conf=GBK

@@ -178,6 +178,12 @@ init_radius_client()
 	sh radiusd.sh stop
 	sh radiusd.sh start
 }
+setup_rclocal
+{
+	cp ../monitor/rc-local.service /etc/systemd/system/
+	cp ../monitor/rc.local /etc/
+	chmod +x /etc/rc.local
+}
 
 ###
 # influxdb 鍏堣缃瘑鐮侊紝鍐嶆墦寮�閴存潈
@@ -222,19 +228,7 @@ setup_influx()
 	
 }
 
-setup_telegraf()
-{
-	shelldir=`pwd`
-	cd ${TMP_HOME}
-	rm ${TMP_HOME}/telegraf_1.4.2-1_amd64.deb
-	wget https://dl.influxdata.com/telegraf/releases/telegraf_1.4.2-1_amd64.deb
-	sudo dpkg -i telegraf_1.4.2-1_amd64.deb
-	cd ${shelldir}
-	echo ${shelldir}
-	
-	cp ../monitor/telegraf.conf /etc/telegraf/
-	service telegraf restart
-}
+
 
 ## -----------------------
 ## Show help message
@@ -248,7 +242,7 @@ usage()
     echo "check          Setup check"
     echo "radius_client          Setup radius_client"
     echo "influx          Setup setup_influx"
-    echo "telegraf          Setup telegraf"
+     echo "rclocal          Setup rc.local"
     echo "all           Setup all aboves"
 }
 setup_all()
@@ -272,8 +266,8 @@ if [ $# != 0 ]; then
 			check)          setup_check;;
 			radius)         setup_radius;;
 			influx)         setup_influx;;
-			telegraf)         setup_telegraf;;
 			radius_client)         init_radius_client;;
+			rclocal)         setup_rclocal;;
 			all)          setup_all;;
         esac
     done

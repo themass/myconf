@@ -178,7 +178,7 @@ init_radius_client()
 	sh radiusd.sh stop
 	sh radiusd.sh start
 }
-setup_rclocal
+setup_rclocal()
 {
 	cp ../monitor/rc-local.service /etc/systemd/system/
 	cp ../monitor/rc.local /etc/
@@ -186,8 +186,7 @@ setup_rclocal
 }
 
 ###
-# influxdb 鍏堣缃瘑鐮侊紝鍐嶆墦寮�閴存潈
-#CREATE USER admin WITH PASSWORD 'themass529696'
+# influxdb 先设置密码，再打开鉴权#CREATE USER admin WITH PASSWORD 'themass529696'
 #GRANT ALL PRIVILEGES TO admin
 # CREATE RETENTION POLICY "15_day" ON "telegraf" DURATION 10d REPLICATION 1 DEFAULT
 #CREATE RETENTION POLICY "20_day" ON "vpn_monitor" DURATION 10d REPLICATION 1 DEFAULT
@@ -222,7 +221,7 @@ setup_influx()
 	cp ../monitor/grafana.ini /etc/grafana/
 	service influxdb restart
 	service grafana-server restart
-	echo "娉ㄦ剰璁剧疆influxdb 鐢ㄦ埛鍚嶅瘑鐮�"
+	echo "注意设置influxdb 用户名密码"
 	setup_telegraf
 	
 	

@@ -84,21 +84,22 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
-            div = soup.first("div",{"class":"film_bar clearfix"})
-            if div!=None:
-                ahrefs = div.findAll("a")
-                for ahref in ahrefs:
-                    soup = self.fetchUrl(ahref.get("href"), header)
-                    scripts = soup.findAll("script")
-                    for script in scripts:
-                        text = unquote(str(script.text)).replace(" ","")
-                        match = playVideo.search(text)
-                        if match!=None:
-                            base = urlMap.get(match.group(1))
-                            if base ==None:
-                                print 'urlMap 没有找到base',match.group(1),match.group(2)
-                                return None
-                            return "%s%s%s"%(base,match.group(2),'.m3u8')
+            divs = soup.findAll("div",{"class":"film_bar clearfix"})
+            for div in divs:
+                if div!=None:
+                    ahrefs = div.findAll("a")
+                    for ahref in ahrefs:
+                        soup = self.fetchUrl(ahref.get("href"), header)
+                        scripts = soup.findAll("script")
+                        for script in scripts:
+                            text = unquote(str(script.text)).replace(" ","")
+                            match = playVideo.search(text)
+                            if match!=None:
+                                base = urlMap.get(match.group(1))
+                                if base ==None:
+                                    print 'urlMap 没有找到base',match.group(1),match.group(2)
+                                    return None
+                                return "%s%s%s"%(base,match.group(2),'.m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

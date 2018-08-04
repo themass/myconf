@@ -85,13 +85,16 @@ class VideoParse(BaseParse):
                 ahrefs = div.findAll("a")
                 for ahref in ahrefs:
                     soup = self.fetchUrl(ahref.get("href"), header)
-                    ul = soup.first("textarea",{"name":"video_embed_code"})
-                    if ul!=None:
-                        text = ul.text
-                        match = regVideo.search(text)
+                    scripts = soup.findAll("script")
+                    for script in scripts:
+                        text = unquote(str(script.text)).replace(" ","")
+                        match = playVideo.search(text)
                         if match!=None:
-                            videoUrl =match.group(1)
-                            return videoUrl
+                            base = urlMap.get(match.group(1))
+                            if base ==None:
+                                print 'urlMap 没有找到base',match.group(1),match.group(2)
+                                return None
+                            return "%s%s%s"%(base,match.group(2),'.m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

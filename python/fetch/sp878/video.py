@@ -93,13 +93,13 @@ class VideoParse(BaseParse):
                         scripts = soup.findAll("script")
                         for script in scripts:
                             text = unquote(script.text).replace(" ","")
-#                             match = playVideo.search(text)
-#                             if match!=None:
-#                                 base = urlMap.get(match.group(1))
-#                                 if base ==None:
-#                                     print 'urlMap 没有找到base',match.group(1),match.group(2)
-#                                     return None
-#                                 return "%s%s%s"%(base,match.group(2),'.m3u8')
+                            match = playVideo.search(text)
+                            if match!=None:
+                                base = urlMap.get(match.group(1))
+                                if base ==None:
+                                    print 'urlMap 没有找到base',match.group(1),match.group(2)
+                                    return None
+                                return "%s%s%s"%(base,match.group(2),'.m3u8')
                             match = playVideo2.search(text)
                             if match!=None:
                                 base = urlMap.get(match.group(1))

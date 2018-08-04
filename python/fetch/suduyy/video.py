@@ -66,7 +66,7 @@ class VideoUserParse(BaseParse):
                     obj['pic'] = baseurl+img.get("src")
                 else:
                     obj['pic'] = img.get("src")
-                obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")
+                obj['name'] = img.get('alt').encode('utf8').replace("点击播放","").replace("《","").replace("》","")
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "suduyy"+videourl.path
@@ -115,8 +115,8 @@ class VideoUserParse(BaseParse):
                             for item in texts:
                                 match = shareVideo.search(item)
                                 if match!=None:
-                                    videoUrl ="%s%s%s%s"%("http",match.group(1),"/share/",match.group(2))
-                                    return videoUrl
+#                                     videoUrl ="%s%s%s%s"%("http",match.group(1),"/share/",match.group(2))
+                                    return item
             print '没找到mp4'
             return None
         except Exception as e:

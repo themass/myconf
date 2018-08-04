@@ -16,6 +16,9 @@ header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r'src="(.*?)" frameborder=')
+playVideo = re.compile(r"varvHLSurl=(.*)\(\"(.*)\.m3u8")
+urlMap = {"mp4":"https://p.eeoai.com","mp42":"https://p.672sp.com","jav":"http://p.164d.com"}
+
 class BaseParse(threading.Thread):
 
     def __init__(self):

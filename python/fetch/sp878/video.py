@@ -92,14 +92,28 @@ class VideoParse(BaseParse):
                         soup = self.fetchUrl(ahref.get("href"), header)
                         scripts = soup.findAll("script")
                         for script in scripts:
-                            text = unquote(str(script.text)).replace(" ","")
-                            match = playVideo.search(text)
+                            text = unquote(script.text).replace(" ","")
+#                             match = playVideo.search(text)
+#                             if match!=None:
+#                                 base = urlMap.get(match.group(1))
+#                                 if base ==None:
+#                                     print 'urlMap 没有找到base',match.group(1),match.group(2)
+#                                     return None
+#                                 return "%s%s%s"%(base,match.group(2),'.m3u8')
+                            match = playVideo2.search(text)
                             if match!=None:
                                 base = urlMap.get(match.group(1))
                                 if base ==None:
                                     print 'urlMap 没有找到base',match.group(1),match.group(2)
                                     return None
                                 return "%s%s%s"%(base,match.group(2),'.m3u8')
+                            match = playVideo3.search(text)
+                            if match!=None:
+                                base = urlMap.get(match.group(1))
+                                if base ==None:
+                                    print 'urlMap 没有找到base',match.group(1),match.group(2)
+                                    return None
+                                return "%s%s"%(base,match.group(2))
             print '没找到mp4'
             return None
         except Exception as e:
@@ -108,3 +122,8 @@ class VideoParse(BaseParse):
 
 def videoParse(queue):
     queue.put(VideoParse())
+if __name__ == '__main__':
+    videop  = VideoParse()
+    print videop.parseDomVideo("/Html/112/240.html")
+    
+    

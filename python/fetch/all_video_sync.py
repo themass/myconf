@@ -72,7 +72,7 @@ def pase1():
     nomsgus_vip.parseVideo()
     lusibi_vip.parseVideo()
     hongxing_vip.parseVideo()
-    avhome11_vip.parseVideo()
+    ####avhome11_vip.parseVideo()
 def pase2():
     sexx77_vip.parseVideo()
     singlovevideop = singlove.video.VideoParse()

@@ -65,11 +65,15 @@ class VideoParse(BaseParse):
             obj['path'] = videourl.path
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
+            if mp4Url.count(".m3u8")==0 and mp4Url.count(".mp4")==0:
+                obj['videoType'] = "webview"
+            else:
+                obj['videoType'] = "normal"
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"webview",baseurl)
+            ops.inertVideo(obj,obj['videoType'],baseurl)
 
         print 'sp878 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

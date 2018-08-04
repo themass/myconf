@@ -17,6 +17,8 @@ header = {'User-Agent':
 maxCount = 3
 regVideo = re.compile(r'src="(.*?)" frameborder=')
 playVideo = re.compile(r"varvHLSurl=(.*)\(\"(.*)\.m3u8")
+playVideo2 = re.compile(r"varplayurl=(.*)\(\"(.*)\.m3u8")
+playVideo3 = re.compile(r"file:(.*)\(\"(.*)\"\),")
 urlMap = {"mp4":"https://p.eeoai.com","mp42":"https://p.672sp.com","jav":"http://p.164d.com"}
 
 class BaseParse(threading.Thread):

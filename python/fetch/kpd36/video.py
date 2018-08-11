@@ -5,6 +5,7 @@ from urlparse import urlparse
 from common import common
 from urllib import unquote
 import time
+
 from fetch.profile import *
 class VideoParse(BaseParse):
 
@@ -77,6 +78,7 @@ class VideoParse(BaseParse):
         print '36kpd  video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        time.sleep(2)
 
     def parseDomVideo(self, base,url):
         try:

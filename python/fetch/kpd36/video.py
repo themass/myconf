@@ -24,7 +24,7 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url = item['url']
                 if i!=1:
-                    url= "%s%s%s%s"%(item['url'],"index-",i,".html")
+                    url= "%s%s%s%s"%(item['url'],"index_",i,".html")
                 print url
                 self.videoParse(item['channel'], url,item['baseurl'])
                 print '解析完成 ', item['baseurl'],item['channel'], ' ---', i, '页'
@@ -40,17 +40,16 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1
-            obj['channel']='bt2n'+ahref.text
+            obj['channel']='36kpd'+ahref.text
             obj['showType']=3
-            obj['channelType']='bt2n_all'
+            obj['channelType']='36kpd_all'
             channelList.append(obj)
         channelList.reverse()
         return channelList
     def videoParse(self, channel, url,base):
         dataList = []
         soup = self.fetchUrl(url)
-        ul = soup.first("div",{"class":"photoList"})
-        metas = ul.findAll("div",{"class":"thum"})
+        metas = soup.findAll("li",{"class":"video "})
         for meta in metas:
             obj = {}
             ahref = meta.first("a")
@@ -59,11 +58,11 @@ class VideoParse(BaseParse):
                 print '没有mp4 文件:', ahref.get("href")
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = meta.first('div').get("style").replace("background-image:url(","").replace(")","")
-            obj['name'] = meta.first('b').text
+            obj['pic'] = baseurl+meta.first('img').get("src")
+            obj['name'] = ahref.get("alt")
 
             videourl = urlparse(mp4Url)
-            obj['path'] = 'bt2n_'+videourl.path
+            obj['path'] = '36kpd_'+videourl.path
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
             obj['videoType'] = "normal"
@@ -75,24 +74,23 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj,obj['videoType'],baseurl)
 
-        print 'qh video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print '36kpd  video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
     def parseDomVideo(self, base,url):
         try:
-            soup = self.fetchUrlWithBase(base+url, header)
-            div = soup.first("div",{'class':'playCenter'})
-            if div!=None:
-                script = div.first('script')
-                if script!=None:
-                    text = unquote(script.text.replace("\"","").replace("\/","/"))
-                    texts = text.split(",")
-                    for item in texts:
-                        match = regVideo.search(item)
-                        if match!=None:
-                            videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
+            soup = self.fetchUrl(url, header)
+            iframe = soup.first("iframe",{'name':'iFrame1'})
+            if iframe!=None:
+                text = self.fetchContentUrl(iframe.get("src"),header)
+                text = unquote(text.replace("\"","").replace("\/","/"))
+                texts = text.split(",")
+                for item in texts:
+                    match = regVideo.search(item)
+                    if match!=None:
+                        videoUrl =match.group(1)
+                        return "%s%s%s"%("http",videoUrl,'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

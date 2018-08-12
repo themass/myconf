@@ -11,7 +11,6 @@ from common import db_ops
 from common import MyQueue
 from common import dateutil
 from common import html_parse
-from selenium import webdriver
 import requests  
 import re
 import os

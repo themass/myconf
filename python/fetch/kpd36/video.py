@@ -70,6 +70,7 @@ class VideoParse(BaseParse):
             obj['baseurl'] = baseurl
             print obj['name'],obj['videoType'],obj['url'],obj['pic']
             dataList.append(obj)
+            time.sleep(2)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -78,7 +79,6 @@ class VideoParse(BaseParse):
         print '36kpd  video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-        time.sleep(2)
 
     def parseDomVideo(self, base,url):
         try:

@@ -39,7 +39,7 @@ class BaseParse(threading.Thread):
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
-                print common.format_exception(e)
+#                 print common.format_exception(e)
                 print '打开页面错误,重试', baseurl + url, '次数', count
                 count = count + 1
 
@@ -71,7 +71,7 @@ class BaseParse(threading.Thread):
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
-                print common.format_exception(e)
+#                 print common.format_exception(e)
                 print '打开页面错误,重试',  url, '次数', count
                 count = count + 1
 
@@ -86,7 +86,7 @@ class BaseParse(threading.Thread):
                 content = urllib2.urlopen(req, timeout=300).read()
                 return content
             except Exception as e:
-                print common.format_exception(e)
+#                 print common.format_exception(e)
                 print '打开页面错误,重试', baseurl+url, '次数', count
                 count = count + 1
 

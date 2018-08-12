@@ -37,14 +37,39 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     return content
 if __name__ == '__main__':
+    dbVPN = db.DbVPN()
+    ops = db_ops.DbOps(dbVPN)
+    obj = {}
+    obj['url'] = 'https://520cc.club/embed/136726.mp4'
+    obj['pic'] = ''
+    obj['name'] = 'test520ccwebview'
+    obj['path'] = 'test520ccwebview'
+    obj['updateTime'] = datetime.datetime.now()
+    obj['channel'] = 'test'
+    obj['videoType'] = "fanqiang"
+    obj['baseurl'] = 'https://520cc.club'
+    ops.inertVideo(obj,'webview','https://520cc.club')
+    
+    obj['url'] = 'https://1fgm8js.oloadcdn.net/dl/l/bwM0AoKhnaKk1_II/F9ESsEd1Qw0/5b7056b1da6d3.mp4?mime=true'
+    obj['pic'] = ''
+    obj['name'] = 'test520ccnormal'
+    obj['path'] = 'test520ccnormal'
+    obj['updateTime'] = datetime.datetime.now()
+    obj['channel'] = 'test'
+    obj['videoType'] = "fanqiang"
+    obj['baseurl'] = 'https://520cc.club'
+    ops.inertVideo(obj,'normal','https://520cc.club')
+
+    dbVPN.commit()
+    dbVPN.close()
 #     regVideo = re.compile(r'getmovurl\.html", {id:(.*?),td:(.*?)},')
 #     str = '$.post("/index/getmovurl.html", {id:15699,td:2},'
 #     match = regVideo.search(str)
 #     print match.group(1),match.group(2)
-    iframeVideo = re.compile(r"onclick=\"window.open\('magnet(.*?)','_self'\)")
-    str = "str: \"<tr onmouseover=\"this.style.backgroundColor='#F4F9FD';this.style.cursor='pointer';\" onmouseout=\"this.style.backgroundColor='#FFFFFF'\" height=\"35px\" style=\"border-top: 1px solid rgb(221, 221, 221); background-color: rgb(255, 255, 255); cursor: pointer;\">\r\n    <td width=\"70%\" onclick=\"window.open('magnet:?xt=urn:btih:C05D741E9F2CC7E991E06FAB854136584763B78E&dn=DIC-017_CAVI','_self')\">\r\n        <a style=\"color:#333\" rel=\"nofollow\" title=\"滑鼠右鍵點擊並選擇【複製連結網址】\" href=\"magnet:?xt=urn:btih:C05D741E9F2CC7E991E06FAB854136584763B78E&dn=DIC-017_CAVI\">DIC-017_CAVI  字幕<\/a>\r\n            <\/td>\r\n    <td style=\"text-align:center;white-space:nowrap\" onclick=\"window.open('magnet:?xt=urn:btih:C05D741E9F2CC7E991E06FAB854136584763B78E&dn=DIC-017_CAVI','_self')\">\r\n        <a style=\"color:#333\" rel=\"nofollow\" title=\"滑鼠右鍵點擊並選擇【複製連結網址】 href=\"magnet:?xt=urn:btih:C05D741E9F2CC7E991E06FAB854136584763..."
-    match = iframeVideo.search(str)
-    print match,match.group(1)
+#     iframeVideo = re.compile(r"onclick=\"window.open\('magnet(.*?)','_self'\)")
+#     str = "str: \"<tr onmouseover=\"this.style.backgroundColor='#F4F9FD';this.style.cursor='pointer';\" onmouseout=\"this.style.backgroundColor='#FFFFFF'\" height=\"35px\" style=\"border-top: 1px solid rgb(221, 221, 221); background-color: rgb(255, 255, 255); cursor: pointer;\">\r\n    <td width=\"70%\" onclick=\"window.open('magnet:?xt=urn:btih:C05D741E9F2CC7E991E06FAB854136584763B78E&dn=DIC-017_CAVI','_self')\">\r\n        <a style=\"color:#333\" rel=\"nofollow\" title=\"滑鼠右鍵點擊並選擇【複製連結網址】\" href=\"magnet:?xt=urn:btih:C05D741E9F2CC7E991E06FAB854136584763B78E&dn=DIC-017_CAVI\">DIC-017_CAVI  字幕<\/a>\r\n            <\/td>\r\n    <td style=\"text-align:center;white-space:nowrap\" onclick=\"window.open('magnet:?xt=urn:btih:C05D741E9F2CC7E991E06FAB854136584763B78E&dn=DIC-017_CAVI','_self')\">\r\n        <a style=\"color:#333\" rel=\"nofollow\" title=\"滑鼠右鍵點擊並選擇【複製連結網址】 href=\"magnet:?xt=urn:btih:C05D741E9F2CC7E991E06FAB854136584763..."
+#     match = iframeVideo.search(str)
+#     print match,match.group(1)
 #     regVideo = re.compile(r"encrypt\((.*), 'E', \$key\);")
 #     str = "$play=encrypt(https://youku.cdn-tudou.com/20180508/5819_7b1f8025/index.m38, 'E', $key);"
 #     match = regVideo.search(str)

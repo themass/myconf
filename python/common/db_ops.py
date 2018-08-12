@@ -142,10 +142,24 @@ class DbOps(object):
                     obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType",3), 1, obj.get("channel").replace(".com",'-'), obj.get("channelType")))
         except Exception as e:
             pass
+    def inertVideoChannelLine(self, obj):
+        try:
+            return self.conn.execute(
+                "insert into  videochannel_line (name,url,baseurl,updateTime,rate,showtype,enable,channel,channelType) values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s')"
+                % (
+                    obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType",3), 1, obj.get("channel").replace(".com",'-'), obj.get("channelType")))
+        except Exception as e:
+            pass
     def inertVideo(self, obj,videoType="normal",baseUrl=''):
         sortType = dateutil.y_m_d()
         return self.conn.execute(
             "replace into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseurl,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s')"
+            % (
+                obj.get("name"), obj.get("url"), obj.get("channel").replace(".com",'-'), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl,sortType))
+    def inertVideoLine(self, obj,videoType="normal",baseUrl=''):
+        sortType = dateutil.y_m_d()
+        return self.conn.execute(
+            "replace into  videoitems_line (name,url,channel,pic,updateTime,path,videoType,baseurl,sortType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("url"), obj.get("channel").replace(".com",'-'), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl,sortType))
 

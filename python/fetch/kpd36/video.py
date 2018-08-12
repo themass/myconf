@@ -59,8 +59,8 @@ class VideoParse(BaseParse):
                 print '没有mp4 文件:', ahref.get("href")
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = baseurl+meta.first('img').get("src")
-            obj['name'] = ahref.get("alt")
+            obj['pic'] = baseurl+ahref.first('img').get("src")
+            obj['name'] = ahref.get("title")
 
             videourl = urlparse(mp4Url)
             obj['path'] = '36kpd_'+videourl.path

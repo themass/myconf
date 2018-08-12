@@ -60,8 +60,7 @@ class VideoParse(BaseParse):
             obj['pic'] = "https:"+ahref.first('img').get("src")
             obj['name'] = ahref.first('img').get("title")
 
-            videourl = urlparse(mp4Url)
-            obj['path'] = 'gavbus_'+videourl.path
+            obj['path'] = 'gavbus_'+mp4Url
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
             obj['videoType'] = "normal"

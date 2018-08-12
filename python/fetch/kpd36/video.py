@@ -61,6 +61,10 @@ class VideoParse(BaseParse):
             obj['url'] = mp4Url
             obj['pic'] = baseurl+ahref.first('img').get("src")
             obj['name'] = ahref.get("title")
+            if obj['name']==None or obj['name']=='None':
+                h2 = ahref.first("h2")
+                if h2!=None:
+                    obj['name']=h2.text
 
             videourl = urlparse(mp4Url)
             obj['path'] = '36kpd_'+videourl.path

@@ -6,6 +6,8 @@ from common import common
 from urllib import unquote
 import time
 from fetch.profile import *
+from urllib import unquote
+
 class VideoParse(BaseParse):
 
     def __init__(self):
@@ -17,82 +19,89 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 'bt2n video -- channel ok;,len=',len(chs)
+        print 'iavbobo video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
-                url = item['url']
-                if i!=1:
-                    url= "%s%s%s%s"%(item['url'],"index-",i,".html")
-                print url
-                self.videoParse(item['channel'], url,item['baseurl'])
-                print '解析完成 ', item['baseurl'],item['channel'], ' ---', i, '页'
-                time.sleep(1)
+                page = '%s%s'%("page=",i)
+                url= item['url'].replace("page=1",page)
+                self.videoParse(item['channel'], url)
+                print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
-        channelList = []
-        ahrefs = self.header("header.html")
-        for ahref in ahrefs:
-            obj={}
-            obj['name']=ahref.text
-            obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl
-            obj['updateTime']=datetime.datetime.now()
-            obj['pic']=''
-            obj['rate']=1
-            obj['channel']='bt2n'+ahref.text
-            obj['showType']=3
-            obj['channelType']='bt2n_all'
-            channelList.append(obj)
-        channelList.reverse()
+        channelList =[]
+        obj={}
+        obj['url']='/search?keyword=&page=1&limit=10'
+        obj['baseurl']=baseurl
+        obj['updateTime']=datetime.datetime.now()
+        obj['pic']=''
+        obj['name']='爱波波'
+        obj['rate']=1
+        obj['channel']='iavbobo'
+        obj['showType']=3
+        obj['channelType']='normal'
+        channelList.append(obj)
         return channelList
-    def videoParse(self, channel, url,base):
+    def videoParse(self, channel, url):
         dataList = []
-        soup = self.fetchUrl(url)
-        ul = soup.first("div",{"class":"photoList"})
-        metas = ul.findAll("div",{"class":"thum"})
-        for meta in metas:
+        data = self.fetchUrl(url)
+        docs = data.get("docs",[])
+        for item in docs:
             obj = {}
-            ahref = meta.first("a")
-            mp4Url = self.parseDomVideo(base,ahref.get("href"))
+            lowHls = item.get("low-hls")
+            mp4Url = None
+            if lowHls!=None and lowHls!='':
+                mp4Url = lowHls.replace("http://ss2.999cdn.us","http://cdn.viparts.net/src2").replace("http://sss.999cdn.us","http://cdn.viparts.net/src2")
+            else:
+                source = item.get("sources_me",{})
+                for key,val in source.items():
+                    mp4Url = val.replace("http://ss2.999cdn.us","http://cdn.viparts.net/src2").replace("http://sss.999cdn.us","http://cdn.viparts.net/src2")
             if mp4Url == None:
-                print '没有mp4 文件:', ahref.get("href")
+                print '没有mp4 文件:',item['id']
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = meta.first('div').get("style").replace("background-image:url(","").replace(")","")
-            obj['name'] = meta.first('b').text
-
-            videourl = urlparse(mp4Url)
-            obj['path'] = 'bt2n_'+videourl.path
+            obj['pic'] = item.get("cover_full")
+            obj['name'] = item.get("title")
+            videourl = urlparse(obj['url'])
+            obj['path'] = "iavbobo"+videourl.path
             obj['updateTime'] = datetime.datetime.now()
+            if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                obj['videoType'] = "webview"
+            else:
+                obj['videoType'] = "normal"
             obj['channel'] = channel
-            obj['videoType'] = "normal"
             obj['baseurl'] = baseurl
-            print obj['name'],obj['videoType'],obj['url'],obj['pic']
+            print obj['url'],obj['pic']
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
             ops.inertVideo(obj,obj['videoType'],baseurl)
 
-        print 'qh video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'iavbobo video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
-    def parseDomVideo(self, base,url):
+    def parseDomVideo(self, url):
+      
         try:
-            soup = self.fetchUrlWithBase(base+url, header)
-            div = soup.first("div",{'class':'playCenter'})
+            soup = self.fetchUrl(url)
+            div = soup.first("div",{"class":"videourl"})
             if div!=None:
-                script = div.first('script')
-                if script!=None:
-                    text = unquote(script.text.replace("\"","").replace("\/","/"))
-                    texts = text.split(",")
-                    for item in texts:
-                        match = regVideo.search(item)
-                        if match!=None:
-                            videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
+                ahref = div.first("a")
+                if ahref!=None:
+                    soup = self.fetchUrl(ahref.get("href"))
+                    player = soup.first("div",{"class":"player"})
+                    if player!=None:
+                        script = player.first("script")
+                        if script!=None:
+                            content = unquote(str(script.text)).split("$")
+                            for item in content:
+                                match = regVideo.search(item)
+                                if match!=None: 
+                                    return "http"+match.group(1)+'m3u8'
+                                elif item.count(regVideoYun)>0:
+                                    return item
             print '没找到mp4'
             return None
         except Exception as e:

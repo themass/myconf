@@ -99,8 +99,8 @@ def pase4():
     upianku_vip.parseVideo()
     
 def pase5():
-#     meiyke_vip.parseVideo()
-#     sp878_vip.parseVideo()
+    meiyke_vip.parseVideo()
+    sp878_vip.parseVideo()
 #     tiantianyao_vip.parseVideo()
     #     #vj69_vip.paserVideo()
 ###    xoxo164_vip.pareVideo()

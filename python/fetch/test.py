@@ -47,7 +47,7 @@ if __name__ == '__main__':
     obj['channel'] = 'test'
     obj['videoType'] = "fanqiang"
     obj['baseurl'] = 'https://520cc.club'
-    ops.inertVideo(obj,'webview','https://520cc.club')
+    ops.inertVideo(obj,'webview','https://520cc.club','fanqiang')
     
     obj['url'] = 'https://1fgm8js.oloadcdn.net/dl/l/bwM0AoKhnaKk1_II/F9ESsEd1Qw0/5b7056b1da6d3.mp4?mime=true'
     obj['pic'] = ''
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     obj['channel'] = 'test'
     obj['videoType'] = "fanqiang"
     obj['baseurl'] = 'https://520cc.club'
-    ops.inertVideo(obj,'normal','https://520cc.club')
+    ops.inertVideo(obj,'normal','https://520cc.club','fanqiang')
 
     dbVPN.commit()
     dbVPN.close()

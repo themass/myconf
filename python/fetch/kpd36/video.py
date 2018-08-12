@@ -45,7 +45,7 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channelType']='36kpd_all'
             channelList.append(obj)
-        channelList.reverse()
+#         channelList.reverse()
         return channelList
     def videoParse(self, channel, url,base):
         dataList = []

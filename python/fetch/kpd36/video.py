@@ -54,6 +54,7 @@ class VideoParse(BaseParse):
         for meta in metas:
             obj = {}
             ahref = meta.first("a")
+            time.sleep(2)
             mp4Url = self.parseDomVideo(base,ahref.get("href"))
             if mp4Url == None:
                 print '没有mp4 文件:', ahref.get("href")
@@ -74,7 +75,6 @@ class VideoParse(BaseParse):
             obj['baseurl'] = baseurl
             print obj['name'],obj['videoType'],obj['url'],obj['pic']
             dataList.append(obj)
-            time.sleep(2)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

@@ -11,6 +11,7 @@ from common import db_ops
 from common import MyQueue
 from common import dateutil
 from common import html_parse
+from common import httputil
 import requests  
 import re
 import os
@@ -36,31 +37,40 @@ def fetchUrl(url):
     content = response.read().decode('utf8', errors='replace')
     return content
 if __name__ == '__main__':
-    dbVPN = db.DbVPN()
-    ops = db_ops.DbOps(dbVPN)
-    obj = {}
-    obj['url'] = 'https://520cc.club/embed/136726.mp4'
-    obj['pic'] = ''
-    obj['name'] = 'test520ccwebview'
-    obj['path'] = 'test520ccwebview'
-    obj['updateTime'] = datetime.datetime.now()
-    obj['channel'] = 'test'
-    obj['videoType'] = "fanqiang"
-    obj['baseurl'] = 'https://520cc.club'
-    ops.inertVideo(obj,'webview','https://520cc.club','fanqiang')
-    
-    obj['url'] = 'https://1fgm8js.oloadcdn.net/dl/l/bwM0AoKhnaKk1_II/F9ESsEd1Qw0/5b7056b1da6d3.mp4?mime=true'
-    obj['pic'] = ''
-    obj['name'] = 'test520ccnormal'
-    obj['path'] = 'test520ccnormal'
-    obj['updateTime'] = datetime.datetime.now()
-    obj['channel'] = 'test'
-    obj['videoType'] = "fanqiang"
-    obj['baseurl'] = 'https://520cc.club'
-    ops.inertVideo(obj,'normal','https://520cc.club','fanqiang')
-
-    dbVPN.commit()
-    dbVPN.close()
+    baseurl = "http://www.fuli750.com/api/payvideo.html"
+    header = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
+          "cookie":"__cfduid=daf97951d263f43b40aa880057d128ec61534232909; PHPSESSID=df01o1psnjpnr67df4k4q53s50; UM_distinctid=1653768772b33e-00e6b1d3653486-47e1039-1fa400-1653768772c5f; CNZZDATA1274203680=1684804072-1534228697-%7C1534234099",
+          "X-Requested-With":"XMLHttpRequest"}
+    data = {}
+    data['id']="1844"
+    ret = httputil.postRequestWithParam("http://www.fuli750.com/api/payvideo.html", data, header)
+    print ret
+#     dbVPN = db.DbVPN()
+#     ops = db_ops.DbOps(dbVPN)
+#     obj = {}
+#     obj['url'] = 'https://520cc.club/embed/136726.mp4'
+#     obj['pic'] = ''
+#     obj['name'] = 'test520ccwebview'
+#     obj['path'] = 'test520ccwebview'
+#     obj['updateTime'] = datetime.datetime.now()
+#     obj['channel'] = 'test'
+#     obj['videoType'] = "fanqiang"
+#     obj['baseurl'] = 'https://520cc.club'
+#     ops.inertVideo(obj,'webview','https://520cc.club','fanqiang')
+#     
+#     obj['url'] = 'https://1fgm8js.oloadcdn.net/dl/l/bwM0AoKhnaKk1_II/F9ESsEd1Qw0/5b7056b1da6d3.mp4?mime=true'
+#     obj['pic'] = ''
+#     obj['name'] = 'test520ccnormal'
+#     obj['path'] = 'test520ccnormal'
+#     obj['updateTime'] = datetime.datetime.now()
+#     obj['channel'] = 'test'
+#     obj['videoType'] = "fanqiang"
+#     obj['baseurl'] = 'https://520cc.club'
+#     ops.inertVideo(obj,'normal','https://520cc.club','fanqiang')
+# 
+#     dbVPN.commit()
+#     dbVPN.close()
 #     regVideo = re.compile(r'getmovurl\.html", {id:(.*?),td:(.*?)},')
 #     str = '$.post("/index/getmovurl.html", {id:15699,td:2},'
 #     match = regVideo.search(str)

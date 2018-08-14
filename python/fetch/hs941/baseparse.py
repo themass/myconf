@@ -11,15 +11,14 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "http://www.085sp.com"
+baseurl = "https://www.941hs.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
-regVideo = re.compile(r'src="(.*?)" frameborder=')
 playVideo = re.compile(r"varvHLSurl=(.*)\(\"(.*)\.m3u8")
 playVideo2 = re.compile(r"varplayurl=(.*)\(\"(.*)\.m3u8")
 playVideo3 = re.compile(r"file:(.*)\(\"(.*)\"\),")
-urlMap = {"mp4":"https://p.eeoai.com","mp42":"https://p.672sp.com","jav":"http://p.164d.com"}
+urlMap = {"mp4":"https://play.99thingz.com","mp42":"https://p.672sp.com","jav":"http://p2.164d.com"}
 
 class BaseParse(threading.Thread):
 
@@ -58,7 +57,7 @@ class BaseParse(threading.Thread):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("sp878/header.html") as f:
+        with open("hs941/header.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

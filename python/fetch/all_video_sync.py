@@ -59,6 +59,10 @@ import bt2n_vip
 import xbshare_vip
 import mayi01_vip
 import ff326_vip
+import fuli750_vip
+import hs941_vip
+import kpd36_vip
+import cili_vip
 
 def pase1():
     #webview
@@ -111,7 +115,10 @@ def pase5():
 ###    pp56_vip.parseVideo()
     ggfuil_vip.parseVideo()
     hanpian_vip.parseVideo()
-    
+    fuli750_vip.parseVideo()
+    hs941_vip.parseVideo()
+    kpd36_vip.parseVideo()
+    cili_vip.parseVideo()
 def pase6():
     se8_vip.parseVideo()
     ppyy55_vip.parseUserVideo()

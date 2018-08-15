@@ -35,7 +35,7 @@ class VideoUserParse(BaseParse):
             obj={}
             obj['name']=ahref.text
             obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl
+            obj['baseurl']=baseurl2
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
@@ -63,7 +63,7 @@ class VideoUserParse(BaseParse):
                     obj['url'] = mp4Url
                     img = ahref.first("img")
                     if img.get("src").count("http")==0:
-                        obj['pic'] = baseurl+img.get("src")
+                        obj['pic'] = baseurl2+img.get("src")
                     else:
                         obj['pic'] = img.get("src")
                     obj['name'] = ahref.get("title")
@@ -73,7 +73,7 @@ class VideoUserParse(BaseParse):
                     obj['rate'] = 1.2
                     obj['updateTime'] = datetime.datetime.now()
                     obj['userId'] = userId
-                    obj['baseUrl'] = baseurl
+                    obj['baseUrl'] = baseurl2
                     obj['showType'] = 3
                     if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                         obj['videoType'] = "webview"

@@ -151,6 +151,7 @@ encoding//python/fetch/nfss/__init__.py=utf-8
 encoding//python/fetch/nfss/baseparse.py=utf-8
 encoding//python/fetch/nfss/video.py=utf-8
 encoding//python/fetch/nfss/video2.py=utf-8
+encoding//python/fetch/nfss/video3.py=utf-8
 encoding//python/fetch/nfss_vip.py=utf-8
 encoding//python/fetch/nomsgus/baseparse.py=utf-8
 encoding//python/fetch/nomsgus/video.py=utf-8

@@ -13,11 +13,15 @@ import re
 import os
 baseurl = "http://www.nfss.xyz"
 baseurl2 = "http://www.wose11.com"
-header = {'User-Agent':
+baseurl3 = "http://www.mh24.xyz"
+header = {'User-Agent': 
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 header2 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl2,
           "Cookie":"all_msg_c=1; UM_distinctid=1653df0fc1e0-0df5c9a202136c-47e1039-1fa400-1653df0fc222f7; CNZZDATA1272026427=363425157-1534338795-%7C1534346284; CNZZDATA1272026409=1557829637-1534338255-%7C1534346516"}
+header3 = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl3,
+          "Cookie":"UM_distinctid=1653e07223d24c-0fb3f358c28a8a-47e1039-1fa400-1653e07223e295; PHPSESSID=u9e3qp2efqmm75hv4vmaso6ff0; CNZZDATA1273794337=196027913-1534340636-%7C1534346546; CNZZDATA1273741171=1664937929-1534340658-%7C1534346679"}
 
 maxCount = 3
 regVideo = re.compile(r"http(.*)m3u8")
@@ -66,6 +70,16 @@ class BaseParse(threading.Thread):
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
         with open("nfss/header2.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
+    def header3(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("nfss/header3.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

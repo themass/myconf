@@ -88,5 +88,3 @@ class VideoParse(BaseParse):
             print common.format_exception(e)
             return urlList
 
-def videoParse(queue):
-    queue.put(VideoParse())

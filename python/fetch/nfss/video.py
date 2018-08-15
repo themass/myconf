@@ -107,3 +107,6 @@ class VideoUserParse(BaseParse):
             print common.format_exception(e)
             return None
 
+if __name__ == '__main__':
+    pares = VideoUserParse()
+    print pares.parseDomVideo("/?m=vod-play-id-31070-src-1-num-1.html")

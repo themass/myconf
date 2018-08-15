@@ -12,10 +12,15 @@ from BeautifulSoup import BeautifulSoup
 import re
 import os
 baseurl = "http://www.nfss.xyz"
+baseurl2 = "http://www.wose11.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
+header2 = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl2,
+          "Cookie":"all_msg_c=1; UM_distinctid=1653df0fc1e0-0df5c9a202136c-47e1039-1fa400-1653df0fc222f7; CNZZDATA1272026427=363425157-1534338795-%7C1534346284; CNZZDATA1272026409=1557829637-1534338255-%7C1534346516"}
+
 maxCount = 3
-regVideo = re.compile(r"http(.*)m3u8'")
+regVideo = re.compile(r"http(.*)m3u8")
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
 
 class BaseParse(threading.Thread):
@@ -60,7 +65,7 @@ class BaseParse(threading.Thread):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("ppyy55/header2.html") as f:
+        with open("nfss/header2.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

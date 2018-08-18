@@ -63,6 +63,7 @@ import fuli750_vip
 import hs941_vip
 import kpd36_vip
 import cili_vip
+import nfss_vip
 
 def pase1():
     #webview
@@ -101,6 +102,9 @@ def pase4():
     diediaody_vip.parseVideo()
     dadekai_vip.parseVideo()
     upianku_vip.parseVideo()
+    nfss_vip.parseVideo()
+    nfss_vip.parseVideo2()
+    nfss_vip.parseVideo3()
     
 def pase5():
     meiyke_vip.parseVideo()

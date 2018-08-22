@@ -60,7 +60,7 @@ class VideoUserParse(BaseParse):
                 obj['url'] = mp4Url
                 img = ahref.first("img")
                 obj['pic'] = baseurl2+img.get("src")
-                obj['name'] = img.get('alt')
+                obj['name'] = img.get('alt').replace("'","")
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "v88hd"+videourl.path

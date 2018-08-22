@@ -1,4 +1,4 @@
-aheader#!/usr/bin python
+#!/usr/bin python
 # -*- coding: utf-8 -*-
 import datetime
 import urllib2
@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from bt2n import *
+from jav101 import *
 import re
 import sys
 reload(sys)

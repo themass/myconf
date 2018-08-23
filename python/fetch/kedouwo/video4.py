@@ -88,9 +88,9 @@ class VideoUserParse(BaseParse):
         try:
             soup = self.fetchUrl(url, header4)
             iframe    = soup.first("iframe")
-            if iframe  !=None and iframe.get("src").count("seku")>0:
+            if iframe  !=None and iframe.get("src").count("91.p9p")==0:
                 return iframe.get("src")
-            print '没找到mp4'
+            print '没找到mp4',iframe.get("src")
             return None
         except Exception as e:
             print common.format_exception(e)

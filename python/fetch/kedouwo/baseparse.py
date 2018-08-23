@@ -14,16 +14,19 @@ import os
 baseurl = "http://www.aotu48.com"
 baseurl2= "https://www.v88hd.space/"
 baseurl3= "http://asy007.com/"
+baseurl4 = "http://www.7ma00.ml"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           'Cookie':"ASPro_3b178725fc4f483c1b3b540e9254fe69=rjglqktt458s6t79lurudu6u37; __51cke__=; __atuvc=5%7C34; __atuvs=5b7d8978e2390365001; __tins__19260318=%7B%22sid%22%3A%201534952887546%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279466%7D; __tins__18963094=%7B%22sid%22%3A%201534952887602%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279478%7D; __51laig__=27"}
 header2 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl2,
           'Cookie':"pxTK_2132_saltkey=CDKD7k08; pxTK_2132_lastvisit=1534866582; _ga=GA1.2.676201030.1534870386; _gid=GA1.2.1608862136.1534870386; Hm_lvt_a7f417c344bdcfebc00a1b4084b35417=1534870386,1534952916; pxTK_2132_sid=mFy09c; pxTK_2132_st_p=0%7C1534955323%7C896e471f57aa95da32adf071ecf4097b; pxTK_2132_viewid=tid_11237; pxTK_2132_st_t=0%7C1534955633%7C29fb8f0eb614b2081f3c458d979f7266; pxTK_2132_forum_lastvisit=D_45_1534955312D_38_1534955633; pxTK_2132_visitedfid=38D45; Hm_lpvt_a7f417c344bdcfebc00a1b4084b35417=1534955838; _gat_gtag_UA_118038554_1=1; pxTK_2132_lastact=1534955633%09home.php%09misc; pxTK_2132_sendmail=1"}
 header3 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl3,
           'Cookie':"PHPSESSID=14uflkff1ehg7lk7sjifkbm1l2; Hm_lvt_3ba47f3a5faa80b14ec0eaededbe6d3c=1534871240,1534957616; Hm_lpvt_3ba47f3a5faa80b14ec0eaededbe6d3c=1534957632"}
-maxCount = 3
+header4 = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
+          'Cookie':"__cfduid=db7f29cd10852fa511d1e0668e89d05001534872686; UM_distinctid=1655d8a8baa6f6-003fe3a1f827f5-47e1039-1fa400-1655d8a8bac102; ASPro_8af8761312ef191adf2017005f0d1eed=0vnasb2ejvpc1d3bquf7lt6vc7; __atuvc=1%7C34; CNZZDATA1274401056=2115274732-1534871498-null%7C1535039855"}
 maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")
 regVideoM3 = re.compile(r"http(.*?)m3u8")

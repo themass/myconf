@@ -16,6 +16,7 @@ baseurl2= "https://www.v88hd.space/"
 baseurl3= "http://asy007.com/"
 baseurl4 = "http://www.7ma00.ml"
 baseurl5 = "http://www.smtav01.info/"
+baseurl6 = "http://www.91av.biz"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           'Cookie':"ASPro_3b178725fc4f483c1b3b540e9254fe69=rjglqktt458s6t79lurudu6u37; __51cke__=; __atuvc=5%7C34; __atuvs=5b7d8978e2390365001; __tins__19260318=%7B%22sid%22%3A%201534952887546%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279466%7D; __tins__18963094=%7B%22sid%22%3A%201534952887602%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279478%7D; __51laig__=27"}
@@ -31,6 +32,9 @@ header4 = {'User-Agent':
 header5 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
           'Cookie':"UM_distinctid=1655d8a945d4b3-04cf9c8cfb02c4-47e1039-1fa400-1655d8a945e132; PHPSESSID=tefc4f836ibs5s166aht5lvtp3; __51cke__=; CNZZDATA1273155436=2112313512-1534871260-null%7C1535037844; ggy_second=true; __tins__3892343=%7B%22sid%22%3A%201535038199894%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201535039999894%7D; __tins__19380135=%7B%22sid%22%3A%201535038188896%2C%20%22vd%22%3A%203%2C%20%22expires%22%3A%201535040034907%7D; __51laig__=4"}
+header6 = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
+          'Cookie':"__cfduid=d44aa5159886044d753c8806d83e7539b1535038342; AVS=17jbicrqspfve3rn2gplbkpqk0; __51cke__=; UM_distinctid=165676aaa8164a-0532684d1256a1-47e1039-1fa400-165676aaa8f449; pgv_pvi=869407744; pgv_si=s269490176; __atuvc=1%7C34; CNZZDATA1271838784=1655185687-1535036227-null%7C1535041056; __tins__19458827=%7B%22sid%22%3A%201535044802928%2C%20%22vd%22%3A%206%2C%20%22expires%22%3A%201535046712534%7D; __tins__19308590=%7B%22sid%22%3A%201535044803126%2C%20%22vd%22%3A%206%2C%20%22expires%22%3A%201535046712562%7D; __51laig__=20"}
 
 maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")

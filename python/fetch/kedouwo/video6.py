@@ -82,7 +82,7 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(url, header4)
+            soup = self.fetchUrl(baseurl6+url, header4)
             iframe    = soup.first("iframe")
             if iframe  !=None and iframe.get("src").count("91.p9p")==0:
                 return iframe.get("src")

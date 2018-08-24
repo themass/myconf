@@ -17,6 +17,7 @@ baseurl3= "http://asy007.com/"
 baseurl4 = "http://www.7ma00.ml"
 baseurl5 = "http://www.smtav01.info/"
 baseurl6 = "http://www.91av.biz"
+baseurl7 = "http://klav213.xyz"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           'Cookie':"ASPro_3b178725fc4f483c1b3b540e9254fe69=rjglqktt458s6t79lurudu6u37; __51cke__=; __atuvc=5%7C34; __atuvs=5b7d8978e2390365001; __tins__19260318=%7B%22sid%22%3A%201534952887546%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279466%7D; __tins__18963094=%7B%22sid%22%3A%201534952887602%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279478%7D; __51laig__=27"}
@@ -35,11 +36,14 @@ header5 = {'User-Agent':
 header6 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
           'Cookie':"__cfduid=d44aa5159886044d753c8806d83e7539b1535038342; AVS=17jbicrqspfve3rn2gplbkpqk0; __51cke__=; UM_distinctid=165676aaa8164a-0532684d1256a1-47e1039-1fa400-165676aaa8f449; pgv_pvi=869407744; pgv_si=s269490176; __atuvc=1%7C34; CNZZDATA1271838784=1655185687-1535036227-null%7C1535041056; __tins__19458827=%7B%22sid%22%3A%201535044802928%2C%20%22vd%22%3A%206%2C%20%22expires%22%3A%201535046712534%7D; __tins__19308590=%7B%22sid%22%3A%201535044803126%2C%20%22vd%22%3A%206%2C%20%22expires%22%3A%201535046712562%7D; __51laig__=20"}
+header7 = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
+          'Cookie':"__cfduid=d04442510987cdc4647a03da1d8179ba61535135932; UM_distinctid=1656d3b55a10-0e0c6e23061c6c-47e1039-1fa400-1656d3b55a84a1; CNZZDATA1273905787=288757623-1535132900-%7C1535132900; PHPSESSID=5hfhpl7sbdl52hn6mfpq0ee3l1; security_session_verify=2879be1fd96735a49761b2ea855bdc65"}
 
 maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")
 regVideoM3 = re.compile(r"http(.*?)m3u8")
-
+regVideoMp4 = re.compile(r"http(.*?)mp4")
 class BaseParse(threading.Thread):
 
     def __init__(self):
@@ -80,6 +84,16 @@ class BaseParse(threading.Thread):
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
         with open("kedouwo/header5.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
+    def header7(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("kedouwo/header7.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

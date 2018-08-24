@@ -42,7 +42,6 @@ class VideoUserParse(BaseParse):
             obj['showType']=3
             obj['channelType']='normal'
             channelList.append(obj)
-        channelList.reverse()
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []

@@ -42,6 +42,7 @@ class VideoUserParse(BaseParse):
             obj['showType']=3
             obj['channelType']='normal'
             channelList.append(obj)
+        channelList.reverse()
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
@@ -81,7 +82,7 @@ class VideoUserParse(BaseParse):
         print 'v88hd video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-
+        time.sleep(10)
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(baseurl7+url, header)

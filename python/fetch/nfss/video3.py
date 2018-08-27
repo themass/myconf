@@ -101,9 +101,17 @@ class VideoUserParse(BaseParse):
                         if match!=None:
                             videoUrl =match.group(1)
                             return "%s%s%s"%("http",videoUrl,'m3u8')
+                text = unquote(str(adiv.text))
+                match = shareVideo.search(text)
+                if match!=None:
+                    videoUrl ="%s%s%s%s"%("http",match.group(1),"/share/",match.group(2))
+                    return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:
             print common.format_exception(e)
             return None
 
+# p = VideoUserParse()
+# print p.parseDomVideo("/vod-play-id-48192-src-1-num-1.html")
+# p.fetchUrlWithBase(baseurl2+"/vod-play-id-48192-src-1-num-1.html", header2)

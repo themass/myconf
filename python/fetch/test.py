@@ -88,7 +88,7 @@ if __name__ == '__main__':
 #     driver.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
 #     print driver.page_source
 #     print requests.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").text
-    content = fetchUrl("http://yezmw.com/")
+    content = fetchUrl("http://www.mh25.xyz/vod-play-id-48196-src-1-num-1.html")
     print content
 #     m = re.findall("<!--(.*?)-->",content)
 #     print m

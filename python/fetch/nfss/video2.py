@@ -109,7 +109,8 @@ class VideoUserParse(BaseParse):
             else:
                 adiv = soup.first("div",{"class":"videoPlayBoxContent"})
                 if adiv!=None:
-                    match = shareVideo.search(item)
+                    text = unquote(str(adiv.text))
+                    match = shareVideo.search(text)
                     if match!=None:
                         videoUrl =match.group(1)
                         return videoUrl

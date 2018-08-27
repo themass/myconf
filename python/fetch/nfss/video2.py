@@ -106,10 +106,13 @@ class VideoUserParse(BaseParse):
                             mp4 = "%s%s%s"%("http",videoUrl,'m3u8')
                             parse = urlparse(mp4)
                             return "https://hd1.o0omvo0o.com"+parse.path
-                        match = shareVideo.search(item)
-                        if match!=None:
-                            videoUrl =match.group(1)
-                            return videoUrl
+            else:
+                adiv = soup.first("div",{"class":"videoPlayBoxContent"})
+                if adiv!=None:
+                    match = shareVideo.search(item)
+                    if match!=None:
+                        videoUrl =match.group(1)
+                        return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:

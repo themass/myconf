@@ -105,6 +105,7 @@ def pase4():
     nfss_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo3()
+    nfss_vip.parseVideo4()
     
 def pase5():
     meiyke_vip.parseVideo()

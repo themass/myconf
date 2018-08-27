@@ -50,37 +50,35 @@ class VideoUserParse(BaseParse):
         soup = self.fetchUrlWithBase(baseurl2+url,header2)
         div = soup.first("div", {"class": "indexbox"})
         if div!=None:
-            ul = div.first("ul")
-            if ul!=None:
-                lis = ul.findAll("a")
-                for ahref in lis:
-                    #name,pic,url,userId,rate,updateTime,path
-                    obj = {}
-                    mp4Url = self.parseDomVideo(ahref.get("href"))
-                    if mp4Url == None:
-                        print '没有mp4 文件:', ahref.get("href")
-                        continue
-                    obj['url'] = mp4Url
-                    img = ahref.first("img")
-                    if img.get("src").count("http")==0:
-                        obj['pic'] = baseurl2+img.get("src")
-                    else:
-                        obj['pic'] = img.get("src")
-                    obj['name'] = ahref.get("title")
-        
-                    videourl = urlparse(obj['url'])
-                    obj['path'] = "wose11_"+videourl.path
-                    obj['rate'] = 1.2
-                    obj['updateTime'] = datetime.datetime.now()
-                    obj['userId'] = userId
-                    obj['baseUrl'] = baseurl2
-                    obj['showType'] = 3
-                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                        obj['videoType'] = "webview"
-                    else:
-                        obj['videoType'] = "normal"
-                    print obj['videoType'],obj['name'],mp4Url,obj['pic']
-                    dataList.append(obj)
+            lis = div.findAll("a")
+            for ahref in lis:
+                #name,pic,url,userId,rate,updateTime,path
+                obj = {}
+                mp4Url = self.parseDomVideo(ahref.get("href"))
+                if mp4Url == None:
+                    print '没有mp4 文件:', ahref.get("href")
+                    continue
+                obj['url'] = mp4Url
+                img = ahref.first("img")
+                if img.get("src").count("http")==0:
+                    obj['pic'] = baseurl2+img.get("src")
+                else:
+                    obj['pic'] = img.get("src")
+                obj['name'] = ahref.get("title")
+    
+                videourl = urlparse(obj['url'])
+                obj['path'] = "wose11_"+videourl.path
+                obj['rate'] = 1.2
+                obj['updateTime'] = datetime.datetime.now()
+                obj['userId'] = userId
+                obj['baseUrl'] = baseurl2
+                obj['showType'] = 3
+                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                    obj['videoType'] = "webview"
+                else:
+                    obj['videoType'] = "normal"
+                print obj['videoType'],obj['name'],mp4Url,obj['pic']
+                dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

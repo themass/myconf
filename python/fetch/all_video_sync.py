@@ -64,6 +64,7 @@ import hs941_vip
 import kpd36_vip
 import cili_vip
 import nfss_vip
+import kedouwo_vip
 
 def pase1():
     #webview
@@ -91,6 +92,7 @@ def pase2():
     tzzy1399_vip.parseVideo()
     dxg11_vip.parseVideo()
     mastv54_vip.parseVideo()
+    kedouwo_vip.parseVideoALl()
 def pase3():
     ttkyy_vip.parseVideo()
     seman_vip.parseVideo()
@@ -98,10 +100,10 @@ def pase3():
     kump4_vip.parseVideo()
     xbshare_vip.parseVideo()
 def pase4():
-#     zanquye_vip.parseVideo()
-#     diediaody_vip.parseVideo()
-#     dadekai_vip.parseVideo()
-#     upianku_vip.parseVideo()
+    zanquye_vip.parseVideo()
+    diediaody_vip.parseVideo()
+    dadekai_vip.parseVideo()
+    upianku_vip.parseVideo()
     nfss_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo3()

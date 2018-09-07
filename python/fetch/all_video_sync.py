@@ -84,7 +84,7 @@ def pase2():
     singlovevideop = singlove.video.VideoParse()
     singlovevideop.run()
   
-    yezmw_vip.parseVideo()
+    ####yezmw_vip.parseVideo()
     x2246_vip.parseVideo()
     ax98_vip.parseVideo()
   

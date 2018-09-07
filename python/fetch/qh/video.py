@@ -76,34 +76,35 @@ class VideoParse(BaseParse):
         print base+url
         soup = self.fetchUrlWithBase(base+url)
         ul = soup.first("ul",{"class":"videos"})
-        metas = ul.findAll("li")
-        for meta in metas:
-            obj = {}
-            ahref = meta.first("a")
-            mp4Url = self.parseDomVideo(base,ahref.get("href"))
-            if mp4Url == None:
-                print '没有mp4 文件:', ahref.get("href")
-                continue
-            obj['url'] = "http://qsv.jxckplayer.xyz/yun/?vid="+mp4Url
-            obj['pic'] = meta.first('img').get("src")
-            obj['name'] = meta.first('img').get("alt")
-
-            videourl = urlparse(mp4Url)
-            obj['path'] = 'qh_'+videourl.path
-            obj['updateTime'] = datetime.datetime.now()
-            obj['channel'] = channel
-            obj['videoType'] = "webview"
-            obj['baseurl'] = baseurl
-            print obj['name'],obj['videoType'],obj['url'],obj['pic']
-            dataList.append(obj)
-        dbVPN = db.DbVPN()
-        ops = db_ops.DbOps(dbVPN)
-        for obj in dataList:
-            ops.inertVideo(obj,obj['videoType'],baseurl)
-
-        print 'qh video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
-        dbVPN.commit()
-        dbVPN.close()
+        if ul!=None:
+            metas = ul.findAll("li")
+            for meta in metas:
+                obj = {}
+                ahref = meta.first("a")
+                mp4Url = self.parseDomVideo(base,ahref.get("href"))
+                if mp4Url == None:
+                    print '没有mp4 文件:', ahref.get("href")
+                    continue
+                obj['url'] = "http://qsv.jxckplayer.xyz/yun/?vid="+mp4Url
+                obj['pic'] = meta.first('img').get("src")
+                obj['name'] = meta.first('img').get("alt")
+    
+                videourl = urlparse(mp4Url)
+                obj['path'] = 'qh_'+videourl.path
+                obj['updateTime'] = datetime.datetime.now()
+                obj['channel'] = channel
+                obj['videoType'] = "webview"
+                obj['baseurl'] = baseurl
+                print obj['name'],obj['videoType'],obj['url'],obj['pic']
+                dataList.append(obj)
+            dbVPN = db.DbVPN()
+            ops = db_ops.DbOps(dbVPN)
+            for obj in dataList:
+                ops.inertVideo(obj,obj['videoType'],baseurl)
+    
+            print 'qh video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+            dbVPN.commit()
+            dbVPN.close()
 
     def parseDomVideo(self, base,url):
         try:

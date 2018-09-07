@@ -84,7 +84,7 @@ def pase2():
     singlovevideop = singlove.video.VideoParse()
     singlovevideop.run()
   
-#     yezmw_vip.parseVideo()
+    yezmw_vip.parseVideo()
     x2246_vip.parseVideo()
     ax98_vip.parseVideo()
   
@@ -112,7 +112,7 @@ def pase4():
 def pase5():
     meiyke_vip.parseVideo()
     sp878_vip.parseVideo()
-#     tiantianyao_vip.parseVideo()
+    tiantianyao_vip.parseVideo()
     #     #vj69_vip.paserVideo()
 ###    xoxo164_vip.pareVideo()
     tzzy1399_vip.parseVideo()

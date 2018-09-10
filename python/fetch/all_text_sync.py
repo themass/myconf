@@ -23,11 +23,12 @@ def pase1():
     g6858_vip.parseText()
 def pase2():
     ###aaw51_vip.parseText()
-    seshu_vip.parseText()
+    ####seshu_vip.parseText()
     se8_vip.startWork()
     se8_vip.parseText()
-    mayi01_vip.parseText()
+    ####mayi01_vip.parseText()
 if __name__ == '__main__':
+    pase2()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

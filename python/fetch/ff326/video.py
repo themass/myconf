@@ -46,7 +46,7 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "thumbs"})
+        div = soup.first("div", {"class": "box-video-list"})
         if div!=None:
             lis = div.findAll("a")
             for ahref in lis:
@@ -57,12 +57,14 @@ class VideoUserParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                img = ahref.first("img")
-                if img.get("src").count("http")==0:
-                    obj['pic'] = img.get("src")
-                else:
-                    obj['pic'] = img.get("src")
-                obj['name'] = img.get('alt').replace("'","")
+#                 img = ahref.first("img")
+#                 if img.get("src").count("http")==0:
+#                     obj['pic'] = img.get("src")
+#                 else:
+#                     obj['pic'] = img.get("src")
+                obj['pic'] = ahref.get("data-original")
+                
+                obj['name'] = ahref.get('title').replace("'","")
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "326ff"+videourl.path

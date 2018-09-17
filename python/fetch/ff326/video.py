@@ -48,8 +48,9 @@ class VideoUserParse(BaseParse):
         soup = self.fetchUrl(url)
         div = soup.first("div", {"class": "box-video-list"})
         if div!=None:
-            lis = div.findAll("a")
-            for ahref in lis:
+            lis = div.findAll("li",{"class":"col-md-2 col-sm-3 col-xs-4"})
+            for li in lis:
+                ahref = li.first("a")
                 #name,pic,url,userId,rate,updateTime,path
                 obj = {}
                 mp4Url = self.parseDomVideo(ahref.get("href"))

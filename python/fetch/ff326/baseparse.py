@@ -19,7 +19,7 @@ regVideo = re.compile(r"http(.*)m3u8'")
 iframeVideo = re.compile(r"videourl(.*)\.htm")
 playVideo = re.compile(r"varvHLSurl=(.*)\(\"(.*)\.m3u8")
 #http://www.561aa.com/htm/mp4list6/  是一家网站么？？？？？
-urlMap = {"javbox":"https://m3u8.121yy.com/m3u8/javbox_water_m3u8","jav":"https://bojav.121yy.com/m3u8/jav-m3u8","kele":"https://bok9.121yy.com/m3u8/vod_water_m3u8/","lao":"https://bolao.121yy.com/m3u8"}
+urlMap = {"javbox":"https://m3u8.121yy.com/m3u8/javbox_water_m3u8_301","jav":"https://bojav.121yy.com/m3u8/jav-m3u8","kele":"https://bok9.121yy.com/m3u8/vod_water_m3u8/","lao":"https://bolao.121yy.com/m3u8"}
 class BaseParse(threading.Thread):
 
     def __init__(self):

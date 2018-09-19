@@ -43,7 +43,11 @@ class VideoParse(BaseParse):
                 obj['url']=ahref.get('href')
                 obj['baseurl']=baseurl
                 obj['updateTime']=datetime.datetime.now()
-                obj['pic']=baseurl+ahref.first('img').get('src')
+                img = ahref.first('img')
+                if img.get("data-original")==None:
+                    obj['pic']=baseurl+img.get('src')
+                else:
+                    obj['pic']=img.get('data-original')
                 obj['rate']=1.2
                 obj['showType']=3
                 obj['channel']="www.233cf.com"+ahref.get('href')
@@ -70,7 +74,7 @@ class VideoParse(BaseParse):
                     img = li.first("img")
                     obj['pic'] = img.get('src')
                     obj['name'] = ahref.get("title")
-                    print obj['name'],mp4Url
+                    print obj['name'],mp4Url,obj['pic']
     
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path
@@ -102,7 +106,6 @@ class VideoParse(BaseParse):
                     for s in scripts:
                         match = m3u8regVideo.search(s.text.replace(" ",""))
                         if match!=None:
-                            print '--------',match.group(1)
                             return mp4Url+str(match.group(1))
             scripts = soup.findAll("script", {"type": "text/javascript"})
             for s in scripts:

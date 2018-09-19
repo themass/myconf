@@ -22,36 +22,37 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
+                url = item['url']
+                if i!=1:
+                    url = "%s%s%s"%(url.replace(".html", "-"),i,".html")
                 self.videoParse(
-                    item['channel'], item['url'] + str(i)+'.htm')
+                    item['channel'], url)
                 print '解析页数 ', item['url'], ' ---', i, '完成'
     
     def videoChannel(self):
         soup = self.fetchUrl(self.t_obj['url'])
-        tds = soup.findAll('td')
+        tds = soup.first('div',{"class":"row category-content"})
         channelList =[]
-        for td in tds:
-            ahref = td.first('a')
-            if ahref == None:
-                print '没有频道'
-                continue
-            obj={}
-            obj['name']='超爽自拍'
-            obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl
-            obj['updateTime']=datetime.datetime.now()
-            obj['pic']=td.first('img').get('src')
-            obj['rate']=1.2
-            obj['showType']=3
-            obj['channel']="www.233cf.com"+ahref.get('href')
-            obj['showType']=3
-            obj['channelType']='normal'
-            channelList.append(obj)
+        if tds!=None:
+            alist = tds.findAll("a")
+            for ahref in alist:
+                obj={}
+                obj['name']='超爽自拍'
+                obj['url']=ahref.get('href')
+                obj['baseurl']=baseurl
+                obj['updateTime']=datetime.datetime.now()
+                obj['pic']=baseurl+ahref.first('img').get('src')
+                obj['rate']=1.2
+                obj['showType']=3
+                obj['channel']="www.233cf.com"+ahref.get('href')
+                obj['showType']=3
+                obj['channelType']='normal'
+                channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "box movie_list"})
+        div = soup.first("div", {"class": "text-list-html "})
         if div!=None:
             lis = div.findAll('li')
             for li in lis:
@@ -65,7 +66,7 @@ class VideoParse(BaseParse):
                     obj['url'] = mp4Url
                     img = li.first("img")
                     obj['pic'] = img.get('src')
-                    obj['name'] = li.first("h3").text
+                    obj['name'] = ahref.get("title")
                     print obj['name'],mp4Url
     
                     videourl = urlparse(obj['url'])
@@ -89,18 +90,17 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url)
-            divs = soup.findAll("div",{"class":"mox"})
+            divs = soup.findAll("div",{"id":"playlist4"})
             for div in divs:
-                SPAN = div.first("span")
-                if SPAN!=None:
-                    if SPAN.text=='在线播放':
-                        soup = self.fetchUrl(div.first("a").get("href"))
-                        scripts = soup.findAll("script", {"type": "text/javascript"})
-                        for s in scripts:
-                            match = m3u8regVideo.search(s.text)
-                            if match!=None:
-                                print '--------',match.group(2)
-                                return urlMap.get(match.group(1))+str(match.group(2))
+                aherf = div.first("a")
+                if aherf!=None:
+                    soup = self.fetchUrl(aherf.get("href"))
+                    scripts = soup.findAll("script")
+                    for s in scripts:
+                        match = m3u8regVideo.search(s.text.replace(" ",""))
+                        if match!=None:
+                            print '--------',match.group(1)
+                            return mp4Url+str(match.group(1))
             scripts = soup.findAll("script", {"type": "text/javascript"})
             for s in scripts:
                 match = regVideo.search(s.text)

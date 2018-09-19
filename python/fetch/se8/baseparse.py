@@ -62,7 +62,7 @@ class BaseParse(threading.Thread):
 
     def fetchHead(self, name):
         try:
-            url = "/htm/index.htm"
+            url = "index/home.html"
             soup = self.fetchUrl(url)
             menus = soup.findAll("ul", {"class": "nav_menu clearfix"})
             for menu in menus:

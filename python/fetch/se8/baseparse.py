@@ -21,11 +21,12 @@ mp3Name = re.compile(r"<span>.*</span>")
 queue = MyQueue.MyQueue(200)
 maxCount = 5
 videoUrl='http://m.123456xia.com:888'
-m3u8regVideo = re.compile(r"var playurl=(.*)\+'(.*)';")
+m3u8regVideo = re.compile(r"varvideo='(.*?)';")
 regVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
 urlMap={"m3u8url_10":"https://768ii.com","m3u8url_24k":"https://768ii.com","m3u8url_new":"https://768ii.com",
         "m3u8url_69":"https://768ii.com","m3u8url_10_2":"https://768ii.com","m3u8url_24k_2":"https://768ii.com",
         "m3u8url_new_2":"https://768ii.com","m3u8url_69_2 ":"https://768ii.com"}
+mp4Url = 'https://991video.com'
 rmbvideoUrl='http://555.maomixia555.com:888'
 rmbregVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
 class BaseParse(threading.Thread):
@@ -64,9 +65,11 @@ class BaseParse(threading.Thread):
         try:
             url = "index/home.html"
             soup = self.fetchUrl(url)
-            menus = soup.findAll("ul", {"class": "nav_menu clearfix"})
+            menus = []
+            menus.extend(soup.findAll("div", {"class": "row-item even"}))
+            menus.extend(soup.findAll("div", {"class": "row-item odd"}))
             for menu in menus:
-                active = menu.first("li", "active").text
+                active = menu.first("div", {"class":"row-item-title bg_red"}).text
                 print active
                 if active.count(name) > 0:
                     return menu.findAll("li")

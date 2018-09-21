@@ -127,7 +127,7 @@ def pase5():
     kpd36_vip.parseVideo()
     cili_vip.parseVideo()
 def pase6():
-#     se8_vip.parseVideo()
+    se8_vip.parseVideo()
     ppyy55_vip.parseUserVideo()
     s58589_vip.parseVideo()
     qh_vip.parseVideo()
@@ -135,6 +135,14 @@ def pase6():
     bt2n_vip.parseVideo()
     mayi01_vip.parseVideo()
     ff326_vip.parseVideo()
+    
+def all():
+    pase1()
+    pase2()
+    pase3()
+    pase4()
+    pase5()
+    pase6()
 if __name__ == '__main__':
 
     ####ir6yv = ir6y.video.VideoParse()
@@ -161,5 +169,7 @@ if __name__ == '__main__':
         pase5()
     elif int(val)==6:
         pase6()
+    elif int(val)==10:
+        all()
     else:
         print val,'error val',argsMap

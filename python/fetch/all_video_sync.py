@@ -100,10 +100,10 @@ def pase3():
     kump4_vip.parseVideo()
     xbshare_vip.parseVideo()
 def pase4():
-    zanquye_vip.parseVideo()
-    diediaody_vip.parseVideo()
-    dadekai_vip.parseVideo()
-    upianku_vip.parseVideo()
+#     zanquye_vip.parseVideo()
+#     diediaody_vip.parseVideo()
+#     dadekai_vip.parseVideo()
+#     upianku_vip.parseVideo()
     nfss_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo3()
@@ -137,9 +137,9 @@ def pase6():
     ff326_vip.parseVideo()
     
 def all():
-    pase1()
-    pase2()
-    pase3()
+#     pase1()
+#     pase2()
+#     pase3()
     pase4()
     pase5()
     pase6()

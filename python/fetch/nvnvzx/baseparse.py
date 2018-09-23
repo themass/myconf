@@ -16,7 +16,7 @@ sys.setdefaultencoding('utf8')
 baseurl = "http://www.nvnvzx.com/"
 baseurl2 = "https://www.6hu58.com/"
 baseurl3 = "http://www.605zyw.cc/"
-baseurl4 = "https://www.2282yy.com"
+baseurl4 = "http://www.shixunziyuan.com/"
 header = {'User-Agent': 
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 header2 = {'User-Agent':
@@ -33,6 +33,7 @@ maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
 regVideo6hu58 = re.compile(r"varvHLSurl=m3u8_host\+'(.*?)m3u8")
+shareVideoshixunziyuan = re.compile(r"http(.*?)/share/(.*?)")
 class BaseParse(threading.Thread):
 
     def __init__(self):

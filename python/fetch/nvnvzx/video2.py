@@ -97,7 +97,7 @@ class VideoUserParse(BaseParse):
                     div = soup.first("div",{"class":"col-md-9 col-sm-12 hy-main-content"})
                     script = div.first("script")
                     if script!=None:
-                        text = unquote(str(script.text))
+                        text = unquote(str(script.text).replace(" ",""))
                         texts = text.split(";")
                         for item in texts:
                             match = regVideo6hu58.search(item)

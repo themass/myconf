@@ -13,7 +13,7 @@ import re
 import os,sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "http://www.nfss.xyz"
+baseurl = "http://www.nvnvzx.com/"
 baseurl2 = "http://www.wose11.com"
 baseurl3 = "http://www.mh26.xyz/"
 baseurl4 = "https://www.2282yy.com"
@@ -65,7 +65,7 @@ class BaseParse(threading.Thread):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("nfss/header.html") as f:
+        with open("nvnvzx/header.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)
@@ -75,7 +75,7 @@ class BaseParse(threading.Thread):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("nfss/header2.html") as f:
+        with open("nvnvzx/header2.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)
@@ -85,7 +85,7 @@ class BaseParse(threading.Thread):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("nfss/header3.html") as f:
+        with open("nvnvzx/header3.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)
@@ -95,7 +95,7 @@ class BaseParse(threading.Thread):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("nfss/header4.html") as f:
+        with open("nvnvzx/header4.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

@@ -57,18 +57,18 @@ class VideoUserParse(BaseParse):
                 if mp4Url == None:
                     print '没有mp4 文件:', ahref.get("href")
                     continue
-                obj['url'] = mp4Url
-                obj['pic'] = ' '
+                obj['url'] = mp4Url['mp4']
+                obj['pic'] = mp4Url['img']
                 obj['name'] = ahref.get("title")
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "605zyw_"+videourl.path
-                obj['rate'] = 0.6
+                obj['rate'] = 1
                 obj['updateTime'] = datetime.datetime.now()
                 obj['userId'] = userId
                 obj['baseUrl'] = baseurl3
                 obj['showType'] = 3
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                if obj['url'].count("m3u8")==0 and obj['url'].count("mp4")==0:
                     obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"
@@ -79,7 +79,7 @@ class VideoUserParse(BaseParse):
         for obj in dataList:
             ops.inertVideoUserItem(obj)
 
-        print 'nfss video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print '605zyw video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
@@ -89,6 +89,7 @@ class VideoUserParse(BaseParse):
             adiv = soup.first("div",{"class":"vodplayinfo"})
             if adiv!=None:
                 ahref = adiv.first('a')
+                mp4 = {}
                 if ahref!=None:
                     text = unquote(ahref.text)
                     texts = text.split("$")
@@ -96,7 +97,13 @@ class VideoUserParse(BaseParse):
                         match = regVideo.search(item)
                         if match!=None:
                             videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
+                            img = soup.first("img",{"class":"lazy"})
+                            if img!=None:
+                                mp4['img'] = img.get("src")
+                            else:
+                                mp4['img'] = ' '
+                            mp4['mp4']="%s%s%s"%("http",videoUrl,'m3u8')
+                            return mp4
             print '没找到mp4'
             return None
         except Exception as e:

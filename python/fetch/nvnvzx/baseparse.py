@@ -32,7 +32,7 @@ header4 = {'User-Agent':
 maxCount = 3
 regVideo = re.compile(r"http(.*)m3u8")
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
-regVideo2282yy = re.compile(r"vHLSurl=(.*)m3u8")
+regVideo6hu58 = re.compile(r"varvHLSurl=m3u8_host+'(.*?)m3u8")
 class BaseParse(threading.Thread):
 
     def __init__(self):

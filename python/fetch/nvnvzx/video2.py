@@ -89,27 +89,20 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrlWithBase(baseurl2+url, header2)
-            adiv = soup.first("div",{"class":"player"})
+            adiv = soup.first("div",{"id":"playlist4"})
             if adiv!=None:
-                script = adiv.first('script')
-                if script!=None:
-                    text = unquote(str(script.text))
-                    texts = text.split(",")
-                    for item in texts:
-                        match = regVideo.search(item)
-                        if match!=None:
-                            videoUrl =match.group(1).replace("\/","/")
-                            mp4 = "%s%s%s"%("http",videoUrl,'m3u8')
-                            parse = urlparse(mp4)
-                            return "https://hd1.o0omvo0o.com"+parse.path
-            else:
-                adiv = soup.first("div",{"class":"videoPlayBoxContent"})
-                if adiv!=None:
-                    text = unquote(str(adiv.text))
-                    match = shareVideo.search(text)
-                    if match!=None:
-                        videoUrl =match.group(1)
-                        return videoUrl
+                ahref = adiv.first("a")
+                if ahref!=None:
+                    soup = self.fetchUrlWithBase(baseurl2+ahref.first("href"), header2)
+                    div = soup.first("div",{"class":"col-md-9 col-sm-12 hy-main-content"})
+                    script = div.first("script")
+                    if script!=None:
+                        text = unquote(str(script.text))
+                        texts = text.split(";")
+                        for item in texts:
+                            match = regVideo6hu58.search(item)
+                            if match!=None:
+                                return "%s%s%s"%("https://mmbfxl1.com/",match.group(1),'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

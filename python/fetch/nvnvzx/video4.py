@@ -63,7 +63,7 @@ class VideoUserParse(BaseParse):
                     obj['name'] = ahref.text
         
                     videourl = urlparse(obj['url'])
-                    obj['path'] = "2282yy_"+videourl.path
+                    obj['path'] = "shixunziyuan_"+videourl.path
                     obj['rate'] = 1.2
                     obj['updateTime'] = datetime.datetime.now()
                     obj['userId'] = userId
@@ -80,7 +80,7 @@ class VideoUserParse(BaseParse):
         for obj in dataList:
             ops.inertVideoUserItem(obj)
 
-        print '2282yy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'shixunziyuan video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 

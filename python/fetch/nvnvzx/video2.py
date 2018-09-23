@@ -93,7 +93,7 @@ class VideoUserParse(BaseParse):
             if adiv!=None:
                 ahref = adiv.first("a")
                 if ahref!=None:
-                    soup = self.fetchUrlWithBase(baseurl2+ahref.first("href"), header2)
+                    soup = self.fetchUrlWithBase(baseurl2+ahref.get("href"), header2)
                     div = soup.first("div",{"class":"col-md-9 col-sm-12 hy-main-content"})
                     script = div.first("script")
                     if script!=None:

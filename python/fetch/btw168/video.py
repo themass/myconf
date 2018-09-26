@@ -40,8 +40,8 @@ class VideoUserParse(BaseParse):
             obj['pic']=''
             obj['rate']=1.2
             obj['baseurl']=baseurl
-            obj['channel']='av福利网'
-            obj['userId']="btw168_"+ahref.text
+            obj['channel']="normal_"+ahref.text
+            obj['userId']="normal_"+ahref.text
             obj['showType']=3
             obj['channelType']='normal'
             channelList.append(obj)

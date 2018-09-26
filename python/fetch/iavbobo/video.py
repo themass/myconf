@@ -37,7 +37,7 @@ class VideoParse(BaseParse):
         obj['pic']=''
         obj['name']='爱波波'
         obj['rate']=1
-        obj['channel']='iavbobo'
+        obj['channel']='normal_iavbobo'
         obj['showType']=3
         obj['channelType']='normal'
         channelList.append(obj)

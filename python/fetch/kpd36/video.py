@@ -41,9 +41,9 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1
-            obj['channel']='36kpd'+ahref.text
+            obj['channel']='normal_'+ahref.text
             obj['showType']=3
-            obj['channelType']='36kpd_all'
+            obj['channelType']='normal'
             channelList.append(obj)
 #         channelList.reverse()
         return channelList

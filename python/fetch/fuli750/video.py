@@ -31,13 +31,13 @@ class VideoParse(BaseParse):
     def videoChannel(self):
         objs = []
         obj = {}
-        obj['name']="fuli750"
+        obj['name']="美女福利"
         obj['url']="/video/lists"
         obj['baseurl']=baseurl
         obj['updateTime']=datetime.datetime.now()
         obj['pic']=''
         obj['rate']=1.2
-        obj['channel']='fuli750'+obj['url']
+        obj['channel']='normal_'+'美女福利'
         obj['showType']=3
         obj['channelType']='normal'
         objs.append(obj)

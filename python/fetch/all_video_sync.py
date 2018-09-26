@@ -42,14 +42,16 @@ import zanquye_vip
 import diediaody_vip
 import dadekai_vip
 import upianku_vip
+import zooredtube_vip
 def pase1():
 #     vj69videop = vj69.video.VideoParse()
 #     vj69videop.run()
  
     ####zy3838_vip.parseVideo()
-    nomsgus_vip.parseVideo()
+#     nomsgus_vip.parseVideo()
     lusibi_vip.parseVideo()
     hongxing_vip.parseVideo()
+    zooredtube_vip.parseVideo()
     ####avhome11_vip.parseVideo()
 def pase2():
     sexx77_vip.parseVideo()

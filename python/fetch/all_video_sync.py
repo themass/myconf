@@ -4,57 +4,28 @@ import datetime
 import urllib2
 from common.envmod import *
 import vj69.video
-import ozsese.video
-import ozsese.baseparse
-import singlove.video
-import weav.video
 import se8_vip
-import ir6y.video
-import yezmw_vip
-import xoxo164.video
-import fff64_vip
 import nomsgus_vip
 import sexx77_vip
-import sp1769_vip
 import seman_vip
-import zy3838_vip
 import ttkyy_vip
 import ax98_vip
 import kuyunzy_vip
 import tianjiyy123_vip
-import urbanhenta_vip
 import kump4_vip
-import iir44_vip
-import wuji3_vip
-import zanquye_vip
-import diediaody_vip
 import tiantianyao_vip
-import duotv_vip
-import dadekai_vip
-import upianku_vip
 import meiyke_vip
-import tt80_vip
 import dxg11_vip
 import mastv54_vip
 import ggfuil_vip
 import hanpian_vip
 import miaobosp_vip
-import pp56_vip
 import ppyy55_vip
 import sp878_vip
 import tzzy1399_vip
-import vj69_vip
-import x2246_vip
-import xoxo164_vip
-import zxdy_vip
-import zy3838_vip
-import avhome11_vip
-import s58589_vip
 import hongxing_vip
 import lusibi_vip
-import s58589_vip
 import qh_vip
-import sifangpian_vip
 import bt2n_vip
 import xbshare_vip
 import mayi01_vip
@@ -65,12 +36,13 @@ import kpd36_vip
 import cili_vip
 import nfss_vip
 import kedouwo_vip
-
+import s58589_vip
+import nvnvzx_vip
+import zanquye_vip
+import diediaody_vip
+import dadekai_vip
+import upianku_vip
 def pase1():
-    #webview
-    for channel, url in ozsese.baseparse.channels.items():
-        ozsesevideop = ozsese.video.VideoParse(channel, url)
-        ozsesevideop.run()
     vj69videop = vj69.video.VideoParse()
     vj69videop.run()
  
@@ -81,11 +53,6 @@ def pase1():
     ####avhome11_vip.parseVideo()
 def pase2():
     sexx77_vip.parseVideo()
-    singlovevideop = singlove.video.VideoParse()
-    singlovevideop.run()
-  
-    ####yezmw_vip.parseVideo()
-    x2246_vip.parseVideo()
     ax98_vip.parseVideo()
   
     tianjiyy123_vip.parseVideo()
@@ -100,10 +67,9 @@ def pase3():
     kump4_vip.parseVideo()
     xbshare_vip.parseVideo()
 def pase4():
-#     zanquye_vip.parseVideo()
-#     diediaody_vip.parseVideo()
-#     dadekai_vip.parseVideo()
-#     upianku_vip.parseVideo()
+    zanquye_vip.parseVideo()
+    diediaody_vip.parseVideo()
+    upianku_vip.parseVideo()
     nfss_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo3()
@@ -113,13 +79,9 @@ def pase5():
     meiyke_vip.parseVideo()
     sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()
-    #     #vj69_vip.paserVideo()
-###    xoxo164_vip.pareVideo()
     tzzy1399_vip.parseVideo()
     miaobosp_vip.parseVideo()
     ###速度较好
-####    tt80_vip.parseVideo()
-###    pp56_vip.parseVideo()
     ggfuil_vip.parseVideo()
     hanpian_vip.parseVideo()
     fuli750_vip.parseVideo()
@@ -131,15 +93,15 @@ def pase6():
     ppyy55_vip.parseUserVideo()
     s58589_vip.parseVideo()
     qh_vip.parseVideo()
-    sifangpian_vip.parseVideo()
     bt2n_vip.parseVideo()
     mayi01_vip.parseVideo()
     ff326_vip.parseVideo()
+    nvnvzx_vip.parseAll()
     
 def all():
-#     pase1()
-#     pase2()
-#     pase3()
+    pase1()
+    pase2()
+    pase3()
     pase4()
     pase5()
     pase6()
@@ -156,6 +118,7 @@ if __name__ == '__main__':
 ###    fff64_vip.parseVideo()
 ####zxdy_vip.parseVideo()
 ###    sp1769_vip.parseVideo()
+    all()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

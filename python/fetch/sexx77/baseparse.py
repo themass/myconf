@@ -10,6 +10,7 @@ from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
 import re
+import os
 # http://www.dehyc.com
 baseurl = "https://www.88guise.com"
 header = {'User-Agent':
@@ -23,7 +24,15 @@ class BaseParse(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-
+    def headerHtml(self):
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("%s/%s"%("sexx77",'header.html')) as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchUrl(self, url, aheader=header):
         count = 0
         while count < maxCount:

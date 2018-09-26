@@ -31,22 +31,19 @@ class VideoParse(BaseParse):
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         channelList=[]
-        soup = self.fetchUrl("/")
-        menu = soup.first("ul",{"class":"f16 menu-list"})
-        if menu!=None:
-            hrefs = menu.findAll("a")
-            for item in hrefs:
-                obj={}
-                obj['name']=item.text
-                obj['url']=item.get("href")
-                obj['baseurl']=baseurl
-                obj['updateTime']=datetime.datetime.now()
-                obj['pic']=''
-                obj['rate']=1
-                obj['channel']="mastv54"+obj.get("url")
-                obj['showType']=3
-                obj['channelType']='normal'
-                channelList.append(obj)
+        hrefs = self.headerHtml()
+        for item in hrefs:
+            obj={}
+            obj['name']=item.text
+            obj['url']=item.get("href")
+            obj['baseurl']=baseurl
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=''
+            obj['rate']=1
+            obj['channel']="normal_"+item.text
+            obj['showType']=3
+            obj['channelType']='normal'
+            channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []

@@ -28,15 +28,20 @@ class VideoParse(BaseParse):
                 self.videoParse(ch['channel'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
-        objs = self.header("在线电影")
-        for obj in objs:
+        ahrefs = self.headerHtml()
+        objs=[]
+        for ahref in ahrefs:
+            obj= {}
+            obj['name']=ahref.text
             obj['baseurl']=baseurl
             obj['updateTime']=datetime.datetime.now()
+            obj['url']=ahref.get('href')
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']="www.sexx77.com"+obj['url']
+            obj['channel']="normal_"+ahref.text
             obj['showType']=3
             obj['channelType']='normal'
+            objs.append(obj)
         return  objs
     def videoParse(self, channel, url):
         dataList = []

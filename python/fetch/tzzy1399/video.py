@@ -42,7 +42,7 @@ class VideoParse(BaseParse):
                 obj['updateTime']=datetime.datetime.now()
                 obj['pic']=''
                 obj['rate']=1.2
-                obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.get('href').replace("?","").replace("=","")
+                obj['channel']='99dl5_'+ahref.text
                 obj['showType']=3
                 obj['channelType']='normal'
                 channelList.append(obj)

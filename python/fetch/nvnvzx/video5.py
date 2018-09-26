@@ -27,13 +27,13 @@ class VideoParse(BaseParse):
     def videoChannel(self):
         channelList = []
         obj={}
-        obj['name']='小萝莉在线'
+        obj['name']='小萝莉'
         obj['url']='page/'
         obj['baseurl']=baseurl5
         obj['updateTime']=datetime.datetime.now()
         obj['pic']=''
         obj['rate']=1.2
-        obj['channel']='xiaoluoli99_luoli'
+        obj['channel']='normal_小萝莉'
         obj['showType']=3
         obj['channelType']='normal'
         channelList.append(obj)

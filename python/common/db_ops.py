@@ -131,13 +131,13 @@ class DbOps(object):
             "upate  imgitems_item set origUrl='%s',compressUrl='%s' where id=%s"
             % (obj.get("origUrl"), obj.get("compress"), obj.get("id")))
     def deleteVideoItems(self,baseurl):
-        self.conn.execute("delete from videoitems where baseurl='%s'"%(baseurl))
+        self.conn.execute("delete from videoitems_v2 where baseurl='%s'"%(baseurl))
     def updateVideoItemsChannelType(self):
-        self.conn.execute("update videoitems i set channelType=(select channelType from videochannel c where i.channel=c.channel limit 1)")
+        self.conn.execute("update videoitems_v2 i set channelType=(select channelType from videochannel_v2 c where i.channel=c.channel limit 1)")
     def inertVideoChannel(self, obj):
         try:
             return self.conn.execute(
-                "insert into  videochannel (name,url,baseurl,updateTime,rate,showtype,enable,channel,channelType) values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s')"
+                "insert into  videochannel_v2 (name,url,baseurl,updateTime,rate,showtype,enable,channel,channelType) values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s')"
                 % (
                     obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType",3), 1, obj.get("channel").replace(".com",'-'), obj.get("channelType")))
         except Exception as e:
@@ -153,7 +153,7 @@ class DbOps(object):
     def inertVideo(self, obj,videoType="normal",baseUrl='',channelType=''):
         sortType = dateutil.y_m_d()
         return self.conn.execute(
-            "replace into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseurl,sortType,channelType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  videoitems_v2 (name,url,channel,pic,updateTime,path,videoType,baseurl,sortType,channelType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("url"), obj.get("channel").replace(".com",'-'), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl,sortType,channelType))
     def inertVideoLine(self, obj,videoType="normal",baseUrl=''):
@@ -163,23 +163,17 @@ class DbOps(object):
             % (
                 obj.get("name"), obj.get("url"), obj.get("channel").replace(".com",'-'), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl,sortType))
 
-    def inertVideoWebView(self, obj):
-        return self.conn.execute(
-            "replace into  videoitems_webview (name,url,channel,pic,updateTime,path,videoType) values ('%s','%s','%s','%s','%s','%s','%s')"
-            % (
-                obj.get("name"), obj.get("url"), obj.get("channel"), obj.get("pic"), obj.get("updateTime"), obj.get("path"), 'webview'))
-
     def inertVideoUser(self, obj):
         try:
             return self.conn.execute(
-                "insert into  video_user (name,pic,userId,rate,updateTime,channel,showType,baseurl) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
+                "insert into  video_user_v2 (name,pic,userId,rate,updateTime,channel,showType,baseurl) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
                 % (
-                    obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("channel"), obj.get("showType"), obj.get("baseUrl")))
+                    obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("channel"), obj.get("showType"), obj.get("baseurl")))
         except Exception as e:
             return 0
     def inertVideoUserItem(self, obj):
         return self.conn.execute(
-            "replace into  video_user_item (name,pic,url,userId,rate,updateTime,path,baseurl,videoType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  video_user_item_v2 (name,pic,url,userId,rate,updateTime,path,baseurl,videoType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name"), obj.get("pic"), obj.get("url"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("path"), obj.get("baseUrl"), obj.get("videoType"), obj.get("showType")))
 

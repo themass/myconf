@@ -23,7 +23,6 @@ class VideoParse(BaseParse):
         for item in chs:
             url = item['url']
             for i in range(1, maxVideoPage):
-                
                 if i!=1:
                     url= "/%s%s%s%s"%(item['url'],"index-",i,".htm")
                 print url

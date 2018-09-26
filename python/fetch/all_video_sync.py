@@ -118,7 +118,6 @@ if __name__ == '__main__':
 ###    fff64_vip.parseVideo()
 ####zxdy_vip.parseVideo()
 ###    sp1769_vip.parseVideo()
-    all()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

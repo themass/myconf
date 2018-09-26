@@ -43,8 +43,8 @@ import diediaody_vip
 import dadekai_vip
 import upianku_vip
 def pase1():
-    vj69videop = vj69.video.VideoParse()
-    vj69videop.run()
+#     vj69videop = vj69.video.VideoParse()
+#     vj69videop.run()
  
     ####zy3838_vip.parseVideo()
     nomsgus_vip.parseVideo()

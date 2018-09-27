@@ -78,8 +78,8 @@ def pase4():
     nfss_vip.parseVideo4()
     
 def pase5():
-    meiyke_vip.parseVideo()
-    sp878_vip.parseVideo()
+#     meiyke_vip.parseVideo()
+#     sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()
     tzzy1399_vip.parseVideo()
     miaobosp_vip.parseVideo()

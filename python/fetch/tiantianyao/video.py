@@ -48,35 +48,36 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         div = soup.first("div", {"class": "right"})
-        uls = div.findAll('div',{"class":"cl"})
-        for ul in uls:
-            obj = {}
-            ahref = ul.first('a')
-            if ahref!=None:
-                mp4Url = self.parseDomVideo(ahref.get("href"))
-                if mp4Url == None:
-                    print '没有mp4 文件:', ahref.get("href")
-                    continue
-                obj['url'] = mp4Url
-                img = ahref.first('img')
-                obj['pic'] = img.get("src")
-                obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                    obj['videoType'] = "webview"
-                else:
-                    obj['videoType'] = "normal"
-                obj['baseurl'] = baseurl
-                videourl = urlparse(obj['url'])
-                obj['path'] = videourl.path
-                obj['updateTime'] = datetime.datetime.now()
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                    obj['videoType'] = "webview"
-                else:
-                    obj['videoType'] = "normal"
-                obj['channel'] = channel
-                obj['baseurl'] = baseurl
-                print obj['videoType'],obj['url'],obj['pic']
-                dataList.append(obj)
+        if div!=None:
+            uls = div.findAll('div',{"class":"cl"})
+            for ul in uls:
+                obj = {}
+                ahref = ul.first('a')
+                if ahref!=None:
+                    mp4Url = self.parseDomVideo(ahref.get("href"))
+                    if mp4Url == None:
+                        print '没有mp4 文件:', ahref.get("href")
+                        continue
+                    obj['url'] = mp4Url
+                    img = ahref.first('img')
+                    obj['pic'] = img.get("src")
+                    obj['name'] = img.get('alt').replace("点击播放","").replace("《","").replace("》","")
+                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                        obj['videoType'] = "webview"
+                    else:
+                        obj['videoType'] = "normal"
+                    obj['baseurl'] = baseurl
+                    videourl = urlparse(obj['url'])
+                    obj['path'] = videourl.path
+                    obj['updateTime'] = datetime.datetime.now()
+                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                        obj['videoType'] = "webview"
+                    else:
+                        obj['videoType'] = "normal"
+                    obj['channel'] = channel
+                    obj['baseurl'] = baseurl
+                    print obj['videoType'],obj['url'],obj['pic']
+                    dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

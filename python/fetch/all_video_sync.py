@@ -54,8 +54,8 @@ def pase1():
     zooredtube_vip.parseVideo()
     ####avhome11_vip.parseVideo()
 def pase2():
-    sexx77_vip.parseVideo()
-    ax98_vip.parseVideo()
+#     sexx77_vip.parseVideo()
+#     ax98_vip.parseVideo()
   
     tianjiyy123_vip.parseVideo()
     tzzy1399_vip.parseVideo()

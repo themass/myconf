@@ -11,7 +11,7 @@ from BeautifulSoup import BeautifulSoup
 baseurl = "https://69vj.com"
 channel = '69vj.comweb_self_69vj'
 header = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "https://69vj.com/wp-content/plugins/kt/player/player.php"}
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": "https://69vj.com/wp-content/plugins/kt/player/player.php","cookie": "_ga=GA1.2.1252287725.1537975339; _gid=GA1.2.231187077.1537975339; __cfduid=db12ea19586677296bf9195b2402aecf31537975345"}
 videoUrl = 'https://69vj.com/page/%s'
 maxCount = 3
 

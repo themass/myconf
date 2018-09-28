@@ -57,19 +57,19 @@ class VideoParse(BaseParse):
 #             obj['showType']=3
 #             obj['channelType']='qh_all'
 #             channelList.append(obj)
-        ahrefs = self.header("header3.html")
-        for ahref in ahrefs:
-            obj={}
-            obj['name']=ahref.get("title").replace("av","")
-            obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl3
-            obj['updateTime']=datetime.datetime.now()
-            obj['pic']=''
-            obj['rate']=1.2
-            obj['channel']='qh'+ahref.get("title").replace("av","")
-            obj['showType']=3
-            obj['channelType']='qh_all'
-            channelList.append(obj)
+#         ahrefs = self.header("header3.html")
+#         for ahref in ahrefs:
+#             obj={}
+#             obj['name']=ahref.get("title").replace("av","")
+#             obj['url']=ahref.get('href')
+#             obj['baseurl']=baseurl3
+#             obj['updateTime']=datetime.datetime.now()
+#             obj['pic']=''
+#             obj['rate']=1.2
+#             obj['channel']='qh'+ahref.get("title").replace("av","")
+#             obj['showType']=3
+#             obj['channelType']='qh_all'
+#             channelList.append(obj)
         return channelList
     def videoParse(self, channel, url,base):
         dataList = []

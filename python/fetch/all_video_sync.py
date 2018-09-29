@@ -79,6 +79,10 @@ def pase1():
     lusibi_vip.parseVideo()
     hongxing_vip.parseVideo()
     ####avhome11_vip.parseVideo()
+    
+    dxg11_vip.parseVideo()
+    mastv54_vip.parseVideo()
+    kedouwo_vip.parseVideoALl()
 def pase2():
     sexx77_vip.parseVideo()
     singlovevideop = singlove.video.VideoParse()
@@ -90,15 +94,13 @@ def pase2():
   
     tianjiyy123_vip.parseVideo()
     tzzy1399_vip.parseVideo()
-    dxg11_vip.parseVideo()
-    mastv54_vip.parseVideo()
-    kedouwo_vip.parseVideoALl()
+    
 def pase3():
-    ttkyy_vip.parseVideo()
     seman_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kump4_vip.parseVideo()
     xbshare_vip.parseVideo()
+    ttkyy_vip.parseVideo()
 def pase4():
     zanquye_vip.parseVideo()
     diediaody_vip.parseVideo()

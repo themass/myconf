@@ -71,9 +71,6 @@ def pase1():
     for channel, url in ozsese.baseparse.channels.items():
         ozsesevideop = ozsese.video.VideoParse(channel, url)
         ozsesevideop.run()
-    vj69videop = vj69.video.VideoParse()
-    vj69videop.run()
- 
     ####zy3838_vip.parseVideo()
     nomsgus_vip.parseVideo()
     lusibi_vip.parseVideo()
@@ -83,6 +80,10 @@ def pase1():
     dxg11_vip.parseVideo()
     mastv54_vip.parseVideo()
     kedouwo_vip.parseVideoALl()
+    nfss_vip.parseVideo()
+    nfss_vip.parseVideo2()
+    nfss_vip.parseVideo3()
+    nfss_vip.parseVideo4()
 def pase2():
     sexx77_vip.parseVideo()
     singlovevideop = singlove.video.VideoParse()
@@ -107,10 +108,7 @@ def pase4():
     dadekai_vip.parseVideo()
     upianku_vip.parseVideo()
     vj69_vip.paserVideo()
-#     nfss_vip.parseVideo()
-#     nfss_vip.parseVideo2()
-#     nfss_vip.parseVideo3()
-#     nfss_vip.parseVideo4()
+   
     
 def pase5():
     meiyke_vip.parseVideo()
@@ -139,9 +137,9 @@ def pase6():
     ff326_vip.parseVideo()
     
 def all():
-#     pase1()
-#     pase2()
-#     pase3()
+    pase1()
+    pase2()
+    pase3()
     pase4()
     pase5()
     pase6()

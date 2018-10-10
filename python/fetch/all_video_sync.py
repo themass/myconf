@@ -82,7 +82,7 @@ def pase1():
     kedouwo_vip.parseVideoALl()
     nfss_vip.parseVideo()
     nfss_vip.parseVideo2()
-    nfss_vip.parseVideo3()
+#     nfss_vip.parseVideo3()
     nfss_vip.parseVideo4()
 def pase2():
     sexx77_vip.parseVideo()
@@ -94,7 +94,7 @@ def pase2():
     ax98_vip.parseVideo()
   
     tianjiyy123_vip.parseVideo()
-    tzzy1399_vip.parseVideo()
+    #####tzzy1399_vip.parseVideo()
     
 def pase3():
     seman_vip.parseVideo()
@@ -105,7 +105,7 @@ def pase3():
 def pase4():
     zanquye_vip.parseVideo()
     diediaody_vip.parseVideo()
-    dadekai_vip.parseVideo()
+    #####dadekai_vip.parseVideo()
     upianku_vip.parseVideo()
     vj69_vip.paserVideo()
    

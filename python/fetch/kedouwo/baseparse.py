@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "http://www.aotu48.com"
+baseurl = "http://www.aotu49.com"
 baseurl2= "https://www.v88hd.space/"
 baseurl3= "http://asy007.com/"
 baseurl4 = "http://www.7ma00.ml"

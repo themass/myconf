@@ -4,6 +4,7 @@ from baseparse import *
 from urlparse import urlparse
 from common import common
 from fetch.profile import *
+from urllib import unquote
 
 class VideoParse(BaseParse):
 
@@ -87,6 +88,9 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url)
             scripts = soup.findAll("script")
             for s in scripts:
+#                 text = unquote(s.text)
+#                 texts = text.split("$")
+#                 for item in texts:
                 match = regVideo.search(s.text)
                 if match!=None:
                     return match.group(1)+'m3u8'

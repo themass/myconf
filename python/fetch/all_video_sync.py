@@ -67,19 +67,25 @@ import nfss_vip
 import kedouwo_vip
 
 def pase1():
-    #webview
-    for channel, url in ozsese.baseparse.channels.items():
-        ozsesevideop = ozsese.video.VideoParse(channel, url)
-        ozsesevideop.run()
-    ####zy3838_vip.parseVideo()
-    #####nomsgus_vip.parseVideo()
-    lusibi_vip.parseVideo()
-    hongxing_vip.parseVideo()
-    ####avhome11_vip.parseVideo()
-    
-    dxg11_vip.parseVideo()
-    mastv54_vip.parseVideo()
-    kedouwo_vip.parseVideoALl()
+#     #webview
+#     for channel, url in ozsese.baseparse.channels.items():
+#         ozsesevideop = ozsese.video.VideoParse(channel, url)
+#         ozsesevideop.run()
+#     ####zy3838_vip.parseVideo()
+#     #####nomsgus_vip.parseVideo()
+#     lusibi_vip.parseVideo()
+#     hongxing_vip.parseVideo()
+#     ####avhome11_vip.parseVideo()
+#     
+#     dxg11_vip.parseVideo()
+#     mastv54_vip.parseVideo()
+#     kedouwo_vip.parseVideo()
+#     kedouwo_vip.parseVideo2()
+    kedouwo_vip.parseVideo3()
+    kedouwo_vip.parseVideo4()
+    kedouwo_vip.parseVideo5()
+    kedouwo_vip.parseVideo6()
+    kedouwo_vip.parseVideo7()
     nfss_vip.parseVideo()
     nfss_vip.parseVideo2()
 #     nfss_vip.parseVideo3()
@@ -111,19 +117,19 @@ def pase4():
    
     
 def pase5():
-#     meiyke_vip.parseVideo()
-#     sp878_vip.parseVideo()
-#     tiantianyao_vip.parseVideo()
-# ###    xoxo164_vip.pareVideo()
-#     tzzy1399_vip.parseVideo()
-#     ####miaobosp_vip.parseVideo()
-#     ###速度较好
-# ####    tt80_vip.parseVideo()
-# ###    pp56_vip.parseVideo()
-#     ggfuil_vip.parseVideo()
-#     hanpian_vip.parseVideo()
+    meiyke_vip.parseVideo()
+    sp878_vip.parseVideo()
+    tiantianyao_vip.parseVideo()
+###    xoxo164_vip.pareVideo()
+    tzzy1399_vip.parseVideo()
+    ####miaobosp_vip.parseVideo()
+    ###速度较好
+####    tt80_vip.parseVideo()
+###    pp56_vip.parseVideo()
+    ggfuil_vip.parseVideo()
+    hanpian_vip.parseVideo()
     fuli750_vip.parseVideo()
-    ###hs941_vip.parseVideo()
+    hs941_vip.parseVideo()
     kpd36_vip.parseVideo()
     cili_vip.parseVideo()
 def pase6():

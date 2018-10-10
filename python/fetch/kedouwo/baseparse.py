@@ -13,7 +13,7 @@ import re
 import os
 baseurl = "http://www.aotu49.com"
 baseurl2= "https://www.v88hd.space/"
-baseurl3= "http://asy007.com/"
+baseurl3= "http://aiseying03.com/"
 baseurl4 = "http://www.7ma00.ml"
 baseurl5 = "http://www.smtav01.info/"
 baseurl6 = "http://www.91av.biz"

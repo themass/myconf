@@ -92,7 +92,7 @@ class VideoUserParse(BaseParse):
             if adiv!=None:
                 scripts = adiv.findAll('script')
                 for script in scripts:
-                    text = unquote(str(script.text)).replace(" ", "").replace('"//"+avod+"', "")
+                    text = unquote(str(script.text)).replace(" ", "").replace('"//"+avod+"', "").replace('"//"+bvod+"', "")
                     match = regVideo2282yy.search(text)
                     if match!=None:
                         videoUrl =match.group(1)

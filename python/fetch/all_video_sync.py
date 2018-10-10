@@ -72,7 +72,7 @@ def pase1():
         ozsesevideop = ozsese.video.VideoParse(channel, url)
         ozsesevideop.run()
     ####zy3838_vip.parseVideo()
-    nomsgus_vip.parseVideo()
+    #####nomsgus_vip.parseVideo()
     lusibi_vip.parseVideo()
     hongxing_vip.parseVideo()
     ####avhome11_vip.parseVideo()

@@ -10,9 +10,9 @@ from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
 import re
-baseurl = "http://www.fuli750.com"
+baseurl = "http://www.fuli91.info"
 videoId = re.compile(r"play/id/(.*?)\.html")
-videoGet = "http://www.fuli750.com/api/payvideo.html"
+videoGet = "http://www.fuli91.info/api/payvideo.html"
 
 videolUrl='/stli_gthdrdbn/29.html'
 header = {'User-Agent':

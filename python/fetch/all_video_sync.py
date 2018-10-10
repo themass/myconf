@@ -116,7 +116,7 @@ def pase5():
     tiantianyao_vip.parseVideo()
 ###    xoxo164_vip.pareVideo()
     tzzy1399_vip.parseVideo()
-    miaobosp_vip.parseVideo()
+    ####miaobosp_vip.parseVideo()
     ###速度较好
 ####    tt80_vip.parseVideo()
 ###    pp56_vip.parseVideo()

@@ -9,7 +9,9 @@ from common import db_ops
 from common import common
 import threading,os
 from BeautifulSoup import BeautifulSoup
-import re
+import re,sys
+sys.setdefaultencoding('utf8')
+
 # http://www.dehyc.com
 baseurl = "http://www.1024988.com"
 header = {'User-Agent':

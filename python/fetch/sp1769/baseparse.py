@@ -10,6 +10,8 @@ from common import common
 import threading,os
 from BeautifulSoup import BeautifulSoup
 import re,sys
+reload(sys)
+
 sys.setdefaultencoding('utf8')
 
 # http://www.dehyc.com

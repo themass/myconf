@@ -6,6 +6,8 @@ from common import common
 from fetch.profile import *
 from urllib import unquote
 import sys
+reload(sys)
+
 sys.setdefaultencoding('utf8')
 
 class VideoParse(BaseParse):

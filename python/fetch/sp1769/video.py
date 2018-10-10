@@ -59,7 +59,8 @@ class VideoParse(BaseParse):
                     obj['url'] = mp4Url
                     img = item.first("img")
                     obj['pic'] = img.get('src')
-                    name = item.first('h3').text.replace(" ","")
+                    name = ahref.get("title")
+#                     item.first('h3').text.replace(" ","")
                     match = namereg.search(name)
                     if match !=None:
                         name = name.replace(match.group(),"")
@@ -93,7 +94,7 @@ class VideoParse(BaseParse):
 #                 for item in texts:
                 match = regVideo.search(s.text)
                 if match!=None:
-                    return match.group(1)+'m3u8'
+                    return "https"+match.group(1)+'m3u8'
             print '没找到mp4'
             return None
         except Exception as e:

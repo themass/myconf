@@ -13,7 +13,7 @@ from sp1769 import *
 import re
 import sys
 reload(sys)
-sys.setdefaultencoding('utf8')
+# sys.setdefaultencoding('utf8')
 def parseVideo():
     videop = video.VideoParse()
     videop.run()

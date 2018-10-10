@@ -10,9 +10,9 @@ from common import common
 import threading,os
 from BeautifulSoup import BeautifulSoup
 import re,sys
-reload(sys)
-
-sys.setdefaultencoding('utf8')
+# reload(sys)
+# 
+# sys.setdefaultencoding('utf8')
 
 # http://www.dehyc.com
 baseurl = "http://www.1024988.com"
@@ -38,7 +38,7 @@ class BaseParse(threading.Thread):
                 response = urllib2.urlopen(req, timeout=3000)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('gbk', errors='replace')
+                content = response.read().decode('utf-8', errors='replace')
                 if gzipped:
                     content = zlib.decompress(
                         content, 16 + zlib.MAX_WBITS)  # 解压缩，得到网页源码

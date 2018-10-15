@@ -183,6 +183,11 @@ net()
 	ulimit -n
 
 }
+setup_caip()
+{
+	ip=$(get_ip)
+    init_ca	$ip
+}
 ## -----------------------
 ## Setup all aboves
 ## -----------------------
@@ -241,12 +246,14 @@ usage()
     echo "strongswan          Setup strongswan"
     echo "strongswanconf          Setup strongswan config"
     echo "ca           Setup ca"
+    echo "caip           Setup caip"
     echo "iptables         Setup iptables"
     echo "net    Setup net"
     echo "fail2ban    Setup fail2ban"
     echo "check    checkspeed"
      echo "check_vpn    check vpn"
      echo "net    Setup net"
+     
     echo "all           Setup all aboves"
     echo "telegraf          Setup telegraf"
 }
@@ -260,6 +267,7 @@ if [ $# != 0 ]; then
             soft)            init_soft;;
             strongswan)          strongswan_setup;;
 	    ca)          init_ca $2;;
+	     caip)          setup_caip;;
 	    iptables)          setup_iptables;;
 	    strongswanconf)          strongswan_config;;
 	    net)          net;;

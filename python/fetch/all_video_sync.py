@@ -67,20 +67,20 @@ import nfss_vip
 import kedouwo_vip
 
 def pase1():
-#     #webview
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     ####zy3838_vip.parseVideo()
-#     #####nomsgus_vip.parseVideo()
-#     lusibi_vip.parseVideo()
-#     hongxing_vip.parseVideo()
-#     ####avhome11_vip.parseVideo()
+    #webview
+    for channel, url in ozsese.baseparse.channels.items():
+        ozsesevideop = ozsese.video.VideoParse(channel, url)
+        ozsesevideop.run()
+    ####zy3838_vip.parseVideo()
+    #####nomsgus_vip.parseVideo()
+    lusibi_vip.parseVideo()
+    hongxing_vip.parseVideo()
+    ####avhome11_vip.parseVideo()
 #     
-#     dxg11_vip.parseVideo()
-#     mastv54_vip.parseVideo()
-#     kedouwo_vip.parseVideo()
-#     kedouwo_vip.parseVideo2()
+    dxg11_vip.parseVideo()
+    mastv54_vip.parseVideo()
+    kedouwo_vip.parseVideo()
+    kedouwo_vip.parseVideo2()
     kedouwo_vip.parseVideo3()
     kedouwo_vip.parseVideo4()
     kedouwo_vip.parseVideo5()

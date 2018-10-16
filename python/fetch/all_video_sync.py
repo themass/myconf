@@ -91,9 +91,9 @@ def pase1():
 #     nfss_vip.parseVideo3()
     nfss_vip.parseVideo4()
 def pase2():
-    sexx77_vip.parseVideo()
-    singlovevideop = singlove.video.VideoParse()
-    singlovevideop.run()
+#     sexx77_vip.parseVideo()
+#     singlovevideop = singlove.video.VideoParse()
+#     singlovevideop.run()
   
     ####yezmw_vip.parseVideo()
     x2246_vip.parseVideo()

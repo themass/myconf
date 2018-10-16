@@ -117,19 +117,19 @@ def pase4():
    
     
 def pase5():
-    meiyke_vip.parseVideo()
-    sp878_vip.parseVideo()
-    tiantianyao_vip.parseVideo()
-###    xoxo164_vip.pareVideo()
-    tzzy1399_vip.parseVideo()
-    ####miaobosp_vip.parseVideo()
-    ###速度较好
-####    tt80_vip.parseVideo()
-###    pp56_vip.parseVideo()
-    ggfuil_vip.parseVideo()
-    hanpian_vip.parseVideo()
-    fuli750_vip.parseVideo()
-    hs941_vip.parseVideo()
+#     meiyke_vip.parseVideo()
+#     sp878_vip.parseVideo()
+#     tiantianyao_vip.parseVideo()
+# ###    xoxo164_vip.pareVideo()
+#     tzzy1399_vip.parseVideo()
+#     ####miaobosp_vip.parseVideo()
+#     ###速度较好
+# ####    tt80_vip.parseVideo()
+# ###    pp56_vip.parseVideo()
+#     ggfuil_vip.parseVideo()
+#     hanpian_vip.parseVideo()
+#     fuli750_vip.parseVideo()
+    ####hs941_vip.parseVideo()
     kpd36_vip.parseVideo()
     cili_vip.parseVideo()
 def pase6():

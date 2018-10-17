@@ -202,7 +202,7 @@ setup_fail2ban()
 ## -----------------------
 setup_all() 
 {
-    #init_soft
+    init_soft
     strongswan_setup
     strongswan_config
     ip=$(get_ip)

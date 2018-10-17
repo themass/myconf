@@ -50,8 +50,8 @@ checkspeed()
 strongswan_setup() 
 {
 	cd ${TMP_HOME}
-	#wget http://download.strongswan.org/strongswan-5.6.0.tar.bz2 --no-check-certificate
-	tar -jxvf strongswan-5.6.0.tar.bz2 && cd strongswan-5.6.0
+	#wget http://download.strongswan.org/strongswan-5.6.3.tar.bz2 --no-check-certificate
+	tar -jxvf strongswan-5.6.3.tar.bz2 && cd strongswan-5.6.3
 	./configure --prefix=/usr --sysconfdir=/etc  --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap  --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2  --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls
 	make && make install
 	ipsec start 

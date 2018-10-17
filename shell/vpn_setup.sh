@@ -209,7 +209,7 @@ setup_all()
     init_ca	$ip
     dev=$(get_netdev)
     setup_iptables $dev
-    setup_fail2ban
+    #setup_fail2ban
     net
     setup_telegraf
     echo "crotab-----------------------------"

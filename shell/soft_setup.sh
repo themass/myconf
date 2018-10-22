@@ -191,6 +191,8 @@ setup_rclocal()
 # CREATE RETENTION POLICY "15_day" ON "telegraf" DURATION 10d REPLICATION 1 DEFAULT
 #CREATE RETENTION POLICY "20_day" ON "vpn_monitor" DURATION 10d REPLICATION 1 DEFAULT
 #influx -username 'admin' -password 'themass529696'
+# vi /etc/influxdb/influxdb.conf  -->auth-enabled = true
+
 ###
 setup_influx()
 {

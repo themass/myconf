@@ -27,22 +27,22 @@ if __name__ == '__main__':
 # #     sexx77_vip.pareImg()
 # #       
 ###     xoxo164_vip.pareImg()
-    x2246_vip.parseImg()
-# #     #需要翻墙
-    jjr128_vip.pareImg()
-    skswk9_img.parseImg()
+#     x2246_vip.parseImg()
+# # #     #需要翻墙
+#     jjr128_vip.pareImg()
+#     skswk9_img.parseImg()
+# # #     
+# # #     
+# #      
+# #     se8_vip.startWork()
+# #     se8_vip.parseGirlImg()
+# #     se8_vip.parseImg()
 # #     
-# #     
-#      
-#     se8_vip.startWork()
-#     se8_vip.parseGirlImg()
-#     se8_vip.parseImg()
 #     
-    
-    ddd804_vip.parse3wujiImg()
-    ddd804_vip.parse39vqImg()
-    ddd804_vip.parsedddImg()
-    ddd804_vip.parsejiqingyazhouImg()
+#     ddd804_vip.parse3wujiImg()
+#     ddd804_vip.parse39vqImg()
+#     ddd804_vip.parsedddImg()
+#     ddd804_vip.parsejiqingyazhouImg()
     
     xieegif_vip.parsewowantImg()
     xieegif_vip.parserneihanImg()

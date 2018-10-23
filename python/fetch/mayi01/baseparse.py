@@ -19,7 +19,7 @@ header = {'Cookie':'UM_distinctid=163a67e76662dd-061c8c9af4c49b-454c092b-1fa400-
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")
 regVideo2 = re.compile(r"mac_url=unescape\('(.*?)'\);")
-regVideo3 = re.compile(r"url:'http(.*?)m3u8'")
+regVideo3 = re.compile(r'url:"http(.*?)m3u8"')
 
 class BaseParse(threading.Thread):
 

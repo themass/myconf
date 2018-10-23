@@ -88,12 +88,12 @@ def pase1():
     kedouwo_vip.parseVideo7()
     nfss_vip.parseVideo()
     nfss_vip.parseVideo2()
-#     nfss_vip.parseVideo3()
+    nfss_vip.parseVideo3()
     nfss_vip.parseVideo4()
 def pase2():
-#     sexx77_vip.parseVideo()
-#     singlovevideop = singlove.video.VideoParse()
-#     singlovevideop.run()
+    sexx77_vip.parseVideo()
+    singlovevideop = singlove.video.VideoParse()
+    singlovevideop.run()
   
     ####yezmw_vip.parseVideo()
     x2246_vip.parseVideo()
@@ -117,18 +117,18 @@ def pase4():
    
     
 def pase5():
-#     meiyke_vip.parseVideo()
-#     sp878_vip.parseVideo()
-#     tiantianyao_vip.parseVideo()
-# ###    xoxo164_vip.pareVideo()
-#     tzzy1399_vip.parseVideo()
-#     ####miaobosp_vip.parseVideo()
-#     ###速度较好
-# ####    tt80_vip.parseVideo()
-# ###    pp56_vip.parseVideo()
-#     ggfuil_vip.parseVideo()
-#     hanpian_vip.parseVideo()
-#     fuli750_vip.parseVideo()
+    meiyke_vip.parseVideo()
+    sp878_vip.parseVideo()
+    tiantianyao_vip.parseVideo()
+###    xoxo164_vip.pareVideo()
+    tzzy1399_vip.parseVideo()
+    ####miaobosp_vip.parseVideo()
+    ###速度较好
+####    tt80_vip.parseVideo()
+###    pp56_vip.parseVideo()
+    ggfuil_vip.parseVideo()
+    hanpian_vip.parseVideo()
+    fuli750_vip.parseVideo()
     ####hs941_vip.parseVideo()
     kpd36_vip.parseVideo()
     cili_vip.parseVideo()

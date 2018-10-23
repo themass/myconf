@@ -15,7 +15,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "http://www.nfss.xyz"
 baseurl2 = "http://www.wose11.com"
-baseurl3 = "http://www.mh26.xyz/"
+baseurl3 = "http://www.mh30.xyz/"
 baseurl4 = "https://www.2282yy.com"
 header = {'User-Agent': 
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}

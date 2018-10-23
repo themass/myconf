@@ -28,7 +28,6 @@ def pase2():
     se8_vip.parseText()
     ####mayi01_vip.parseText()
 if __name__ == '__main__':
-    pase2()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

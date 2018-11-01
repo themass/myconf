@@ -56,7 +56,7 @@ class VideoParse(BaseParse):
                     obj['pic'] = img.get('src')
                     obj['name'] = li.first('h3').text
                     videourl = urlparse(obj['url'])
-                    obj['path'] = videourl.path
+                    obj['path'] = "sex77_"+videourl.path
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl

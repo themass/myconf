@@ -88,9 +88,11 @@ class VideoParse(BaseParse):
                     soup = self.fetchUrl(ahref.get('href'), header)
                     iframe = soup.first('iframe')
                     if iframe!=None:
+                        print iframe.get('src')
                         soup = self.fetchUrlWithBase(baseurl+iframe.get('src'))
                         scripts = soup.findAll("script")
                         for script in scripts:
+                            print script.text
                             match = videoApi.search(script.text)
                             if match!=None:
                                 return "%s%s"%("http",match.group(1),"m3u8")

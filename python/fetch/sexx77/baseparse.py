@@ -16,7 +16,7 @@ header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 videoApi = re.compile(r'var redirecturl = "(.*)";')
-videoApim3 = re.compile(r'var main = "(.*)";')
+videoApim3 = re.compile(r"video:'http(.*?)m3u8'")
 import ssl   #add line 1
 ssl._create_default_https_context = ssl._create_unverified_context  #add line 2
 class BaseParse(threading.Thread):

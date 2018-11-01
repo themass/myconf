@@ -56,7 +56,10 @@ class VideoParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = ahref.first("img")
-                obj['pic'] = baseurl+img.get("data-original")
+                if img.get("data-original").count("http")==0:
+                    obj['pic'] = baseurl+img.get("data-original")
+                else:
+                    obj['pic'] = img.get("data-original")
                 obj['name'] = img.get("alt")
                 obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
                 obj['updateTime'] = datetime.datetime.now()

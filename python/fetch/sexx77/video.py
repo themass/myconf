@@ -93,7 +93,7 @@ class VideoParse(BaseParse):
                         for script in scripts:
                             match = videoApim3.search(script.text)
                             if match!=None:
-                                return "%s%s"%("http",match.group(1),"m3u8")
+                                return "%s%s%s"%("http",match.group(1),"m3u8")
             print url,'没有mp4'
             return None
         except Exception as e:

@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url'].replace('1.html','')
             for i in range(1, maxVideoPage):
-                self.videoParse(item['channel'], (url + "%s.html") % (i))
+                self.videoParse(item['channel'], (url + "?page=%s") % (i))
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         channelList = []

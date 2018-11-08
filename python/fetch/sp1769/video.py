@@ -93,12 +93,12 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url)
             scripts = soup.findAll("script")
             for s in scripts:
-#                 text = unquote(s.text)
-#                 texts = text.split("$")
-#                 for item in texts:
-                match = regVideo.search(s.text)
-                if match!=None:
-                    return "https"+match.group(1)+'m3u8'
+                text = unquote(s.text)
+                texts = text.split(",")
+                for item in texts:
+                    match = regVideo.search(item)
+                    if match!=None:
+                        return "http"+match.group(1)+'m3u8'
             print '没找到mp4'
             return None
         except Exception as e:

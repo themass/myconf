@@ -29,7 +29,7 @@ status_send()
 	local_host=`/bin/hostname`
 	local_ip=$(get_ip)
 	 if [ -n "${c}" ]; then
-	 	curl  -d "count=${c}"  -d "localhost=${local_host}&ip=${local_ip}" http://api.sspacee.com/vpn/api/noapp/collect.json
+	 	curl  -d "count=${c}"  -d "localhost=${local_host}&ip=${local_ip}" -H"host=api.sspacee.com" http://47.88.7.156/vpn/api/noapp/collect.json
 	 	echo ${local_host}
 	 fi
 }

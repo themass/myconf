@@ -15,6 +15,7 @@ baseurl = "https://www.2284yy.com"
 headerUrl='/js/LayoutIt.js'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
+playVideo = re.compile(r'varvHLSurl="//"\+bvod\+"(.*)m3u8')
 maxCount = 3
 
 class BaseParse(threading.Thread):
@@ -46,24 +47,9 @@ class BaseParse(threading.Thread):
                 content = "%s%s"%(content,line)
         print content
         soup= BeautifulSoup(content)
-        uls = soup.findAll('ul',{'class':'nav_menu'})
+        uls = soup.findAll('a')
         return uls
-        
-    def headerVideo(self):
-        uls = self.header()
-        objs = []
-        for ul in uls:
-            active = ul.first('li',{"class":"active"})
-            if active.text.count('小说')==0:
-                ahrefs = ul.findAll("a")
-                for ahref in ahrefs:
-                    
-                    obj={}
-                    if ahref.get('href')!='/' and ahref.text.count("图片")==0 and ahref.text.count("小说")==0 and ahref.text.count("帮助")==0:
-                        obj['url']=ahref.get('href')
-                        obj['name']=ahref.text
-                        objs.append(obj)
-        return objs
+  
     def headerImg(self):
         uls = self.header()
         objs = []

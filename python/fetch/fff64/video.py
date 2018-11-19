@@ -29,22 +29,22 @@ class VideoParse(BaseParse):
                 self.videoParse(ch['channel'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
-        objs = self.header("在线电影")
+        objs = self.headerVideo()
         for obj in objs:
             obj['baseurl']=baseurl
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']='www.64fff.com'+obj['url']
+            obj['channel']='www.64fff.com'+obj['name']
             obj['showType']=3
             obj['channelType']='normal'
         return  objs
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "movie_list"})
+        div = soup.first("div", {"class": "vodlist_l box"})
         if div!=None:
-            lis = div.findAll('li')
+            lis = div.findAll('ul')
             for li in lis:
                 ahref = li.first('a')
                 if ahref!=None:
@@ -54,8 +54,8 @@ class VideoParse(BaseParse):
                     obj = {}
                     obj['url'] = mp4Url
                     img = ahref.first("img")
-                    obj['pic'] = img.get('src')
-                    obj['name'] = li.first('h3').text
+                    obj['pic'] = img.get('data-original')
+                    obj['name'] = li.first('h2').text
                     print obj['name'],mp4Url,obj['pic']
     
                     videourl = urlparse(obj['url'])
@@ -78,16 +78,18 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
-            div = soup.first('div',{"class":'film_bar clearfix'})
+            div = soup.first('div',{"class":'playlist wbox'})
             if div!=None:
                 ahref = div.first('a')
                 if ahref!=None:
                     soup = self.fetchUrl(ahref.get('href'), header)
                     scripts = soup.findAll("script")
                     for script in scripts:
-                        match = videoApi.search(script.text)
-                        if match!=None:
-                            return "%s%s%s"%("http",match.group(1),".m3u8")
+                        texts = script.text.split(",")
+                        for text in texts:
+                            match = videoApi.search(text)
+                            if match!=None:
+                                return "%s%s%s"%("http",match.group(1).replace("\/","/"),".m3u8")
             print url,'没有mp4'
             return None
         except Exception as e:

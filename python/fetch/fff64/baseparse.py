@@ -9,7 +9,7 @@ from common import db_ops
 from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
-import re
+import re,os
 # http://www.dehyc.com
 baseurl = "http://www.2wf3.com"
 videolUrl='/stli_gthdrdbn/29.html'
@@ -51,6 +51,16 @@ class BaseParse(threading.Thread):
                     obj['url']=ahref.get('href')
                     objs.append(obj)
         return objs
+    def headerVideo(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("%s/%s"%("header.html",name)) as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchUrlWithBase(self, url, aheader=header):
         count = 0
         while count < maxCount:

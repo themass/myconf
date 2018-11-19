@@ -26,10 +26,9 @@ class TextChannelParse(BaseParse):
         dbVPN.commit()
         print self.t_obj
         try:
-            url = self.t_obj['url']
-            channel = url
+            channel = self.t_obj['url']
             for i in range(1, maxTextPage):
-                url = url.replace(".html","-") + str(i) + ".html"
+                url = self.t_obj['url'].replace(".html","-") + str(i) + ".html"
                 count = self.update(url, ops, channel)
                 dbVPN.commit()
                 if count == 0:

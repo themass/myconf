@@ -24,5 +24,5 @@ def parseImg():
     imgop = img.ImgParse()
     imgop.run()
 if __name__ == '__main__':
-    parseImg()
+#     parseImg()
     parseText()

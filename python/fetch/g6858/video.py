@@ -51,7 +51,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url,base):
         dataList = []
         soup = self.fetchUrl(url)
-        ul = soup.first("div",{"class":"box movie_list"})
+        ul = soup.first("div",{"class":"box-video-list"})
         if ul==None:
             return 0
         metas = ul.findAll("li")
@@ -63,8 +63,8 @@ class VideoParse(BaseParse):
                 print '没有mp4 文件:', ahref.get("href")
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = meta.first('img').get("src")
-            obj['name'] = meta.first('h3').text
+            obj['pic'] = ahref.get("data-original")
+            obj['name'] = ahref.get('title')
 
             videourl = urlparse(mp4Url)
             obj['path'] = 'g6858_'+videourl.path
@@ -87,9 +87,15 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, base,url):
         try:
             soup = self.fetchUrlWithBase(base+url, header)
-            div = soup.first("ul",{'class':'downurl'})
-            if div!=None:
-                return div.first("a").get("href")
+            scripts = soup.findAll("script")
+            for script in scripts:
+                text = script.text
+                texts = text.split(";")
+                for item in texts:
+                    match = regVideo.search(item)
+                    if match!=None:
+                        if cdn.get(match.group(1))!=None:
+                            return "%s%s%s%s"%("https://",cdn.get(match.group(1)),match.group(2),'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

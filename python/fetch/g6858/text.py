@@ -32,7 +32,7 @@ class TextChannelParse(BaseParse):
                 url = item['url']
                 for i in range(1, maxTextPage ):
                     if i!=1:
-                        url= "%s%s%s%s"%(item['url'],"index-",i,".html")
+                        url= "%s%s%s"%(item['url'],i,".html")
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
                     count = self.update(url, ops, channel)
@@ -43,19 +43,21 @@ class TextChannelParse(BaseParse):
             except Exception as e:
                 print common.format_exception(e)
     def textChannel(self):
-        objs = []
-        obj={}
-        obj['url']="/Html/84/"
-        obj['name']="激情文学"
-        obj['baseurl']=baseurl
-        obj['updateTime']=datetime.datetime.now()
-        obj['pic']=''
-        obj['rate']=1.2
-        obj['channel']=obj['url']
-        obj['showType']=3
-        obj['channelType']='normal'
-        objs.append(obj)
-        return  objs
+        objs = self.header("header2.html")
+        data = []
+        for item in objs:
+            obj={}
+            obj['url']=item.get("href")
+            obj['name']=item.text
+            obj['baseurl']=baseurl
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=''
+            obj['rate']=1.2
+            obj['channel']=obj['url']
+            obj['showType']=3
+            obj['channelType']='normal'
+            data.append(obj)
+        return  data
 
     def update(self, url, ops, channel):
         objs = self.fetchTextData(url, channel)
@@ -72,7 +74,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "box list channel"})
+            div = soup.first("ul", {"class": "box-topic-list p-0 clearfix"})
             if div == None:
                 print '没有数据', url
                 return []
@@ -84,13 +86,9 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        span = ahref.first('span')
-                        if span != None:
-                            obj['fileDate'] = span.text
-                        else:
-                            obj['fileDate'] = ''
-                        name = ahref.text.replace(obj['fileDate'], '')
-                        obj['name'] = name.replace("【完】","")
+                        obj['fileDate'] = ''
+                        name = ahref.get("title").replace("【完】", '').replace("【", '').replace("】", '')
+                        obj['name'] = name
                         print name
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl
@@ -109,7 +107,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url,header)
-        data = soup.first("div", {"class": "content"})
+        data = soup.first("div", {"class": "xs-details-content text-xs"})
         if data != None:
             try:
                 obj = {}

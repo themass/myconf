@@ -89,6 +89,8 @@ if __name__ == '__main__':
 #     print driver.page_source
 #     print requests.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").text
     str = '''
-    var vHLSurl    = "https:\/\/www.freecnmove.com\/2018\/08\/5809bda56e0a85cfc7119917d1273974\/\/index.m3u8";
+    var vHLSurl    = "//"+avod+"/19/2018/07/LjVbWE7U/LjVbWE7U.m3u8";
     '''
-    print str.replace("\/", "/")
+    playVideo = re.compile(r'varvHLSurl="//"\+avod\+"(.*?)m3u8')
+    match = playVideo.search(str.replace(" ", ""))
+    print "%s%s%s"%("https://cdn.846u.com",match.group(1),"m3u8")

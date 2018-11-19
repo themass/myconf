@@ -88,79 +88,9 @@ if __name__ == '__main__':
 #     driver.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
 #     print driver.page_source
 #     print requests.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").text
-    content = fetchUrl("http://www.mh25.xyz/vod-play-id-48196-src-1-num-1.html")
-    print content
-#     m = re.findall("<!--(.*?)-->",content)
-#     print m
-#     if m!=None:
-#         for i in m:
-#             print i
-#             content = content.replace(i,"")
-#     content = content.replace("<!---->","")
-#     regVideo = re.compile(r"<div class=\"box movie_list\">(.*?)</div>")
-#     m = regVideo.search(content) 
-#     print content
-#     if m!=None:
-#         print m.group(0)
-#     str = re.sub("<!--(.*?)-->", content, "")
-#     str = content.replace("<!--[if lt IE 9 ]>.*<![endif]-->","")
-#     str = "https://cdn.zypll.com/share/o942dUmbVNWYcvLE"
-#     print str.count("cdn.zypll")
-    #     name = '第95期<!--[if lt IE 9 ]><![endif]-->2017/9/9<!--[if lt IE 9 ]><![endif]-->'
-    #     strName = name.replace(
-    #         "<!--[if lt IE 9 ]>", "").replace("<![endif]-->", "")
-    #     name = html_parse.filter_tags(strName)
-    #     print name
-
-    #     str = '''dsdasdsa
-    # <div id="pages"><a title="Page">&nbsp;<b>3</b>/<b>9</b> </a>&nbsp;&nbsp;<a href="/html/article/jiqing/2017/0612/397928.html">首页</a>&nbsp;<a href="/html/article/jiqing/2017/0612/397928_2.html">上一页</a>&nbsp;<a href="/html/article/jiqing/2017/0612/397928.html">1</a>&nbsp;<a href="/html/article/jiqing/2017/0612/397928_2.html">2</a>&nbsp;<b>3</b>&nbsp;<a href="/html/article/jiqing/2017/0612/397928_4.html">4</a>&nbsp;<a href="/html/article/jiqing/2017/0612/397928_5.html">5</a>&nbsp;<a href="/html/article/jiqing/2017/0612/397928_6.html">6</a>&nbsp;<a href="/html/article/jiqing/2017/0612/397928_4.html">下一页</a>&nbsp;<a href="/html/article/jiqing/2017/0612/397928_9.html">尾页</a></div>
-    #            </div>dasDASDA</div></div></div></div>
-    #     '''
-    #     soup = BeautifulSoup(str)
-    #     reg = re.compile(r"(.*)index(.*)\.html")
-    #     divs = soup.findAll("div", {"id": "pages"})
-    #     if len(divs) > 0:
-    #         aAll = divs[len(divs) - 1].findAll("a")
-    #         for a in aAll:
-    #             if a.text.count(u"尾页") > 0:
-    #                 href = a.get('href')
-    #                 print href
-    #     url = '/html/article/mingxing/index.html'
-    #     match = reg.search(url)
-    #     print match.group(2)
-    #     regPage = re.compile(r'<div id="pages">(.*)</div>')
-    #     match = regPage.search(str)
-    #     print match.group(1)
-    #     url = 'http://113.215.20.136:9011/113.215.6.77/c3pr90ntcya0/youku/6981496DC9913B8321BFE4A4E73/0300010E0C51F10D86F80703BAF2B1ADC67C80-E0F6-4FF8-B570-7DC5603F9F40.flv'
-    #     pattern = 'http://(.*?):9011/'
-    #     out = re.sub(pattern, 'http://127.0.0.1:9091/', url)
-    #     print out
-    #     url_str = "http://www.163.com/mail/index.htm"
-    #     url = urlparse(url_str)
-    #     print 'protocol:', url.scheme
-    #     print 'hostname:', url.hostname
-    #     print 'port:', url.port
-    #     print 'path:', url.path
-    #     s = '[12.19] 公司里的巨乳少妇搞来玩一玩[12P]'
-    #     img_channel_title = re.compile(r"\[[0-9]+P\]")
-    #     img_channel_date = re.compile(r"\[[0-9\.]+\]")
-    #     match = img_channel_title.search(s)
-    #     print match.group(0)
-    #     match = img_channel_date.search(s)
-    #     print match.group(0)
-#     regVideo = re.compile(r'src="(.*)" frameborder=')
-#     match = regVideo.search(str1)
-#     print match.group(1)
-    
-#     str = "mac_from='Aplayer',mac_server='',mac_note='',mac_url=unescape('%u5f00%u59cb%u64ad%u653e%24http%3A%2F%2Fvideo.jiagew762.com%3A8091%2F20180106%2F7G8ixAL1%2Findex.m3u8'); "
-#     regVideo = re.compile(r"mac_url=unescape\('(.*)(http)(.*)'\);")
-#     match = regVideo.search(str)
-#     str2 = '(.*)'
-#     str = '''
-# var mac_flag='play',mac_link='/g/41818/{src}/{num}.html', mac_name='速度与激情8',mac_from='m3u8',mac_server='no',mac_note='',mac_url=unescape('HD1280%u9ad8%u6e05%u4e2d%u5b57%u97e9%u7248$http://fuli.yazyzw.com/20170603/XgwO7tMy/index.m3u8#BD1280%u9ad8%u6e05%u4e2d%u82f1%u53cc%u5b57%u7248$http://hao.zuida-youku.com/20170609/NoFPAsy5/index.m3u8');
-# ''' 
-#     videoApi = re.compile(r"http(.*)\.m3u8")
-#     match = videoApi.search(str)
-#     print match
-#     print match.group(1).replace("')","")
-#     print unquote(str)
+    str = '''
+    var vHLSurl    = "https://"+CN2+"/video-hls/89/2018/10/WWdrqYDu/hls/WWdrqYDu.m3u8";
+    '''
+    regVideo = re.compile(r'https://"\+(.*?)\+"(.*?)m3u8')
+    match = regVideo.search(str)
+    print match.group(2)

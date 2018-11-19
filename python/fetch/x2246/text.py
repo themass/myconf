@@ -77,11 +77,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("ul", {"class": "box-topic-list p-0 clearfix"})
-            if div == None:
-                print '没有数据', url
-                return []
-            datalist = div.findAll("li")
+            datalist = soup.findAll("li",{"class":"col-xs-12 clearfix news-box"})
             objs = []
             sortType = dateutil.y_m_d()
             for item in datalist:

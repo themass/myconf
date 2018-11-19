@@ -15,8 +15,8 @@ class VideoUserParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         chs = self.videoChannel()
-        for item in chs:
-            ops.inertVideoUser(item)
+#         for item in chs:
+#             ops.inertVideoUser(item)
         print '326ff user video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
@@ -115,6 +115,13 @@ class VideoUserParse(BaseParse):
                                         print 'urlMap 没有找到base',match.group(1),match.group(2)
                                         return None
                                     return "%s%s%s"%(base,match.group(2),'.m3u8')
+                        match = playVideo.search(text)
+                        if match!=None:
+                            base = urlMap.get(match.group(1))
+                            if base ==None:
+                                print 'urlMap 没有找到base',match.group(1),match.group(2)
+                                return None
+                            return "%s%s%s"%(base,match.group(2),'.m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

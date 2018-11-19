@@ -59,6 +59,7 @@ class TextChannelParse(BaseParse):
             obj['channel']=obj['url']
             obj['showType']=3
             obj['channelType']='normal'
+            objs.append(obj)
         return  objs
 
     def update(self, url, ops, channel):

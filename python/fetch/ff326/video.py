@@ -99,7 +99,7 @@ class VideoUserParse(BaseParse):
                     soup = self.fetchUrl(href.get("href"))
                     scripts = soup.findAll("script")
                     for script in scripts:
-                        text = unquote(str(script.text))
+                        text = unquote(str(script.text)).replace(' ', '')
                         
                         match = iframeVideo.search(text)
                         if match!=None:

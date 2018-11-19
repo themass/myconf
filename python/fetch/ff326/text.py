@@ -32,7 +32,7 @@ class TextChannelParse(BaseParse):
                 url = item['url']
                 for i in range(1, maxTextPage ):
                     if i!=1:
-                        url= "%s%s%s"%(item['url'],i,".html")
+                        url= "%s%s%s"%(item['url'],i,".htm")
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
                     count = self.update(url, ops, channel)
@@ -74,11 +74,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "box list channel"})
-            if div == None:
-                print '没有数据', url
-                return []
-            datalist = div.findAll("li")
+            datalist = soup.findAll("li",{"class":"col-md-14 col-sm-16 col-xs-12 clearfix news-box"})
             objs = []
             sortType = dateutil.y_m_d()
             for item in datalist:
@@ -86,13 +82,13 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        span = ahref.first('span')
+                        span = ahref.first('font')
                         if span != None:
                             obj['fileDate'] = span.text
                         else:
                             obj['fileDate'] = ''
-                        name = ahref.text.replace(obj['fileDate'], '')
-                        obj['name'] = name.replace("【完】","")
+                        name = ahref.get("title")
+                        obj['name'] = name
                         print name
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl
@@ -111,7 +107,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url,header)
-        data = soup.first("div", {"class": "content"})
+        data = soup.first("div", {"class": "xs-details-content text-xs"})
         if data != None:
             try:
                 obj = {}

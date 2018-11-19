@@ -15,8 +15,8 @@ class VideoUserParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         chs = self.videoChannel()
-#         for item in chs:
-#             ops.inertVideoUser(item)
+        for item in chs:
+            ops.inertVideoUser(item)
         print '326ff user video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
@@ -78,7 +78,7 @@ class VideoUserParse(BaseParse):
                     obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"
-                print mp4Url,obj['name']
+                print mp4Url,obj['name'],obj['pic']
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

@@ -42,6 +42,7 @@ class VideoParse(BaseParse):
             obj['channel']='www.64fff.com'+obj['name']
             obj['showType']=3
             obj['channelType']='normal'
+            objs.append(obj)
         return  objs
     def videoParse(self, channel, url):
         dataList = []

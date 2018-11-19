@@ -87,6 +87,9 @@ class VideoParse(BaseParse):
                 for text in texts:
                     match = playVideo.search(text)
                     if match!=None:
+                        return "%s%s%s"%("https://cdn.846u.com",match.group(1),"m3u8")
+                    match = playVideo2.search(text)
+                    if match!=None:
                         return "%s%s%s"%("http",match.group(1),"m3u8")
             print url,'没有mp4'
             return None

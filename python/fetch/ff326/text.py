@@ -32,7 +32,7 @@ class TextChannelParse(BaseParse):
                 url = item['url']
                 for i in range(1, maxTextPage ):
                     if i!=1:
-                        url= "%s%s%s%s"%(item['url'],"index-",i,".html")
+                        url= "%s%s%s"%(item['url'],i,".htm")
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
                     count = self.update(url, ops, channel)

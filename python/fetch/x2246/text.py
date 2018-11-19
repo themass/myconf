@@ -46,8 +46,12 @@ class TextChannelParse(BaseParse):
             except Exception as e:
                 print common.format_exception(e)
     def textChannel(self):
-        objs = self.headerText()
-        for obj in objs:
+        ahrefs = self.headerText()
+        objs = []
+        for ahref in ahrefs:
+            obj = {}
+            obj['url']=ahref.get("href")
+            obj['name']=ahref.text
             obj['baseurl']=baseurl
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
@@ -72,7 +76,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "box list channel"})
+            div = soup.first("ul", {"class": "box-topic-list p-0 clearfix"})
             if div == None:
                 print '没有数据', url
                 return []
@@ -84,8 +88,8 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        obj['fileDate'] = ahref.first('span').text
-                        name = ahref.text.replace(obj['fileDate'],"")
+                        obj['fileDate'] = ''
+                        name = ahref.get("title")
                         obj['name'] = name
                         print name
                         obj['url'] = ahref.get('href')
@@ -105,7 +109,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"class": "content"})
+        data = soup.first("div", {"class": "details-content text-justify"})
         if data != None:
             try:
                 obj = {}

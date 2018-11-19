@@ -68,19 +68,15 @@ class BaseParse(threading.Thread):
                         objs.append(obj)
         return objs
     def headerText(self):
-        uls = self.header()
-        objs = []
-        for ul in uls:
-            active = ul.first('li',{"class":"active"})
-            if active.text.count('小说')!=0:
-                ahrefs = ul.findAll("a")
-                for ahref in ahrefs:
-                    obj={}
-                    if ahref.get('href')!='/':
-                        obj['url']=ahref.get('href')
-                        obj['name']=ahref.text
-                        objs.append(obj)
-        return objs
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("x2246/header2.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        print content
+        soup= BeautifulSoup(content)
+        uls = soup.findAll('a')
+        return uls
     def fetchUrlWithBase(self, url, aheader=header):
         count = 0
         while count < maxCount:

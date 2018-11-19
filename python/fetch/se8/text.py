@@ -29,7 +29,7 @@ class TextChannelParse(BaseParse):
             url = self.t_obj['url']
             channel = url
             for i in range(1, maxTextPage):
-                url = url + str(i) + ".htm"
+                url = url.replace(".html","-") + str(i) + ".html"
                 count = self.update(url, ops, channel)
                 dbVPN.commit()
                 if count == 0:
@@ -57,7 +57,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "box list channel"})
+            div = soup.first("div", {"class": "text-list-html"})
             if div == None:
                 print '没有数据', url
                 return []
@@ -96,7 +96,7 @@ class TextItemContentParse(BaseParse):
 
     def run(self):
         soup = self.fetchUrl(self.t_url)
-        data = soup.first("div", {"class": "novelContent"})
+        data = soup.first("div", {"class": "content"})
         print '解析文件 ', self.t_url
         if data != None:
             try:

@@ -54,7 +54,7 @@ def parseSound():
 
 
 def parseText():
-    lis = parser.fetchHead(u"情色小說")
+    lis = parser.fetchHead(u"情色小说")
     objs = parser.parsHeadText(lis)
     print "解析有情色小说 ok----项目=", len(objs)
     for obj in objs:
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
 #     parseSound()
 #     parseGirlImg()
-    parseImg()
-#     parseText()
+#     parseImg()
+    parseText()
 #     parseVideo()
 #     parseVideoRmb()

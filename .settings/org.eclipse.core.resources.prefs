@@ -211,6 +211,7 @@ encoding//python/fetch/se8/__init__.py=utf-8
 encoding//python/fetch/se8/baseparse.py=utf-8
 encoding//python/fetch/se8/img.py=utf-8
 encoding//python/fetch/se8/img_girl.py=utf-8
+encoding//python/fetch/se8/sound.py=utf-8
 encoding//python/fetch/se8/text.py=utf-8
 encoding//python/fetch/se8/video.py=utf-8
 encoding//python/fetch/se8/video_rmb.py=utf-8

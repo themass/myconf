@@ -18,8 +18,8 @@ sys.setdefaultencoding('utf8')
 baseurl = "https://www.ttt977.com"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
-queue = MyQueue.MyQueue(200000)
-maxCount = 3
+queue = MyQueue.MyQueue(2000000)
+maxCount = 8
 
 parser = baseparse.BaseParse()
 
@@ -44,12 +44,9 @@ class HandleThread(threading.Thread):
 
 
 def parseSound():
-    lis = parser.fetchHead(u"有声小说")
-    objs = parser.parsHeadText(lis)
-    print "解析有声小说 ok----项目=", len(objs)
-    for obj in objs:
-        handle = sound.ChannelParse(obj, queue)
-        handle.run()
+    print "解析有声小说 ok----项目="
+    handle = sound.ChannelParse( queue)
+    handle.run()
 #         queue.put(sound.ChannelParse(obj, queue))
 
 
@@ -109,12 +106,12 @@ def startWork():
         worker = HandleThread("work-%s" % (i), queue)
         worker.start()
 if __name__ == '__main__':
-#     startWork()
+    startWork()
     
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
-#     parseSound()
+    parseSound()
 #     parseGirlImg()
 #     parseImg()
 #     parseText()
-    parseVideo()
+#     parseVideo()
 #     parseVideoRmb()

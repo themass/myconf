@@ -18,6 +18,7 @@ sys.setdefaultencoding('utf8')
 baseurl = "https://www.317cf.com/"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
+soundUrl = "/yousheng/index.html"
 queue = MyQueue.MyQueue(200)
 maxCount = 5
 videoUrl='http://m.123456xia.com:888'

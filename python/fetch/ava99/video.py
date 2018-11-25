@@ -59,7 +59,11 @@ class VideoParse(BaseParse):
                 continue
             obj['url'] = mp4Url
             obj['pic'] = meta.first('div',{"class":"mb-img"}).get("style").replace("background-image:url(","").replace(");","")
-            obj['name'] = meta.first('span').text
+            pname = meta.first("p",{"class":"title"})
+            if pname!=None:
+                obj['name'] = pname.text
+            else:
+                obj['name'] = meta.first('span').text
 
             videourl = urlparse(mp4Url)
             obj['path'] = 'ava99_'+videourl.path
@@ -72,7 +76,8 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,obj['videoType'],baseurl)
+#             ops.inertVideo(obj,obj['videoType'],baseurl)
+            ops.renameVideo(obj)
 
         print 'qh video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

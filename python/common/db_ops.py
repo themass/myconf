@@ -150,6 +150,9 @@ class DbOps(object):
                     obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType",3), 1, obj.get("channel").replace(".com",'-'), obj.get("channelType")))
         except Exception as e:
             pass
+    def renameVideo(self,obj):
+        return self.conn.execute(
+            "update   videoitems set name='%s' where path='%s'" % ( obj.get("name"), obj.get("path")))
     def inertVideo(self, obj,videoType="normal",baseUrl='',channelType=''):
         sortType = dateutil.y_m_d()
         return self.conn.execute(

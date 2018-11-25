@@ -14,7 +14,7 @@ import StringIO
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl1 = "http://ddd804.com"
+baseurl1 = "http://zzz761.com"
 baseurl2 = "http://www.jiqingyazhou.org"
 baseurl4 = "http://www.39vq.com"
 baseurl5 = "http://www.5wuji.com"

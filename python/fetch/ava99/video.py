@@ -88,7 +88,7 @@ class VideoParse(BaseParse):
                     soup = self.fetchUrl(ahref.get("href"),header)
                     scripts = soup.findAll('script')
                     for script in scripts:
-                        if script.get("src").count("upload/playdata")>0:
+                        if script.get("src")!=None and script.get("src").count("upload/playdata")>0:
                             text = unquote(self.fetchContentUrl(script.get("src"),header))
                             texts = text.split("$")
                             for item in texts:

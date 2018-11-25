@@ -65,6 +65,7 @@ import kpd36_vip
 import cili_vip
 import nfss_vip
 import kedouwo_vip
+import ava99_vip
 
 def pase1():
     #webview
@@ -141,6 +142,7 @@ def pase6():
     bt2n_vip.parseVideo()
     mayi01_vip.parseVideo()
     ff326_vip.parseVideo()
+    ava99_vip.parseVideo()
     
 def all():
     pase1()

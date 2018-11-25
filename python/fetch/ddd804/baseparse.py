@@ -17,7 +17,7 @@ sys.setdefaultencoding('utf8')
 baseurl1 = "http://ddd804.com"
 baseurl2 = "http://www.jiqingyazhou.org"
 baseurl4 = "http://www.39vq.com"
-baseurl5 = "http://www.3wuji.com"
+baseurl5 = "http://www.5wuji.com"
 maxCount = 5
 class BaseParse(threading.Thread):
 

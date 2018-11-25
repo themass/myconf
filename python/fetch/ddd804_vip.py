@@ -30,7 +30,7 @@ def parse3wujiImg():
     imgop.run()
 if __name__ == '__main__':
     parse3wujiImg()
-    parse39vqImg()
-#      
-    parsedddImg()
-    parsejiqingyazhouImg()
+#     parse39vqImg()
+# #      
+#     parsedddImg()
+#     parsejiqingyazhouImg()

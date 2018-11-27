@@ -30,7 +30,9 @@ setup_sspanel()
 setup_ssr() 
 {
 	cd ${WORKDIR}
-	git clone -b manyuser https://github.com/themass/shadowsocksr.git
+	#	git clone -b manyuser https://github.com/ToyoDAdoubi/shadowsocksr.git
+	
+	git clone -b https://github.com/themass/shadowsocksr.git
 	cd shadowsocksr
 	bash setup_cymysql.sh
 	bash initcfg.sh

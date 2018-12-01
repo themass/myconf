@@ -85,10 +85,12 @@ class VideoParse(BaseParse):
                         soup = self.fetchUrl(ahref.get('href'), header)
                         main = soup.first("div",{"class":"player"})
                         if main!=None:
-                            match = videoApi.search(main.text)
-                            if match!=None:
-                                str= match.group(1)
-                                return "%s%s%s"%("http",str,".m3u8")
+                            texts = main.text.split("$")
+                            for text in texts:
+                                match = videoApi.search(text)
+                                if match!=None:
+                                    str= match.group(1)
+                                    return "%s%s%s"%("http",str,".m3u8")
             print url,'没有mp4'
             return None
         except Exception as e:

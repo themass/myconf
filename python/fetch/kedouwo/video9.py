@@ -47,7 +47,7 @@ class VideoUserParse(BaseParse):
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
-        soup = self.fetchUrl(url,header8)
+        soup = self.fetchUrl(baseurl9+url,header8)
         div = soup.first("div",{"class":"box movie_list"})
         if div!=None:
             lis = div.findAll("li")
@@ -93,7 +93,7 @@ class VideoUserParse(BaseParse):
                 soup = self.fetchUrl(baseurl9+video, header)
                 div   = soup.first("div",{"class":"player"})
                 if div !=None:
-                    texts = div.text.split("$")
+                    texts = unquote(str(div.text)).split("$")
                     for text in texts:
                         match = regVideoM3.search(text)
                         if match!=None:

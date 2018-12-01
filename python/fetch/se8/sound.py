@@ -32,19 +32,21 @@ class ChannelParse(BaseParse):
             dbVPN.commit()
             dbVPN.close()
     def soudChannel(self):
-        soup = self.fetchUrl(soundUrl)
-        div = soup.first("div",{"class":"box movie_list"})
         objs = []
-        if div!=None:
-            for li in div.findAll("li"):
-                a = li.first("a")
-                obj = {}
-                obj['name'] = a.first('h3').text
-                obj['baseurl'] = baseurl
-                obj['url'] = a.get('href')
-                obj['updateTime'] = datetime.datetime.now()
-                obj['pic'] = a.find('img').get('data-original', "")
-                objs.append(obj)
+        for i in range(1, 6): 
+            url = "%s%s%s"%(soundUrl.replace(".html", "-"),i,".html")
+            soup = self.fetchUrl(url)
+            div = soup.first("div",{"class":"box movie_list"})
+            if div!=None:
+                for li in div.findAll("li"):
+                    a = li.first("a")
+                    obj = {}
+                    obj['name'] = a.first('h3').text
+                    obj['baseurl'] = baseurl
+                    obj['url'] = a.get('href')
+                    obj['updateTime'] = datetime.datetime.now()
+                    obj['pic'] = a.find('img').get('data-original', "")
+                    objs.append(obj)
         return objs
             
             

@@ -68,13 +68,13 @@ class VideoParse(BaseParse):
                     videourl = urlparse(obj['url'])
                     obj['path'] = videourl.path
                     obj['updateTime'] = datetime.datetime.now()
-                    if mp4Url.count("m3u8")==0:
+                    if mp4Url.count("m3u8")==0 or mp4Url.count("url=")!=0:
                         obj['videoType'] = "webview"
                     else:
                         obj['videoType'] = "normal"
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
-                    print obj['name'],obj['url'],obj['pic']
+                    print obj['videoType'],obj['name'],obj['url'],obj['pic']
                     dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
@@ -94,13 +94,16 @@ class VideoParse(BaseParse):
                 ahref = iframe.get("src")
                 if ahref!=None:
                     soup = self.fetchUrl(ahref)
-                    scripts = soup.findAll("script")
-                    for script in scripts:
-                        if script.text!=None:
-                            content = unquote(str(script.text))
-                            match = regVideo.search(content)
-                            if match!=None: 
-                                return "http"+match.group(1)+'m3u8'
+                    iframe = soup.first("iframe")
+                    if iframe!=None:
+                        return iframe.get("src")
+#                     scripts = soup.findAll("script")
+#                     for script in scripts:
+#                         if script.text!=None:
+#                             content = unquote(str(script.text))
+#                             match = regVideo.search(content)
+#                             if match!=None: 
+#                                 return "http"+match.group(1)+'m3u8'
             print '没找到mp4'
             return None
         except Exception as e:

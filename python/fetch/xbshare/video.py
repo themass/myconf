@@ -83,7 +83,7 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url)
-            divs = soup.findAll("div",{'class':'play-list play-list-long'})
+            divs = soup.findAll("ul",{'class':'play-list play-list-long'})
             for div  in divs:
                 ahref = div.first("a")
                 soup = self.fetchContentUrl(ahref.get("href"))

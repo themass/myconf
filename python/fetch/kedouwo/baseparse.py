@@ -20,6 +20,7 @@ baseurl5 = "http://www.smtav01.info/"
 baseurl6 = "http://www.91av.biz"
 baseurl7 = "http://102klav.xyz"
 baseurl8 = "https://8xqc.com"
+baseurl9 = "http://www.92lu.co"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           'Cookie':"ASPro_3b178725fc4f483c1b3b540e9254fe69=rjglqktt458s6t79lurudu6u37; __51cke__=; __atuvc=5%7C34; __atuvs=5b7d8978e2390365001; __tins__19260318=%7B%22sid%22%3A%201534952887546%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279466%7D; __tins__18963094=%7B%22sid%22%3A%201534952887602%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279478%7D; __51laig__=27"}
@@ -50,6 +51,7 @@ regVideo = re.compile(r"src=\"(.*?)\"frameborder")
 regVideoM3 = re.compile(r"http(.*?)m3u8")
 regVideoMp4 = re.compile(r"http(.*?)mp4")
 regaotu = re.compile("videos/(.*?)/")
+lu92_path = re.compile("/?m=vod-detail-id-(.*?).html")
 class BaseParse(threading.Thread):
 
     def __init__(self):
@@ -110,6 +112,16 @@ class BaseParse(threading.Thread):
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
         with open("kedouwo/header8.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
+    def header9(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("kedouwo/header9.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

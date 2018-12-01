@@ -67,7 +67,7 @@ class ImgParse(BaseParse):
             return []
 
     def fetchImgItemsData(self, url, channel):
-        soup = self.fetchUrl(baseurl6,url)
+        soup = self.fetchUrl(baseurl7,url)
         datalist = soup.findAll("div",{"class":"x3 margin-top"})
         objs = []
         sortType = dateutil.y_m_d()

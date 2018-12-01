@@ -34,8 +34,11 @@ def parse58589sImg():
 def parse52cjgImg():
     imgop = img52cjg.ImgParse()
     imgop.run()
+def parsejjj382Img():
+    imgop = imgjjj382.ImgParse()
+    imgop.run()
 if __name__ == '__main__':
-    parse52cjgImg()
+    parsejjj382Img()
 #     parse39vqImg()
 # #      
 #     parsedddImg()

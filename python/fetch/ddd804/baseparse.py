@@ -114,7 +114,7 @@ class BaseParse(threading.Thread):
     def fetch52cjg(self, baseurl):
         try:
             soup = self.fetchUrl(baseurl,"/index/piclst/id/9.html")
-            menu = soup.first("div", {"class": "drop-menu"})
+            menu = soup.first("ul", {"class": "drop-menu"})
             channels=[]
             if menu!=None:
                 alist = menu.findAll('a')

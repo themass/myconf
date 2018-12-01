@@ -24,7 +24,7 @@ class VideoUserParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= item['url']
                 if i!=1:
-                    url= "%s%s%s%s"%(item['url'],'recent/',i,"/")
+                    url= ("%s"+base_videourl)%(item['url'],i)
                 print url
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
@@ -47,10 +47,10 @@ class VideoUserParse(BaseParse):
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
-        soup = self.fetchUrl(baseurl+url,header)
-        div = soup.first("ul", {"class": "videos"})
+        soup = self.fetchUrl(url,header)
+        div = soup.first("div", {"class": "list-videos"})
         if div!=None:
-            lis = div.findAll("div",{"class":"video"})
+            lis = div.findAll("div",{"class":"item  "})
             for li in lis:
                 #name,pic,url,userId,rate,updateTime,path
                 ahref = li.first("a")
@@ -61,8 +61,8 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = ahref.first("img")
-                obj['pic'] = img.get("src")
-                obj['name'] = img.get('alt')
+                obj['pic'] = img.get("data-original")
+                obj['name'] = ahref.get('title')
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "aotu"+videourl.path
@@ -88,14 +88,19 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(baseurl+url, header)
-            textarea  = soup.first("textarea")
-            if textarea!=None:
-                match = regVideo.search(textarea.text.replace(" ",""))
-                if match!=None:
-                    videoUrl =match.group(1)
-                    return videoUrl
-            print '没找到mp4'
+            match = regaotu.search(url)
+            if match!=None:
+                return "%s%s%s"%(baseurl,"/embed/",match.group(1))
+#             soup = self.fetchUrl(url, header)
+#             scripts  = soup.findAll("script")
+#             for script in script:
+#                 
+#             if textarea!=None:
+#                 match = regVideo.search(textarea.text.replace(" ",""))
+#                 if match!=None:
+#                     videoUrl =match.group(1)
+#                     return videoUrl
+            print url,'没有找到mp4'
             return None
         except Exception as e:
             print common.format_exception(e)

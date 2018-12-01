@@ -12,6 +12,7 @@ from BeautifulSoup import BeautifulSoup
 import re
 import os
 baseurl = "http://www.aotu79.com"
+base_videourl = "?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=post_date&from=%s&_=1543643654534"
 baseurl2= "https://www.v88hd.space/"
 baseurl3= "http://aiseying03.com/"
 baseurl4 = "http://www.7ma00.ml"
@@ -48,6 +49,7 @@ maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")
 regVideoM3 = re.compile(r"http(.*?)m3u8")
 regVideoMp4 = re.compile(r"http(.*?)mp4")
+regaotu = re.compile("videos/(.*?)/")
 class BaseParse(threading.Thread):
 
     def __init__(self):

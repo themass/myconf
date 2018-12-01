@@ -20,6 +20,8 @@ baseurl4 = "http://www.39vq.com"
 baseurl5 = "http://www.5wuji.com"
 baseurl6 = "http://www.58589s.com"
 baseurl7 = "https://www.52cjg.com"
+baseurl8 = "https://www.jjj382.com"
+
 maxCount = 5
 class BaseParse(threading.Thread):
 
@@ -129,6 +131,25 @@ class BaseParse(threading.Thread):
         except Exception as e:
             print common.format_exception(e)
     def fetch39vqHead(self, baseurl,name):
+        try:
+            soup = self.fetchUrl(baseurl,"/")
+            menus = soup.findAll("div", {"class": "menu"})
+            channels=[]
+            for menu in menus:
+                active = menu.first("a", {'class':"a2"}).text
+                if active.count(name) > 0:
+                    alist = menu.findAll('a')
+                    for item in alist:
+                        if item.get('href')!="/":
+                            obj={}
+                            obj['name']=item.text
+                            obj['url']=item.get('href')
+                            obj['baseurl']=baseurl
+                            channels.append(obj)
+            return channels
+        except Exception as e:
+            print common.format_exception(e)
+    def fetchjjj382(self, baseurl,name):
         try:
             soup = self.fetchUrl(baseurl,"/")
             menus = soup.findAll("div", {"class": "menu"})

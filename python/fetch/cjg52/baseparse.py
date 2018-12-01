@@ -13,7 +13,7 @@ import re
 import os
 baseurl = "https://www.52cjg.com"
 
-header = {'Cookie':'PHPSESSID=l7prtlep9hh306qp501g6ko087; __51cke__=; __tins__18993595=%7B%22sid%22%3A%201531658480685%2C%20%22vd%22%3A%2031%2C%20%22expires%22%3A%201531661383171%7D; __51laig__=31','User-Agent':
+header = {'Cookie':'PHPSESSID=p8s1tlsvnd590i800jajag0m51; __51cke__=; __tins__18993595=%7B%22sid%22%3A%201531658480685%2C%20%22vd%22%3A%2031%2C%20%22expires%22%3A%201531661383171%7D; __51laig__=31','User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r'getmovurl\.html", {id:(.*?),td:(.*?)},')

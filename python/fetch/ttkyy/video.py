@@ -81,7 +81,7 @@ class VideoParse(BaseParse):
             if ul!=None:
                 ahrefs = ul.findAll('a')
                 for ahref in ahrefs:
-                    if ahref.text=="高清点播":
+                    if ahref.text.count("小说")==0:
                         soup = self.fetchUrl(ahref.get('href'), header)
                         main = soup.first("div",{"class":"player"})
                         if main!=None:

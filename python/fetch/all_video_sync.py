@@ -111,7 +111,7 @@ def pase3():
     ttkyy_vip.parseVideo()
 def pase4():
     zanquye_vip.parseVideo()
-    diediaody_vip.parseVideo()
+    ###diediaody_vip.parseVideo()
     #####dadekai_vip.parseVideo()
     upianku_vip.parseVideo()
     vj69_vip.paserVideo()
@@ -134,8 +134,8 @@ def pase5():
     kpd36_vip.parseVideo()
     cili_vip.parseVideo()
 def pase6():
-#     se8_vip.parseVideo()
-#     ppyy55_vip.parseUserVideo()
+    se8_vip.parseVideo()
+    ppyy55_vip.parseUserVideo()
     s58589_vip.parseVideo()
     qh_vip.parseVideo()
     sifangpian_vip.parseVideo()

@@ -31,11 +31,11 @@ if __name__ == '__main__':
 ###     xoxo164_vip.pareImg()
 #     x2246_vip.parseImg()
 # # #     #需要翻墙
-#     jjr128_vip.pareImg()
+     jjr128_vip.pareImg()
 #     skswk9_img.parseImg()
 # # #     
 # # #     
-# #      
+# #      <ul><li><a class="this">在线视频</a></li><li><a href="/?m=vod-type-id-12.html">网友自拍</a></li><li><a href="/?m=vod-type-id-13.html">日韩无码</a></li><li><a href="/?m=vod-type-id-14.html">欧美视频</a></li><li><a href="/?m=vod-type-id-15.html">动漫卡通</a></li><li><a href="/?m=vod-type-id-16.html">其它视频</a></li><li><a href="/?m=vod-type-id-17.html">三级经典</a></li><li><a href="/?m=vod-type-id-18.html">强奸乱伦</a></li><li><a href="/?m=vod-type-id-19.html">变态另类</a></li><li><a href="/?m=vod-type-id-20.html">丝袜制服</a></li><li><a href="/?m=vod-type-id-21.html">激情3P</a></li></ul>
 # #     se8_vip.startWork()
 # #     se8_vip.parseGirlImg()
 # #     se8_vip.parseImg()

@@ -66,6 +66,7 @@ import cili_vip
 import nfss_vip
 import kedouwo_vip
 import ava99_vip
+import skswk9_img
 
 def pase1():
     #webview
@@ -102,6 +103,7 @@ def pase2():
   
     tianjiyy123_vip.parseVideo()
     #####tzzy1399_vip.parseVideo()
+    skswk9_img.parseVideo()
     
 def pase3():
     seman_vip.parseVideo()

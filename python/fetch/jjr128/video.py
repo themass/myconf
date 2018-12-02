@@ -40,7 +40,7 @@ class VideoUserParse(BaseParse):
             obj['pic']=''
             obj['rate']=1.2
             obj['channel']='1024clsmik_all'
-            obj['userId']='1024clsmik_'+name
+            obj['userId']='1024clsmik_'+ahref.text
             obj['showType']=3
             obj['channelType']='normal'
             channelList.append(obj)

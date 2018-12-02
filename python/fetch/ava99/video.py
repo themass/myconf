@@ -58,7 +58,7 @@ class VideoParse(BaseParse):
                 print '没有mp4 文件:', ahref.get("href")
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = meta.first('div',{"class":"mb-img"}).get("style").replace("background-image:url(","").replace(");","")
+            obj['pic'] = meta.first('div',{"class":"mb-img"}).get("style").replace("background-image:url(","").replace(");","").replace("https://pic.baidu.com.baidu-taobao-av.com","http://pic.baidu.com.baidu-taobao-av.com")
             pname = meta.first("p",{"class":"title"})
             if pname!=None:
                 obj['name'] = pname.text

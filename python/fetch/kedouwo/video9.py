@@ -97,7 +97,7 @@ class VideoUserParse(BaseParse):
                     for text in texts:
                         match = regVideoM3.search(text)
                         if match!=None:
-                            return "%s%s%s"%("https",match.group(1),"m3u8")
+                            return "%s%s%s"%("http",match.group(1),"m3u8")
             print '没找到mp4'
             return None
         except Exception as e:

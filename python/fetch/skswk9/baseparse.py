@@ -11,11 +11,12 @@ import sys
 import zlib
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "http://1024.skswk9.pw/pw/"
+baseurl = "http://1024.clsmik.xyz/pw/"
 img_channel_title = re.compile(r"\[[0-9]+P\]")
 img_channel_date = re.compile(r"\[[0-9\.]+\]")
-img_channels = {"唯美写真": "thread.php?fid=14&page=", "露出激情": "thread.php?fid=16&page=",
-                "网友自拍": "thread.php?fid=15&page=", "偷窥原创": "thread.php?fid=49&page="}
+img_channels = {"唯美写真": "thread-htm-fid-14-page-", "露出激情": "thread-htm-fid-16-page-",
+                "网友自拍": "thread-htm-fid-15-page-", "街拍偷拍": "thread-htm-fid-49-page-",
+                "丝袜美腿": "thread-htm-fid-21-page-","欧美风情": "thread-htm-fid-114-page-"}
 queue = MyQueue.MyQueue(20000)
 maxCount = 5
 

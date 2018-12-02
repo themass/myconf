@@ -33,7 +33,7 @@ class ImgParse(BaseParse):
         print self.t_obj['url']
         # 有分页
         for i in range(1, maxImgPage):
-            url = self.t_obj['url'] + str(i)
+            url = "%s%s%s"%(self.t_obj['url'], str(i),".html")
             count = self.update(url, ops, channel, i)
             dbVPN.commit()
             if count == 0:

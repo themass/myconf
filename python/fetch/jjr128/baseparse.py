@@ -14,8 +14,12 @@ import StringIO
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "http://www.gcp156.com"
+baseurl = "http://www.gc183.com"
 maxCount = 5
+video_iframe = re.compile("vod-detail-id-(.*?)/.html")
+video_url ="/?m=vod-play-id-%s-src-1-num-1.html"
+regVideo = re.compile(r"http(.*?)m3u8'")
+
 class BaseParse(threading.Thread):
 
     def __init__(self):

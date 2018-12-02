@@ -82,7 +82,7 @@ class ImgParse(BaseParse):
                     obj = {}
                     obj['name'] = ahref.first("div",{"class":"i-hotword-title"}).text
                     obj['url'] = ahref.get('href')
-                    obj['fileDate'] = ahref.first("span").text
+                    obj['fileDate'] = ahref.first("div",{"class":"i-hotword-num line-1"}).text
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel
                     obj['updateTime'] = datetime.datetime.now()

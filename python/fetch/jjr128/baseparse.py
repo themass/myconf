@@ -16,7 +16,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "http://www.gc183.com"
 maxCount = 5
-video_iframe = re.compile("vod-detail-id-(.*?)/.html")
+video_iframe = re.compile("vod-detail-id-(.*?)\.html")
 video_url ="/?m=vod-play-id-%s-src-1-num-1.html"
 regVideo = re.compile(r"http(.*?)m3u8'")
 

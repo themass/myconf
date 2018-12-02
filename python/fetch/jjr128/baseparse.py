@@ -11,7 +11,7 @@ from common import db_ops
 import re
 import gzip
 import StringIO
-import sys
+import sys,os
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "http://www.gc183.com"
@@ -50,7 +50,17 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', baseurl + url
         return BeautifulSoup('')
-
+    def header(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("jjr128/header.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        print content
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchHead(self, name):
         try:
             soup = self.fetchUrl('/')

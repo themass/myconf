@@ -67,6 +67,7 @@ import nfss_vip
 import kedouwo_vip
 import ava99_vip
 import skswk9_img
+import jjr128_vip
 
 def pase1():
     #webview
@@ -117,6 +118,7 @@ def pase4():
     #####dadekai_vip.parseVideo()
     upianku_vip.parseVideo()
     vj69_vip.paserVideo()
+    jjr128_vip.parseVideo()
    
     
 def pase5():

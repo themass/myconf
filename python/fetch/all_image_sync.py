@@ -20,6 +20,8 @@ import x2246_vip
 import ddd804_vip
 import xieegif_vip
 import mayi01_vip
+import ava99_vip
+import skswk9_img
 if __name__ == '__main__':
 # #     eroti_img.parseImg()
 #     singlove_vip.parseImg()
@@ -42,6 +44,8 @@ if __name__ == '__main__':
 #     ddd804_vip.parse3wujiImg()
     ddd804_vip.parse39vqImg()
     ddd804_vip.parse58589sImg()
+    ava99_vip.parseImg()
+    skswk9_img.parseImg()
 #     ddd804_vip.parsedddImg()
 #####     ddd804_vip.parsejiqingyazhouImg()
     

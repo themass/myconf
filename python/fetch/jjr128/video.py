@@ -89,7 +89,6 @@ class VideoUserParse(BaseParse):
         try:
             match = video_iframe.search(url)
             if match!=None:
-                print url,match.group(1)
                 soup = self.fetchUrl(video_url%(match.group(1)))
                 div = soup.first("div",{"class":"play_video"})
                 if div!=None:

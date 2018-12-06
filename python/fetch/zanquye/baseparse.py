@@ -10,7 +10,7 @@ from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
 import re
-import sys
+import sys,os
 reload(sys)
 sys.setdefaultencoding('utf8')
 # http://www.dehyc.com
@@ -57,7 +57,17 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
-
+    def header(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("zanquye/header.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        print content
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchContentUrlWithBase(self, url):
         count = 0
         while count < maxCount:

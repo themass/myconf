@@ -43,7 +43,7 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channelType']='movie'
             channelList.append(obj)
-        channelList.reverse()
+#         channelList.reverse()
         return  channelList
     def videoParse(self, channel, url):
         dataList = []
@@ -52,26 +52,30 @@ class VideoParse(BaseParse):
         for li in lis:
             ahref = li.first('a')
             if ahref!=None:
-                mp4Url  = self.parseDomVideo(ahref.get("href"))
-                if mp4Url==None:
-                    continue
-                if mp4Url.count('.html')!=0 :
-                    print mp4Url,"爱奇艺，忽略"
-                    continue
-                obj = {}
-                obj['url'] = mp4Url
-                img = ahref.first("img")
-                if img.get('data-original').count("http")>0:
-                    obj['pic'] = img.get('data-original')
-                else:
-                    obj['pic'] = baseurl+img.get('data-original')
-                obj['name'] = ahref.get("title")
-                obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
-                print obj['path'],obj['url'],obj['pic']
-                obj['updateTime'] = datetime.datetime.now()
-                obj['channel'] = channel
-                obj['baseurl'] = baseurl
-                dataList.append(obj)
+                match = videoId.search(ahref.get("href"))
+                if match!=None:
+                    Id= match.group(1)
+                    mp4Url  = self.parseDomVideo(Id)
+                    if mp4Url==None:
+                        continue
+                    if mp4Url.count('.html')!=0 :
+                        print mp4Url,"爱奇艺，忽略"
+                        continue
+                    obj = {}
+                    obj['url'] = mp4Url
+                    img = ahref.first("img")
+                    if img.get('data-original').count("http")>0:
+                        obj['pic'] = img.get('data-original')
+                    else:
+                        obj['pic'] = baseurl+img.get('data-original')
+                    obj['name'] = ahref.get("title")
+                    obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
+                    print obj['path'],obj['url'],obj['pic']
+                    obj['updateTime'] = datetime.datetime.now()
+                    obj['channel'] = channel
+                    obj['baseurl'] = baseurl
+                    dataList.append(obj)
+                    time.sleep(2)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -85,24 +89,24 @@ class VideoParse(BaseParse):
         header = {'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
-            soup = self.fetchUrl(url, header)
-            ul = soup.first('div',{"id":'vlink_1'})
-            if ul!=None:
-                ahrefs = ul.findAll('a')
-                for ahref in ahrefs:
-                    soup = self.fetchUrl(ahref.get('href'), header)
-                    main = soup.first("div",{"class":"player mb"})
-                    if main!=None:
-                        scripts = main.findAll("script")
-                        for sc in scripts:
-                            if sc.get("src")!=None and sc.get("src").count("/upload/playdata")>0:
-                                text = self.fetchContentUrlWithBase(baseurl+sc.get("src"), header)
-                                texts = unquote(text).split("$")
-                                for text in texts:
-                                    match = videoApi.search(text)
-                                    if match!=None:
-                                        str= match.group(1)
-                                        return "%s%s%s"%("http",str,".m3u8")
+#             soup = self.fetchUrl(url, header)
+#             ul = soup.first('div',{"id":'vlink_1'})
+#             if ul!=None:
+#                 ahrefs = ul.findAll('a')
+#                 for ahref in ahrefs:
+            soup = self.fetchUrl("%s%s%s"%("/vodplayhtml/",url,"-1-1.html"), header)
+            main = soup.first("div",{"class":"player mb"})
+            if main!=None:
+                scripts = main.findAll("script")
+                for sc in scripts:
+                    if sc.get("src")!=None and sc.get("src").count("/upload/playdata")>0:
+                        text = self.fetchContentUrlWithBase(baseurl+sc.get("src"), header)
+                        texts = unquote(text).split("$")
+                        for text in texts:
+                            match = videoApi.search(text)
+                            if match!=None:
+                                str= match.group(1)
+                                return "%s%s%s"%("http",str,".m3u8")
             print url,'没有mp4'
             return None
         except Exception as e:

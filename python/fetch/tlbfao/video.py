@@ -112,6 +112,17 @@ class VideoParse(BaseParse):
                         if match!=None:
                             str= match.group(1).replace("\/","/")
                             return "%s%s%s"%("http",str,".m3u8")
+            soup = self.fetchUrl("%s%s%s"%("/index.php/vod/play/id/",url,"/sid/2/nid/1.html"), header)
+            main = soup.first("div",{"class":"iplays"})
+            if main!=None:
+                scripts = main.findAll("script")
+                for sc in scripts:
+                    texts = unquote(sc.text).split('"url":')
+                    for text in texts:
+                        match = videoApi.search(text)
+                        if match!=None:
+                            str= match.group(1).replace("\/","/")
+                            return "%s%s%s"%("http",str,".m3u8")
             print url,'没有mp4'
             return None
         except Exception as e:

@@ -70,7 +70,7 @@ class VideoParse(BaseParse):
                         name = name.replace(match.group(),"")
                         if name=="":
                             name = "日韩爽片"
-                    obj['name'] = name
+                    obj['name'] = name.replace("'", "")
                     print obj['name'],mp4Url,obj['pic']
     
                     videourl = urlparse(obj['url'])

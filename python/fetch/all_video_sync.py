@@ -94,27 +94,22 @@ def pase1():
     nfss_vip.parseVideo3()
     nfss_vip.parseVideo4()
 def pase2():
-#     sexx77_vip.parseVideo()
-#     singlovevideop = singlove.video.VideoParse()
-#     singlovevideop.run()
-#   
-#     ####yezmw_vip.parseVideo()
-#     ####x2246_vip.parseVideo()
-#     ax98_vip.parseVideo()
-#   
-#     tianjiyy123_vip.parseVideo()
-#     #####tzzy1399_vip.parseVideo()
-#     skswk9_img.parseVideo()
-    ir6yv = ir6y.video.VideoParse()
-    ir6yv.run()
-    urbanhenta_vip.parseVideo()
+    sexx77_vip.parseVideo()
+    singlovevideop = singlove.video.VideoParse()
+    singlovevideop.run()
+   
+    ####yezmw_vip.parseVideo()
+    ####x2246_vip.parseVideo()
+    ax98_vip.parseVideo()
+   
+    tianjiyy123_vip.parseVideo()
+    #####tzzy1399_vip.parseVideo()
+    skswk9_img.parseVideo()
+###ir6yv = ir6y.video.VideoParse()
+###     ir6yv.run()
+####    urbanhenta_vip.parseVideo()
     wuji3_vip.parseVideo()
-    duotv_vip.parseVideo()
-    xoxo164videop = xoxo164.video.VideoParse()
-    xoxo164videop.run()
-    iir44_vip.parseVideo()
-    fff64_vip.parseVideo()
-    zxdy_vip.parseVideo()
+   ##### duotv_vip.parseVideo()
     sp1769_vip.parseVideo()
     
 def pase3():

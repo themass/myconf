@@ -25,7 +25,7 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= ch['url']
                 if i!=1:
-                    url= "%s%s%s"%(ch['url'].replace('.html','-'),i,'.html')
+                    url= "%s%s%s"%(ch['url'].replace('.html','/page/'),i,'.html')
                 self.videoParse(ch['channel'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -48,13 +48,13 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        lis = soup.findAll("li", {"class": "p1 m1"})
+        lis = soup.findAll("div",{"class":"v-pic"})
         for li in lis:
             ahref = li.first('a')
             if ahref!=None:
                 match = videoId.search(ahref.get("href"))
                 if match!=None:
-                    Id= match.group(3)
+                    Id= match.group(1)
                     mp4Url  = self.parseDomVideo(Id)
                     if mp4Url==None:
                         continue
@@ -63,13 +63,21 @@ class VideoParse(BaseParse):
                         continue
                     obj = {}
                     obj['url'] = mp4Url
-                    img = ahref.first("img")
-                    if img.get('data-original').count("http")>0:
-                        obj['pic'] = img.get('data-original')
+                    match = picUrl.search(str(li))
+                    if match!=None:
+                        obj['pic']="%s%s%s"%("http",match.group(1),"jpg")
                     else:
-                        obj['pic'] = baseurl+img.get('data-original')
+                        obj['pic']=''
+#                     img = li.first("img")
+#                     if img!=None and img.get('data-src')!=None:
+#                         if img.get('data-sr').count("http")>0:
+#                             obj['pic'] = img.get('data-sr')
+#                         else:
+#                             obj['pic'] = baseurl+img.get('data-sr')
+#                     else:
+#                         obj['pic']=''
                     obj['name'] = ahref.get("title")
-                    obj['path'] = "%s%s%s11"%(channel,"-",obj['name'])
+                    obj['path'] = "%s%s%s22"%(channel,"-",obj['name'])
                     print obj['path'],obj['url'],obj['pic']
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
@@ -93,16 +101,16 @@ class VideoParse(BaseParse):
 #             if ul!=None:
 #                 ahrefs = ul.findAll('a')
 #                 for ahref in ahrefs:
-            soup = self.fetchUrl("%s%s%s"%("/vod-play-id-",url,"-src-1-num-1.html"), header)
-            main = soup.first("div",{"class":"player mb"})
+            soup = self.fetchUrl("%s%s%s"%("/index.php/vod/play/id/",url,"/sid/1/nid/1.html"), header)
+            main = soup.first("div",{"class":"iplays"})
             if main!=None:
                 scripts = main.findAll("script")
                 for sc in scripts:
-                    texts = unquote(sc.text).split("$")
+                    texts = unquote(sc.text).split('"url":')
                     for text in texts:
                         match = videoApi.search(text)
                         if match!=None:
-                            str= match.group(1)
+                            str= match.group(1).replace("\/","/")
                             return "%s%s%s"%("http",str,".m3u8")
             print url,'没有mp4'
             return None

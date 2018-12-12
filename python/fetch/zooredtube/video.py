@@ -64,7 +64,7 @@ class VideoParse(BaseParse):
             obj['url'] = mp4Url
             img = meta.first('img')
             obj['pic'] = img.get("src")
-            obj['name'] = img.get("alt")
+            obj['name'] = img.get("alt").replace("'","")
 
             videourl = urlparse(obj['url'])
             obj['path'] = videourl.path

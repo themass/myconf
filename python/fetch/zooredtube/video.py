@@ -47,7 +47,7 @@ class VideoParse(BaseParse):
         obj['rate']=1.2
         obj['channel']='zooredtube'
         obj['showType']=3
-        obj['channelType']='normal'
+        obj['channelType']='renshou_all'
         channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):

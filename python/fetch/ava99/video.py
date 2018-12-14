@@ -53,7 +53,7 @@ class VideoParse(BaseParse):
             obj = {}
             ahref = meta.first("a")
             if ahref!=None:
-                print ahref.get("href")
+                print ahref.get("href"),type(ahref.get("href"))
                 match = videoId.search(ahref.get("href"))
                 if match!=None:
                     Id= match.group(1)

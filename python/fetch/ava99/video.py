@@ -86,7 +86,7 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, id):
         try:
             soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
-            div = soup.first("div",{'align':'center'})
+            div = soup.first("div",{'class':'container'})
             if div!=None:
                 scripts = div.findAll('script')
                 for script in scripts:

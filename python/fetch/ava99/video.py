@@ -51,7 +51,7 @@ class VideoParse(BaseParse):
         metas = soup.findAll("li",{"class":"col-md-2 col-sm-3 col-xs-4"})
         for meta in metas:
             obj = {}
-            ahref = meta.first("a")
+            ahref = meta.first("a") 
             if ahref!=None:
                 print ahref.get("href"),type(str(ahref.get("href")))
                 match = videoId.search(str(ahref.get("href")))

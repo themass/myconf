@@ -91,6 +91,7 @@ class VideoParse(BaseParse):
                 scripts = div.findAll('script')
                 for script in scripts:
                         text = unquote(script.text)
+                        print text
                         texts = text.split("$")
                         for item in texts:
                             match = regVideo.search(item)

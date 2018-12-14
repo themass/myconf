@@ -52,26 +52,27 @@ class VideoParse(BaseParse):
         for meta in metas:
             obj = {}
             ahref = meta.first("a")
-            match = videoId.search(ahref.get("href"))
-            if match!=None:
-                Id= match.group(1)
-                mp4Url  = self.parseDomVideo(Id)
-                if mp4Url == None:
-                    print '没有mp4 文件:', ahref.get("href")
-                    continue
-                obj['url'] = mp4Url
-                obj['pic'] = ahref.get("data-original")
-                pname = ahref.get("title")
-                obj['name'] = pname
-    
-                videourl = urlparse(mp4Url)
-                obj['path'] = 'ava99_'+videourl.path
-                obj['updateTime'] = datetime.datetime.now()
-                obj['channel'] = channel
-                obj['videoType'] = "normal"
-                obj['baseurl'] = baseurl
-                print obj['name'],obj['videoType'],obj['url'],obj['pic']
-                dataList.append(obj)
+            if ahref!=None:
+                match = videoId.search(ahref.get("href"))
+                if match!=None:
+                    Id= match.group(1)
+                    mp4Url  = self.parseDomVideo(Id)
+                    if mp4Url == None:
+                        print '没有mp4 文件:', ahref.get("href")
+                        continue
+                    obj['url'] = mp4Url
+                    obj['pic'] = ahref.get("data-original")
+                    pname = ahref.get("title")
+                    obj['name'] = pname
+        
+                    videourl = urlparse(mp4Url)
+                    obj['path'] = 'ava99_'+videourl.path
+                    obj['updateTime'] = datetime.datetime.now()
+                    obj['channel'] = channel
+                    obj['videoType'] = "normal"
+                    obj['baseurl'] = baseurl
+                    print obj['name'],obj['videoType'],obj['url'],obj['pic']
+                    dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

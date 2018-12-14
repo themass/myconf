@@ -52,10 +52,9 @@ class VideoParse(BaseParse):
         for meta in metas:
             obj = {}
             ahref = meta.first("a") 
-            print ahref 
             if ahref!=None:
-                print ahref.get("href")
-                match = videoId.search(str(ahref.get("href")))
+                ahref2 = meta.first("div",{"class":"title"}).first("a")
+                match = videoId.search(str(ahref2.get("href")))
                 if match!=None:
                     Id= match.group(1)
                     mp4Url  = self.parseDomVideo(Id)
@@ -64,7 +63,7 @@ class VideoParse(BaseParse):
                         continue
                     obj['url'] = mp4Url
                     obj['pic'] = ahref.get("data-original")
-                    pname = ahref.get("title")
+                    pname = ahref2.get("title")
                     obj['name'] = pname
         
                     videourl = urlparse(mp4Url)

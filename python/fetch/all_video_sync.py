@@ -72,6 +72,7 @@ import f8dy_vip
 import tlbfao_vip
 import ysw88_vip
 import teshiw_vip
+import newlynet_vip
 
 def pase1():
     #webview
@@ -98,6 +99,7 @@ def pase1():
     nfss_vip.parseVideo3()
     nfss_vip.parseVideo4()
     f8dy_vip.parseVideo()
+    newlynet_vip.parseVideo()
 def pase2():
     sexx77_vip.parseVideo()
     singlovevideop = singlove.video.VideoParse()

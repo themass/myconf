@@ -83,8 +83,12 @@ class VideoParse(BaseParse):
                 ahref = div.first("a")
                 divTitle = div.first("div")
                 if ahref!=None and divTitle!=None and ahref.get("rel")!=None:
+                    h5 = div.first("h5")
+                    name = divTitle.text
+                    if h5!=None:
+                        name = h5.text
                     obj = {}
-                    obj['name']=divTitle.text
+                    obj['name']=name
                     obj['url']=ahref.get("href")
                     urls.append(obj)
             

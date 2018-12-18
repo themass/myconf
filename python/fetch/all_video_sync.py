@@ -68,6 +68,10 @@ import kedouwo_vip
 import ava99_vip
 import skswk9_img
 import jjr128_vip
+import f8dy_vip
+import tlbfao_vip
+import ysw88_vip
+import teshiw_vip
 
 def pase1():
     #webview
@@ -93,6 +97,7 @@ def pase1():
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo3()
     nfss_vip.parseVideo4()
+    f8dy_vip.parseVideo()
 def pase2():
     sexx77_vip.parseVideo()
     singlovevideop = singlove.video.VideoParse()
@@ -111,13 +116,15 @@ def pase2():
     wuji3_vip.parseVideo()
    ##### duotv_vip.parseVideo()
     sp1769_vip.parseVideo()
-    
+    tlbfao_vip.parseVideo()
+    ysw88_vip.parseVideo()
 def pase3():
     seman_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kump4_vip.parseVideo()
     xbshare_vip.parseVideo()
     ttkyy_vip.parseVideo()
+    teshiw_vip.parseVideo()
 def pase4():
     zanquye_vip.parseVideo()
     ###diediaody_vip.parseVideo()

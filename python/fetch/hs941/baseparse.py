@@ -18,7 +18,7 @@ maxCount = 3
 playVideo = re.compile(r"varvHLSurl=(.*)\(\"(.*)\.m3u8")
 playVideo2 = re.compile(r"varplayurl=(.*)\(\"(.*)\.m3u8")
 playVideo3 = re.compile(r"file:(.*)\(\"(.*)\"\),")
-urlMap = {"mp4":"https://play.99thingz.com","mp42":"https://p.672sp.com","jav":"http://p2.164d.com"}
+urlMap = {"mp4":"https://play.4xtware.com","mp42":"https://p.672sp.com","jav":"http://p2.164d.com"}
 
 class BaseParse(threading.Thread):
 

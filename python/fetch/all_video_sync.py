@@ -149,7 +149,7 @@ def pase5():
     ggfuil_vip.parseVideo()
     hanpian_vip.parseVideo()
     fuli750_vip.parseVideo()
-    ####hs941_vip.parseVideo()
+    hs941_vip.parseVideo()
     kpd36_vip.parseVideo()
     cili_vip.parseVideo()
 def pase6():

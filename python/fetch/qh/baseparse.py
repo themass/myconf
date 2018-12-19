@@ -12,11 +12,10 @@ from BeautifulSoup import BeautifulSoup
 import re
 import os
 baseurl = "http://91k.info/"
-baseurl2 = "http://v.qh8.me"
+baseurl2 = "http://www.li7.me"
 baseurl3 = "http://www.360p.me"
 
-header = {'Cookie':'UM_distinctid=163a67e76662dd-061c8c9af4c49b-454c092b-1fa400-163a67e7668392; CNZZDATA4033785=cnzz_eid%3D195820722-1527501775-%26ntime%3D1527508095; CNZZDATA1263493226=264016099-1527504192-%7C1527507999','User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
+header = {'Cookie':'UM_distinctid=16789c552112-001304c5a39255-47e1039-1fa400-16789c55214267; CNZZDATA1262660136=723367507-1544202035-%7C1545233404', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"mac_url=unescape\('http(.*?)m3u8")
 

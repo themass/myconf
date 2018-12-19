@@ -21,7 +21,3 @@ def parseVideo():
 
 if __name__ == '__main__':
     parseVideo()
-    
-#     textop = text.TextChannelParse()
-#     textop.run()
-#     pareImg()

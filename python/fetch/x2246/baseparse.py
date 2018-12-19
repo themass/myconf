@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re,os
 # http://www.dehyc.com
-baseurl = "https://www.2284yy.com"
+baseurl = "https://www.2422yy.com"
 headerUrl='/js/LayoutIt.js'
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}

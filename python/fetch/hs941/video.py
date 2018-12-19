@@ -47,8 +47,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("ul", {"class": "towmd widall videolist"})
-        metas = div.findAll('li',{"class":"list_box box_homecon"})
+        metas = soup.findAll('li',{"class":"list_box box_homecon"})
         for meta in metas:
             obj = {}
             ahref = meta.first("a")

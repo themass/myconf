@@ -38,7 +38,7 @@ class VideoParse(BaseParse):
             for item in hrefs:
                 obj={}
                 obj['name']=item.text
-                obj['url']=item.get("href")
+                obj['url']=item.get("href").replace(baseurl,"")
                 obj['baseurl']=baseurl
                 obj['updateTime']=datetime.datetime.now()
                 obj['pic']=''

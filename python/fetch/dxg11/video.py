@@ -94,16 +94,13 @@ class VideoParse(BaseParse):
                 ahref = iframe.get("src")
                 if ahref!=None:
                     soup = self.fetchUrl(ahref)
-                    iframe = soup.first("iframe")
-                    if iframe!=None:
-                        return iframe.get("src")
-#                     scripts = soup.findAll("script")
-#                     for script in scripts:
-#                         if script.text!=None:
-#                             content = unquote(str(script.text))
-#                             match = regVideo.search(content)
-#                             if match!=None: 
-#                                 return "http"+match.group(1)+'m3u8'
+                    scripts = soup.findAll("script")
+                    for script in scripts:
+                        if script.text!=None:
+                            content = unquote(str(script.text))
+                            match = regVideo.search(content)
+                            if match!=None: 
+                                return "http"+match.group(1)+'m3u8'
             print '没找到mp4'
             return None
         except Exception as e:

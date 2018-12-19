@@ -11,10 +11,9 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "http://www.kpd82.com"
+baseurl = "http://www.kkppdd68.com"
 
-header = {'Cookie':'UM_distinctid=16529ac59740-084dfe7512bd8e-47e1039-1fa400-16529ac5977243; fikker-4gJQ-VSIJ=MQls4GDSRcImxuLcNJd7NMxLDStI0srq; fikker-4gJQ-VSIJ=MQls4GDSRcImxuLcNJd7NMxLDStI0srq; CNZZDATA1274319095=208496749-1534001853-null%7C1534006406; CNZZDATA1274141679=1940873741-1533998159-null%7C1534007965; fikker-NujU-rLFW=Oktg0GvorcheDc25xWRmRLjSVwb76kBS; fikker-NujU-rLFW=Oktg0GvorcheDc25xWRmRLjSVwb76kBS; fikker-d1fm-MUvU=NQ6e2qFujuVQTo2qtERKx3ICpoH9fchq; fikker-d1fm-MUvU=NQ6e2qFujuVQTo2qtERKx3ICpoH9fchq; fikker-8INA-OGRo=riJqBoXYrU6EpUdOOgpqNktLfEbLLu89; fikker-8INA-OGRo=riJqBoXYrU6EpUdOOgpqNktLfEbLLu89; fikker-Mj9K-O6Kl=cTkDYNQ47bUxNRUnIxaTurmNe8ETiFyT; fikker-Mj9K-O6Kl=cTkDYNQ47bUxNRUnIxaTurmNe8ETiFyT; vcnzdmlusername=themass; vcnzdmluserid=194056; vcnzdmlgroupid=1; vcnzdmlrnd=HcBPFRl3teW9rN8MMoKw; vcnzdmlauth=d8e8ccc200438e3b766af8f7ea6b4bb5; vcnzdcheckplkey=1534011045%2Ce794e15a9307a7c6e49289b21165fa85%2Cd3b151f56d8ec4483d5346e665d2389e','User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
+header = {'Cookie':'fikker-kDCn-Knm8=3pmXLpQ2Ut1bGxwBalsBMfI8JV7byngM; fikker-kDCn-Knm8=3pmXLpQ2Ut1bGxwBalsBMfI8JV7byngM; UM_distinctid=167c76f3006b0-06f52cf45c635c-47e1039-1fa400-167c76f300727; CNZZDATA1274942995=1664482707-1545238830-null%7C1545238830; CNZZDATA1271960350=1876327202-1545238100-null%7C1545238100', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")
 

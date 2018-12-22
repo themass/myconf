@@ -38,34 +38,10 @@ class BaseParse(threading.Thread):
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
     def header(self,name):
-        soup = self.fetchUrl("", header)
-        objs =[]
-        uls = soup.findAll('ul',{'class':'nav_menu clearfix'})
-        for ul in uls:
-            active = ul.first("li",{'class':'active'})
-            if active.text==name:
-                alist = ul.findAll('a')
-                for ahref in alist:
-                    obj ={}
-                    obj['name']=ahref.text
-                    obj['url']=ahref.get('href')
-                    objs.append(obj)
-        return objs
-    def headerVideo(self):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("%s/%s"%("fff64","header.html")) as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def headerText(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("%s/%s"%("fff64","header2.html")) as f:
+        with open("%s/%s"%("fff64",name)) as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

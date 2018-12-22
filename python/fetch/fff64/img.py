@@ -22,7 +22,7 @@ class ImgParse(BaseParse):
             ops.inertImgChannel(channel)
         dbVPN.commit()
         for obj in channels:
-            channel = obj['url']
+            channel = obj['name']
             for i in range(1, maxImgPage):
                 url = obj['url']
                 if i!=1:
@@ -80,7 +80,7 @@ class ImgParse(BaseParse):
                     obj = {}
                     name = ahref.text
                     obj['name'] = name
-                    print name
+                    print channel,name
                     obj['url'] = ahref.get('href')
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel

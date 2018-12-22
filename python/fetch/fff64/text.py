@@ -25,8 +25,6 @@ class TextChannelParse(BaseParse):
             print channel
         dbVPN.commit()
         dbVPN.close()
-        
-        
         for item in objs:
             print '开始解析频道---',item
             try:
@@ -46,8 +44,12 @@ class TextChannelParse(BaseParse):
             except Exception as e:
                 print common.format_exception(e)
     def textChannel(self):
-        objs = self.header("小说专区")
-        for obj in objs:
+        objs = []
+        ahrefs = self.headerText()
+        for ahref in ahrefs:
+            obj = {}
+            obj['name']=ahref.text
+            obj['url']=ahref.get('href')
             obj['baseurl']=baseurl
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
@@ -55,6 +57,7 @@ class TextChannelParse(BaseParse):
             obj['channel']=obj['url']
             obj['showType']=3
             obj['channelType']='normal'
+            objs.append(obj)
         return  objs
 
     def update(self, url, ops, channel):
@@ -72,7 +75,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "box list channel"})
+            div = soup.first("div", {"class": "vodlist_ll box"})
             if div == None:
                 print '没有数据', url
                 return []
@@ -84,7 +87,7 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        obj['fileDate'] = ahref.first('span').text
+                        obj['fileDate'] = item.first('span').text
                         name = ahref.text.replace(obj['fileDate'],'')
                         obj['name'] = name
                         print name
@@ -106,7 +109,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"class": "box page_body"})
+        data = soup.first("div", {"class": "content"})
         if data != None:
             try:
                 obj = {}

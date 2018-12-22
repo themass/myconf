@@ -84,6 +84,7 @@ encoding//python/fetch/ff326/video.py=utf-8
 encoding//python/fetch/ff326_vip.py=utf-8
 encoding//python/fetch/fff64/__init__.py=utf-8
 encoding//python/fetch/fff64/baseparse.py=utf-8
+encoding//python/fetch/fff64/img.py=utf-8
 encoding//python/fetch/fff64/text.py=utf-8
 encoding//python/fetch/fff64/video.py=utf-8
 encoding//python/fetch/fff64_vip.py=utf-8

@@ -59,7 +59,10 @@ class ImgParse(BaseParse):
                     item = {}
                     item['itemUrl'] = obj['url']
                     item['picUrl'] = picItem
-                    ops.inertImgItems_item(item)
+                    try:
+                        ops.inertImgItems_item(item)
+                    except Exception as e:
+                        print 'error'
             except Exception as e:
                 print common.format_exception(e)
         return len(objs)

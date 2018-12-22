@@ -21,5 +21,9 @@ def parseText():
 def parseVideo():
     videop = video.VideoParse()
     videop.run()
+def parseImg():
+    imgop = img.ImgParse()
+    imgop.run()
 if __name__ == '__main__':
     parseText()
+    parseImg()

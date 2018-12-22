@@ -22,6 +22,7 @@ import xieegif_vip
 import mayi01_vip
 import ava99_vip
 import skswk9_img
+import fff64_vip
 if __name__ == '__main__':
 # #     eroti_img.parseImg()
 #     singlove_vip.parseImg()
@@ -31,7 +32,8 @@ if __name__ == '__main__':
 ###     xoxo164_vip.pareImg()
 #     x2246_vip.parseImg()
 # # #     #需要翻墙
-     jjr128_vip.pareImg()
+    jjr128_vip.pareImg()
+    fff64_vip.parseImg()
 #     skswk9_img.parseImg()
 # # #     
 # # #     

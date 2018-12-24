@@ -52,6 +52,7 @@ class DbOps(object):
     def getTextChannelItemsById(self, i, sortType):
         start = i * 40
         end = (i + 1) * 40
+        print "select i.file file,t.url url ,t.id id from  textitems_item i, textitems t where i.fileUrl=t.url and t.sortType='%s' order by i.id desc  limit %s,%s " % (sortType, start, end)
         self.conn.execute(
             "select i.file file,t.url url ,t.id id from  textitems_item i, textitems t where i.fileUrl=t.url and t.sortType='%s' order by i.id desc  limit %s,%s " % (sortType, start, end))
         return self.conn.fetchAll()

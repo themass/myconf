@@ -91,7 +91,7 @@ def pase1():
     kedouwo_vip.parseVideo()
     kedouwo_vip.parseVideo2()
     kedouwo_vip.parseVideo3()
-    kedouwo_vip.parseVideo4()
+#     kedouwo_vip.parseVideo4()
     kedouwo_vip.parseVideo5()
     kedouwo_vip.parseVideo6()
     kedouwo_vip.parseVideo7()

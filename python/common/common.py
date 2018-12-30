@@ -9,6 +9,10 @@ import os
 import socket
 import sys
 import traceback
+import base64
+
+def base64Decode(src):
+    return base64.b64decode(src)
 
 
 def get_script_name():

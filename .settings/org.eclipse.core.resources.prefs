@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//python/common/AESUtil.py=utf-8
 encoding//python/common/common.py=utf-8
 encoding//python/common/dateutil.py=utf-8
 encoding//python/common/db_ops.py=utf-8

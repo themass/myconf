@@ -18,7 +18,7 @@ baseurl2 = "https://www.6hu58.com/"
 baseurl3 = "http://www.605zyw.cc/"
 baseurl4 = "http://www.shixunziyuan.com/"
 baseurl5 = "https://xiaoluoli99.xyz/"
-
+baseurl6 = "http://www.11111dv.com:538/"
 header = {'User-Agent': 
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 header2 = {'User-Agent':
@@ -31,8 +31,10 @@ header4 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
           "Cookie":"__cfduid=d55dcdc487ac5cd4971bc3dd5285da05a1534655344; __51cke__=; __tins__19599367=%7B%22sid%22%3A%201534658677988%2C%20%22vd%22%3A%2019%2C%20%22expires%22%3A%201534661158722%7D; __51laig__=25"}
 
-maxCount = 3
+maxCount = 2
 regVideo = re.compile(r"http(.*?)m3u8")
+regVideo2 = re.compile(r"http(.*?)\.m3u8")
+
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
 regVideo6hu58 = re.compile(r"varvHLSurl=m3u8_host\+'(.*?)m3u8")
 shareVideoshixunziyuan = re.compile(r"http(.*?)/share/(.*?)")
@@ -99,6 +101,16 @@ class BaseParse(threading.Thread):
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
         with open("nvnvzx/header4.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
+    def header6(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("nvnvzx/header6.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

@@ -59,7 +59,7 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 if ahref.get("data-original").count("http")==0:
-                    obj['pic'] = "https://lrbfxl1.com/"+ahref.get("data-original")
+                    obj['pic'] = "https://lr.991video.com"+ahref.get("data-original")
                 else:
                     obj['pic'] = ahref.get("data-original")
                 obj['name'] = ahref.get("title")
@@ -77,6 +77,7 @@ class VideoUserParse(BaseParse):
                     obj['videoType'] = "normal"
                 print obj['videoType'],obj['name'],mp4Url,obj['pic']
                 dataList.append(obj)
+                
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -102,7 +103,7 @@ class VideoUserParse(BaseParse):
                         for item in texts:
                             match = regVideo6hu58.search(item)
                             if match!=None:
-                                return "%s%s%s"%("https://mmbfxl1.com/",match.group(1),'m3u8')
+                                return "%s%s%s"%("https://lr.991video.com",match.group(1),'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

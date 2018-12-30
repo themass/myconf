@@ -31,9 +31,12 @@ def parseVideo4():
 def parseVideo5():
     videop = video5.VideoParse()
     videop.run()
+def parseVideo6():
+    videop = video6.VideoUserParse()
+    videop.run()
 if __name__ == '__main__':
 #     parseVideo()
 #     parseVideo2()
 #     parseVideo3()
 #     parseVideo4()
-    parseVideo5()
+    parseVideo6()

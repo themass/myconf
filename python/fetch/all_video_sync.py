@@ -128,10 +128,10 @@ def pase3():
     ttkyy_vip.parseVideo()
     teshiw_vip.parseVideo()
 def pase4():
-    zanquye_vip.parseVideo()
-    ###diediaody_vip.parseVideo()
-    #####dadekai_vip.parseVideo()
-    upianku_vip.parseVideo()
+#     zanquye_vip.parseVideo()
+#     ###diediaody_vip.parseVideo()
+#     #####dadekai_vip.parseVideo()
+#     upianku_vip.parseVideo()
     vj69_vip.paserVideo()
     jjr128_vip.parseVideo()
    

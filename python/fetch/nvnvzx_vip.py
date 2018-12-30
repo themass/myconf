@@ -40,7 +40,7 @@ def parseVideo7():
 if __name__ == '__main__':
     #parseVideo()
     #parseVideo2()
-    parseVideo3()
+    #parseVideo3()
     parseVideo4()
     parseVideo5()
     parseVideo6()

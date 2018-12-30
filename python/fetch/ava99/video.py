@@ -54,26 +54,26 @@ class VideoParse(BaseParse):
             ahref = meta.first("a") 
             if ahref!=None:
                 ahref2 = meta.first("div",{"class":"title"}).first("a")
-                match = videoId.search(str(ahref2.get("href")))
-                if match!=None:
-                    Id= match.group(1)
-                    mp4Url  = self.parseDomVideo(Id)
-                    if mp4Url == None:
-                        print '没有mp4 文件:', ahref.get("href")
-                        continue
-                    obj['url'] = mp4Url
-                    obj['pic'] = ahref.get("data-original")
-                    pname = ahref2.get("title")
-                    obj['name'] = pname
-        
-                    videourl = urlparse(mp4Url)
-                    obj['path'] = 'ava99_'+videourl.path
-                    obj['updateTime'] = datetime.datetime.now()
-                    obj['channel'] = channel
-                    obj['videoType'] = "normal"
-                    obj['baseurl'] = baseurl
-                    print obj['name'],obj['videoType'],obj['url'],obj['pic']
-                    dataList.append(obj)
+#                 match = videoId.search(str(ahref2.get("href")))
+#                 if match!=None:
+#                     Id= match.group(1)
+                mp4Url  = self.parseDomVideo(ahref.get("href"))
+                if mp4Url == None:
+                    print '没有mp4 文件:', ahref.get("href")
+                    continue
+                obj['url'] = mp4Url
+                obj['pic'] = ahref.get("data-original")
+                pname = ahref2.get("title")
+                obj['name'] = pname
+    
+                videourl = urlparse(mp4Url)
+                obj['path'] = 'ava99_'+videourl.path
+                obj['updateTime'] = datetime.datetime.now()
+                obj['channel'] = channel
+                obj['videoType'] = "normal"
+                obj['baseurl'] = baseurl
+                print obj['name'],obj['videoType'],obj['url'],obj['pic']
+                dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -84,20 +84,25 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
 
-    def parseDomVideo(self, id):
+    def parseDomVideo(self, url):
         try: 
-            soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
+#             soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
+            soup = self.fetchUrl("%s%s"%(url.replace(".html",""),"play.html"), header)
             div = soup.first("div",{'class':'container'})
             if div!=None:
                 scripts = div.findAll('script')
                 for script in scripts:
-                        text = unquote(script.text)
-                        texts = text.split("$")
-                        for item in texts:
-                            match = regVideo.search(item)
-                            if match!=None:
-                                videoUrl =match.group(1)
-                                return "%s%s%s"%("http",videoUrl,'.m3u8')
+                    if script.get("src")!=None and script.get("src").count("/upload/playdata")>0:
+                        text = unquote(self.fetchContentUrl(script.get("src"),header))
+                        match = regVideoCode.search(text)
+                        if match!=None:
+                            text = common.base64Decode(match.group(1)) 
+                            texts = unquote(text).split("$")
+                            for item in texts:
+                                match = regVideo.search(item)
+                                if match!=None:
+                                    videoUrl =match.group(1)
+                                    return "%s%s%s"%("http",videoUrl,'.m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

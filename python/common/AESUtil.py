@@ -5,8 +5,6 @@ from Crypto.Cipher import AES
 from binascii import b2a_hex, a2b_hex
 import os
 from Crypto import Random
-
-
 class AESUtil:
     __BLOCK_SIZE_16 = BLOCK_SIZE_16 = AES.block_size
     def_key = "abcdefg123456!@#"

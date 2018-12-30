@@ -14,7 +14,7 @@ import os,sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "http://arcoc.org/"
-baseurl2 = "https://www.6hu58.com/"
+baseurl2 = "https://www.868hu.com/"
 baseurl3 = "http://www.605zyw.cc/"
 baseurl4 = "http://www.shixunziyuan.com/"
 baseurl5 = "https://xiaoluoli99.xyz/"

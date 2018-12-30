@@ -59,7 +59,7 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 if ahref.get("data-original").count("http")==0:
-                    obj['pic'] = "https://langren16.com/"+ahref.get("data-original")
+                    obj['pic'] = "https://lrbfxl1.com/"+ahref.get("data-original")
                 else:
                     obj['pic'] = ahref.get("data-original")
                 obj['name'] = ahref.get("title")

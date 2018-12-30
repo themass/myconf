@@ -73,32 +73,33 @@ import tlbfao_vip
 import ysw88_vip
 import teshiw_vip
 import newlynet_vip
+from fetch import nvnvzx, nvnvzx_vip
 
 def pase1():
     #webview
-#     for channel, url in ozsese.baseparse.channels.items():
-#         ozsesevideop = ozsese.video.VideoParse(channel, url)
-#         ozsesevideop.run()
-#     ####zy3838_vip.parseVideo()
-#     #####nomsgus_vip.parseVideo()
-#     lusibi_vip.parseVideo()
-#     hongxing_vip.parseVideo()
-    ####avhome11_vip.parseVideo()
-#     
-#     dxg11_vip.parseVideo()
-#     mastv54_vip.parseVideo()
-#     kedouwo_vip.parseVideo()
-#     kedouwo_vip.parseVideo2()
-#     kedouwo_vip.parseVideo3()
-#     kedouwo_vip.parseVideo4()
-#     kedouwo_vip.parseVideo5()
-#     kedouwo_vip.parseVideo6()
-#     kedouwo_vip.parseVideo7()
-#     nfss_vip.parseVideo()
-#     nfss_vip.parseVideo2()
-#     nfss_vip.parseVideo3()
-#     nfss_vip.parseVideo4()
-#     f8dy_vip.parseVideo()
+    for channel, url in ozsese.baseparse.channels.items():
+        ozsesevideop = ozsese.video.VideoParse(channel, url)
+        ozsesevideop.run()
+    ####zy3838_vip.parseVideo()
+    #####nomsgus_vip.parseVideo()
+    lusibi_vip.parseVideo()
+    hongxing_vip.parseVideo()
+    ###avhome11_vip.parseVideo()
+     
+    dxg11_vip.parseVideo()
+    mastv54_vip.parseVideo()
+    kedouwo_vip.parseVideo()
+    kedouwo_vip.parseVideo2()
+    kedouwo_vip.parseVideo3()
+    kedouwo_vip.parseVideo4()
+    kedouwo_vip.parseVideo5()
+    kedouwo_vip.parseVideo6()
+    kedouwo_vip.parseVideo7()
+    nfss_vip.parseVideo()
+    nfss_vip.parseVideo2()
+    nfss_vip.parseVideo3()
+    nfss_vip.parseVideo4()
+    f8dy_vip.parseVideo()
     newlynet_vip.parseVideo()
 def pase2():
     sexx77_vip.parseVideo()
@@ -127,11 +128,18 @@ def pase3():
     xbshare_vip.parseVideo()
     ttkyy_vip.parseVideo()
     teshiw_vip.parseVideo()
+    nvnvzx_vip.parseVideo()
+    nvnvzx_vip.parseVideo2()
+    nvnvzx_vip.parseVideo3()
+    nvnvzx_vip.parseVideo4()
+    nvnvzx_vip.parseVideo5()
+    nvnvzx_vip.parseVideo6()
+    nvnvzx_vip.parseVideo7()
 def pase4():
-#     zanquye_vip.parseVideo()
-#     ###diediaody_vip.parseVideo()
-#     #####dadekai_vip.parseVideo()
-#     upianku_vip.parseVideo()
+    zanquye_vip.parseVideo()
+    ###diediaody_vip.parseVideo()
+    #####dadekai_vip.parseVideo()
+    upianku_vip.parseVideo()
     vj69_vip.paserVideo()
     jjr128_vip.parseVideo()
    

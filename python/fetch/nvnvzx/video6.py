@@ -71,7 +71,7 @@ class VideoUserParse(BaseParse):
                     obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"
-                print obj['videoType'],obj['name'],mp4Url['mp4'],obj['pic']
+                print obj['videoType'],obj['name'],mp4Url,obj['pic']
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

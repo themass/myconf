@@ -90,41 +90,78 @@ class VideoParse(BaseParse):
         header = {'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
-            soup = self.fetchUrl(url, header)
-            div = soup.first("div",{'class':'playurl'})
-            if div!=None:
-                ahref = div.first('a')
-                if ahref!=None:
-                    soup = self.fetchUrl(ahref.get('href'), header)
-                    play_video = soup.first('div',{'class':'player'})
-                    if play_video!=None:
-                        script = play_video.first('script')
-                        if script!=None:
-                            content = unquote(str(script.text))
-                            match = regVideo.search(content)
-                            if match!=None:
-                                obj = json.loads(match.group(1))
-                                data = obj.get('Data',[])
-                                urlData = []
-                                for item in data:
-                                    itemData = item.get('playurls',[])
-                                    for itemUrl in itemData:
-                                        for itemurlOne in itemUrl:
-                                            if itemurlOne.count('http')>0:
-                                                urlData.append(itemurlOne)
-                                for item in urlData:
-                                    if item.count('m3u8'):
-                                        return item
-                                for item in urlData:
-                                    if item.count('/share/'):
-                                        return item
-                                if len(urlData)>0:
-                                    return urlData[0]
+            match = regVideoid.search(url)
+            if match!=None:
+                id = match.group(1)
+                vurl = "vod/%s/play.htm?%s-0-1"%(id,id)
+                soup = self.fetchUrl(vurl)
+                play_video = soup.first('div',{'class':'body mab5 pat5'})
+                if play_video!=None:
+                    script = play_video.first('script')
+                    if script!=None:
+                        content = unquote(str(script.text))
+                        match = regVideo.search(content)
+                        if match!=None:
+                            obj = json.loads(match.group(1))
+                            data = obj.get('Data',[])
+                            urlData = []
+                            for item in data:
+                                itemData = item.get('playurls',[])
+                                for itemUrl in itemData:
+                                    for itemurlOne in itemUrl:
+                                        if itemurlOne.count('http')>0:
+                                            urlData.append(itemurlOne)
+                            for item in urlData:
+                                if item.count('m3u8'):
+                                    return item
+                            for item in urlData:
+                                if item.count('/share/'):
+                                    return item
+                            if len(urlData)>0:
+                                return urlData[0]
             print '没找到mp4'
             return None
         except Exception as e:
             print common.format_exception(e)
             return None
+#         header = {'User-Agent':
+#                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
+#         try:
+#             soup = self.fetchUrl(url, header)
+#             div = soup.first("div",{'class':'playurl'})
+#             if div!=None:
+#                 ahref = div.first('a')
+#                 if ahref!=None:
+#                     soup = self.fetchUrl(ahref.get('href'), header)
+#                     play_video = soup.first('div',{'class':'player'})
+#                     if play_video!=None:
+#                         script = play_video.first('script')
+#                         if script!=None:
+#                             content = unquote(str(script.text))
+#                             match = regVideo.search(content)
+#                             if match!=None:
+#                                 obj = json.loads(match.group(1))
+#                                 data = obj.get('Data',[])
+#                                 urlData = []
+#                                 for item in data:
+#                                     itemData = item.get('playurls',[])
+#                                     for itemUrl in itemData:
+#                                         for itemurlOne in itemUrl:
+#                                             if itemurlOne.count('http')>0:
+#                                                 urlData.append(itemurlOne)
+#                                 for item in urlData:
+#                                     if item.count('m3u8'):
+#                                         return item
+#                                 for item in urlData:
+#                                     if item.count('/share/'):
+#                                         return item
+#                                 if len(urlData)>0:
+#                                     return urlData[0]
+#             print '没找到mp4'
+#             return None
+#         except Exception as e:
+#             print common.format_exception(e)
+#             return None
 
 def videoParse(queue):
     queue.put(VideoParse())

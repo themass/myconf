@@ -16,7 +16,7 @@ h_headers={'Cookie':"td_cookie=18446744069599001696; UM_distinctid=16267a7748620
                 'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl}
 maxCount = 3
 regVideo = re.compile(r"var ff_urls='(.*)';")
-
+regVideoid = re.compile(r"/vod/(.*)/")
 
 class BaseParse(threading.Thread):
 

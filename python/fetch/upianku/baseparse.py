@@ -15,7 +15,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 # http://www.dehyc.com
 baseurl = "http://www.iupian.com"
-aheader = {'Cookie':"__cfduid=db3a5eac8ecca2ff7a84d7332813f29951546156539; UM_distinctid=167fe1cbf6748-0966dec1e9adaa-47e1039-1fa400-167fe1cbf69978; CNZZDATA1274003904=1302380251-1546151534-http%253A%252F%252Fwww.iupian.com%252F%7C1546153394; _myFavMv=%5B%5D",
+aheader = {'Cookie':"__cfduid=db3a5eac8ecca2ff7a84d7332813f29951546156539; UM_distinctid=167fe1cbf6748-0966dec1e9adaa-47e1039-1fa400-167fe1cbf69978; _myFavMv=%5B%5D; PHPSESSID=vof1cd3g7k37bsh4jt5mdp5he3; CNZZDATA1274003904=1302380251-1546151534-http%253A%252F%252Fwww.iupian.com%252F%7C1546959477",
                 'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl}
 maxCount = 3
 regVideo = re.compile(r"var ff_urls='(.*)'")

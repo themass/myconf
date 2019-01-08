@@ -93,7 +93,7 @@ class VideoParse(BaseParse):
             match = regVideoid.search(url)
             if match!=None:
                 id = match.group(1)
-                vurl = "vod/%s/play.htm?%s-0-1"%(id,id)
+                vurl = "/vod/%s/play.htm?%s-0-1"%(id,id)
                 soup = self.fetchUrl(vurl)
                 play_video = soup.first('div',{'class':'body mab5 pat5'})
                 if play_video!=None:

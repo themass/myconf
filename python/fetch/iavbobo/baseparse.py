@@ -20,7 +20,7 @@ http://cdn.viparts.net/src2
 http://front.loneer.net/src2
 http://video.bobo.cloud/src2
 '''
-baseurl = "http://api.iavbobo.com"
+baseurl = "https://api.iavbobo.com"
 aheader = {'Cookie':"__cfduid=d32f5facd223cb71c985dcbb27b8de01e1529461416",
                 'User-Agent': 'okhttp/3.6.0', "Referer":baseurl,
                 "authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYW4iOiJIVUFXRUkiLCJicmFuZCI6IkhVQVdFSSIsInN5c3RlbU5hbWUiOiJBbmRyb2lkIiwic3lzdGVtVmVyc2lvbiI6IjguMC4wIiwidW5pcXVlIjoiNzE5MmM5M2RhNzYxZDQyYSIsImlhdCI6MTUzMjUzNTQ0NSwiZXhwIjoxNTMyNTcxNDQ1fQ.ySEOASaSZ156nYCwR3F_y3B5qOlI0FZFlsJbuINxaB8"}

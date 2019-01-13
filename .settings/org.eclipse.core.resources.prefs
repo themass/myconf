@@ -7,6 +7,7 @@ encoding//python/common/envmod.py=utf-8
 encoding//python/common/httputil.py=utf-8
 encoding//python/common/prod/db.py=utf-8
 encoding//python/common/prod/mongo.py=utf-8
+encoding//python/common/test.py=utf-8
 encoding//python/common/test/db.py=utf-8
 encoding//python/fetch/aaw51/__init__.py=utf-8
 encoding//python/fetch/aaw51/baseparse.py=utf-8

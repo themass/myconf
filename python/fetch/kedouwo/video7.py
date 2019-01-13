@@ -87,20 +87,19 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(baseurl7+url, header)
-            div   = soup.first("div",{"class":"info"})
+            div   = soup.first("div",{"class":"pages"})
             if div !=None:
-                ahref = div.first("a")
-                if ahref!=None:
-                    texts = self.fetchContentUrl(baseurl7+ahref.get("href"), header7).split(";")
+                    texts = div.text.split(";")
                     for  text in texts:
                         match = regVideoMp4.search(text)
-                        if match!=None:
-                            videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'mp4')
                         match = regVideoM3.search(text)
                         if match!=None:
                             videoUrl =match.group(1)
                             return "%s%s%s"%("http",videoUrl,'m3u8')
+                        if match!=None:
+                            videoUrl =match.group(1)
+                            return "%s%s%s"%("http",videoUrl,'mp4')
+                        
             print '没找到mp4'
             return None
         except Exception as e:

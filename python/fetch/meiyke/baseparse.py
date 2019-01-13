@@ -83,7 +83,7 @@ class BaseParse(threading.Thread):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("duotv/header.html") as f:
+        with open("meiyke/header.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         print content

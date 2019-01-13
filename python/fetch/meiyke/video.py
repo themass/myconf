@@ -30,24 +30,21 @@ class VideoParse(BaseParse):
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
-        soup = self.fetchUrl(baseurl)
-        div  = soup.first('ul',{'class':'h_nav_chn_ul'})
+        ahrefs = self.header(baseurl)
         channelList =[]
-        if div!=None:
-            ahrefs = div.findAll('a')
-            for ahref in ahrefs:
-                if ahref.text!='首页':
-                    obj={}
-                    obj['name']=ahref.text+"-浏览器打开"
-                    obj['url']=ahref.get('href')
-                    obj['baseurl']=baseurl
-                    obj['updateTime']=datetime.datetime.now()
-                    obj['pic']=''
-                    obj['rate']=0.7
-                    obj['channel']=ahref.text
-                    obj['showType']=3
-                    obj['channelType']='movie'
-                    channelList.append(obj)
+        for ahref in ahrefs:
+            if ahref.text!='首页':
+                obj={}
+                obj['name']=ahref.text+"-浏览器打开"
+                obj['url']=ahref.get('href')
+                obj['baseurl']=baseurl
+                obj['updateTime']=datetime.datetime.now()
+                obj['pic']=''
+                obj['rate']=0.7
+                obj['channel']=ahref.text
+                obj['showType']=3
+                obj['channelType']='sanji'
+                channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []

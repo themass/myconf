@@ -88,7 +88,7 @@ def pase1():
      
     dxg11_vip.parseVideo()
     mastv54_vip.parseVideo()
-    kedouwo_vip.parseVideo()
+    ####kedouwo_vip.parseVideo()
     kedouwo_vip.parseVideo2()
     kedouwo_vip.parseVideo3()
     kedouwo_vip.parseVideo4()

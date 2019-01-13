@@ -24,7 +24,7 @@ class VideoUserParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= item['url']
                 if i!=1:
-                    url= "%s%s%s%s"%(item['url'].replace('index-1.html',""),'index-',i,".html")
+                    url= "%s%s%s%s"%(item['url'].replace('.html',""),'-',i,".html")
                 print url
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
@@ -39,8 +39,8 @@ class VideoUserParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']='经典蝌蚪窝'
-            obj['userId']="v88hd"+ahref.text
+            obj['channel']='经典蝌蚪窝2'
+            obj['userId']="kd2"+ahref.text
             obj['showType']=3
             obj['channelType']='normal'
             channelList.append(obj)
@@ -48,9 +48,9 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(baseurl3+url,header3)
-        div = soup.first("ul", {"class": "movieList"})
+        div = soup.first("div", {"class": "box-video-list"})
         if div!=None:
-            lis = div.findAll("li")
+            lis = div.findAll("li",{"class":"col-md-2 col-sm-3 col-xs-4"})
             for li in lis:
                 #name,pic,url,userId,rate,updateTime,path
                 ahref = li.first("a")
@@ -60,12 +60,11 @@ class VideoUserParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                img = ahref.first("img")
-                obj['pic'] = img.get("src")
-                obj['name'] = img.get('alt')
+                obj['pic'] = ahref.get("data-original")
+                obj['name'] = ahref.get('title')
     
                 videourl = urlparse(obj['url'])
-                obj['path'] = "asy007"+videourl.path
+                obj['path'] = "asy1000"+videourl.path
                 obj['rate'] = 1.2
                 obj['updateTime'] = datetime.datetime.now()
                 obj['userId'] = userId
@@ -88,19 +87,20 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(baseurl3+url, header3)
-            DIV    = soup.first("div",{"class":"play-list"})
-            if DIV  !=None:
-                soup = self.fetchUrl(baseurl3+DIV.first("a").get("href"), header3)
-                scripts = soup.findAll('script')
-                for script in scripts:
-                    text = unquote(str(script.text))
-                    texts = text.split(",")
-                    for item in texts:
-                        match = regVideoM3.search(item)
-                        if match!=None:
-                            videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
+            match = videoId3.search(url)
+            if match!=None:
+                videoId = match.group(1)
+                videoUrlId = "/index.php?m=vod-play-id-%s-src-1-num-1.html"%(videoId)
+                soup = self.fetchUrl(baseurl3+videoUrlId, header3)
+                DIV    = soup.first("div",{"class":"dyplayer"})
+                if DIV  !=None:
+                        text = unquote(str(DIV.text))
+                        texts = text.split(",")
+                        for item in texts:
+                            match = regVideoM3.search(item)
+                            if match!=None:
+                                videoUrl =match.group(1)
+                                return "%s%s%s"%("http",videoUrl,'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

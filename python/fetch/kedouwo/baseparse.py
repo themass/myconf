@@ -15,6 +15,8 @@ baseurl = "http://www.papa345.com"
 base_videourl = "?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=post_date&from=%s&_=1543643654534"
 baseurl2= "https://www.v88hd.space/"
 baseurl3= "https://www.asy1000.com/"
+videoId3 = re.compile("vod-detail-id-(.*?).html")
+
 baseurl4 = "http://www.7mav4.club/"
 baseurl5 = "http://www.hnav01.xyz/"
 baseurl6 = "http://www.91av02.club/"

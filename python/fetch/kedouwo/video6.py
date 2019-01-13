@@ -22,29 +22,31 @@ class VideoUserParse(BaseParse):
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
-                url= "%s%s%s"%(item['url'],"?page=",i)
+                url= "%s%s%s"%(item['url'],"/page/",i)
                 print url
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
+        ahrefs = self.header6()
         channelList = []
-        obj={}
-        obj['name']="AV俱乐部"
-        obj['url']="/videos"
-        obj['baseurl']=baseurl6
-        obj['updateTime']=datetime.datetime.now()
-        obj['pic']=''
-        obj['rate']=1.2
-        obj['channel']='经典蝌蚪窝'
-        obj['userId']="AV俱乐部"
-        obj['showType']=3
-        obj['channelType']='normal'
-        channelList.append(obj)
+        for ahref in ahrefs:
+            obj={}
+            obj['name']=ahref.text
+            obj['url']=ahref.get('href').replace(baseurl6,"")
+            obj['baseurl']=baseurl6
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=''
+            obj['rate']=1.2
+            obj['channel']='经典蝌蚪窝'
+            obj['userId']="v88hd"+ahref.text
+            obj['showType']=3
+            obj['channelType']='normal'
+            channelList.append(obj)
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(baseurl6+url,header6)
-        lis = soup.findAll("div",{"class":"col-sm-6 col-md-4 col-lg-4"})
+        lis = soup.findAll("div",{"class":"item responsive-height col-md-4 col-sm-6 col-xs-12"})
         for li in lis:
             #name,pic,url,userId,rate,updateTime,path
             ahref = li.first("a")
@@ -56,10 +58,10 @@ class VideoUserParse(BaseParse):
             obj['url'] = mp4Url
             img = ahref.first("img")
             obj['pic'] = img.get("src")
-            obj['name'] = img.get('title')
+            obj['name'] = li.first("h3").text
 
             videourl = urlparse(obj['url'])
-            obj['path'] = "91av"+videourl.path
+            obj['path'] = "91av2"+videourl.path
             obj['rate'] = 1.2
             obj['updateTime'] = datetime.datetime.now()
             obj['userId'] = userId
@@ -82,7 +84,7 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(baseurl6+url, header4)
+            soup = self.fetchUrl(url, header4)
             iframe    = soup.first("iframe")
             if iframe  !=None and iframe.get("src").count("91.p9p")==0:
                 return iframe.get("src")

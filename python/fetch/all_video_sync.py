@@ -137,7 +137,6 @@ def pase4():
     zanquye_vip.parseVideo()
     ###diediaody_vip.parseVideo()
     #####dadekai_vip.parseVideo()
-    upianku_vip.parseVideo()
     vj69_vip.paserVideo()
     jjr128_vip.parseVideo()
    
@@ -168,7 +167,9 @@ def pase6():
     mayi01_vip.parseVideo()
     ff326_vip.parseVideo()
     ava99_vip.parseVideo()
-    
+def pase7():    
+    upianku_vip.parseVideo()
+
 def all():
     pase1()
     pase2()
@@ -192,6 +193,8 @@ if __name__ == '__main__':
         pase5()
     elif int(val)==6:
         pase6()
+    elif int(val)==7:
+        pase7()
     elif int(val)==10:
         all()
     else:

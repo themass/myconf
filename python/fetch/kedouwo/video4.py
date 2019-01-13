@@ -86,10 +86,11 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(url, header4)
+            soup = self.fetchUrl(baseurl4+url, header4)
             iframe    = soup.first("iframe")
-            if iframe  !=None and iframe.get("src").count("91.p9p")==0:
-                return iframe.get("src")
+            if iframe  !=None and iframe.get("src").count("91.p9p")==0 and iframe.get("src").count("http")==2 and iframe.get("src").count("url=")==1:
+                items= iframe.get("src").split("url=")
+                return items[1]
             print '没找到mp4',iframe.get("src")
             return None
         except Exception as e:

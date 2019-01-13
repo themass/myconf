@@ -90,7 +90,6 @@ class VideoUserParse(BaseParse):
             div    = soup.first("div",{"class":"play-page-left"})
             if div!=None:
                 text = unquote(str(div.text))
-                print text
                 texts = text.split(",")
                 for item in texts:
                     match = regVideoM3.search(item)

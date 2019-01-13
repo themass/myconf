@@ -134,17 +134,17 @@ def pase3():
     nvnvzx_vip.parseVideo5()
     nvnvzx_vip.parseVideo6()
 def pase4():
-#     zanquye_vip.parseVideo()
-#     ###diediaody_vip.parseVideo()
-#     #####dadekai_vip.parseVideo()
-#     upianku_vip.parseVideo()
+    zanquye_vip.parseVideo()
+    ###diediaody_vip.parseVideo()
+    #####dadekai_vip.parseVideo()
+    upianku_vip.parseVideo()
     vj69_vip.paserVideo()
     jjr128_vip.parseVideo()
    
     
 def pase5():
-#     meiyke_vip.parseVideo()
-#     sp878_vip.parseVideo()
+    meiyke_vip.parseVideo()
+    sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()
 ###    xoxo164_vip.pareVideo()
     tzzy1399_vip.parseVideo()

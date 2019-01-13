@@ -34,14 +34,15 @@ def fetchUrl(url):
     response = urllib2.urlopen(req, timeout=300)
     gzipped = response.headers.get(
         'Content-Encoding')  # 查看是否服务器是否支持gzip
-    content = response.read().decode('utf8', errors='replace')
-    return content
+    content = response.read().decode('utf8', errors='replace').replace("<![endif]-->","")
+    return  BeautifulSoup(content)
 if __name__ == '__main__':
-#     baseurl = "http://www.fuli750.com/api/payvideo.html"
-#     header = {'User-Agent':
-#           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
-#           "cookie":"__cfduid=daf97951d263f43b40aa880057d128ec61534232909; PHPSESSID=df01o1psnjpnr67df4k4q53s50; UM_distinctid=1653768772b33e-00e6b1d3653486-47e1039-1fa400-1653768772c5f; CNZZDATA1274203680=1684804072-1534228697-%7C1534234099",
-#           "X-Requested-With":"XMLHttpRequest"}
+    baseurl = "https://www.asy1000.com/"
+    header = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
+          "cookie":"__cfduid=daf97951d263f43b40aa880057d128ec61534232909; PHPSESSID=df01o1psnjpnr67df4k4q53s50; UM_distinctid=1653768772b33e-00e6b1d3653486-47e1039-1fa400-1653768772c5f; CNZZDATA1274203680=1684804072-1534228697-%7C1534234099",
+          "X-Requested-With":"XMLHttpRequest"}
+    print fetchUrl("https://www.asy1000.com/aiseyingsp/bbwm-2.html")
 #     data = {}
 #     data['id']="1844"
 #     ret = httputil.postRequestWithParam("http://www.fuli750.com/api/payvideo.html", data, header)
@@ -88,9 +89,9 @@ if __name__ == '__main__':
 #     driver.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400")
 #     print driver.page_source
 #     print requests.get("http://api.ourder.com:8080/video/ssl/player.aspx?c=0515055a4c1e494f494e&w=640&h=400").text
-    str = '''
-    var vHLSurl    = "//"+avod+"/19/2018/07/LjVbWE7U/LjVbWE7U.m3u8";
-    '''
-    playVideo = re.compile(r'varvHLSurl="//"\+avod\+"(.*?)m3u8')
-    match = playVideo.search(str.replace(" ", ""))
-    print "%s%s%s"%("https://cdn.846u.com",match.group(1),"m3u8")
+#     str = '''
+#     var vHLSurl    = "//"+avod+"/19/2018/07/LjVbWE7U/LjVbWE7U.m3u8";
+#     '''
+#     playVideo = re.compile(r'varvHLSurl="//"\+avod\+"(.*?)m3u8')
+#     match = playVideo.search(str.replace(" ", ""))
+#     print "%s%s%s"%("https://cdn.846u.com",match.group(1),"m3u8")

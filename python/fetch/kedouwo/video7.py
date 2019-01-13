@@ -86,7 +86,9 @@ class VideoUserParse(BaseParse):
         time.sleep(10)
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(baseurl7+url, header)
+            ID = url.replace(".html","").replace("/klav-video/","")
+            vediourl= "/klav-play/%s-1-1.html"%(ID)
+            soup = self.fetchUrl(baseurl7+vediourl, header)
             div   = soup.first("div",{"class":"pages"})
             if div !=None:
                     texts = div.text.split(";")

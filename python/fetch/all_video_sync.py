@@ -142,7 +142,7 @@ def pase4():
    
     
 def pase5():
-    meiyke_vip.parseVideo()
+#     meiyke_vip.parseVideo()
     sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()
 ###    xoxo164_vip.pareVideo()

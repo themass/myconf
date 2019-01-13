@@ -95,6 +95,7 @@ def pase1():
     kedouwo_vip.parseVideo5()
     kedouwo_vip.parseVideo6()
     kedouwo_vip.parseVideo7()
+    kedouwo_vip.parseVideo8()
     nfss_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo3()

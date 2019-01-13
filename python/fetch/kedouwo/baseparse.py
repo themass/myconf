@@ -11,15 +11,15 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "http://www.aotu79.com"
+baseurl = "http://www.papa345.com"
 base_videourl = "?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=post_date&from=%s&_=1543643654534"
 baseurl2= "https://www.v88hd.space/"
-baseurl3= "http://aiseying03.com/"
-baseurl4 = "http://www.7ma00.ml"
-baseurl5 = "http://www.smtav01.info/"
-baseurl6 = "http://www.91av.biz"
-baseurl7 = "http://102klav.xyz"
-baseurl8 = "https://8xqc.com"
+baseurl3= "https://www.asy1000.com/"
+baseurl4 = "http://www.7mav4.club/"
+baseurl5 = "http://www.hnav01.xyz/"
+baseurl6 = "http://www.91av02.club/"
+baseurl7 = "http://112klav.xyz/"
+baseurl8 = "https://8xuw.com/"
 baseurl9 = "http://www.92lu.co"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,

@@ -74,6 +74,7 @@ import ysw88_vip
 import teshiw_vip
 import newlynet_vip
 import xiaiyy_vip
+import yin22_vip
 from fetch import nvnvzx, nvnvzx_vip
 
 def pase1():
@@ -142,6 +143,7 @@ def pase4():
     vj69_vip.paserVideo()
     jjr128_vip.parseVideo()
     xiaiyy_vip.parseVideo()
+    yin22_vip.parseVideo()
     
 def pase5():
 #     meiyke_vip.parseVideo()

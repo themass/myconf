@@ -63,6 +63,7 @@ def parseText():
 
 def parseGirlImg():
     lis = parser.fetchHead(u"撸撸图区 ")
+    print lis
     objs = parser.parsHeadText(lis)
     print "解析图片 ok----项目=", len(objs)
     for obj in objs:

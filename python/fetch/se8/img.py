@@ -37,7 +37,7 @@ class ImgParse(BaseParse):
                 if count == 0:
                     break
         else:
-            self.update(url, ops, channel)
+            self.update(url, ops, channel,1)
             dbVPN.commit()
 
     def update(self, url, ops, channel, i):
@@ -101,7 +101,7 @@ class ImgParse(BaseParse):
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)
-        picData = soup.first("div", {"class": "box pic_text"})
+        picData = soup.first("div", {"class": "content"})
         picList = picData.findAll("img")
         pics = []
         for item in picList:

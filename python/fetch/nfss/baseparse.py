@@ -14,7 +14,7 @@ import os,sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "http://www.nfss.xyz"
-baseurl2 = "http://www.wose11.com"
+baseurl2 = "http://www.65aeae.com/"
 baseurl3 = "http://www.mh30.xyz/"
 baseurl4 = "https://www.2422yy.com"
 header = {'User-Agent': 

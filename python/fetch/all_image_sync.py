@@ -32,8 +32,7 @@ if __name__ == '__main__':
 ###     xoxo164_vip.pareImg()
 #     x2246_vip.parseImg()
 # # #     #需要翻墙
-    jjr128_vip.pareImg()
-    fff64_vip.parseImg()
+    
 #     skswk9_img.parseImg()
 # # #     
 # # #     
@@ -43,12 +42,16 @@ if __name__ == '__main__':
 # #     se8_vip.parseImg()
 # #     
 #     
+    ###ddd804_vip.parsedddImg()
 #     ddd804_vip.parse3wujiImg()
-    ddd804_vip.parse39vqImg()
-    ddd804_vip.parse58589sImg()
-    ava99_vip.parseImg()
-    skswk9_img.parseImg()
-#     ddd804_vip.parsedddImg()
+#     jjr128_vip.pareImg()
+#     fff64_vip.parseImg()
+#     ddd804_vip.parse39vqImg()
+#     ddd804_vip.parse58589sImg()
+#     ddd804_vip.parse65aeaeImg()
+#     ava99_vip.parseImg()
+#     skswk9_img.parseImg()
+    
 #####     ddd804_vip.parsejiqingyazhouImg()
     
 #     xieegif_vip.parsewowantImg()
@@ -56,8 +59,8 @@ if __name__ == '__main__':
 #     xieegif_vip.parsehugao8Img()
 #     xieegif_vip.parseratooImg()
     
-#     tt192_vip.parseImg()
-#     mayi01_vip.parseImg()
+    tt192_vip.parseImg()
+    ####mayi01_vip.parseImg()
 
 
 

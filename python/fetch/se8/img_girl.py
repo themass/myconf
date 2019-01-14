@@ -174,5 +174,5 @@ class ParsImgChannel(BaseParse):
         picList = picData.findAll("img")
         pics = []
         for item in picList:
-            pics.append(item.get('src'))
+            pics.append(item.get('data-original'))
         return pics

@@ -23,7 +23,6 @@ class ImgParse(BaseParse):
         dbVPN.commit()
         for obj in channels:
             channel = obj['name']
-            obj['url']=obj['name']
             for i in range(1, maxImgPage):
                 url = obj['url']
                 if i!=1:

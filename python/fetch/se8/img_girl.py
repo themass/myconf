@@ -109,15 +109,11 @@ class ParsImgChannel(BaseParse):
     def fetchGirlChannelData(self):
         first = self.parsFirstPage(self.t_obj['url'])
         objs = []
-        if first != None:
-            for i in range(1, max_page):
-                page = first + str(i) + ".htm"
-                items = self.fetchgirlChannelItems(page)
-                if items == None:
-                    break
-                objs.extend(items)
-        else:
-            items = self.fetchgirlChannelItems(self.t_obj['url'])
+        for i in range(1, maxImgPage):
+            page = self.t_obj['url'].replace(".html","-") + str(i) + ".html"
+            items = self.fetchgirlChannelItems(page)
+            if items == None:
+                break
             objs.extend(items)
         return objs
 

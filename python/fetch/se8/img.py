@@ -29,16 +29,12 @@ class ImgParse(BaseParse):
         channel = url
         first = self.parsFirstPage(url)
         print first, url
-        if first != None:
-            for i in range(1, maxImgPage):
-                url = first + str(i) + ".htm"
-                count = self.update(url, ops, channel, i)
-                dbVPN.commit()
-                if count == 0:
-                    break
-        else:
-            self.update(url, ops, channel,1)
+        for i in range(1, maxImgPage):
+            pageurl = url.replace(".html","-") + str(i) + ".html"
+            count = self.update(pageurl, ops, channel, i)
             dbVPN.commit()
+            if count == 0:
+                break
 
     def update(self, url, ops, channel, i):
         objs = self.fetchImgItemsData(url, channel)
@@ -58,8 +54,11 @@ class ImgParse(BaseParse):
     def fetchDataHead(self, url):
         try:
             soup = self.fetchUrl(url)
-            lis = soup.findAll("li")
-            return lis
+            div = soup.first("div",{"class":"box movie_list"})
+            if div!=None:
+                lis = div.findAll("li")
+                return lis
+            return []
 
         except Exception as e:
             print common.format_exception(e)
@@ -100,10 +99,13 @@ class ImgParse(BaseParse):
             print common.format_exception(e)
 
     def fetchImgs(self, url):
-        soup = self.fetchUrl(url)
-        picData = soup.first("div", {"class": "content"})
-        picList = picData.findAll("img")
         pics = []
-        for item in picList:
-            pics.append(item.get('src'))
-        return pics
+        try:
+            soup = self.fetchUrl(url)
+            picData = soup.first("div", {"class": "content"})
+            picList = picData.findAll("img")
+            for item in picList:
+                pics.append(item.get('src'))
+            return pics
+        except Exception as e:
+            return pics

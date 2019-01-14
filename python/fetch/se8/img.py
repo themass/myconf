@@ -105,7 +105,7 @@ class ImgParse(BaseParse):
             picData = soup.first("div", {"class": "content"})
             picList = picData.findAll("img")
             for item in picList:
-                pics.append(item.get('src'))
+                pics.append(item.get('data-original'))
             return pics
         except Exception as e:
             return pics

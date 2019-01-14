@@ -89,8 +89,8 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url, header)
             source = {}
             img = soup.first("div",{"class":"img"})
-            if img!=None:
-                source['img']=img.get("src")
+            if img!=None and img.first("img")!=None:
+                source['img']=img.first("img").get("src")
             else:
                 source['img']=""
             inputs = soup.findAll("input",{'name':'copy_yah'})

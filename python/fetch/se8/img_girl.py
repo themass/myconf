@@ -46,7 +46,7 @@ class ImgGrilParse(BaseParse):
     def fetchImgGrilChannel(self, url):
         soup = self.fetchUrl(url)
         objs = []
-        table = soup.find('table')
+        table = soup.find('div',{"class":"box movie_list"})
         if table == None:
             print '没有 channel:', url
             return None
@@ -172,7 +172,7 @@ class ParsImgChannel(BaseParse):
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)
-        picData = soup.first("div", {"class": "box pic_text"})
+        picData = soup.first("div", {"class": "content"})
         if picData == None:
             return []
         picList = picData.findAll("img")

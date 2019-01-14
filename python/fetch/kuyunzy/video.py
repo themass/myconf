@@ -60,19 +60,23 @@ class VideoParse(BaseParse):
                 if mp4Url == None:
                     print '没有mp4 文件:', ahref.get("href")
                     continue
-                obj['url'] = mp4Url
-                obj['pic'] = ''
+                obj['url'] = mp4Url['mp4']
+                obj['pic'] = mp4Url['img']
                 obj['name'] = ahref.text.replace("&nbsp;","")
                 obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
                 print obj['path'],obj['url'],obj['pic']
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
                 obj['baseurl'] = baseurl
+                if obj['url'].count("m3u8")==0:
+                    obj['videoType'] = "webview"
+                else:
+                    obj['videoType'] = "normal"
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,obj['videoType'],baseurl)
 
         print 'kuyunzy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
@@ -83,11 +87,23 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
+            source = {}
+            img = soup.first("div",{"class":"img"})
+            if img!=None:
+                source['img']=img.get("src")
+            else:
+                source['img']=""
             inputs = soup.findAll("input",{'name':'copy_yah'})
             for input in inputs:
                 value = input.get('value')
                 if value.count('.m3u8')!=0:
-                    return value
+                    source['mp4']=value
+                    return source
+            for input in inputs:
+                value = input.get('value')
+                if value.count('share')!=0:
+                    source['mp4']=value
+                    return source
             print '没找到mp4'
             return None
         except Exception as e:

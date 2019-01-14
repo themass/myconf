@@ -71,7 +71,6 @@ class BaseParse(threading.Thread):
             menus.extend(soup.findAll("div", {"class": "row-item odd"}))
             for menu in menus:
                 active = menu.first("div", {"class":"row-item-title bg_red"}).text
-                print active
                 if active.count(name) > 0:
                     return menu.findAll("li")
         except Exception as e:

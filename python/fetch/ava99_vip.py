@@ -23,4 +23,4 @@ def parseVideo():
     videop = video.VideoParse()
     videop.run()
 if __name__ == '__main__':
-    parseVideo()
+    parseImg()

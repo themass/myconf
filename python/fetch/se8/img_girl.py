@@ -57,7 +57,7 @@ class ImgGrilParse(BaseParse):
             obj['baseurl'] = baseurl
             img = item.find('img')
             if img != None:
-                obj['pic'] = img.get('src')
+                obj['pic'] = img.get('data-original')
             else:
                 obj['pic'] = None
             obj['updateTime'] = dateutil.y_m_d()

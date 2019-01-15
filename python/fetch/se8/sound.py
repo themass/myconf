@@ -35,6 +35,7 @@ class ChannelParse(BaseParse):
         objs = []
         for i in range(1, 6): 
             url = "%s%s%s"%(soundUrl.replace(".html", "-"),i,".html")
+            print url
             soup = self.fetchUrl(url)
             div = soup.first("div",{"class":"box movie_list"})
             if div!=None:
@@ -71,7 +72,7 @@ class FileParse(BaseParse):
         ops = db_ops.DbOps(dbVPN)
         try:
             url = self.t_obj['url']
-            for i in range(1, 50):
+            for i in range(1, 6):
                 url = "%s%s%s"%(self.t_obj['url'].replace(".html", "-"),i,".html")
                 print url
                 count = self.update(url, ops)

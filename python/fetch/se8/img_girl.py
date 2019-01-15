@@ -87,52 +87,51 @@ class ParsImgChannel(BaseParse):
     def run(self):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-        objs = self.fetchGirlChannelData()
-        print "解析 Girl channel图片ok----channel=", self.t_obj['url'], ' size=', len(objs)
-        for obj in objs:
-            try:
-                sortType = dateutil.y_m_d()
-                obj['sortType'] = sortType
-                ops.inertImgItems(obj)
-                print 'items ：', obj['url'], " piclen=", len(obj['picList'])
-                for picItem in obj['picList']:
-                    item = {}
-                    item['itemUrl'] = obj['url']
-                    item['picUrl'] = picItem
-                    item['origUrl'] = picItem
-                    ops.inertImgItems_item(item)
-#                     print 'items_item ：', obj
-            except Exception as e:
-                print common.format_exception(e)
+        for i in range(1, maxImgPage):
+            objs = self.fetchGirlChannelData(i)
+            print "解析 Girl channel图片ok----channel=", self.t_obj['url'], ' size=', len(objs)
+            for obj in objs:
+                try:
+                    sortType = dateutil.y_m_d()
+                    obj['sortType'] = sortType
+                    ops.inertImgItems(obj)
+                    print 'items ：', obj['url'], " piclen=", len(obj['picList'])
+                    for picItem in obj['picList']:
+                        item = {}
+                        item['itemUrl'] = obj['url']
+                        item['picUrl'] = picItem
+                        item['origUrl'] = picItem
+                        ops.inertImgItems_item(item)
+    #                     print 'items_item ：', obj
+                except Exception as e:
+                    print common.format_exception(e)
         dbVPN.commit()
         dbVPN.close()
 
-    def fetchGirlChannelData(self):
-        first = self.parsFirstPage(self.t_obj['url'])
+    def fetchGirlChannelData(self,i):
         objs = []
-        for i in range(1, maxImgPage):
-            page = self.t_obj['url'].replace(".html","-") + str(i) + ".html"
-            items = self.fetchgirlChannelItems(page)
-            print '解析完成',page
-            if items == None:
-                break
-            objs.extend(items)
+        page = self.t_obj['url'].replace(".html","-") + str(i) + ".html"
+        items = self.fetchgirlChannelItems(page)
+        print '解析完成',page
+        objs.extend(items)
         return objs
 
     def fetchgirlChannelItems(self, url):
-        soup = self.fetchUrl(url)
-        div = soup.find("div", {"class": 'box movie_list'})
-        objs = []
-        if div != None:
-            alist = div.findAll("a")
-            for item in alist:
-                if item.get("href").count("tubaobaolist") > 0:
-                    objs.extend(self.fetchTubaobaoList(item.get("href")))
-                    continue
-                obj = self.fetchgirlChannelItemsOne(item)
-                objs.append(obj)
-        return objs
-
+        try:
+            soup = self.fetchUrl(url)
+            div = soup.find("div", {"class": 'box movie_list'})
+            objs = []
+            if div != None:
+                alist = div.findAll("a")
+                for item in alist:
+                    if item.get("href")!=None and item.get("href").count("tubaobaolist") > 0:
+                        objs.extend(self.fetchTubaobaoList(item.get("href")))
+                        continue
+                    obj = self.fetchgirlChannelItemsOne(item)
+                    objs.append(obj)
+            return objs
+        except Exception as e:
+            print common.format_exception(e)
     def fetchTubaobaoList(self, url):
         soup = self.fetchUrl(url)
         div = soup.find("div", {"class": 'box movie_list'})

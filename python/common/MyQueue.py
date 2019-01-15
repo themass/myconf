@@ -31,4 +31,5 @@ class MyQueue(Queue):
         try:
             return Queue.get(self, block, timeout)
         except Exception as e:
+            print e
             return None

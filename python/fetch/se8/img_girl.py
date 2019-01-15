@@ -66,14 +66,15 @@ class ImgGrilParse(BaseParse):
             obj['channel'] = 'porn_sex'
             obj['channelType'] = 'porn_sex'
             obj['name'] = self.fetchImgGrilChannelName(item.get('href'))
+            print obj
             objs.append(obj)
         return objs
 
     def fetchImgGrilChannelName(self, url):
         soup = self.fetchUrl(url)
-        p = soup.find("a", {"class": 'on'})
+        p = soup.find("span", {"class": 'cat_pos_l'})
         if p != None:
-            return p.text.replace("您的位置：", "").replace("首页", "").replace(" ", "").replace("&nbsp;", '')
+            return p.text.replace("您的位置：", "").replace("首页", "").replace(" ", "").replace("&nbsp;", '').replace("»","").replace("极品美女","")
         return "girl"
 
 
@@ -112,6 +113,7 @@ class ParsImgChannel(BaseParse):
         for i in range(1, maxImgPage):
             page = self.t_obj['url'].replace(".html","-") + str(i) + ".html"
             items = self.fetchgirlChannelItems(page)
+            print '解析完成',page
             if items == None:
                 break
             objs.extend(items)
@@ -164,6 +166,7 @@ class ParsImgChannel(BaseParse):
         obj['pics'] = len(pics)
         obj['picList'] = pics
         obj['showType'] = 3
+        print obj['url'],'解析完毕',obj['channel']
         return obj
 
     def fetchImgs(self, url):

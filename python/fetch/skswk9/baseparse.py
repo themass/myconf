@@ -8,7 +8,7 @@ from common import common
 from common import MyQueue
 import re
 import sys
-import zlib
+import zlib,os
 from common.envmod import *
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -19,7 +19,8 @@ img_channels = {"唯美写真": "thread-htm-fid-14-page-", "露出激情": "thre
                 "网友自拍": "thread-htm-fid-15-page-", "街拍偷拍": "thread-htm-fid-49-page-",
                 "丝袜美腿": "thread-htm-fid-21-page-","欧美风情": "thread-htm-fid-114-page-"}
 video_channels = {"亚洲视频": "thread-htm-fid-111-page-", "日本AV": "thread-htm-fid-112-page-",
-                "欧美电影": "thread-htm-fid-113-page-"}
+                "欧美电影": "thread-htm-fid-113-page-","av速递": "thread-htm-fid-75-page-"}
+text_channels = {"1024大集合": "thread-htm-fid-17-page-"}
 video_iframe = re.compile("id=(.*?)")
 video_m3u8="https://m3u8.cdnpan.com/%s.m3u8"
 queue = MyQueue.MyQueue(20000)
@@ -53,3 +54,13 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', baseurl + url
         return BeautifulSoup('')
+    def header(self):
+    #         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("skswk9/header.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist

@@ -35,7 +35,7 @@ class HandleThread(threading.Thread):
         while(True):
             try:
                 print queue.qsize()
-                obj = queue.get(timeout=30)
+                obj = queue.get(block=True,timeout=2)
                 if obj != None:
                     obj.run()
             except Exception as e:

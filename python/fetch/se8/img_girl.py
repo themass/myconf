@@ -95,7 +95,7 @@ class ParsImgChannel(BaseParse):
                     sortType = dateutil.y_m_d()
                     obj['sortType'] = sortType
                     ops.inertImgItems(obj)
-                    print 'items ：', obj['url'], " piclen=", len(obj['picList'])
+                    print 'items ：', obj['url'],obj['channel'], " piclen=", len(obj['picList'])
                     for picItem in obj['picList']:
                         item = {}
                         item['itemUrl'] = obj['url']
@@ -103,6 +103,7 @@ class ParsImgChannel(BaseParse):
                         item['origUrl'] = picItem
                         ops.inertImgItems_item(item)
     #                     print 'items_item ：', obj
+                    dbVPN.commit()
                 except Exception as e:
                     print common.format_exception(e)
         dbVPN.commit()
@@ -141,10 +142,11 @@ class ParsImgChannel(BaseParse):
             if ul != None:
                 alist = ul.findAll("a")
                 for item in alist:
-                    obj = self.fetchgirlChannelItemsOne(item)
                     if item.get("href").count("javascript")>0:
                         continue
+                    obj = self.fetchgirlChannelItemsOne(item)
                     objs.append(obj)
+        print url,'tubobolist',len(objs)
         return objs
 
     def fetchgirlChannelItemsOne(self, item):
@@ -167,7 +169,7 @@ class ParsImgChannel(BaseParse):
         obj['pics'] = len(pics)
         obj['picList'] = pics
         obj['showType'] = 3
-        print obj['url'],'解析完毕',obj['channel']
+        print obj['url'],'解析完毕',obj['channel'],len(pics),obj['name']
         return obj
 
     def fetchImgs(self, url):

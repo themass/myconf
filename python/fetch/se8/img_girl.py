@@ -143,6 +143,8 @@ class ParsImgChannel(BaseParse):
                 alist = ul.findAll("a")
                 for item in alist:
                     obj = self.fetchgirlChannelItemsOne(item)
+                    if item.get("href").count("javascript")>0:
+                        continue
                     objs.append(obj)
         return objs
 

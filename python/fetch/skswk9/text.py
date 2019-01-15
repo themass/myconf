@@ -34,7 +34,7 @@ class TextChannelParse(BaseParse):
                     print page_url
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
-                    count = self.update(page_url, ops, channel)
+                    count = self.update(page_url, ops, item['url'])
                     dbVPN.commit()
                     dbVPN.close()
                     if count == 0:

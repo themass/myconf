@@ -102,7 +102,7 @@ class ParsImgChannel(BaseParse):
                         item['picUrl'] = picItem
                         item['origUrl'] = picItem
                         ops.inertImgItems_item(item)
-    #                     print 'items_item ：', obj
+                        print 'items_item ：', obj
                     dbVPN.commit()
                 except Exception as e:
                     print common.format_exception(e)

@@ -268,6 +268,7 @@ encoding//python/fetch/singlove_vip.py=utf-8
 encoding//python/fetch/skswk9/__init__.py=utf-8
 encoding//python/fetch/skswk9/baseparse.py=utf-8
 encoding//python/fetch/skswk9/img.py=utf-8
+encoding//python/fetch/skswk9/text.py=utf-8
 encoding//python/fetch/skswk9/video.py=utf-8
 encoding//python/fetch/skswk9_img.py=utf-8
 encoding//python/fetch/smtav01/baseparse.py=utf-8

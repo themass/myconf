@@ -16,7 +16,7 @@ import mayi01_vip
 
 def pase1():
     fff64_vip.parseText()
-    novel941_vip.parseText()
+    #novel941_vip.parseText()
     x2246_vip.parseText()
     jjr128_vip.parseText()
     g6858_vip.parseText()

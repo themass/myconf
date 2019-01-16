@@ -12,7 +12,7 @@ import re
 import gzip
 import StringIO
 import sys
-import ssl
+import ssl,os
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl1 = "http://zzz761.com"
@@ -23,6 +23,8 @@ baseurl6 = "http://www.58589s.com"
 baseurl7 = "https://www.52cjg.com"
 baseurl8 = "https://www.jjj382.com"
 baseurl9 = "http://www.65aeae.com"
+baseurl10 = "https://www.asy1000.com"
+
 maxCount = 5
 class BaseParse(threading.Thread):
 
@@ -188,3 +190,13 @@ class BaseParse(threading.Thread):
             return channels
         except Exception as e:
             print common.format_exception(e)
+    def header(self,name):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("%s/%s"%("ddd804",name)) as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist

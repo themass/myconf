@@ -48,6 +48,7 @@ class VideoUserParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         trs = soup.findAll("tr",{"class":"tr3 t_one"})
+        print len(trs)
         for tr in trs:
             h3 = tr.first("h3")
             if h3!=None:

@@ -57,7 +57,7 @@ class VideoUserParse(BaseParse):
                 continue
             obj['url'] = mp4Url
             obj['pic'] = meta.first('img').get("data-original")
-            obj['name'] = ahref.get("title").replace("，快播，大香蕉","").replace("_chunk_1,快播云资源","").replace("成人影院","")
+            obj['name'] = ahref.get("title").replace("，快播，大香蕉","").replace("_chunk_1","").replace("成人影院","").replace(",快播云资源","")
 
             videourl = urlparse(obj['url'])
             obj['path'] = '58589_'+videourl.path

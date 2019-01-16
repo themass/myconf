@@ -94,6 +94,14 @@ class VideoUserParse(BaseParse):
                 if match!=None:
                     id = v.replace("https://baiduyunbo.com/?id=","")
                     return video_m3u8%(id)
+                else:
+                    soup = self.fetchUrl(v)
+                    scripts = soup.findAll("script")
+                    for script in scripts:
+                        match = video_mp4.search(script.text)
+                        if match!=None:
+                            return "%s%s%s"%("http",match.group(1),"mp4")
+                            
             print url,'没有找到mp4'
             return None
         except Exception as e:

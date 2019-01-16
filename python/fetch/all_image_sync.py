@@ -49,6 +49,7 @@ if __name__ == '__main__':
 #     ddd804_vip.parse39vqImg()
 #     ddd804_vip.parse58589sImg()
 #     ddd804_vip.parse65aeaeImg()
+    ddd804_vip.parseasy1000Img()
 #     ava99_vip.parseImg()
 #     skswk9_img.parseImg()
     

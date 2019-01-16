@@ -29,4 +29,5 @@ if __name__ == '__main__':
 #     textRun = text.TextChannelParse(queue)
 #     textRun.run()
 
-    parseText()
+#     parseText()
+    parseVideo()

@@ -48,12 +48,11 @@ class VideoUserParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         trs = soup.findAll("tr",{"class":"tr3 t_one"})
-        print len(trs)
         for tr in trs:
             h3 = tr.first("h3")
             if h3!=None:
                 ahref = h3.first("a")
-                if ahref != None and ahref.get("href").count("htm_data")>0:
+                if ahref != None and ahref.get("href").count("html_data")>0:
                     obj = {}
                     mp4Url = self.parseDomVideo(ahref.get("href"))
                     if mp4Url == None:

@@ -23,7 +23,7 @@ video_channels = {"亚洲视频": "thread-htm-fid-111-page-", "日本AV": "threa
 text_channels = {"1024大集合": "thread-htm-fid-17-page-"}
 video_iframe = re.compile("id=(.*?)")
 video_m3u8="https://m3u8.cdnpan.com/%s.m3u8"
-video_mp4="src='http(.*?)mp4'"
+video_mp4=re.compile("src='http(.*?)mp4'")
 queue = MyQueue.MyQueue(20000)
 maxCount = 5
 

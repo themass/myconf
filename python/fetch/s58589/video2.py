@@ -26,7 +26,7 @@ class VideoUserParse(BaseParse):
                 if i!=1:
                     url= "%s%s%s"%(item['url'].replace(".html","-pg-"),i,".html")
                 print url
-                self.videoParse(item['channel'], url)
+                self.videoParse(item['channel'], url,obj['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         ahrefs = self.header()

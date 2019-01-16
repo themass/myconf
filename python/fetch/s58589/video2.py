@@ -42,7 +42,6 @@ class VideoUserParse(BaseParse):
             obj['channel']='s58589_all'
             obj['userId']="s58589_"+ahref.text
             obj['showType']=3
-            obj['channelType']='users'
             channelList.append(obj)
         return channelList
     def videoParse(self, channel, url,userId):

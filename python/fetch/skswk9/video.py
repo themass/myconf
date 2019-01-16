@@ -95,7 +95,7 @@ class VideoUserParse(BaseParse):
                     id = v.replace("https://baiduyunbo.com/?id=","")
                     return video_m3u8%(id)
                 else:
-                    soup = self.fetchUrl(v)
+                    soup = self.fetchUrlWithBase(v)
                     scripts = soup.findAll("script")
                     for script in scripts:
                         match = video_mp4.search(script.text)

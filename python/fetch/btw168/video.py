@@ -49,38 +49,36 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("ul", {"class": "videos"})
-        if div!=None:
-            lis = div.findAll("li")
-            for li in lis:
-                #name,pic,url,userId,rate,updateTime,path
-                ahref = li.first("a")
-                obj = {}
-                mp4Url = self.parseDomVideo(ahref.get("href"))
-                if mp4Url == None:
-                    print '没有mp4 文件:', ahref.get("href")
-                    continue
-                obj['url'] = mp4Url
-                img = ahref.first("img")
-                if img.get("src").count("http")==0:
-                    obj['pic'] = baseurl+img.get("src")
-                else:
-                    obj['pic'] = img.get("src")
-                obj['name'] = img.get('alt')
-    
-                videourl = urlparse(obj['url'])
-                obj['path'] = "btw168"+videourl.path
-                obj['rate'] = 1.2
-                obj['updateTime'] = datetime.datetime.now()
-                obj['userId'] = userId
-                obj['baseUrl'] = baseurl
-                obj['showType'] = 3
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                    obj['videoType'] = "webview"
-                else:
-                    obj['videoType'] = "normal"
-                print obj['videoType'],obj['name'],mp4Url,obj['pic']
-                dataList.append(obj)
+        lis = soup.findAll("div",{"class":"thumb"})
+        for li in lis:
+            #name,pic,url,userId,rate,updateTime,path
+            ahref = li.first("a")
+            obj = {}
+            mp4Url = self.parseDomVideo(ahref.get("href"))
+            if mp4Url == None:
+                print '没有mp4 文件:', ahref.get("href")
+                continue
+            obj['url'] = mp4Url
+            img = ahref.first("img")
+            if img.get("src").count("http")==0:
+                obj['pic'] = baseurl+img.get("src")
+            else:
+                obj['pic'] = img.get("src")
+            obj['name'] = img.get('alt')
+
+            videourl = urlparse(obj['url'])
+            obj['path'] = "btw168"+videourl.path
+            obj['rate'] = 1.2
+            obj['updateTime'] = datetime.datetime.now()
+            obj['userId'] = userId
+            obj['baseUrl'] = baseurl
+            obj['showType'] = 3
+            if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                obj['videoType'] = "webview"
+            else:
+                obj['videoType'] = "normal"
+            print obj['videoType'],obj['name'],mp4Url,obj['pic']
+            dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -93,27 +91,17 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url, header)
-            adiv = soup.first("div",{"class":" content content-video"})
+            adiv = soup.first("div",{"class":"video"})
             if adiv!=None:
-                ahref = adiv.first("a")
-                if ahref!=None:
-                    soup = self.fetchUrl(ahref.get("href"), header)
-                    div = soup.first("div",{'class':'players'})
-                    if div!=None:
-                        script = div.first('script')
-                        if script!=None:
-                            text = unquote(str(script.text))
-                            texts = text.split("$")
-                            for item in texts:
-                                match = regVideo.search(item)
-                                if match!=None:
-                                    videoUrl =match.group(1)
-                                    return "%s%s%s"%("http",videoUrl,'m3u8')
-                            for item in texts:
-                                match = shareVideo.search(item)
-                                if match!=None:
-                                    videoUrl ="%s%s%s%s"%("http",match.group(1),"/share/",match.group(2))
-                                    return videoUrl
+                script = adiv.first('script')
+                if script!=None:
+                    text = unquote(str(script.text))
+                    texts = text.split("$")
+                    for item in texts:
+                        match = base64.search(item)
+                        if match!=None:
+                            videoUrl =match.group(1)
+                            return unquote(str(videoUrl))
             print '没找到mp4'
             return None
         except Exception as e:

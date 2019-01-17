@@ -101,7 +101,13 @@ class VideoUserParse(BaseParse):
                     match = base64.search(script.text)
                     if match!=None:
                         videoUrl =match.group(1)
-                        return unquote(str(common.base64Decode(videoUrl)))
+                        vurl = unquote(str(common.base64Decode(videoUrl)))
+                        texts = vurl.split("$")
+                        for item in texts:
+                            match = regVideo.search(item)
+                            if match!=None:
+                                videoUrl =match.group(1)
+                                return "%s%s%s"%("http",videoUrl,'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

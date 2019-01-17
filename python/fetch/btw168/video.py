@@ -90,18 +90,18 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
+            id = url.replace("/?m=vod-detail-id-","").replace(".html","")
+            url = "/?m=vod-play-id-%s-src-1-num-1.html"%(id)
             soup = self.fetchUrl(url, header)
             adiv = soup.first("div",{"class":"video"})
             if adiv!=None:
                 script = adiv.first('script')
+                print 
                 if script!=None:
-                    text = unquote(str(script.text))
-                    texts = text.split("$")
-                    for item in texts:
-                        match = base64.search(item)
-                        if match!=None:
-                            videoUrl =match.group(1)
-                            return unquote(str(videoUrl))
+                    match = base64.search(script.text)
+                    if match!=None:
+                        videoUrl =match.group(1)
+                        return unquote(str(common.base64Decode(videoUrl)))
             print '没找到mp4'
             return None
         except Exception as e:

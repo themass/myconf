@@ -11,11 +11,13 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "http://www.btw168.com"
+baseurl = "http://97hut.com/"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*)m3u8'")
+base64 = re.compile(r"base64decode\('(.*?)'\)")
+
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
 
 class BaseParse(threading.Thread):

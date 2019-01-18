@@ -33,7 +33,10 @@ class TextChannelParse(BaseParse):
                 channel = item['url']
                 page_url = item['url'].replace('.html','')
                 for i in range(1, maxTextPage):
-                    url = (page_url+"index-%s.html")%(i)
+                    if i==1:
+                        url = page_url
+                    else:
+                        url = (page_url+"index-%s.html")%(i)
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
                     count = self.update(url, ops, channel)

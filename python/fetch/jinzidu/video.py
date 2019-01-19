@@ -70,15 +70,15 @@ class VideoParse(BaseParse):
             if mp4Url == None:
                 print '没有mp4 文件:', ahref.get("href")
                 continue
-            obj['url'] = mp4Url
+            obj['url'] = mp4Url['url']
             obj['pic'] = ahref.get("data-original")
             obj['name'] = ahref.get("title")
 
-            videourl = urlparse(mp4Url)
+            videourl = urlparse(mp4Url['url'])
             obj['path'] = 'jinzidu_'+videourl.path
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
-            obj['videoType'] = "normal"
+            obj['videoType'] = mp4Url['type']
             obj['baseurl'] = baseurl
             print obj['name'],obj['videoType'],obj['url'],obj['pic']
             dataList.append(obj)
@@ -97,11 +97,20 @@ class VideoParse(BaseParse):
             soup = self.fetchUrlWithBase(base+url, header)
             div = soup.first("iframe")
             if div!=None and div.get("src")!=None:
-                item = div.get("src").replace("http://pp.aism.cc/kb.php?vid=","").replace("~m3u8","")
-                match = regVideo.search(item)
-                if match!=None:
-                    videoUrl =match.group(1)
-                    return "%s%s%s"%("http",videoUrl,'m3u8')
+                if div.get("src").count("http://pp.aism.cc/kb.php?vid=")!=0:
+                    item = div.get("src").replace("http://pp.aism.cc/kb.php?vid=","").replace("~m3u8","")
+                    match = regVideo.search(item)
+                    videoItem = {}
+                    if match!=None:
+                        videoUrl =match.group(1)
+                        videoItem['type']='normal'
+                        videoItem['url']="%s%s%s"%("http",videoUrl,'m3u8')
+
+                        return videoItem
+                    else:
+                        videoItem['type']='webview'
+                        videoItem['url']=div.get("src")
+                        return videoItem
             print '没找到mp4'
             return None
         except Exception as e:

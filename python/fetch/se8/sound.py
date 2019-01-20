@@ -73,7 +73,7 @@ class FileParse(BaseParse):
         try:
             url = self.t_obj['url']
             for i in range(1, 6):
-                url = "%s%s%s"%(self.t_obj['url'].replace(".html", "-"),i,".html")
+                url = "%s%s%s"%(self.t_obj['url'].replace(".html", "-"),6-i,".html")
                 print url
                 count = self.update(url, ops)
                 dbVPN.commit()

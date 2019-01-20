@@ -114,5 +114,5 @@ if __name__ == '__main__':
 #     parseGirlImg()
 #     parseImg()
 #     parseText()
-#     parseVideo()
+    parseVideo()
 #     parseVideoRmb()

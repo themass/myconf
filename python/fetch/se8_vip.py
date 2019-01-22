@@ -110,9 +110,9 @@ if __name__ == '__main__':
     startWork()
     
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
-    parseSound()
+#     parseSound()
 #     parseGirlImg()
 #     parseImg()
 #     parseText()
-#     parseVideo()
+    parseVideo()
 #     parseVideoRmb()

@@ -15,19 +15,19 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 #662cf,579cf,298cf
-baseurl = "https://www.639cf.com/"
+baseurl = "https://www.968cf.com/"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 soundUrl = "/yousheng/index.html"
 queue = MyQueue.MyQueue(200)
 maxCount = 5
 videoUrl='http://m.123456xia.com:888'
-m3u8regVideo = re.compile(r"varvideo='(.*?)';")
+m3u8regVideo = re.compile(r"varvHLSurl=(.*?)\+'(.*?)';")
 regVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
 urlMap={"m3u8url_10":"https://768ii.com","m3u8url_24k":"https://768ii.com","m3u8url_new":"https://768ii.com",
         "m3u8url_69":"https://768ii.com","m3u8url_10_2":"https://768ii.com","m3u8url_24k_2":"https://768ii.com",
         "m3u8url_new_2":"https://768ii.com","m3u8url_69_2 ":"https://768ii.com"}
-mp4Url = 'https://991video.com'
+m3u8Map = {"m3u8_host":"https://one.991video.com","m3u8_host1":"https://991video.com","m3u8_host2":"https://mmbfxl1.com"}
 rmbvideoUrl='http://555.maomixia555.com:888'
 rmbregVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
 class BaseParse(threading.Thread):

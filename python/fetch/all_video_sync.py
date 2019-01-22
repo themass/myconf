@@ -85,7 +85,7 @@ def pase1():
     ####zy3838_vip.parseVideo()
     #####nomsgus_vip.parseVideo()
     lusibi_vip.parseVideo()
-    hongxing_vip.parseVideo()
+    ####hongxing_vip.parseVideo()
     ###avhome11_vip.parseVideo()
      
     dxg11_vip.parseVideo()
@@ -140,13 +140,13 @@ def pase4():
     zanquye_vip.parseVideo()
     ###diediaody_vip.parseVideo()
     #####dadekai_vip.parseVideo()
-    vj69_vip.paserVideo()
+    ####vj69_vip.paserVideo()
     jjr128_vip.parseVideo()
     xiaiyy_vip.parseVideo()
     yin22_vip.parseVideo()
     
 def pase5():
-#     meiyke_vip.parseVideo()
+###     meiyke_vip.parseVideo()
     sp878_vip.parseVideo()
     tiantianyao_vip.parseVideo()
 ###    xoxo164_vip.pareVideo()
@@ -168,7 +168,7 @@ def pase6():
     qh_vip.parseVideo2()
     sifangpian_vip.parseVideo()
     bt2n_vip.parseVideo()
-    mayi01_vip.parseVideo()
+    #####mayi01_vip.parseVideo()
     ff326_vip.parseVideo()
     ava99_vip.parseVideo()
 def pase7():    

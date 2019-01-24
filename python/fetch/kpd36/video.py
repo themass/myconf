@@ -29,7 +29,6 @@ class VideoParse(BaseParse):
                 print url
                 self.videoParse(item['channel'], url,item['baseurl'])
                 print '解析完成 ', item['baseurl'],item['channel'], ' ---', i, '页'
-                time.sleep(1)
     def videoChannel(self):
         channelList = []
         ahrefs = self.header("header.html")

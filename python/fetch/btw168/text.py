@@ -44,16 +44,16 @@ class TextChannelParse(BaseParse):
                 channel = item['url']
                 for i in range(1, maxTextPage):
                     url = obj['url']
-                if i!=1:
-                    url= "/%s%s%s"%(obj['url'].replace(".html","-pg-"),i,".html")
-                print url
-                dbVPN = db.DbVPN()
-                ops = db_ops.DbOps(dbVPN)
-                count = self.update(url, ops, channel)
-                dbVPN.commit()
-                dbVPN.close()
-                if count == 0:
-                    break
+                    if i!=1:
+                        url= "/%s%s%s"%(obj['url'].replace(".html","-pg-"),i,".html")
+                    print url
+                    dbVPN = db.DbVPN()
+                    ops = db_ops.DbOps(dbVPN)
+                    count = self.update(url, ops, channel)
+                    dbVPN.commit()
+                    dbVPN.close()
+                    if count == 0:
+                        break
             except Exception as e:
                 print common.format_exception(e)
     def update(self, url, ops, channel):

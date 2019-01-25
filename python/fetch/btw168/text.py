@@ -18,7 +18,6 @@ class TextChannelParse(BaseParse):
     
     def run(self):
         ahrefs = self.header("header2.html")
-        print ahrefs
         objs = []
         for ahref in ahrefs:
             obj = {}
@@ -81,7 +80,7 @@ class TextChannelParse(BaseParse):
                     try:
                         obj = {}
                         obj['fileDate'] = ahref.first('span',{"class":"data"}).text
-                        obj['name'] = ahref.first('span',{"class":"name"}).text
+                        obj['name'] = ahref.get("title")
                         print name
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl

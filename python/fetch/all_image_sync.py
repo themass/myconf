@@ -23,6 +23,7 @@ import mayi01_vip
 import ava99_vip
 import skswk9_img
 import fff64_vip
+import btw168_vip
 if __name__ == '__main__':
 # #     eroti_img.parseImg()
 #     singlove_vip.parseImg()
@@ -61,6 +62,7 @@ if __name__ == '__main__':
 #     xieegif_vip.parseratooImg()
     
     tt192_vip.parseImg()
+    btw168_vip.parseImg()
     ####mayi01_vip.parseImg()
 
 

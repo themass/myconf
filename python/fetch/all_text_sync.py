@@ -13,6 +13,7 @@ import g6858_vip
 import aaw51_vip
 import seshu_vip
 import mayi01_vip
+import btw168_vip
 
 def pase1():
     fff64_vip.parseText()
@@ -23,8 +24,10 @@ def pase1():
 def pase2():
     ##aaw51_vip.parseText()
     ####seshu_vip.parseText()
+    btw168_vip.parseText()
     se8_vip.startWork()
     se8_vip.parseText()
+    
     ####mayi01_vip.parseText()
 if __name__ == '__main__':
     val = argsMap.get("-p",0)

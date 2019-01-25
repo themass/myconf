@@ -48,17 +48,16 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
-    def header(self):
+    def header(self,name):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("btw168/header.html") as f:
+        with open("btw168/"+name) as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)
         alist = soup.findAll('a')
         return alist
-
     def fetchContentUrl(self, url, aheader=header):
         count = 0
         while count < maxCount:

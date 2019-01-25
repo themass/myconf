@@ -43,9 +43,9 @@ class TextChannelParse(BaseParse):
             try :
                 channel = item['url']
                 for i in range(1, maxTextPage):
-                    url = obj['url']
+                    url = item['url']
                     if i!=1:
-                        url= "/%s%s%s"%(obj['url'].replace(".html","-pg-"),i,".html")
+                        url= "/%s%s%s"%(item['url'].replace(".html","-pg-"),i,".html")
                     print url
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)

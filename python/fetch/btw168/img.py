@@ -27,7 +27,7 @@ class ImgParse(BaseParse):
             for i in range(1, maxImgPage):
                 url = obj['url']
                 if i!=1:
-                    url= "/%s%s%s"%(obj['url'].repleace(".html","-pg-"),i,".html")
+                    url= "/%s%s%s"%(obj['url'].replace(".html","-pg-"),i,".html")
                 print url
                 count = self.update(url, ops, obj['url'], i)
                 dbVPN.commit()

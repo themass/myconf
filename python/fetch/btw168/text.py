@@ -18,14 +18,20 @@ class TextChannelParse(BaseParse):
     
     def run(self):
         ahrefs = self.header("header2.html")
+        print ahrefs
         objs = []
         for ahref in ahrefs:
             obj = {}
             obj['name']= ahref.get("title")
             obj['url']= ahref.get("href")
             obj['baseurl'] = baseurl
-            obj['updateTime'] = datetime.datetime.now()
-        
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=''
+            obj['rate']=1.2
+            obj['channel']=obj['url']
+            obj['showType']=3
+            obj['channelType']='normal'
+            objs.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for channel in objs:

@@ -17,7 +17,7 @@ class TextChannelParse(BaseParse):
         pass
     
     def run(self):
-        ahrefs = self.header("header2.html")
+        ahrefs = self.header("header3.html")
         objs = []
         for ahref in ahrefs:
             obj = {}

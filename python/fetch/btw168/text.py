@@ -40,7 +40,7 @@ class TextChannelParse(BaseParse):
                 for i in range(1, maxTextPage):
                     url = obj['url']
                 if i!=1:
-                    url= "/%s%s%s"%(obj['url'].repleace(".html","-pg-"),i,".html")
+                    url= "/%s%s%s"%(obj['url'].replace(".html","-pg-"),i,".html")
                 print url
                 dbVPN = db.DbVPN()
                 ops = db_ops.DbOps(dbVPN)

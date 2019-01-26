@@ -14,7 +14,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 # http://www.dehyc.com
-baseurl = "http://www.dxg0010.com/"
+baseurl = "http://www.dxg0010.com"
 aheader = {'Upgrade-Insecure-Requests':"1",'Cookie':"0kJG_2132_saltkey=s0jrJCjU; 0kJG_2132_lastvisit=1527182720; Hm_lvt_8b0de6e47fc88f711248780a73250037=1527186429; 0kJG_2132_atarget=1; 0kJG_2132_st_t=0%7C1527188463%7Cc9fbec5384d03b763077d9150c58d8d8; 0kJG_2132_forum_lastvisit=D_110_1527186763D_41_1527188053D_49_1527188463; 0kJG_2132_sid=yKP5pp; 0kJG_2132_st_p=0%7C1527188676%7C02322face8f21e9a566579c4b1d3d2d7; 0kJG_2132_visitedfid=41D49D110D50; 0kJG_2132_viewid=tid_26280; Hm_lpvt_8b0de6e47fc88f711248780a73250037=1527188783; 0kJG_2132_lastact=1527188676%09home.php%09misc; 0kJG_2132_sendmail=1",'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3

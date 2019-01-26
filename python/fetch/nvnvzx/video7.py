@@ -22,7 +22,7 @@ class VideoUserParse(BaseParse):
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
-                page = '?mode=async&function=get_block&block_id=list_videos_latest_videos_list&sort_by=post_date&from=%s&_=%s'
+                page = '?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=post_date&from=%s&_=%s'
                 page = page%(i,int(time.time()*1000))
                 url= "%s%s"%(item['url'],page)
                 print url

@@ -8,7 +8,7 @@ from common import db_ops
 from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
-import re
+import re,os
 # http://www.dehyc.com
 baseurl = "http://yezmw.com"
 channel_pre = 'self_yezmw_'
@@ -71,26 +71,13 @@ class BaseParse(threading.Thread):
         print '打开页面错误,重试3次还是错误', url
         return ''
 
-    def fetchHeadChannel(self):
-        try:
-            soup = self.fetchUrl("/")
-            menu = soup.first("div", {"id":"nav"})
-            if menu == None:
-                print '没找到对应的频道 ', baseurl
-                return None
-            lis = menu.findAll("a")
-            ret = []
-            for a in lis:
-                print a
-                if a != None and a.text.find('首页') == -1:
-                    row = {}
-                    row['name'] = a.text
-                    row['baseurl'] = baseurl
-                    row['url'] = a.get('href')
-                    row['channelType'] = 'normal'
-                    row['updateTime'] = datetime.datetime.now()
-                    row['channel'] = baseurl.replace("http://", "").replace("https://", "")+channel_pre + a.get('href')
-                    ret.append(row)
-            return ret
-        except Exception as e:
-            print common.format_exception(e)
+    def header(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("yezmw/header.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist

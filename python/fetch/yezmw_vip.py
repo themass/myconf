@@ -19,10 +19,7 @@ sys.setdefaultencoding('utf8')
 parser = baseparse.BaseParse()
 
 def parseVideo():
-    objs = parser.fetchHeadChannel()
-    print "video channel ok----项目=", len(objs)
-    for obj in objs:
-        videoPare = video.VideoParse(obj)
-        videoPare.run()
+    videoPare = video.VideoParse()
+    videoPare.run()
 if __name__ == '__main__':
     parseVideo()

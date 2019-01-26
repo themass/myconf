@@ -36,17 +36,18 @@ class VideoParse(BaseParse):
         if menu!=None:
             hrefs = menu.findAll("a")
             for item in hrefs:
-                obj={}
-                obj['name']=item.text
-                obj['url']=item.get("href").replace(baseurl,"")
-                obj['baseurl']=baseurl
-                obj['updateTime']=datetime.datetime.now()
-                obj['pic']=''
-                obj['rate']=1
-                obj['channel']="mastv54"+obj.get("url")
-                obj['showType']=3
-                obj['channelType']='normal'
-                channelList.append(obj)
+                if item.get("href")!="/":
+                    obj={}
+                    obj['name']=item.text
+                    obj['url']=item.get("href").replace(baseurl,"")
+                    obj['baseurl']=baseurl
+                    obj['updateTime']=datetime.datetime.now()
+                    obj['pic']=''
+                    obj['rate']=1
+                    obj['channel']="mastv54"+obj.get("url")
+                    obj['showType']=3
+                    obj['channelType']='normal'
+                    channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):
         dataList = []

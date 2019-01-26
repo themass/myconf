@@ -13,7 +13,6 @@ import re
 import os
 baseurl = "http://91k.info/"
 baseurl2 = "http://www.li7.me"
-baseurl3 = "http://www.360p.me"
 
 header = {'Cookie':'UM_distinctid=16789c552112-001304c5a39255-47e1039-1fa400-16789c55214267; CNZZDATA1262660136=723367507-1544202035-%7C1545233404', "Referer": baseurl}
 maxCount = 3

@@ -22,7 +22,7 @@ class VideoUserParse(BaseParse):
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
-                url= "%s%s%s"%(item['url'].replace("1.html"),i,".html")
+                url= "%s%s%s"%(item['url'].replace("1.html",""),i,".html")
                 print url
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
@@ -45,10 +45,10 @@ class VideoUserParse(BaseParse):
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
-        soup = self.fetchUrl(url,header)
-        div = soup.first("div", {"class": "list-videos"})
+        soup = self.fetchUrl(baseurl+url,header)
+        div = soup.first("div", {"class": "video-list"})
         if div!=None:
-            lis = div.findAll("div",{"class":"item  "})
+            lis = div.findAll("div",{"class":"video-item"})
             for li in lis:
                 #name,pic,url,userId,rate,updateTime,path
                 ahref = li.first("a")
@@ -59,11 +59,11 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = ahref.first("img")
-                obj['pic'] = img.get("data-original")
-                obj['name'] = ahref.get('title')
+                obj['pic'] = img.get("src")
+                obj['name'] = img.get('alt')
     
                 videourl = urlparse(obj['url'])
-                obj['path'] = "aotu"+videourl.path
+                obj['path'] = "papa345"+videourl.path
                 obj['rate'] = 1.2
                 obj['updateTime'] = datetime.datetime.now()
                 obj['userId'] = userId
@@ -86,18 +86,18 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            match = regaotu.search(url)
-            if match!=None:
-                return "%s%s%s"%(baseurl,"/embed/",match.group(1))
-#             soup = self.fetchUrl(url, header)
-#             scripts  = soup.findAll("script")
-#             for script in script:
-#                 
-#             if textarea!=None:
-#                 match = regVideo.search(textarea.text.replace(" ",""))
-#                 if match!=None:
-#                     videoUrl =match.group(1)
-#                     return videoUrl
+            url = url.replace("/vod-detail-id-","").replace(".html","")
+            url = "%s%s%s"%("/vod-play-id-",url,"-src-1-num-1.html")
+            soup = self.fetchUrl(baseurl+url,header)
+            div = soup.first("div",{"class":"palyContent"})
+            if div!=None:
+                text = unquote(div.text)
+                texts = text.split(",")
+                for item in texts:
+                    match = regVideoM3.search(item)
+                    if match!=None:
+                        videoUrl =match.group(1)
+                        return "%s%s%s"%("http",videoUrl,'m3u8')
             print url,'没有找到mp4'
             return None
         except Exception as e:

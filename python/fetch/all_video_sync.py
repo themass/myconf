@@ -106,11 +106,11 @@ def pase3():
     seman_vip.parseVideo()
 def pase4():
     #iavbobo_vip.parseVideo()
-    jjr128_vip.parseVideo()
-    lusibi_vip.parseVideo()
-    mastv54_vip.parseVideo()
-    tzzy1399_vip.parseVideo()
-    urbanhenta_vip.parseVideo()
+#     jjr128_vip.parseVideo()
+#     lusibi_vip.parseVideo()
+#     mastv54_vip.parseVideo()
+#     tzzy1399_vip.parseVideo()
+#     urbanhenta_vip.parseVideo()
     youjiady_vip.parseVideo()
     
 def pase5():

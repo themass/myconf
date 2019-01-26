@@ -45,7 +45,7 @@ class VideoUserParse(BaseParse):
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
-        soup = self.fetchUrlWithBase(baseurl6+url, header4)
+        soup = self.fetchUrlWithBase(baseurl6+url, header3)
         lis = soup.findAll("div",{"class":"thumb"})
         for li in lis:
             #name,pic,url,userId,rate,updateTime,path
@@ -84,7 +84,7 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrlWithBase(baseurl6+url, header4)
+            soup = self.fetchUrlWithBase(baseurl6+url, header3)
             adiv = soup.first("div",{"class":"wrap-video"})
             if adiv!=None:
                 ahref = adiv.first('script')

@@ -35,7 +35,6 @@ class VideoParse(BaseParse):
             spanTitle = div.first(
                 "span", {"class": "demo-card-image__filename"})
             name = spanTitle.text
-            print name
             obj['name'] = name
             videourl = urlparse(obj['url'])
             obj['path'] = videourl.query
@@ -43,6 +42,8 @@ class VideoParse(BaseParse):
             obj['channel'] = channel
             obj['videoType'] = 'normal'
             obj['baseurl'] = baseurl
+            print obj['name'],obj['videoType'],obj['url'],obj['pic']
+
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

@@ -100,7 +100,7 @@ class VideoParse(BaseParse):
                             content = unquote(str(script.text))
                             match = regVideo.search(content)
                             if match!=None: 
-                                return "http"+match.group(1)+'m3u8'
+                                return "http"+match.group(1)+'index.m3u8'
             print '没找到mp4'
             return None
         except Exception as e:

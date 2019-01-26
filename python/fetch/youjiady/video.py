@@ -61,11 +61,15 @@ class VideoParse(BaseParse):
             obj['path'] = videourl.path
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
+            if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                obj['videoType'] = "webview"
+            else:
+                obj['videoType'] = "normal"
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,obj['videoType'] ,baseurl)
 
         print '44iir video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
@@ -75,25 +79,25 @@ class VideoParse(BaseParse):
         header = {'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
+            url = url.replace("/detail/","").replace(".html","")
+            url = "%s%s%s"%("/video/?",url,"-0-0.html")
             soup = self.fetchUrl(url, header)
-            div = soup.first("div",{'class':'panel clearfix'})
-            if div!=None:
-                adiv = div.first("div")
-                if adiv!=None:
-                    ahref = adiv.first('a')
-                    if ahref!=None:
-                        soup = self.fetchUrl(ahref.get('href'), header)
-                        play_video = soup.first('div',{'class':'info clearfix'})
-                        if play_video!=None:
-                            script = play_video.first('script')
-                            if script!=None:
-                                text = script.text
-                                texts = text.split("$")
-                                for item in texts:
-                                    match = regVideo.search(item)
-                                    if match!=None:
-                                        videoUrl =match.group(1)
-                                        return "%s%s%s"%("http",videoUrl,'m3u8')
+            play_video = soup.first('div',{'class':'info clearfix'})
+            if play_video!=None:
+                script = play_video.first('script')
+                if script!=None:
+                    text = unquote(script.text)
+                    texts = text.split("$")
+                    for item in texts:
+                        match = regVideo.search(item)
+                        if match!=None:
+                            videoUrl =match.group(1)
+                            return "%s%s%s"%("http",videoUrl,'m3u8')
+                    for item in texts:
+                        match = shareVideo.search(text)
+                        if match!=None:
+                            videoUrl ="%s%s%s%s"%("http",match.group(1),"/share/",match.group(2))
+                            return videoUrl
             print '没找到mp4'
             return None
         except Exception as e:

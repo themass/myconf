@@ -15,8 +15,9 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-if __name__ == '__main__':
-
-    #     video.videoParse(queue)
+def passVideo():
     videop = video.VideoParse()
     videop.run()
+if __name__ == '__main__':
+
+    passVideo()

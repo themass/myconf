@@ -35,7 +35,7 @@ class VideoParse(BaseParse):
         for ahref in ahrefs:
             if ahref.text!='首页':
                 obj={}
-                obj['name']=ahref.text+"-浏览器打开"
+                obj['name']=ahref.text+"-浏览器"
                 obj['url']=ahref.get('href')
                 obj['baseurl']=baseurl
                 obj['updateTime']=datetime.datetime.now()
@@ -43,7 +43,7 @@ class VideoParse(BaseParse):
                 obj['rate']=0.7
                 obj['channel']=ahref.text
                 obj['showType']=3
-                obj['channelType']='sanji'
+                obj['channelType']='fanqiang'
                 channelList.append(obj)
         return channelList
     def videoParse(self, channel, url):

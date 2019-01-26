@@ -20,9 +20,8 @@ videoId3 = re.compile("vod-detail-id-(.*?).html")
 baseurl4 = "http://www.7mav4.club/"
 baseurl5 = "http://www.hnav01.xyz/"
 baseurl6 = "http://www.91av02.club/"
-baseurl7 = "http://112klav.xyz/"
+baseurl7 = "http://113klav.icu/"
 baseurl8 = "https://8xuw.com/"
-baseurl9 = "http://www.92lu.co"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           'Cookie':"ASPro_3b178725fc4f483c1b3b540e9254fe69=rjglqktt458s6t79lurudu6u37; __51cke__=; __atuvc=5%7C34; __atuvs=5b7d8978e2390365001; __tins__19260318=%7B%22sid%22%3A%201534952887546%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279466%7D; __tins__18963094=%7B%22sid%22%3A%201534952887602%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279478%7D; __51laig__=27"}

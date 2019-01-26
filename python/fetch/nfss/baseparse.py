@@ -13,7 +13,6 @@ import re
 import os,sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "http://www.nfss.xyz"
 baseurl2 = "http://www.65aeae.com/"
 baseurl3 = "http://www.mh40.xyz/"
 baseurl4 = "https://www.2448yy.com"

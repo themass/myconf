@@ -7,14 +7,13 @@ from fetch.profile import *
 
 class VideoParse(BaseParse):
 
-    def __init__(self, channel, url):
-        self.t_channel = channel
-        self.t_url = url
+    def __init__(self):
+        pass
 
     def run(self):
-
-        for i in range(1, maxVideoPage):
-            self.videoParse(self.t_channel, self.t_url % (i))
+        for k,v in channels.items(): 
+            for i in range(1, maxVideoPage):
+                self.videoParse(k, v % (i))
 
     def videoParse(self, channel, url):
         dataList = []
@@ -48,28 +47,23 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,'webview',baseurl)
-
+            ops.inertVideo(obj,obj['videoType'],baseurl)
         print 'ozsese video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
     def parseDomVideo(self, url):
-        return baseurl + url
     # 下面是抓取具体mp4文件的
 #         header = {'User-Agent':
 #                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
-#         try:
-#             soup = self.fetchUrl(url, header)
-#             source = soup.first("source")
-#             if source == None:
-#                 return None
-#             return source.get("src")
-#         except Exception as e:
-#             common.format_exception(e)
-#             return None
+        try:
+            soup = self.fetchUrl(url, header)
+            source = soup.first("source")
+            if source == None:
+                print '没找到mp4'
+                return None
+            return source.get("src")
+        except Exception as e:
+            common.format_exception(e)
+            return None
 
-
-def videoParse(queue):
-    for channel, url in channels.items():
-        queue.put(VideoParse(channel, url))

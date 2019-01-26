@@ -137,6 +137,9 @@ def pase7():
     tlbfao_vip.parseVideo()
     xiaiyy_vip.parseVideo()
     zooredtube_vip.parseVideo()
+# 本机才能执行
+def pase8():
+    nvnvzx_vip.parseVideo2()
 
 def all():
     pase1()

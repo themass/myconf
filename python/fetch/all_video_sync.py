@@ -106,12 +106,12 @@ def pase4():
     youjiady_vip.parseVideo()
     
 def pase5():
-#     kpd36_vip.parseVideo()
-#     meiyke_vip.parseVideo()
-#     nfss_vip.parseVideo2()
-#     nfss_vip.parseVideo4()
-#     nfss_vip.parseVideo3()
-#     sp878_vip.parseVideo()
+    kpd36_vip.parseVideo()
+    meiyke_vip.parseVideo()
+    nfss_vip.parseVideo2()
+    nfss_vip.parseVideo4()
+    nfss_vip.parseVideo3()
+    sp878_vip.parseVideo()
     yezmw_vip.parseVideo()
     yin22_vip.parseVideo()
 def pase6():

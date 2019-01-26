@@ -53,9 +53,8 @@ class VideoParse(BaseParse):
                 print '没有mp4 文件:', ahref.get("href")
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = ahref.get("data-original")
+            obj['pic'] = ahref.get("data-original").replace("#err","")
             obj['name'] = ahref.get('title')
-            print obj['name'],mp4Url,obj['pic']
 
             videourl = urlparse(obj['url'])
             obj['path'] = videourl.path
@@ -65,6 +64,7 @@ class VideoParse(BaseParse):
                 obj['videoType'] = "webview"
             else:
                 obj['videoType'] = "normal"
+            print obj['videoType'],obj['name'],mp4Url,obj['pic']
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

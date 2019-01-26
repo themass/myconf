@@ -82,8 +82,8 @@ def pase1():
     jav101_vip.parseVideo()
     zanquye_vip.parseVideo()
 def pase2():
-#     dxg11_vip.parseVideo()
-#     ff326_vip.parseVideo()
+    dxg11_vip.parseVideo()
+    ff326_vip.parseVideo()
     ##fff64_vip.parseVideo()
     fuli750_vip.parseVideo()
     g6858_vip.parseVideo()

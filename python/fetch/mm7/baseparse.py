@@ -16,7 +16,7 @@ header = {'Cookie':'UM_distinctid=163a67e76662dd-061c8c9af4c49b-454c092b-1fa400-
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")
-regVideo2 = re.compile(r'src="https://hhvid.com/(.*?)"></iframe>"')
+regVideo2 = re.compile(r'src="(https://hhvid.com|https://www.rapidvideo.com)/(.*?)"></iframe>"')
 
 class BaseParse(threading.Thread):
 

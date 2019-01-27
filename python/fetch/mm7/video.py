@@ -91,7 +91,7 @@ class VideoUserParse(BaseParse):
                 text = unquote(script.text)
                 texts = text.split("iframe")
                 for item in texts:
-                    print item
+#                     print item
                     match = regVideo2.search(item)
                     if match!=None:
                         return "%s%s%s"%(match.group(1),"/",match.group(2))

@@ -44,7 +44,6 @@ import zxdy_vip
 import zy3838_vip
 import avhome11_vip
 import s58589_vip
-import hongxing_vip
 import lusibi_vip
 import s58589_vip
 import qh_vip
@@ -147,6 +146,7 @@ def all():
     pase5()
     pase6()
     pase7()
+    pase8()
 if __name__ == '__main__':
 
     

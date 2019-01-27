@@ -177,14 +177,14 @@ class DbOps(object):
     def inertVideoUser(self, obj):
         try:
             return self.conn.execute(
-                "insert into  video_user (name,pic,userId,rate,updateTime,channel,showType,baseurl) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
+                "insert ignore into  video_user (name,pic,userId,rate,updateTime,channel,showType,baseurl) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
                 % (
                     obj.get("name"), obj.get("pic"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("channel"), obj.get("showType"), obj.get("baseUrl")))
         except Exception as e:
             return 0
     def inertVideoUserItem(self, obj):
         return self.conn.execute(
-            "replace into  video_user_item (name,pic,url,userId,rate,updateTime,path,baseurl,videoType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
+            "insert ignore into  video_user_item (name,pic,url,userId,rate,updateTime,path,baseurl,videoType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
                 obj.get("name").replace("'",""), obj.get("pic"), obj.get("url"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("path"), obj.get("baseUrl"), obj.get("videoType"), obj.get("showType")))
 

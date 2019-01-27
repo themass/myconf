@@ -59,6 +59,8 @@ class VideoUserParse(BaseParse):
                 obj['url'] = mp4Url
                 obj['pic'] = meta.first('img').get("src")
                 obj['name'] = meta.first('h3').text
+                if len(obj['name'])>200:
+                    obj['name'] = obj['name'][0:200]
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = 'm0001_'+videourl.path

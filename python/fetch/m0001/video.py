@@ -91,7 +91,7 @@ class VideoUserParse(BaseParse):
             url = "%s%s%s"%("/?m=vod-play-id-",url,"-src-1-num-1.html")
             soup = self.fetchUrl(url, header)
             text = soup.first("div",{"class":"player_l"})
-            text = unquote(text)
+            text = unquote(text.text)
             texts = text.split(",")
             for item in texts:
                 match = regVideo.search(item)

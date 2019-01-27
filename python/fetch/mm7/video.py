@@ -93,8 +93,7 @@ class VideoUserParse(BaseParse):
                 for item in texts:
                     match = regVideo2.search(item)
                     if match!=None:
-                        videoUrl =match.group(1)
-                        return "%s%s"%("https://hhvid.com/",videoUrl)
+                        return "%s%s%s"%(match.group(1),"/",match.group(2))
             print '没找到mp4'
             return None
         except Exception as e:

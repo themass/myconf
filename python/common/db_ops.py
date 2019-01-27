@@ -137,11 +137,11 @@ class DbOps(object):
         self.conn.execute("update videoitems i set channelType=(select channelType from videochannel c where i.channel=c.channel limit 1)")
     def inertVideoChannel(self, obj):
         try:
-#             return 1
-            return self.conn.execute(
-                "insert into  videochannel (name,url,baseurl,updateTime,rate,showtype,enable,channel,channelType) values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s')"
-                % (
-                    obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType",3), 1, obj.get("channel").replace(".com",'-'), obj.get("channelType")))
+            return 1
+#             return self.conn.execute(
+#                 "insert into  videochannel (name,url,baseurl,updateTime,rate,showtype,enable,channel,channelType) values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s')"
+#                 % (
+#                     obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType",3), 1, obj.get("channel").replace(".com",'-'), obj.get("channelType")))
         except Exception as e:
             pass
     def inertVideoChannelLine(self, obj):

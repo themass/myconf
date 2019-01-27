@@ -165,6 +165,8 @@ if __name__ == '__main__':
         pase6()
     elif int(val)==7:
         pase7()
+    elif int(val)==8:
+        pase8()
     elif int(val)==10:
         all()
     else:

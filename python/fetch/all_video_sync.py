@@ -85,7 +85,7 @@ def pase2():
 #     fff64_vip.parseVideo()
 #     fuli750_vip.parseVideo()
 #     g6858_vip.parseVideo()
-    hs941_vip.parseVideo()
+#     hs941_vip.parseVideo()
     kedouwo_vip.parseVideoALl()
 def pase3():
 #     ggfuil_vip.parseVideo()

@@ -30,7 +30,7 @@ class VideoUserParse(BaseParse):
                 except Exception as e:
                     pass
             print "max page=",maxPage,item['url']
-            for i in range(330, maxPage):
+            for i in range(1, maxPage):
                 url = item['url']
                 url= "%s%s%s"%(item['url'].replace("random/all/index.html","list/all/"),i,".html")
                 print url

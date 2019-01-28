@@ -9,7 +9,7 @@ from fetch.profile import *
 class VideoUserParse(BaseParse):
 
     def __init__(self,name):
-        self.name = name
+        self.t_name = name
 
     def run(self):
         dbVPN = db.DbVPN()
@@ -37,7 +37,7 @@ class VideoUserParse(BaseParse):
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
-        ahrefs = self.header(self.name)
+        ahrefs = self.header(self.t_name)
         channelList = []
         for ahref in ahrefs:
             obj={}

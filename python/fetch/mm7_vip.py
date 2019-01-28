@@ -16,8 +16,19 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-def parseVideo():
-    videop = video.VideoUserParse()
+def parseVideo(name):
+    videop = video.VideoUserParse(name)
     videop.run()
 if __name__ == '__main__':
-    parseVideo()
+#     parseVideo()
+    val = argsMap.get("-p",0)
+    if int(val)==1:
+        parseVideo("header.html")
+    elif int(val)==2:
+        parseVideo("header2.html")
+    elif int(val)==3:
+        parseVideo("header3.html")
+    elif int(val)==4:
+        parseVideo("header4.html")
+    elif int(val)==5:
+        parseVideo("header5.html")

@@ -46,29 +46,30 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         div = soup.first("div",{"class":'channel clearfix'})
-        lis = div.findAll("li")
-        for li in lis:
-            ahref = li.first('a')
-            if ahref != None:
-                obj = {}
-                mp4Url = self.parseDomVideo(ahref.get("href"))
-                if mp4Url == None:
-                    print '没有mp4 文件:', ahref.get("href")
-                    continue
-                obj['url'] = mp4Url
-                img = ahref.first("img")
-                obj['pic'] = img.get("data-original")
-                obj['name'] = img.get("alt")
-                obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
-                obj['updateTime'] = datetime.datetime.now()
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                    obj['videoType'] = "webview"
-                else:
-                    obj['videoType'] = "normal"
-                obj['channel'] = channel
-                obj['baseurl'] = baseurl
-                print obj['videoType'],obj['url'],obj['pic']
-                dataList.append(obj)
+        if div!=None:
+            lis = div.findAll("li")
+            for li in lis:
+                ahref = li.first('a')
+                if ahref != None:
+                    obj = {}
+                    mp4Url = self.parseDomVideo(ahref.get("href"))
+                    if mp4Url == None:
+                        print '没有mp4 文件:', ahref.get("href")
+                        continue
+                    obj['url'] = mp4Url
+                    img = ahref.first("img")
+                    obj['pic'] = img.get("data-original")
+                    obj['name'] = img.get("alt")
+                    obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
+                    obj['updateTime'] = datetime.datetime.now()
+                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                        obj['videoType'] = "webview"
+                    else:
+                        obj['videoType'] = "normal"
+                    obj['channel'] = channel
+                    obj['baseurl'] = baseurl
+                    print obj['videoType'],obj['url'],obj['pic']
+                    dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

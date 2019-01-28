@@ -75,9 +75,8 @@ def pase1():
 #     ax98_vip.parseVideo()
 #     ax98_vip.parseVideo2()
 #     bt2n_vip.parseVideo()
-    btw168_vip.parseVideo()
-    cjg52_vip.parseVideo()
-    jav101_vip.parseVideo()
+#     btw168_vip.parseVideo()
+#     cjg52_vip.parseVideo()
     zanquye_vip.parseVideo()
 def pase2():
 #     dxg11_vip.parseVideo()
@@ -137,6 +136,7 @@ def pase7():
 # 本机才能执行
 def pase8():
     nvnvzx_vip.parseVideo2()
+    jav101_vip.parseVideo()
 
 def all():
     pase1()

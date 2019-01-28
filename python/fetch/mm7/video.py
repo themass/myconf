@@ -111,7 +111,7 @@ class VideoUserParse(BaseParse):
 #                     print item
                     match = regVideo2.search(item)
                     if match!=None:
-                        soup=self.fetchUrlWithBase("%s%s%s"%(match.group(1),"/",match.group(2)))
+                        soup=self.fetchUrlWithBase("%s%s%s"%(match.group(1),"/",match.group(2)),header)
                         source = soup.first("source")
                         if source!=None:
                             return source.get("src")

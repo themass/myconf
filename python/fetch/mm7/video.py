@@ -29,7 +29,7 @@ class VideoUserParse(BaseParse):
                     maxPage = int(span.first("a").text)
                 except Exception as e:
                     pass
-            print "max page=",maxPage
+            print "max page=",maxPage,item['url']
             for i in range(1, maxPage):
                 url = item['url']
                 url= "%s%s%s"%(item['url'].replace("random/all/index.html","list/all/"),i,".html")
@@ -67,10 +67,10 @@ class VideoUserParse(BaseParse):
             title = ""
             if meta.first('video')==None:
                 img = meta.first('img').get("src")
-                title= meta.first('video').get("title").replace("'","")
+                title= meta.first('img').get("title").replace("'","")
             else:
                 img = meta.first('video').get("poster")
-                title= meta.first('img').get("title").replace("'","")
+                title= meta.first('video').get("title").replace("'","")
             obj['url'] = mp4Url
             obj['pic'] = img
             obj['name'] = title

@@ -118,6 +118,8 @@ class VideoUserParse(BaseParse):
                         if script!=None:
                             text = unquote(str(script.text))
                             texts = text.split("$")
+                            if len(texts)==1:
+                                texts = text.split("#")
                             for item in texts:
                                 match = regVideo.search(item)
                                 if match!=None:

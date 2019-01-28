@@ -21,7 +21,16 @@ class VideoUserParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            for i in range(1, maxVideoPage):
+            soup = self.fetchUrl(item['url'])
+            span = soup.first("span", {"class":"page_previous"})
+            maxPage = maxVideoPage
+            if span!=None and span.first("a")!=None:
+                try:
+                    maxPage = int(span.first("a").text)
+                except Exception as e:
+                    pass
+            print "max page=",maxPage
+            for i in range(1, maxPage):
                 url = item['url']
                 url= "%s%s%s"%(item['url'].replace("random/all/index.html","list/all/"),i,".html")
                 print url

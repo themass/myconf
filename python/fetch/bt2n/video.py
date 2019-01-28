@@ -50,26 +50,27 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         ul = soup.first("div",{"class":"photoList"})
-        metas = ul.findAll("div",{"class":"thum"})
-        for meta in metas:
-            obj = {}
-            ahref = meta.first("a")
-            mp4Url = self.parseDomVideo(base,ahref.get("href"))
-            if mp4Url == None:
-                print '没有mp4 文件:', ahref.get("href")
-                continue
-            obj['url'] = mp4Url
-            obj['pic'] = meta.first('div').get("style").replace("background-image:url(","").replace(")","")
-            obj['name'] = meta.first('b').text
-
-            videourl = urlparse(mp4Url)
-            obj['path'] = 'bt2n_'+videourl.path
-            obj['updateTime'] = datetime.datetime.now()
-            obj['channel'] = channel
-            obj['videoType'] = "normal"
-            obj['baseurl'] = baseurl
-            print obj['name'],obj['videoType'],obj['url'],obj['pic']
-            dataList.append(obj)
+        if ul!=None:
+            metas = ul.findAll("div",{"class":"thum"})
+            for meta in metas:
+                obj = {}
+                ahref = meta.first("a")
+                mp4Url = self.parseDomVideo(base,ahref.get("href"))
+                if mp4Url == None:
+                    print '没有mp4 文件:', ahref.get("href")
+                    continue
+                obj['url'] = mp4Url
+                obj['pic'] = meta.first('div').get("style").replace("background-image:url(","").replace(")","")
+                obj['name'] = meta.first('b').text
+    
+                videourl = urlparse(mp4Url)
+                obj['path'] = 'bt2n_'+videourl.path
+                obj['updateTime'] = datetime.datetime.now()
+                obj['channel'] = channel
+                obj['videoType'] = "normal"
+                obj['baseurl'] = baseurl
+                print obj['name'],obj['videoType'],obj['url'],obj['pic']
+                dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -92,7 +93,7 @@ class VideoParse(BaseParse):
                         match = regVideo.search(item)
                         if match!=None:
                             videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
+                            return "%s%s%s"%("http",videoUrl,match.group(2))
             print '没找到mp4'
             return None
         except Exception as e:

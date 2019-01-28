@@ -51,12 +51,12 @@ class VideoUserParse(BaseParse):
             obj = {}
             ahref = meta.first("a")
             mp4Url = self.parseDomVideo(ahref.get("href"))
-            if mp4Url == None or meta.first('video')==None:
+            if mp4Url == None or meta.first('img')==None:
                 print '没有mp4 文件:', ahref.get("href")
                 continue
             obj['url'] = mp4Url
-            obj['pic'] = meta.first('video').get("poster")
-            obj['name'] = meta.first('video').get("title").replace("'","")
+            obj['pic'] = meta.first('img').get("src")
+            obj['name'] = meta.first('img').get("title").replace("'","")
 
             videourl = urlparse(obj['url'])
             obj['path'] = 'mm7_'+videourl.path

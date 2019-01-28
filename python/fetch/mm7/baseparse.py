@@ -16,7 +16,7 @@ header = {'Cookie':'__cfduid=d1d15c2d498733cada4b78811f4114c2e1548612262; PHPSES
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")
-regVideo2 = re.compile(r'src="(https://hhvid.com|https://www.rapidvideo.com|https://www.thisav.com|https://avgle.com)/(.*?)">')
+regVideo2 = re.compile(r'src="(https://hhvid.com|https://www.rapidvideo.com|https://www.thisav.com|https://avgle.com|https://www.bitporno.com)/(.*?)">')
 
 class BaseParse(threading.Thread):
 

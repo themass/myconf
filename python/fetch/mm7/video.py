@@ -111,7 +111,10 @@ class VideoUserParse(BaseParse):
 #                     print item
                     match = regVideo2.search(item)
                     if match!=None:
-                        return "%s%s%s"%(match.group(1),"/",match.group(2))
+                        soup=self.fetchUrlWithBase("%s%s%s"%(match.group(1),"/",match.group(2)))
+                        source = soup.first("source")
+                        if source!=None:
+                            return source.get("src")
             print '没找到mp4'
             return None
         except Exception as e:

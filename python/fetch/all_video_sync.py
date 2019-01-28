@@ -130,7 +130,7 @@ def pase7():
 #     newlynet_vip.parseVideo() 
 #     sifangpian_vip.parseVideo()
 #     teshiw_vip.parseVideo()
-    tianjiyy123_vip.parseVideo()
+#     tianjiyy123_vip.parseVideo()
     tlbfao_vip.parseVideo()
     xiaiyy_vip.parseVideo()
     zooredtube_vip.parseVideo()

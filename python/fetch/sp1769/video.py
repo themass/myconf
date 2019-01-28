@@ -90,15 +90,16 @@ class VideoParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(url)
-            scripts = soup.findAll("script")
-            for s in scripts:
-                text = unquote(s.text)
-                texts = text.split(",")
-                for item in texts:
-                    match = regVideo.search(item)
-                    if match!=None:
-                        return "http"+match.group(1)+'m3u8'
+            if url.count("script")!=0:
+                soup = self.fetchUrl(url)
+                scripts = soup.findAll("script")
+                for s in scripts:
+                    text = unquote(s.text)
+                    texts = text.split(",")
+                    for item in texts:
+                        match = regVideo.search(item)
+                        if match!=None:
+                            return "http"+match.group(1)+'m3u8'
             print '没找到mp4'
             return None
         except Exception as e:

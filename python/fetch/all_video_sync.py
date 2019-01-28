@@ -90,7 +90,7 @@ def pase2():
     kedouwo_vip.parseVideoALl()
 def pase3():
 #     ggfuil_vip.parseVideo()
-    jinzidu_vip.parseVideo()
+##     jinzidu_vip.parseVideo()
     kump4_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()

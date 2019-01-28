@@ -21,16 +21,17 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            try:
-                for i in range(1, maxVideoPage):
-                    url = item['url']
-                    if i!=1:
-                        url = "%s%s%s"%(url.replace(".html", "-"),i,".html")
-                    self.videoParse(
-                        item['channel'], url)
-                    print '解析页数 ', item['url'], ' ---', i, '完成'
-            except Exception as e:
-                pass
+            if item['url'].count("短视频")==1:
+                try:
+                    for i in range(80, maxVideoPage):
+                        url = item['url']
+                        if i!=1:
+                            url = "%s%s%s"%(url.replace(".html", "-"),i,".html")
+                        self.videoParse(
+                            item['channel'], url)
+                        print '解析页数 ', item['url'], ' ---', i, '完成'
+                except Exception as e:
+                    pass
     def videoChannel(self):
         soup = self.fetchUrl(self.t_obj['url'])
         tds = soup.first('div',{"class":"row category-content"})

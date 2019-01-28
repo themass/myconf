@@ -57,7 +57,10 @@ class VideoParse(BaseParse):
                         continue
                     obj['url'] = mp4Url
                     obj['pic'] = li.first('img').get("data-original")
-                    obj['name'] = li.first('img').get("title")
+                    name = li.first('img').get("title")
+                    if li.first('img').get("title")==None:
+                        name = "性爱教程"
+                    obj['name'] = name
         
                     videourl = urlparse(obj['url'])
                     obj['path'] = "yezmw"+videourl.path

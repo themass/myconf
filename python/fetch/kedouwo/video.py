@@ -15,8 +15,8 @@ class VideoUserParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         chs = self.videoChannel()
-#         for item in chs:
-#             ops.inertVideoUser(item)
+        for item in chs:
+            ops.inertVideoUser(item)
         print 'aotu user video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()

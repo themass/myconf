@@ -68,6 +68,22 @@ strongswan_setup()
 }
 strongswan_config() 
 {
+	cd ${WORKDIR}/myconf/shell
+	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
+	cp  ../strongswan_conf/ipsec.conf /etc/ipsec.conf
+    
+	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
+	cp  ../strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
+    
+	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
+	cp  ../strongswan_conf/ipsec.secrets /etc/ipsec.secrets
+	
+	cp  ../strongswan_conf/strongswan.conf /etc/strongswan.conf
+	
+	ipsec restart
+}
+strongswan_config_port() 
+{
 	#unzip strongswan_conf.zip
 	#dos2unix strongswan_conf/ipsec.conf
 	#dos2unix strongswan_conf/charon.conf
@@ -84,15 +100,15 @@ strongswan_config()
 	
 	cd ${WORKDIR}/myconf/shell
 	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-	cp  ../strongswan_conf/ipsec.conf /etc/ipsec.conf
+	cp  ../strongswan_conf_port/ipsec.conf /etc/ipsec.conf
     
 	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
-	cp  ../strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
+	cp  ../strongswan_conf_port/charon.conf /etc/strongswan.d/charon.conf
     
 	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-	cp  ../strongswan_conf/ipsec.secrets /etc/ipsec.secrets
+	cp  ../strongswan_conf_port/ipsec.secrets /etc/ipsec.secrets
 	
-	cp  ../strongswan_conf/strongswan.conf /etc/strongswan.conf
+	cp  ../strongswan_conf_port/strongswan.conf /etc/strongswan.conf
 	
 	ipsec restart
 }
@@ -280,6 +296,7 @@ if [ $# != 0 ]; then
 	     caip)          setup_caip;;
 	    iptables)          setup_iptables;;
 	    strongswanconf)          strongswan_config;;
+	    strongswanconf_port)          strongswan_config_port;;
 	    net)          net;;
 	     fail2ban)          setup_fail2ban;;
 	    check)          checkspeed;;

@@ -279,7 +279,7 @@ usage()
     echo "check    checkspeed"
      echo "check_vpn    check vpn"
      echo "net    Setup net"
-     
+      echo "strongswanconf_port    Setup strongswanconf_port"
     echo "all           Setup all aboves"
     echo "telegraf          Setup telegraf"
 }

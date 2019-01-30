@@ -106,7 +106,7 @@ class VideoParse(BaseParse):
                 for text in texts:
                     match = shareVideo.search(text)
                     if match!=None:
-                        return text
+                        return text.replace("'",'').replace(")",'').replace(";",'')
             print url,'没有mp4'
             return None
         except Exception as e:

@@ -88,7 +88,7 @@ class VideoParse(BaseParse):
         try:
             urls = url.split("/")
             urls.reverse()
-            url = urls['0'].replace(".html","")
+            url = urls[0].replace(".html","")
             url = "/vod-play-id-%s-src-1-num-1.html"%(url)
             soup = self.fetchUrl(url, header)
             ul = soup.first('div',{"class":'player mb'})

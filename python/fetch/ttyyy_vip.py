@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from qh import *
+from ttyyy import *
 import re
 import sys
 reload(sys)
@@ -17,7 +17,7 @@ sys.setdefaultencoding('utf8')
 
 
 def parseVideo2():
-    videop = video2.VideoParse()
+    videop = video.VideoParse()
     videop.run()
 if __name__ == '__main__':
     parseVideo2()

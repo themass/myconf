@@ -66,7 +66,7 @@ class VideoParse(BaseParse):
                 else:
                     obj['pic'] = baseurl+img.get('data-original')
                 obj['name'] = ahref.get("title")
-                obj['path'] = "88_%s%s%s"%(channel,"-",obj['name'])
+                obj['path'] = "ttyyy_%s%s%s"%(channel,"-",obj['name'])
                 if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                     obj['videoType'] = "webview"
                 else:

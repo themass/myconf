@@ -66,6 +66,8 @@ import teshiw_vip
 import newlynet_vip
 import xiaiyy_vip
 import yin22_vip
+import ttyyy_vip
+import sy88_vip
 from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
     iavbobo_vip, jav101_vip, jinzidu_vip, ozsese_vip, singlove_vip, youjiady_vip,\
     zooredtube_vip
@@ -85,6 +87,7 @@ def pase2():
 #     fuli750_vip.parseVideo()
 #     g6858_vip.parseVideo()
 #     hs941_vip.parseVideo()
+
     kedouwo_vip.parseVideoALl()
 def pase3():
 #     ggfuil_vip.parseVideo()
@@ -100,7 +103,8 @@ def pase4():
 #     tzzy1399_vip.parseVideo()
 #     urbanhenta_vip.parseVideo()
 #     youjiady_vip.parseVideo()
-    pass
+    ttyyy_vip.parseVideo()
+    sy88_vip.parseVideo()
     
 def pase5():
 #     kpd36_vip.parseVideo()

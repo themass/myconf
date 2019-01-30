@@ -67,7 +67,11 @@ class VideoParse(BaseParse):
                     obj['pic'] = baseurl+img.get('data-original')
                 obj['name'] = ahref.get("title")
                 obj['path'] = "88_%s%s%s"%(channel,"-",obj['name'])
-                print obj['path'],obj['url'],obj['pic']
+                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                    obj['videoType'] = "webview"
+                else:
+                    obj['videoType'] = "normal"
+                print obj['videoType'],obj['name'],mp4Url,obj['pic']
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
                 obj['baseurl'] = baseurl
@@ -75,7 +79,7 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,obj['videoType'],baseurl)
 
         print 'f8dy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

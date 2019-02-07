@@ -21,7 +21,7 @@ setup_telegraf()
 	shelldir=`pwd`
 	cd ${TMP_HOME}
 	rm ${TMP_HOME}/telegraf_1.4.2-1_amd64.deb
-	wget https://dl.influxdata.com/telegraf/releases/telegraf_1.4.2-1_amd64.deb
+	wget https://dl.influxdata.com/telegraf/releases/telegraf_1.4.2-1_amd64.deb --no-check-certificate
 	sudo dpkg -i telegraf_1.4.2-1_amd64.deb
 	cd ${shelldir}
 	echo ${shelldir}

@@ -90,7 +90,7 @@ class VideoParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            if url.count("script")!=0:
+            if url.count("script")==0:
                 soup = self.fetchUrl(url)
                 scripts = soup.findAll("script")
                 for s in scripts:

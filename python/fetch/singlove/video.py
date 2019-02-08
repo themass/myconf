@@ -35,13 +35,14 @@ class VideoParse(BaseParse):
                         obj['pic'] = picUrl
             divTitle = div.first("div", {"class": "block-layer block-inner"})
             name = divTitle.first('a').text
-            print name
             obj['name'] = name
             videourl = urlparse(obj['url'])
             obj['path'] = videourl.path
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
             obj['baseurl'] = baseurl
+            print obj['name'],mp4Url,obj['pic']
+
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

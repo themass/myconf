@@ -28,7 +28,4 @@ def parseImg():
     handle.run()
 if __name__ == '__main__':
 
-    #     videop = video.VideoParse()
-    #     videop.run()
-    #     video.videoParse(queue)
-    parseImg()
+    parseVideo()

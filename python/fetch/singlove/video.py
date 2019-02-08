@@ -58,7 +58,6 @@ class VideoParse(BaseParse):
         try:
             soup = self.fetchUrl(url, header)
             iframe = soup.first("iframe")
-            print iframe
             if iframe == None:
                 return None
             url = iframe.get("src")
@@ -67,10 +66,9 @@ class VideoParse(BaseParse):
 
             soup = self.fetchUrlWithBase(url, header)
             source = soup.first("source")
-            print source
             if source == None:
-                return source.get("src")
-            return None
+                return None
+            return source.get("src")
         except Exception as e:
             common.format_exception(e)
             return None

@@ -64,11 +64,11 @@ class VideoParse(BaseParse):
             header = {'User-Agent':
                       'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
 
-            content = self.fetchContentUrlWithBase(url, header)
-            match = regVideo.search(content)
-            if match == None:
-                return None
-            return match.group(1)
+            soup = self.fetchUrlWithBase(url, header)
+            source = soup.first("source")
+            if source == None:
+                return source.get("src")
+            return None
         except Exception as e:
             common.format_exception(e)
             return None

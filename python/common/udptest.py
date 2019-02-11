@@ -4,6 +4,7 @@ import time
 import socket
 import random
 from datetime import datetime
+reload(sys)
 sys.setdefaultencoding('utf8')
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

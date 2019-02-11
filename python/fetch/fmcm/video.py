@@ -6,7 +6,6 @@ from common import common
 from urllib import unquote
 import time
 from fetch.profile import *
-from baseparse import baseurl
 
 class VideoParse(BaseParse):
 
@@ -26,7 +25,7 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= ch['url']
                 if i!=1:
-                    url= "%s%s%s"%(ch['url'].replace('.html','_'),i,'.html')
+                    url= "%s%s%s"%(ch['url'].replace('.html',''),i,'.html')
                 self.videoParse(ch['channel'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -49,33 +48,33 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "list mb"})
-        if div!=None:
-            lis = div.findAll("li")
-            for li in lis:
-                ahref = li.first('a')
-                if ahref!=None:
-                    mp4Url  = self.parseDomVideo(ahref.get("href"))
-                    if mp4Url==None:
-                        continue
-                    if mp4Url.count('.html')!=0 :
-                        print mp4Url,"爱奇艺，忽略"
-                        continue
-                    obj = {}
-                    obj['url'] = mp4Url
-                    img = ahref.first("img")
-                    obj['pic'] = img.get('src')
-                    obj['name'] = ahref.get("title")
-                    obj['path'] = "2828_%s%s%s"%(channel,"-",obj['name'])
-                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                        obj['videoType'] = "webview"
-                    else:
-                        obj['videoType'] = "normal"
-                    print obj['videoType'],obj['name'],mp4Url,obj['pic']
-                    obj['updateTime'] = datetime.datetime.now()
-                    obj['channel'] = channel
-                    obj['baseurl'] = baseurl
-                    dataList.append(obj)
+        lis = soup.findAll("li", {"class": "col-md-6 col-sm-4 col-xs-3"})
+        for li in lis:
+            ahref = li.first('a')
+            if ahref!=None:
+                mp4Url  = self.parseDomVideo(ahref.get("href"))
+                if mp4Url==None:
+                    continue
+                if mp4Url.count('.html')!=0 :
+                    print mp4Url,"爱奇艺，忽略"
+                    continue
+                obj = {}
+                obj['url'] = mp4Url
+                if ahref.get('data-original').count("http")>0:
+                    obj['pic'] = ahref.get('data-original')
+                else:
+                    obj['pic'] = baseurl+ahref.get('data-original')
+                obj['name'] = ahref.get("title")
+                obj['path'] = "fmcm_%s%s%s"%(channel,"-",obj['name'])
+                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                    obj['videoType'] = "webview"
+                else:
+                    obj['videoType'] = "normal"
+                print obj['videoType'],obj['name'],mp4Url,obj['pic']
+                obj['updateTime'] = datetime.datetime.now()
+                obj['channel'] = channel
+                obj['baseurl'] = baseurl
+                dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -86,19 +85,25 @@ class VideoParse(BaseParse):
         dbVPN.close()
 
     def parseDomVideo(self, url):
+        header = {'User-Agent':
+                  'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
-            url = url.replace("/bbb/","").replace(".html","")
-            url = "/ccc/%s-0-0.html"%(url)
-            soup = self.fetchUrl(url)
-            ul = soup.first('div',{"class":'player'})
-            if ul!=None and ul.first("script")!=None:
-                self.fetchContentUrlWithBase(baseurl+url)
-                texts = unquote(ul.text).replace(")","$").replace("http://player.ly6080.com/yunparse/?url=", "").replace("http://player.ly6080.com/odflv/index.php?url=", "").split("$")
+            url = url.replace("/vod-detail-id-","").replace(".html","")
+            url = "%splay-0-0.html"%(url)
+            soup = self.fetchUrl(url, header)
+            ul = soup.first('div',{"class":'playjz'})
+            if ul!=None:
+                texts = unquote(ul.text).replace("http://player.ly6080.com/yunparse/?url=", "").replace("http://player.ly6080.com/odflv/index.php?url=", "").split("$")
                 for text in texts:
                     match = videoApi.search(text)
                     if match!=None:
                         str= match.group(1)
                         return "%s%s%s"%("http",str,".m3u8")
+                for text in texts:
+                    match = videoApiMp4.search(text)
+                    if match!=None:
+                        str= match.group(1)
+                        return "%s%s%s"%("http",str,".mp4")
                 for text in texts:
                     match = shareVideo.search(text)
                     if match!=None:

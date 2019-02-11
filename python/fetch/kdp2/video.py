@@ -6,7 +6,7 @@ from common import common
 from urllib import unquote
 import time
 from fetch.profile import *
-from fetch.aaw51.baseparse import baseurl
+from baseparse import baseurl
 
 class VideoParse(BaseParse):
 

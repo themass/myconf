@@ -68,6 +68,8 @@ import xiaiyy_vip
 import yin22_vip
 import ttyyy_vip
 import sy88_vip
+import fmcm_vip
+import ly6080_vip
 from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
     iavbobo_vip, jav101_vip, jinzidu_vip, ozsese_vip, singlove_vip, youjiady_vip,\
     zooredtube_vip
@@ -95,6 +97,7 @@ def pase3():
     kump4_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()
+    fmcm_vip.parseVideo()
 def pase4():
 #     iavbobo_vip.parseVideo()
 #     jjr128_vip.parseVideo()
@@ -138,6 +141,7 @@ def pase7():
 def pase8():
     nvnvzx_vip.parseVideo2()
     jav101_vip.parseVideo()
+    ly6080_vip.parseVideo()
 
 def all():
     pase1()

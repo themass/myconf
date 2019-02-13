@@ -31,8 +31,8 @@ class VideoParse(BaseParse):
     def videoChannel(self):
         soup = self.fetchUrl('/')
         div = soup.first("div", {"class": "nav_1000"})
+        objs =[]
         if div!=None:
-            objs =[]
             asList = div.findAll('a')
             for ahref in asList:
                 obj={}

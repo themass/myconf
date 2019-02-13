@@ -80,7 +80,6 @@ def pase4():
     urbanhenta_vip.parseVideo()
     youjiady_vip.parseVideo()
     ttyyy_vip.parseVideo()
-    sy88_vip.parseVideo()
     
 def pase5():
     kpd36_vip.parseVideo()
@@ -109,12 +108,13 @@ def pase7():
     tianjiyy123_vip.parseVideo()
     tlbfao_vip.parseVideo()
     xiaiyy_vip.parseVideo()
-    zooredtube_vip.parseVideo()
+#     zooredtube_vip.parseVideo()
 # 本机才能执行
 def pase8():
-    nvnvzx_vip.parseVideo2()
-    jav101_vip.parseVideo()
+#     nvnvzx_vip.parseVideo2()
+#     jav101_vip.parseVideo()
     ly6080_vip.parseVideo()
+#     sy88_vip.parseVideo()
 
 def all():
     pase1()
@@ -126,7 +126,7 @@ def all():
     pase7()
 #     pase8()
 if __name__ == '__main__':
-
+    pase8()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

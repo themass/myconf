@@ -3,52 +3,28 @@
 import datetime
 import urllib2
 from common.envmod import *
-import vj69.video
-import ozsese.video
-import ozsese.baseparse
-import singlove.video
 import se8_vip
 import yezmw_vip
 import fff64_vip
 import sexx77_vip
 import sp1769_vip
 import seman_vip
-import zy3838_vip
 import ax98_vip
 import kuyunzy_vip
 import tianjiyy123_vip
 import urbanhenta_vip
 import kump4_vip
-import iir44_vip
-import wuji3_vip
 import zanquye_vip
-import diediaody_vip
-import tiantianyao_vip
-import duotv_vip
-import dadekai_vip
 import meiyke_vip
-import tt80_vip
 import dxg11_vip
 import mastv54_vip
 import ggfuil_vip
-import hanpian_vip
-import miaobosp_vip
 import ppyy55_vip
 import sp878_vip
 import tzzy1399_vip
-import vj69_vip
-import x2246_vip
-import xoxo164_vip
-import zxdy_vip
-import zy3838_vip
-import avhome11_vip
-import s58589_vip
-import lusibi_vip
-import s58589_vip
 import qh_vip
 import sifangpian_vip
 import bt2n_vip
-import mayi01_vip
 import ff326_vip
 import fuli750_vip
 import hs941_vip
@@ -58,10 +34,7 @@ import nfss_vip
 import kedouwo_vip
 import ava99_vip
 import skswk9_img
-import jjr128_vip
-import f8dy_vip
 import tlbfao_vip
-import ysw88_vip
 import teshiw_vip
 import newlynet_vip
 import xiaiyy_vip
@@ -71,7 +44,7 @@ import sy88_vip
 import fmcm_vip
 import ly6080_vip
 from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
-    iavbobo_vip, jav101_vip, jinzidu_vip, ozsese_vip, singlove_vip, youjiady_vip,\
+     jav101_vip,  youjiady_vip,\
     zooredtube_vip
 
 def pase1():
@@ -154,7 +127,7 @@ def all():
 #     pase8()
 if __name__ == '__main__':
 
-    
+    pase8()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

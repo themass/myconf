@@ -151,7 +151,7 @@ def all():
     pase5()
     pase6()
     pase7()
-    pase8()
+#     pase8()
 if __name__ == '__main__':
 
     

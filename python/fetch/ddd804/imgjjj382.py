@@ -23,11 +23,19 @@ class ImgParse(BaseParse):
             page_url = obj['url']
             obj['url']=obj['name']
             ops.inertImgChannel(obj)
+            soup = self.fetchUrl(baseurl8, page_url)
+            strong = soup. first("strong")
+            max = 255
+            if strong!=None:
+                texts = strong.text.split("/")
+                if len(texts)==2:
+                    max = int(texts[1])
+            print 'max=',max
             for i in range(1, maxImgPage):
                 url = page_url
                 if i!=1:
                     url = url.replace('index.html',"")
-                    url = "%s%s%s%s"%(url,"list_",240-i,".html")
+                    url = "%s%s%s%s"%(url,"list_",max-i,".html")
                 print url
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()

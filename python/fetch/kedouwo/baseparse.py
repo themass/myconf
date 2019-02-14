@@ -7,7 +7,7 @@ import threading
 from common.envmod import *
 from common import db_ops
 from common import common
-import threading
+import threading,ssl
 from BeautifulSoup import BeautifulSoup
 import re
 import os
@@ -22,6 +22,8 @@ baseurl5 = "http://www.hnav01.xyz/"
 baseurl6 = "http://www.91av02.club/"
 baseurl7 = "http://113klav.icu/"
 baseurl8 = "https://8xuw.com/"
+baseurl10 = "https://www.jjj382.com"
+
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           'Cookie':"ASPro_3b178725fc4f483c1b3b540e9254fe69=rjglqktt458s6t79lurudu6u37; __51cke__=; __atuvc=5%7C34; __atuvs=5b7d8978e2390365001; __tins__19260318=%7B%22sid%22%3A%201534952887546%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279466%7D; __tins__18963094=%7B%22sid%22%3A%201534952887602%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279478%7D; __51laig__=27"}
@@ -51,6 +53,8 @@ header8 = {'User-Agent':
 maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")
 regVideoM3 = re.compile(r"http(.*?)m3u8")
+regVideoM310 = re.compile(r'http(.*?)m3u8"')
+
 regVideoMp4 = re.compile(r"http(.*?)mp4")
 regaotu = re.compile("videos/(.*?)/")
 lu92_path = re.compile("/?m=vod-detail-id-(.*?).html")
@@ -139,12 +143,25 @@ class BaseParse(threading.Thread):
         soup= BeautifulSoup(content)
         alist = soup.findAll('a')
         return alist
+    def header10(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("kedouwo/header10.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchUrl(self, url, aheader=header):
         count = 0
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
         while count < maxCount:
             try:
                 req = urllib2.Request(url, headers=aheader)
-                content = urllib2.urlopen(req, timeout=300).read().decode('utf8', errors='replace').replace("<![endif]-->","").replace("<!--[if lt IE 9]>", "").replace("<![endif]-->", "")
+                content = urllib2.urlopen(req, context=ctx,timeout=300).read().decode('utf8', errors='replace').replace("<![endif]-->","").replace("<!--[if lt IE 9]>", "").replace("<![endif]-->", "")
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:

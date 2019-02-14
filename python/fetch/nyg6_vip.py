@@ -22,7 +22,10 @@ def parseVideo():
 def parseVideo2():
     videop = video2.VideoParse()
     videop.run()
-
+def parseImg():
+    imgop = img.ImgParse()
+    imgop.run()
 if __name__ == '__main__':
 #     parseVideo()
-    parseVideo2()
+#     parseVideo2()
+    parseImg()

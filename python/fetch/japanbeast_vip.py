@@ -9,23 +9,14 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from nyg6 import *
+from japanbeast import *
 import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-
-
 def parseVideo():
-    videop = video.VideoUserParse()
+    videop = video.VideoParse()
     videop.run()
-def parseVideo2():
-    videop = video2.VideoParse()
-    videop.run()
-def parseImg():
-    imgop = img.ImgParse()
-    imgop.run()
 if __name__ == '__main__':
-#     parseVideo()
-#     parseVideo2()
-    parseImg()
+    parseVideo()
+

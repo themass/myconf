@@ -220,6 +220,7 @@ encoding//python/fetch/nvnvzx_vip.py=utf-8
 encoding//python/fetch/nyg6/__init__.py=utf-8
 encoding//python/fetch/nyg6/baseparse.py=utf-8
 encoding//python/fetch/nyg6/img.py=utf-8
+encoding//python/fetch/nyg6/img2.py=utf-8
 encoding//python/fetch/nyg6/video.py=utf-8
 encoding//python/fetch/nyg6/video2.py=utf-8
 encoding//python/fetch/nyg6_vip.py=utf-8

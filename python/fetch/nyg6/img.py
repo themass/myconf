@@ -110,7 +110,7 @@ class ImgParse(BaseParse):
         return objs
 
     def fetchImgs(self, url):
-        data = {}
+        datasrc = {}
         pics = []
         soup = self.fetchUrl(url)
         data = soup.first("div", {"id": "data"})
@@ -119,12 +119,12 @@ class ImgParse(BaseParse):
                 imgs = data.findAll('img')
                 for img in imgs:
                     pics.append(img.get('src'))
-                data['pic']=pics
+                datasrc['pic']=pics
                 h1 = soup.first("h1",{"class":"h1"})
-                data['name']= ''
+                datasrc['name']= ''
                 if h1!=None:
                     texts = h1.text.split("发表")
-                    data['name']=texts[0]
+                    datasrc['name']=texts[0]
             except Exception as e:
                 print common.format_exception(e)
-        return data
+        return datasrc

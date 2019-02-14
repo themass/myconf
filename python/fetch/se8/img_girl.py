@@ -66,7 +66,6 @@ class ImgGrilParse(BaseParse):
             obj['channel'] = 'porn_sex'
             obj['channelType'] = 'porn_sex'
             obj['name'] = self.fetchImgGrilChannelName(item.get('href'))
-            print obj
             objs.append(obj)
         return objs
 

@@ -64,10 +64,7 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = li.first("img")
-                if img.get("src").count("http")==0:
-                    obj['pic'] = baseurl+img.get("data-src")
-                else:
-                    obj['pic'] = img.get("data-src").replace("?max-age=3600","")
+                obj['pic'] = img.get("data-src").replace("?max-age=3600","")
                 obj['name'] = li.first("p").text
     
                 videourl = urlparse(obj['url'])

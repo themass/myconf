@@ -16,9 +16,6 @@ from fetch.ddd804 import *
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-def parsedddImg():
-    imgop = imgddd804.ImgParse()
-    imgop.run()
 def parsejiqingyazhouImg():
     imgop = imgjiqingyazhou.ImgParse()
     imgop.run()
@@ -43,6 +40,15 @@ def parse65aeaeImg():
 def parseasy1000Img():
     imgop = img65aeae.ImgParse()
     imgop.run()
+def parsAll():
+    parsejiqingyazhouImg()
+    parse39vqImg()
+    parse3wujiImg()
+    parse58589sImg()
+    parse52cjgImg()
+    parsejjj382Img()
+    parse65aeaeImg()
+    parseasy1000Img()
 if __name__ == '__main__':
     parseasy1000Img()
 #     parse39vqImg()

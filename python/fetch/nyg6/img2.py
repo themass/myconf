@@ -33,7 +33,7 @@ class ImgParse(BaseParse):
                     break
 
     def parseChannel(self):
-        ahrefs = self.header("header5.html")
+        ahrefs = self.header("header6.html")
         objs = []
         for ahref in ahrefs:
             print '需要解析的channel=', ahref.get('href')
@@ -80,7 +80,7 @@ class ImgParse(BaseParse):
         if div == None:
             print '没有数据', url
             return []
-        datalist = div.findAll("p",{"class":"wapper"})
+        datalist = div.findAll("li",{"class":"li flex-row"})
         objs = []
         sortType = dateutil.y_m_d()
         for item in datalist:
@@ -88,43 +88,36 @@ class ImgParse(BaseParse):
             if ahref!=None:
                 try:
                     obj = {}
-                    name = ahref.text
+                    name = item.first("h5").text
                     obj['url'] = ahref.get('href')
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel
                     obj['updateTime'] = datetime.datetime.now()
                     obj['fileDate'] = ''
-                    data = self.fetchImgs(obj['url'])
-                    if len(data['pic']) == 0:
+                    pics = self.fetchImgs(obj['url'])
+                    if len(pics) == 0:
                         print '没有 图片文件--', obj['url'], '---', url
                         continue
-                    obj['picList'] = data['pic']
+                    obj['picList'] = pics
                     obj['showType'] = 3
-                    obj['pics'] = len(data['pic'])
-                    obj['name'] = data['name']
+                    obj['pics'] = len(pics)
+                    obj['name'] = name
                     obj['sortType'] = sortType
-                    print obj['name'],'url=', obj['url'], '  图片数量=', len(data['pic'])
+                    print obj['name'],'url=', obj['url'], '  图片数量=', len(pics)
                     objs.append(obj)
                 except Exception as e:
                     print common.format_exception(e)
         return objs
 
     def fetchImgs(self, url):
-        datasrc = {}
         pics = []
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"id": "data"})
+        data = soup.first("div", {"class": "content"})
         if data != None:
             try:
                 imgs = data.findAll('img')
                 for img in imgs:
                     pics.append(img.get('src'))
-                datasrc['pic']=pics
-                h1 = soup.first("h1",{"class":"h1"})
-                datasrc['name']= ''
-                if h1!=None:
-                    texts = h1.text.split("发表")
-                    datasrc['name']=texts[0]
             except Exception as e:
                 print common.format_exception(e)
-        return datasrc
+        return pics

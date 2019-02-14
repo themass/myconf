@@ -24,37 +24,19 @@ import ava99_vip
 import skswk9_img
 import fff64_vip
 import btw168_vip
+import nyg6_vip
+from fetch import bt2n_vip, g6858_vip
+
 if __name__ == '__main__':
-# #     eroti_img.parseImg()
-#     singlove_vip.parseImg()
-# # #     #找不到网站
-# #     sexx77_vip.pareImg()
-# #       
-###     xoxo164_vip.pareImg()
-#     x2246_vip.parseImg()
-# # #     #需要翻墙
     
-#     skswk9_img.parseImg()
-# # #     
-# # #     
-# #      <ul><li><a class="this">在线视频</a></li><li><a href="/?m=vod-type-id-12.html">网友自拍</a></li><li><a href="/?m=vod-type-id-13.html">日韩无码</a></li><li><a href="/?m=vod-type-id-14.html">欧美视频</a></li><li><a href="/?m=vod-type-id-15.html">动漫卡通</a></li><li><a href="/?m=vod-type-id-16.html">其它视频</a></li><li><a href="/?m=vod-type-id-17.html">三级经典</a></li><li><a href="/?m=vod-type-id-18.html">强奸乱伦</a></li><li><a href="/?m=vod-type-id-19.html">变态另类</a></li><li><a href="/?m=vod-type-id-20.html">丝袜制服</a></li><li><a href="/?m=vod-type-id-21.html">激情3P</a></li></ul>
-# #     se8_vip.startWork()
-# #     se8_vip.parseGirlImg()
-# #     se8_vip.parseImg()
-# #     
-#     
-    ###ddd804_vip.parsedddImg()
-#     ddd804_vip.parse3wujiImg()
-#     jjr128_vip.pareImg()
-#     fff64_vip.parseImg()
-#     ddd804_vip.parse39vqImg()
-#     ddd804_vip.parse58589sImg()
-#     ddd804_vip.parse65aeaeImg()
-    ddd804_vip.parseasy1000Img()
-#     ava99_vip.parseImg()
-#     skswk9_img.parseImg()
+    ddd804_vip.parsAll()
     
-#####     ddd804_vip.parsejiqingyazhouImg()
+    ava99_vip.parseImg()
+    bt2n_vip.pareImg()
+    btw168_vip.parseImg()
+    skswk9_img.parseImg()
+    g6858_vip.parseImg()
+    jjr128_vip.pareImg()
     
 #     xieegif_vip.parsewowantImg()
 #     xieegif_vip.parserneihanImg()
@@ -62,8 +44,13 @@ if __name__ == '__main__':
 #     xieegif_vip.parseratooImg()
     
     tt192_vip.parseImg()
-    btw168_vip.parseImg()
-    ####mayi01_vip.parseImg()
+    nyg6_vip.parseImg()
+    nyg6_vip.parseImg2()
+
+    se8_vip.startWork()
+    se8_vip.parseGirlImg()
+    se8_vip.parseImg()
+    
 
 
 

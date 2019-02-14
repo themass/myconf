@@ -65,6 +65,7 @@ class DbOps(object):
 #         return self.conn.fetchAll()
 
     def inertImgChannel(self, obj):
+        return 1
         return self.conn.execute(
             "replace into  imgchannel (name,baseurl,url,updateTime,rate,pic,showType,channel) values ('%s','%s','%s','%s',%s,'%s',%s,'%s')"
             % (

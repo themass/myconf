@@ -90,7 +90,7 @@ class ImgParse(BaseParse):
                     obj = {}
                     name = item.first("h5").text
                     obj['url'] = ahref.get('href')
-                    obj['baseurl'] = baseurl
+                    obj['baseUrl'] = baseurl
                     obj['channel'] = channel
                     obj['updateTime'] = datetime.datetime.now()
                     obj['fileDate'] = ''

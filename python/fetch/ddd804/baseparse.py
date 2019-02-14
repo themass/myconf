@@ -15,9 +15,8 @@ import sys
 import ssl,os
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl1 = "http://zzz761.com"
 baseurl2 = "http://www.jiqingyazhou.org"
-baseurl4 = "http://www.39vq.com"
+baseurl4 = "http://www.223ck.com"
 baseurl5 = "http://www.5wuji.com"
 baseurl6 = "http://www.58589s.com"
 baseurl7 = "https://www.52cjg.com"

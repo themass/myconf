@@ -31,7 +31,7 @@ class ImgParse(BaseParse):
                 if len(texts)==2:
                     max = int(texts[1])
             print 'max=',max
-            for i in range(1, maxImgPage):
+            for i in range(0, maxImgPage):
                 url = page_url
                 if i!=1:
                     url = url.replace('index.html',"")

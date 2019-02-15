@@ -11,14 +11,11 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "https://www.4433ww.com"
+baseurl = "https://www.7799ww.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
-regVideo = re.compile(r'src="(.*?)" frameborder=')
-playVideo = re.compile(r"varvHLSurl=(.*)\(\"(.*)\.m3u8")
-playVideo2 = re.compile(r"varplayurl=(.*)\(\"(.*)\.m3u8")
-playVideo3 = re.compile(r"file:(.*)\(\"(.*)\"\),")
+playVideo = re.compile(r"http(.*?)mp4")
 urlMap = {"mp4":"https://p.eeoai.com","mp42":"https://p.672sp.com","jav":"http://p.164d.com"}
 
 class BaseParse(threading.Thread):
@@ -36,7 +33,7 @@ class BaseParse(threading.Thread):
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('utf8', errors='replace')
+                content = response.read().decode('utf8', errors='replace').replace("<![endif]-->","").replace("<!--[if lt IE 9]>", "").replace("<![endif]-->", "").replace("<!--","").replace(" -->","")
                 m = re.findall("<!--(.*?)-->",content)
                 if m!=None:
                     for i in m:

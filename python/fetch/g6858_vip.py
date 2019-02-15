@@ -19,11 +19,10 @@ def parseText():
     textpo = text.TextChannelParse()
     textpo.run()
 def parseVideo():
-    videop = video.VideoParse()
+    videop = video.VideoUserParse()
     videop.run()
 def parseImg():
     imgop = img.ImgParse()
     imgop.run()
 if __name__ == '__main__':
-    parseText()
-    parseImg()
+    parseVideo()

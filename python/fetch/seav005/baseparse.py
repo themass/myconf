@@ -13,7 +13,8 @@ import re
 import os
 baseurl = "http://www.seav005.com/"
 header = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
+          "cookie":"QKDa_2132_saltkey=lp7hMhMv; QKDa_2132_lastvisit=1550250023; UM_distinctid=168f2467f00317-064390b448af1f-47e1039-1fa400-168f2467f023d2; QKDa_2132_atarget=1; QKDa_2132_cmid=2058295; QKDa_2132_sendmail=1; QKDa_2132_seccode=2032.51fffbc746f03e3d6f; QKDa_2132_ulastactivity=69797Bhsq7UkOhdAuw3w0HEkvOPvh3yJE6v9zKYBsMK6%2BaRMalSS; QKDa_2132_auth=65317c9D%2BkZmuxJr2glM0Y8OQbYiXdwSn3DsdFIACXRkE80Hy5uHVkL8ghNhkdLRtw%2BcOo718BjFv%2BHjbCIVGm3gXPi9; QKDa_2132_security_cookiereport=6fa0gLyzO4NGDXn%2BJzSUOLNYcFmcTdx73cnDM8SMQPxzMhaxIq8N; QKDa_2132_st_p=2818003%7C1550255806%7Cdccfeb2d865912106f8e65248488132b; QKDa_2132_viewid=tid_7193423; QKDa_2132_noticeTitle=1; QKDa_2132_sid=ZDi8H0; QKDa_2132_lip=221.216.143.247%2C1550255802; QKDa_2132_st_t=2818003%7C1550255837%7C4c435c98115e63b88bde20940b63243e; QKDa_2132_forum_lastvisit=D_62_1550253727D_49_1550254850D_58_1550254931D_37_1550255176D_59_1550255837; QKDa_2132_visitedfid=59D2D37D58D49D62; CNZZDATA1260462880=889112913-1550248139-%7C1550253540; CNZZDATA1260178197=1119087455-1550249083-%7C1550254091; QKDa_2132_lastact=1550255841%09misc.php%09patch"}
 maxCount = 3
 playVideo = re.compile(r"http(.*?)mp4")
 urlMap = {"mp4":"https://p.eeoai.com","mp42":"https://p.672sp.com","jav":"http://p.164d.com"}
@@ -27,8 +28,7 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl + url, headers={'Cookie':"td_cookie=18446744069599001696; UM_distinctid=16267a77486203-0a34f7eb9f837-454c092b-1fa400-16267a7748726f; CNZZDATA4033785=cnzz_eid%3D1967344694-1522153663-null%26ntime%3D1522153663; CNZZDATA1263493226=2025093065-1522155903-null%7C1522155903; PHPSESSID=cqppj1tg9v8tf27j95ogqogjs1; td_cookie=18446744069599206493; WSKY=6c172; jiathis_rdc=%7B%22http%3A//www.zxdy.cc/vod/22266.html%22%3A1739039602%2C%22http%3A//www.zxdy.cc/play/22266-0-1.html%22%3A1739044927%2C%22http%3A//www.zxdy.cc/Uploads/https%3A//tupian.tupianzy.com/pic/upload/vod/2018-03-03/201803031520062617.jpg%22%3A1739118415%2C%22http%3A//www.zxdy.cc/list/1-p-3-0.html%22%3A1739129605%2C%22http%3A//www.zxdy.cc/list/1-p-1-0.html%22%3A1739216767%2C%22http%3A//www.zxdy.cc/list/9-p-1-0.html%22%3A1739358031%2C%22http%3A//www.zxdy.cc/list/9-p-2-0.html%22%3A1739371664%2C%22http%3A//www.zxdy.cc/Uploads/https%3A//wx3.sinaimg.cn/mw690/005w5c6ogy1fjuo496v5uj30tu15ok3k.jpg%22%3A1739577535%2C%22http%3A//www.zxdy.cc/Uploads/https%3A//img.alicdn.com/imgextra/i4/2264228004/TB2UynHnQqvpuFjSZFhXXaOgXXa_%21%212264228004.jpg%22%3A1739585958%2C%22http%3A//www.zxdy.cc/%22%3A1739586271%2C%22http%3A//www.zxdy.cc/vod/5128.html%22%3A1739763188%2C%22http%3A//www.zxdy.cc/vod/1.html%22%3A1739772004%2C%22http%3A//www.zxdy.cc/play/1-0-1.html%22%3A1739777508%2C%22http%3A//www.zxdy.cc/vod/4063.html%22%3A1739811363%2C%22http%3A//www.zxdy.cc/play/4063-0-2.html%22%3A1739820736%2C%22http%3A//www.zxdy.cc/list/11-p-1-0.html%22%3A1739855919%2C%22http%3A//www.zxdy.cc/vod/22236.html%22%3A0%7C1522158279843%2C%22http%3A//www.zxdy.cc/play/22236-0-1.html%22%3A%220%7C1522158307282%22%7D"
-                    ,'User-Agent': 'Mozilla/5.0 (compatible; Baiduspider-render/2.0; +http://www.baidu.com/search/spider.html, Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl})
+                req = urllib2.Request(baseurl + url, headers=header)
                 req.encoding = 'utf-8'
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(

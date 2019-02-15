@@ -45,6 +45,7 @@ import fmcm_vip
 import ly6080_vip
 import nyg6_vip
 import g6858_vip
+import s58589_vip
 from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
      jav101_vip,  youjiady_vip,\
     zooredtube_vip
@@ -99,7 +100,7 @@ def pase6():
     nvnvzx_vip.parseAll()
     ####ppyy55_vip.parseUserVideo()
     qh_vip.parseVideo2()
-    ####s58589_vip.parseVideo2()
+    s58589_vip.parseVideo2()
     se8_vip.parseVideo() 
     sexx77_vip.parseVideo()  
     skswk9_img.parseVideo()

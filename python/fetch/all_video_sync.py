@@ -19,7 +19,6 @@ import meiyke_vip
 import dxg11_vip
 import mastv54_vip
 import ggfuil_vip
-import ppyy55_vip
 import sp878_vip
 import tzzy1399_vip
 import qh_vip

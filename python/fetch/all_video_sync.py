@@ -118,7 +118,7 @@ def pase7():
 # 本机才能执行
 def pase8():
     
-    jav101_vip.parseVideo()
+#     jav101_vip.parseVideo()
     ly6080_vip.parseVideo()
     sy88_vip.parseVideo()
 
@@ -132,7 +132,7 @@ def all():
     pase7()
 #     pase8()
 if __name__ == '__main__':
-#     pase8()
+    pase8()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

@@ -50,7 +50,7 @@ from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
     zooredtube_vip
 
 def pase1():
-    ava99_vip.parseVideo()
+#     ava99_vip.parseVideo()
     ax98_vip.parseVideo()
     ax98_vip.parseVideo2()
     bt2n_vip.parseVideo()
@@ -119,7 +119,7 @@ def pase7():
 def pase8():
     
 #     jav101_vip.parseVideo()
-    ly6080_vip.parseVideo()
+    #####ly6080_vip.parseVideo()
     sy88_vip.parseVideo()
 
 def all():

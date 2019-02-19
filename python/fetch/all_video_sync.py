@@ -86,7 +86,7 @@ def pase4():
     nyg6_vip.parseVideo2()
     
 def pase5():
-    kpd36_vip.parseVideo()
+    
     meiyke_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo4()
@@ -121,6 +121,7 @@ def pase8():
 #     jav101_vip.parseVideo()
     #####ly6080_vip.parseVideo()
     sy88_vip.parseVideo()
+    kpd36_vip.parseVideo()
 
 def all():
     pase1()

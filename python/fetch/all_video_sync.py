@@ -100,7 +100,7 @@ def pase6():
     ####ppyy55_vip.parseUserVideo()
     qh_vip.parseVideo2()
     s58589_vip.parseVideo2()
-    se8_vip.parseVideo() 
+    #se8_vip.parseVideo() 
     sexx77_vip.parseVideo()  
     skswk9_img.parseVideo()
     sp1769_vip.parseVideo()

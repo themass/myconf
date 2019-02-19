@@ -24,7 +24,7 @@ class VideoParse(BaseParse):
         for ch in chs:
             for i in range(1, maxVideoPage):
                 url= ch['url']
-                url= "%s%s%s"%(ch['url'].replace('1.html',''),i,'.html')
+                url= "%s%s%s"%(ch['url'].replace('.html','/page/'),i,'.html')
                 self.videoParse(ch['channel'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -88,8 +88,8 @@ class VideoParse(BaseParse):
         header = {'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
-            url = url.replace("/vod-detail-id-","").replace(".html","")
-            url = "/vod-play-id-%s-src-1-num-1.html"%(url)
+            url = url.replace("/vod/detail/id/","").replace(".html","")
+            url = "/vod/play/id/%s/sid/1/nid/1.html"%(url)
             soup = self.fetchUrl(url, header)
             ul = soup.first('div',{"class":'player mb'})
             if ul!=None:

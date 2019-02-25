@@ -16,9 +16,6 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-def parseVideo():
-    videop = video.VideoUserParse()
-    videop.run()
 def parseVideo2():
     videop = video2.VideoUserParse()
     videop.run()
@@ -43,8 +40,11 @@ def parseVideo8():
 def parseVideo10():
     videop = video10.VideoUserParse()
     videop.run()
+def parseVideo9():
+    videop = video9.VideoUserParse()
+    videop.run()
 def parseVideoALl():
-#     parseVideo()
+    parseVideo9()
     parseVideo2()
     parseVideo3()
     parseVideo4()
@@ -55,7 +55,7 @@ def parseVideoALl():
     parseVideo10()
 if __name__ == '__main__':
 #     parseVideo()
-    parseVideo2()
+    parseVideo9()
 #     parseVideo3()
 #     parseVideo4() 
 #     parseVideo5()

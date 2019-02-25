@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
                 url= item['url']
                 if i!=1:
                     url= "%s%s%s"%(item['url'].replace('.html','-'),i,".html")
-                self.videoParse(item['channel'], url)
+                self.videoParse(item['channel'], url,item['url'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         ahrefs = self.header11()
@@ -45,7 +45,7 @@ class VideoParse(BaseParse):
             obj['channelType']='qqc_all'
             channelList.append(obj)
         return channelList
-    def videoParse(self, channel, url):
+    def videoParse(self, channel, url,channelurl):
         dataList = []
         soup = self.fetchUrl(baseurl11+url,header8)
         div = soup.first("div",{"class":'box movie_list'})
@@ -55,7 +55,7 @@ class VideoParse(BaseParse):
                 ahref = li.first('a')
                 if ahref != None:
                     obj = {}
-                    mp4Url = self.parseDomVideo(ahref.get("href"))
+                    mp4Url = self.parseDomVideo(ahref.get("href"),channelurl)
                     if mp4Url == None:
                         print '没有mp4 文件:', ahref.get("href")
                         continue
@@ -83,10 +83,11 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
 
-    def parseDomVideo(self, url):
+    def parseDomVideo(self, url,channelurl):
       
-        try:
-            url = url.replace("/Category/Detailed/","").replace(".html","")
+        try: 
+            channelurl = channelurl.replace(".html")
+            url = url.replace(channelurl,"").replace("/Category/","").replace("Detailed/", "").replace(".html","")
             url= "%s%s%s"%("/Category/Watch-online_",url,"-1-1.html")
             soup = self.fetchUrl(baseurl11+url,header8)
             scripts = soup.findAll("script")

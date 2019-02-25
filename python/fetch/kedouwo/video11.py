@@ -86,7 +86,7 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url,channelurl):
       
         try: 
-            channelurl = channelurl.replace(".html")
+            channelurl = channelurl.replace(".html","")
             url = url.replace(channelurl,"").replace("/Category/","").replace("Detailed/", "").replace(".html","")
             url= "%s%s%s"%("/Category/Watch-online_",url,"-1-1.html")
             soup = self.fetchUrl(baseurl11+url,header8)

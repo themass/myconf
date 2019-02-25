@@ -88,7 +88,6 @@ class VideoParse(BaseParse):
       
         try: 
             channelurl = channelurl.replace(".html","")
-            print channelurl
             match = regVideoIdUrl.search(url)
             if match!=None:
                 id = match.group(1)

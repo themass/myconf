@@ -8,6 +8,7 @@ import time,json
 from fetch.profile import *
 from urllib import unquote
 
+regVideoIdUrl = re.compile(r'Detailed/(.*?)\.html')
 class VideoParse(BaseParse):
 
     def __init__(self):
@@ -88,19 +89,21 @@ class VideoParse(BaseParse):
         try: 
             channelurl = channelurl.replace(".html","")
             print channelurl
-            url = url.replace(channelurl,"").replace("/Category/","").replace("Detailed/", "").replace(".html","")
-            url= "%s%s%s"%("/Category/Watch-online_",url,"-1-1.html")
-            soup = self.fetchUrl(baseurl11+url,header8)
-            scripts = soup.findAll("script")
-            for script in scripts:
-                if script.get("src")!=None and script.get("src").count("/upload/playdata")==1:
-                    text = unquote(str(self.fetchContentUrl(baseurl11+script.get("src"),header8)))
-                    texts = text.split("$")
-                    for item in texts:
-                        match = regVideoM3.search(item)
-                        if match!=None:
-                            videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
+            match = regVideoIdUrl.search(url)
+            if match!=None:
+                id = match.group(1)
+                url= "%s%s%s"%(url.replace(match.group(), "Watch-online_"),id,"-1-1.html")
+                soup = self.fetchUrl(baseurl11+url,header8)
+                scripts = soup.findAll("script")
+                for script in scripts:
+                    if script.get("src")!=None and script.get("src").count("/upload/playdata")==1:
+                        text = unquote(str(self.fetchContentUrl(baseurl11+script.get("src"),header8)))
+                        texts = text.split("$")
+                        for item in texts:
+                            match = regVideoM3.search(item)
+                            if match!=None:
+                                videoUrl =match.group(1)
+                                return "%s%s%s"%("http",videoUrl,'m3u8')
 #                 shell = "%s %s"%("wget ",aherf)
 #                 ret = os.popen(shell).read()
 #                 print ret

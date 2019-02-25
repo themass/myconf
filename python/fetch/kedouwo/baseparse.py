@@ -24,6 +24,7 @@ baseurl7 = "http://113klav.icu/"
 baseurl8 = "https://8xuw.com/"
 baseurl9 = "https://www.91uu9.com"
 baseurl10 = "https://www.jjj382.com"
+baseurl11 = "https://www.kpl023.com"
 
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
@@ -149,6 +150,16 @@ class BaseParse(threading.Thread):
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
         with open("kedouwo/header10.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
+    def header11(self):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("kedouwo/header11.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

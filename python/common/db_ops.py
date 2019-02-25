@@ -161,7 +161,7 @@ class DbOps(object):
         return self.conn.execute(
             "insert ignore into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseurl,sortType,channelType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name"), obj.get("url"), obj.get("channel").replace(".com",'-'), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl,sortType,channelType))
+                obj.get("name").replace("'",""), obj.get("url"), obj.get("channel").replace(".com",'-'), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,baseUrl,sortType,channelType))
     def inertVideoLine(self, obj,videoType="normal",baseUrl=''):
         sortType = dateutil.y_m_d()
         return self.conn.execute(

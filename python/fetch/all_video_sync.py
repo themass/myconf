@@ -54,7 +54,7 @@ def pase1():
     ax98_vip.parseVideo()
     ax98_vip.parseVideo2()
     bt2n_vip.parseVideo()
-    btw168_vip.parseVideo()
+    ###btw168_vip.parseVideo()
     ####cjg52_vip.parseVideo()
     zanquye_vip.parseVideo()
 def pase2():
@@ -100,7 +100,7 @@ def pase6():
     ####ppyy55_vip.parseUserVideo()
     qh_vip.parseVideo2()
     s58589_vip.parseVideo2()
-    #se8_vip.parseVideo() 
+    se8_vip.parseVideo() 
     sexx77_vip.parseVideo()  
     skswk9_img.parseVideo()
     sp1769_vip.parseVideo()
@@ -133,7 +133,7 @@ def all():
     pase7()
 #     pase8()
 if __name__ == '__main__':
-#     pase8()
+    pase8()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

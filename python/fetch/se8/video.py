@@ -38,8 +38,6 @@ class VideoParse(BaseParse):
         if tds!=None:
             alist = tds.findAll("a")
             for ahref in alist:
-                if ahref.get('href').count("短视频")==0:
-                    continue
                 obj={}
                 obj['name']='超爽自拍'
                 obj['url']=ahref.get('href')

@@ -25,6 +25,7 @@ import skswk9_img
 import fff64_vip
 import btw168_vip
 import nyg6_vip
+import ni345_vip
 from fetch import bt2n_vip, g6858_vip
 
 if __name__ == '__main__':
@@ -46,6 +47,7 @@ if __name__ == '__main__':
     tt192_vip.parseImg()
     nyg6_vip.parseImg()
     nyg6_vip.parseImg2()
+    ni345_vip.parseImg()
 
     se8_vip.startWork()
     se8_vip.parseGirlImg()

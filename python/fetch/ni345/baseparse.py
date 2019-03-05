@@ -16,8 +16,8 @@ header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           "Cookie":"UM_distinctid=1694ee85983461-0fbbe95b0717f1-47e1039-1fa400-1694ee85985461; CNZZDATA1260171147=1578337688-1551803949-%7C1551803949"}
 maxCount = 3
-videoApi = re.compile(r'http(.*?)m3u8')
-mp4Api = re.compile(r'http(.*?)mp4')
+videoApi = re.compile(r'http(.*?)\.m3u8')
+mp4Api = re.compile(r'http(.*?)\.mp4')
 class BaseParse(threading.Thread):
 
     def __init__(self):

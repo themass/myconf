@@ -100,11 +100,11 @@ class VideoUserParse(BaseParse):
                         match = videoApi.search(item)
                         if match!=None:
                             videoUrl =match.group(1).replace("\/","/")
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
+                            return "%s%s%s"%("http",videoUrl,'.m3u8')
                         match = mp4Api.search(item)
                         if match!=None:
                             videoUrl =match.group(1).replace("\/","/")
-                            return "%s%s%s"%("http",videoUrl,'mp4')
+                            return "%s%s%s"%("http",videoUrl,'.mp4')
             print '没找到mp4'
             return None
         except Exception as e:

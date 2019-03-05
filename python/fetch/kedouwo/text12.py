@@ -73,7 +73,7 @@ class TextChannelParse(BaseParse):
 
     def fetchTextData(self, url, channel):
         try:
-            soup = self.fetchUrl(baseurl12+url)
+            soup = self.fetchUrl(baseurl12+url,header8)
             datalist = soup.findAll("li", {"class": "name"})
             objs = []
             sortType = dateutil.y_m_d()

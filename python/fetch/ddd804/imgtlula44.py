@@ -35,7 +35,7 @@ class ImgParse(BaseParse):
                     break
 
     def parseChannel(self):
-        objs = self.header('图片')
+        objs = self.header('header11.html')
         data = []
         for item in objs:
             obj = {}

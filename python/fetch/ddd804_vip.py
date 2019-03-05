@@ -40,6 +40,9 @@ def parse65aeaeImg():
 def parseasy1000Img():
     imgop = img65aeae.ImgParse()
     imgop.run()
+def parseimgtlula44():
+    imgop = imgtlula44.ImgParse()
+    imgop.run()
 def parsAll():
 #     parsejiqingyazhouImg()
 #     parse39vqImg()
@@ -49,8 +52,9 @@ def parsAll():
     parsejjj382Img()
     parse65aeaeImg()
     parseasy1000Img()
+    parseimgtlula44()
 if __name__ == '__main__':
-    parseasy1000Img()
+    parseimgtlula44()
 #     parse39vqImg()
 # #      
 #     parsedddImg()

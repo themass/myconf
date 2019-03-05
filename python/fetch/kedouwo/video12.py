@@ -35,7 +35,7 @@ class VideoUserParse(BaseParse):
             obj={}
             obj['name']=ahref.text
             obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl12
+            obj['baseUrl']=baseurl12
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2

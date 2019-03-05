@@ -22,7 +22,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             try:
-                for i in range(0, maxVideoPage):
+                for i in range(1, maxVideoPage):
                     url = item['url']
                     if i!=1:
                         url = "%s%s%s"%(url.replace(".html", "-"),i,".html")
@@ -38,6 +38,8 @@ class VideoParse(BaseParse):
         if tds!=None:
             alist = tds.findAll("a")
             for ahref in alist:
+                if ahref.get('href').count("短视频")==0:
+                    continue
                 obj={}
                 obj['name']='超爽自拍'
                 obj['url']=ahref.get('href')

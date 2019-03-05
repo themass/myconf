@@ -91,7 +91,6 @@ def parseVideo():
     for obj in objs:
         handle = video.VideoParse(obj)
         handle.run()
-#             queue.put(img.ImgParse(obj))
         print obj
 def parseVideoRmb():
     lis = parser.fetchHead(u"手机下载")

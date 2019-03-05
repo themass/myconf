@@ -23,6 +23,7 @@ baseurl7 = "https://www.52cjg.com"
 baseurl8 = "https://www.jjj382.com"
 baseurl9 = "http://www.65aeae.com"
 baseurl10 = "https://www.asy1000.com"
+baseurl11 = "http://www.tlula44.com"
 
 maxCount = 5
 class BaseParse(threading.Thread):

@@ -93,7 +93,7 @@ class VideoUserParse(BaseParse):
             if div !=None:
                 script = div.first("script")
                 if script!=None:
-                    text = self.fetchContentUrlWithBase(baseurl+url, header)
+                    text = self.fetchContentUrlWithBase(baseurl+script.get("src"), header)
                     text = unquote(str(text))
                     print text
                     texts = text.split("$")

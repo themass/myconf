@@ -14,6 +14,7 @@ import aaw51_vip
 import seshu_vip
 import mayi01_vip
 import btw168_vip
+import kedouwo_vip
 
 def pase1():
     fff64_vip.parseText()
@@ -25,11 +26,13 @@ def pase2():
     ##aaw51_vip.parseText()
     ####seshu_vip.parseText()
     btw168_vip.parseText()
+    kedouwo_vip.parseText12()
     se8_vip.startWork()
     se8_vip.parseText()
     
     ####mayi01_vip.parseText()
 if __name__ == '__main__':
+    kedouwo_vip.parseText12()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

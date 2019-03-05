@@ -95,6 +95,7 @@ class VideoUserParse(BaseParse):
                 if script!=None:
                     text = self.fetchContentUrlWithBase(baseurl+url, header)
                     text = unquote(str(text))
+                    print text
                     texts = text.split("$")
                     for item in texts:
                         match = videoApi.search(item)

@@ -31,7 +31,7 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(baseurl+url, headers=aheader)
-                content = urllib2.urlopen(req, context=ctx,timeout=100).read().decode('utf8', errors='replace').replace("<![endif]-->","").replace("<!--[if lt IE 9]>", "").replace("<![endif]-->", "").replace("<!--[if lt IE 9 ]>","").replace("<![endif]-->","")
+                content = urllib2.urlopen(req, context=ctx,timeout=100).read().decode('GBK', errors='replace').replace("<![endif]-->","").replace("<!--[if lt IE 9]>", "").replace("<![endif]-->", "").replace("<!--[if lt IE 9 ]>","").replace("<![endif]-->","")
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:

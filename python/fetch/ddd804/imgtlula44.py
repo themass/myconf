@@ -47,7 +47,8 @@ class ImgParse(BaseParse):
             obj['rate'] = 1.2
             obj['showType'] = 3
             obj['channel'] = 'porn_sex'
-        return objs
+            data.append(obj)
+        return data
 
     def update(self, url, ops, channel, i):
         objs = self.fetchImgItemsData(url, channel)

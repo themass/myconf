@@ -206,6 +206,7 @@ encoding//python/fetch/nfss/video2.py=utf-8
 encoding//python/fetch/nfss/video3.py=utf-8
 encoding//python/fetch/nfss/video4.py=utf-8
 encoding//python/fetch/nfss_vip.py=utf-8
+encoding//python/fetch/ni345/__init__.py=utf-8
 encoding//python/fetch/ni345/baseparse.py=utf-8
 encoding//python/fetch/ni345/img.py=utf-8
 encoding//python/fetch/ni345/video.py=utf-8

@@ -43,7 +43,7 @@ class TextChannelParse(BaseParse):
             except Exception as e:
                 print common.format_exception(e)
     def textChannel(self):
-        objs = self.header("header-12.html")
+        objs = self.headers("header-12.html")
         data = []
         for item in objs:
             obj={}

@@ -25,7 +25,7 @@ baseurl8 = "https://8xuw.com/"
 baseurl9 = "https://www.91uu9.com"
 baseurl10 = "https://www.jjj382.com"
 baseurl11 = "https://www.kpl023.com"
-
+baseurl12 = "http://www.tlula44.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           'Cookie':"ASPro_3b178725fc4f483c1b3b540e9254fe69=rjglqktt458s6t79lurudu6u37; __51cke__=; __atuvc=5%7C34; __atuvs=5b7d8978e2390365001; __tins__19260318=%7B%22sid%22%3A%201534952887546%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279466%7D; __tins__18963094=%7B%22sid%22%3A%201534952887602%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279478%7D; __51laig__=27"}
@@ -165,6 +165,16 @@ class BaseParse(threading.Thread):
         soup= BeautifulSoup(content)
         alist = soup.findAll('a')
         return alist
+    def headers(self,name):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("kedouwo/"+name) as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchUrl(self, url, aheader=header):
         count = 0
         ctx = ssl.create_default_context()
@@ -173,7 +183,7 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(url, headers=aheader)
-                content = urllib2.urlopen(req, context=ctx,timeout=100).read().decode('utf8', errors='replace').replace("<![endif]-->","").replace("<!--[if lt IE 9]>", "").replace("<![endif]-->", "")
+                content = urllib2.urlopen(req, context=ctx,timeout=100).read().decode('utf8', errors='replace').replace("<![endif]-->","").replace("<!--[if lt IE 9]>", "").replace("<![endif]-->", "").replace("<!--[if lt IE 9 ]>","").replace("<![endif]-->","")
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:

@@ -9,7 +9,7 @@ from common import db_ops
 from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
-import re,os
+import re,os,ssl
 # http://www.dehyc.com
 baseurl = "http://www.345ni.com"
 header = {'User-Agent':
@@ -25,18 +25,21 @@ class BaseParse(threading.Thread):
 
     def fetchUrl(self, url, aheader=header):
         count = 0
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl + url, headers=aheader)
-                content = urllib2.urlopen(req, timeout=500).read()
+                req = urllib2.Request(baseurl+url, headers=aheader)
+                content = urllib2.urlopen(req, context=ctx,timeout=100).read().decode('utf8', errors='replace').replace("<![endif]-->","").replace("<!--[if lt IE 9]>", "").replace("<![endif]-->", "").replace("<!--[if lt IE 9 ]>","").replace("<![endif]-->","")
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
                 print common.format_exception(e)
-                print '打开页面错误,重试', baseurl + url, '次数', count
+                print '打开页面错误,重试', baseurl+url, '次数', count
                 count = count + 1
 
-        print '打开页面错误,重试3次还是错误', url
+        print '打开页面错误,重试3次还是错误', baseurl+url
         return BeautifulSoup('')
     def header(self,name):
 #         content = self.fetchContentUrl(headerUrl, header)

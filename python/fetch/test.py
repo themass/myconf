@@ -20,6 +20,7 @@ import json
 from urlparse import urlparse
 from urllib import unquote
 import sys
+import fcntl
 reload(sys)
 sys.setdefaultencoding('utf8')
 str1 = '''
@@ -43,6 +44,7 @@ if __name__ == '__main__':
           "cookie":"__cfduid=daf97951d263f43b40aa880057d128ec61534232909; PHPSESSID=df01o1psnjpnr67df4k4q53s50; UM_distinctid=1653768772b33e-00e6b1d3653486-47e1039-1fa400-1653768772c5f; CNZZDATA1274203680=1684804072-1534228697-%7C1534234099",
           "X-Requested-With":"XMLHttpRequest"}
     print fetchUrl("https://www.f8dy.tv/vodtypehtml/7.html")
+    fcntl.flock('', fcntl.LOCK_EX)
 #     data = {}
 #     data['id']="1844"
 #     ret = httputil.postRequestWithParam("http://www.fuli750.com/api/payvideo.html", data, header)

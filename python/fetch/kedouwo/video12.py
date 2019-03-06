@@ -69,10 +69,7 @@ class VideoUserParse(BaseParse):
             obj['userId'] = userId
             obj['baseUrl'] = baseurl12
             obj['showType'] = 3
-            if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                obj['videoType'] = "webview"
-            else:
-                obj['videoType'] = "normal"
+            obj['videoType'] = "webview"
             print obj['videoType'],obj['name'],mp4Url,obj['pic']
             dataList.append(obj)
         dbVPN = db.DbVPN()
@@ -94,7 +91,7 @@ class VideoUserParse(BaseParse):
                     match = regVideoM3.search(item)
                     if match!=None:
                         videoUrl =match.group(1).replace("\/","/")
-                        return "%s%s%s"%("http",videoUrl,'m3u8')
+                        return "%s%s%s"%("https://ck.ckbfq.com/999player-tian.html?purl=http",videoUrl,'m3u8http://sd.52avhd.com:9888/zp/DEE4708C/SD/playlist.m3u8&h=610&url=www.tlula44.com&hd=0')
             print '没找到mp4'
             return None
         except Exception as e:

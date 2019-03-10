@@ -88,8 +88,9 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrlWithBase(baseurl4+url, header4)
-            adiv = soup.first("div",{"id":"zanpiancms_player"})
+            adiv = soup.first("ul",{"class":"playul"})
             if adiv!=None:
+                soup = self.fetchUrlWithBase(baseurl4+adiv.first("a").get("href"))
                 scripts = adiv.findAll('script')
                 for script in scripts:
                     text = unquote(str(script.text)).replace(" ", "").replace('"//"+avod+"', "").replace('"//"+bvod+"', "")

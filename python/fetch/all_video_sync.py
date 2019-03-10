@@ -98,14 +98,14 @@ def pase5():
     yezmw_vip.parseVideo()
     yin22_vip.parseVideo()
 def pase6():
-#     nvnvzx_vip.parseAll()
-    ####ppyy55_vip.parseUserVideo()
-#     qh_vip.parseVideo2()
-#     s58589_vip.parseVideo2()
+    nvnvzx_vip.parseAll()
+    ###ppyy55_vip.parseUserVideo()
+    qh_vip.parseVideo2()
+    s58589_vip.parseVideo2()
     se8_vip.parseVideo() 
     sexx77_vip.parseVideo()  
-#     skswk9_img.parseVideo()
-#     sp1769_vip.parseVideo()
+    skswk9_img.parseVideo()
+    sp1769_vip.parseVideo()
      
 def pase7():
     cili_vip.parseVideo() 

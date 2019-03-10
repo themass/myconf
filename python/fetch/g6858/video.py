@@ -102,8 +102,10 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url, header)
-            adiv = soup.first("div",{"id":"cms_play"})
+            adiv = soup.first("ul",{"class":"playul"})
             if adiv!=None:
+                soup = self.fetchUrl(adiv.first("a").get("href"), header)
+                adiv = soup.first("div",{"class":"player"})
                 text = unquote(str(adiv.text))
                 texts = text.split(";")
                 for item in texts:

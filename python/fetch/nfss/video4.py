@@ -90,7 +90,9 @@ class VideoUserParse(BaseParse):
             soup = self.fetchUrlWithBase(baseurl4+url, header4)
             adiv = soup.first("ul",{"class":"playul"})
             if adiv!=None:
+                print adiv
                 soup = self.fetchUrlWithBase(baseurl4+adiv.first("a").get("href"),header4)
+                adiv = soup.first("div",{"class":"player"})
                 scripts = adiv.findAll('script')
                 for script in scripts:
                     text = unquote(str(script.text)).replace(" ", "").replace('"//"+avod+"', "").replace('"//"+bvod+"', "")

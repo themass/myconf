@@ -230,7 +230,7 @@ setup_fail2ban()
 ## -----------------------
 setup_all() 
 {
-    init_soft
+    #init_soft
     strongswan_setup
     strongswan_config
     ip=$(get_ip)
@@ -238,8 +238,8 @@ setup_all()
     dev=$(get_netdev)
     setup_iptables $dev
     #setup_fail2ban
-    net
-    setup_telegraf
+    #net
+    #setup_telegraf
     echo "crotab-----------------------------"
     echo "crotab-----------------------------"
     echo "crotab-----------------------------"

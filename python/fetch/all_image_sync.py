@@ -41,7 +41,7 @@ if __name__ == '__main__':
 #     xieegif_vip.parseratooImg()
 #     xieegif_vip.parsehugao8Img()
     
-    tt192_vip.parseImg()
+   
     nyg6_vip.parseImg()
     nyg6_vip.parseImg2()
     ni345_vip.parseImg()
@@ -49,6 +49,8 @@ if __name__ == '__main__':
     se8_vip.startWork()
     se8_vip.parseGirlImg()
     se8_vip.parseImg()
+    
+    tt192_vip.parseImg()
     
 
 

@@ -36,9 +36,9 @@ if __name__ == '__main__':
 #     g6858_vip.parseImg()
 #     jjr128_vip.pareImg()
      
-    xieegif_vip.parsewowantImg()
-#     xieegif_vip.parserneihanImg()
-#     xieegif_vip.parseratooImg()
+#     xieegif_vip.parsewowantImg()
+    xieegif_vip.parserneihanImg()
+    xieegif_vip.parseratooImg()
 #     xieegif_vip.parsehugao8Img()
     
 #     tt192_vip.parseImg()

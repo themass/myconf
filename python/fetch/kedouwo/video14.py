@@ -24,7 +24,6 @@ class VideoUserParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= item['url']
                 url = item['url'].replace("-pg-1","-pg-"+str(i))
-                print url
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):

@@ -43,7 +43,7 @@ class VideoParse(BaseParse):
                     for i in range(1, maxVideoPage):
                         url= ch['url']
                         self.videoParse(ch['channel'],url, i,"created_at",channel['id'])
-                        print '解析完成 ', ch['channel'], ' ---', i, '页'
+                        print '解析完成 ', ch['channel'], ' ---', i, '页',channel
                 except Exception as e:
                     pass
     def videoChannel(self):
@@ -79,7 +79,7 @@ class VideoParse(BaseParse):
             obj['name'] = item.get("video_name")
             obj['path'] = "qinzi%s"%(mp4Url)
             obj['videoType'] = "normal"
-            print obj['videoType'],obj['name'],mp4Url,obj['pic']
+#             print obj['videoType'],obj['name'],mp4Url,obj['pic']
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
             obj['baseurl'] = baseurl

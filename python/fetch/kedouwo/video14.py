@@ -88,7 +88,7 @@ class VideoUserParse(BaseParse):
             url = url.replace("/vod-detail-id-","").replace(".html","")
             url = "%s%s%s"%("/vod-play-id-",url,"-src-1-num-1.html")
             soup = self.fetchUrl(baseurl14+url, header)
-            div   = soup.first("div",{"class":"content"})
+            div   = soup.first("div",{"class":"box pic_text"})
             if div !=None:
                 text = unquote(str(div.text))
                 texts = text.split("$")

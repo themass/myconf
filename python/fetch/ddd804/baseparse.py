@@ -46,7 +46,7 @@ class BaseParse(threading.Thread):
                 response = urllib2.urlopen(req, context=ctx,timeout=6000)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('UTF-8') 
+                content = response.read().decode('UTF-8').replace("<!-- ads -->","").replace("<!--","").replace("-->","")
                 contentstr = content
                 if gzipped:
                     fio = StringIO.StringIO(content)

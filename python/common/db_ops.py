@@ -157,7 +157,7 @@ class DbOps(object):
         return self.conn.execute(
             "update   videoitems set name='%s' where path='%s'" % ( obj.get("name"), obj.get("path")))
     def inertVideo(self, obj,videoType="normal",baseUrl='',channelType=''):
-        sortType = '2018-09-20'
+        sortType = dateutil.y_m_d()
         return self.conn.execute(
             "insert ignore into  videoitems (name,url,channel,pic,updateTime,path,videoType,baseurl,sortType,channelType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (

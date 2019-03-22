@@ -25,6 +25,7 @@ baseurl8 = "https://www.jjj382.com"
 baseurl9 = "http://www.65aeae.com"
 baseurl10 = "https://www.asy1000.com"
 baseurl11 = "http://www.tlula44.com"
+baseurl12 = "https://r18.clickme.net"
 
 maxCount = 5
 class BaseParse(threading.Thread):
@@ -53,6 +54,7 @@ class BaseParse(threading.Thread):
                     contentstr = f.read()
                     f.close()
                 soup = BeautifulSoup(contentstr)
+                print contentstr
                 return soup
             except Exception as e:
                 print common.format_exception(e)

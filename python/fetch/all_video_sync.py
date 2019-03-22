@@ -25,7 +25,6 @@ import qh_vip
 import sifangpian_vip
 import bt2n_vip
 import ff326_vip
-import fuli750_vip
 import hs941_vip
 import kpd36_vip
 import cili_vip
@@ -63,7 +62,6 @@ def pase2():
     dxg11_vip.parseVideo()
     ff326_vip.parseVideo()
     fff64_vip.parseVideo()
-    fuli750_vip.parseVideo()
     g6858_vip.parseVideo()
     hs941_vip.parseVideo()
 

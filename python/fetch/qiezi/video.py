@@ -24,7 +24,7 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for ch in chs:
-            for i in range(1, maxVideoPage):
+            for i in range(60, maxVideoPage):
                 url= ch['url']
                 self.videoParse(ch['channel'],url, i)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'

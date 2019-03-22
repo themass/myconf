@@ -100,6 +100,7 @@ class ImgParse(BaseParse):
         pics = []
         soup = self.fetchUrl("https:",url)
         data = soup.first("article", {"class": "article-detail-content article-left"})
+        print data
         if data != None:
             try:
                 imgs = data.findAll('img')

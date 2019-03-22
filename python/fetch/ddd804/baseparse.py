@@ -54,7 +54,6 @@ class BaseParse(threading.Thread):
                     contentstr = f.read()
                     f.close()
                 soup = BeautifulSoup(contentstr)
-                print contentstr
                 return soup
             except Exception as e:
                 print common.format_exception(e)

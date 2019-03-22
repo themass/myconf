@@ -99,7 +99,7 @@ class ImgParse(BaseParse):
     def fetchImgs(self, url):
         pics = []
         soup = self.fetchUrl("https:",url)
-        data = soup.first("article", {"class": "article-detail-content article-left"})
+        data = soup.first("article", {"class": "article-content article-left"})
         print data
         if data != None:
             try:

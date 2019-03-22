@@ -11,6 +11,108 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re,os
 # http://www.dehyc.com
+channels = '''
+{
+        "mytags": [
+            {
+                "id": 10055,
+                "name": "野外"
+            },
+            {
+                "id": 10058,
+                "name": "厨房"
+            },
+            {
+                "id": 10302,
+                "name": "酒店"
+            },
+            {
+                "id": 10307,
+                "name": "泳池"
+            },
+            {
+                "id": 10163,
+                "name": "口交"
+            }
+            {
+                "id": 10144,
+                "name": "巨乳"
+            },
+            {
+                "id": 10141,
+                "name": "制服"
+            },
+            {
+                "id": 10067,
+                "name": "角色扮演"
+            },
+            {
+                "id": 10037,
+                "name": "强奸"
+            },
+            {
+                "id": 10174,
+                "name": "颜面骑乘"
+            },
+            {
+                "id": 10210,
+                "name": "SM"
+            },
+            {
+                "id": 10293,
+                "name": "人妻/少妇"
+            },
+            {
+                "id": 10187,
+                "name": "乳交"
+            },
+            {
+                "id": 10291,
+                "name": "长腿"
+            },
+            {
+                "id": 10278,
+                "name": "爆射"
+            },
+            {
+                "id": 10170,
+                "name": "舔阴"
+            },
+            {
+                "id": 10169,
+                "name": "吞精"
+            },
+            {
+                "id": 10161,
+                "name": "多P"
+            },
+            {
+                "id": 10160,
+                "name": "69"
+            },
+            {
+                "id": 10070,
+                "name": "女学生"
+            },
+            {
+                "id": 10342,
+                "name": "中国大陆"
+            },
+            {
+                "id": 10343,
+                "name": "中文字幕"
+            },
+            {
+                "id": 10350,
+                "name": "欧美"
+            },
+            {
+                "id": 10340,
+                "name": "无码"
+            }
+        ]
+}
+'''
 baseurl = "http://www.acmite.vip"
 header = {'token':
           'MTU1MzIyNDk5Mg==.eyJ1c2VyX2lkIjoyMzQyMTQ1fQ==.MzA2YWVjZjlkMDQ2NjMyZTkwMDg1YzRhNzRjNzRiZjg=', "Referer": baseurl

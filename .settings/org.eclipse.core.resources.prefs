@@ -241,6 +241,7 @@ encoding//python/fetch/qh/__init__.py=utf-8
 encoding//python/fetch/qh/baseparse.py=utf-8
 encoding//python/fetch/qh/video2.py=utf-8
 encoding//python/fetch/qh_vip.py=utf-8
+encoding//python/fetch/qiezi/__init__.py=utf-8
 encoding//python/fetch/qiezi/baseparse.py=utf-8
 encoding//python/fetch/qiezi/video.py=utf-8
 encoding//python/fetch/qiezi_vip.py=utf-8

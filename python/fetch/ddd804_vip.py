@@ -49,6 +49,9 @@ def parseimgtlula44():
 def parseimgclickme():
     imgop = imgclickme.ImgParse()
     imgop.run()
+def parseimggebi0():
+    imgop = imggebi0.ImgParse()
+    imgop.run()
 def parsAll():
 #     parsejiqingyazhouImg()
 #     parse39vqImg()
@@ -61,8 +64,9 @@ def parsAll():
     parseimgtlula44()
     parseddd804Img()
     parseimgclickme()
+    parseimggebi0()
 if __name__ == '__main__':
-    parseimgclickme()
+    parseimggebi0()
 #     parse39vqImg()
 # #      
 #     parsedddImg()

@@ -39,11 +39,13 @@ class VideoParse(BaseParse):
             print channelObj
             channelslist = channelObj.get("mytags",[])
             for channel in channelslist:
-                for i in range(1, maxVideoPage):
-                    url= ch['url']
-                    self.videoParse(ch['channel'],url, i,"created_at",channel['id'])
-                    print '解析完成 ', ch['channel'], ' ---', i, '页'
-                
+                try:
+                    for i in range(1, maxVideoPage):
+                        url= ch['url']
+                        self.videoParse(ch['channel'],url, i,"created_at",channel['id'])
+                        print '解析完成 ', ch['channel'], ' ---', i, '页'
+                except Exception as e:
+                    pass
     def videoChannel(self):
         channelList = []
         obj={}

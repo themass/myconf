@@ -35,9 +35,9 @@ class VideoParse(BaseParse):
 #                 print '解析完成 ', ch['channel'], ' ---', i, '页'
                 
         for ch in chs:
-            channels = json.loads(channels)
-            print channels
-            channelslist = channels.get("mytags",[])
+            channelObj = json.loads(channels)
+            print channelObj
+            channelslist = channelObj.get("mytags",[])
             for channel in channelslist:
                 for i in range(1, maxVideoPage):
                     url= ch['url']

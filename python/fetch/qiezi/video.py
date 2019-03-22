@@ -23,11 +23,27 @@ class VideoParse(BaseParse):
         print ' channel ok; len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
+#         for ch in chs:
+#             for i in range(1, maxVideoPage):
+#                 url= ch['url']
+#                 self.videoParse(ch['channel'],url, i,"created_at",None)
+#                 print '解析完成 ', ch['channel'], ' ---', i, '页'
+#         for ch in chs:
+#             for i in range(1, maxVideoPage):
+#                 url= ch['url']
+#                 self.videoParse(ch['channel'],url, i,"views",None)
+#                 print '解析完成 ', ch['channel'], ' ---', i, '页'
+                
         for ch in chs:
-            for i in range(1, maxVideoPage):
-                url= ch['url']
-                self.videoParse(ch['channel'],url, i)
-                print '解析完成 ', ch['channel'], ' ---', i, '页'
+            channels = json.loads(channels)
+            print channels
+            channelslist = channels.get("mytags",[])
+            for channel in channelslist:
+                for i in range(1, maxVideoPage):
+                    url= ch['url']
+                    self.videoParse(ch['channel'],url, i,"created_at",channel['id'])
+                    print '解析完成 ', ch['channel'], ' ---', i, '页'
+                
     def videoChannel(self):
         channelList = []
         obj={}
@@ -42,12 +58,14 @@ class VideoParse(BaseParse):
         obj['channelType']='normal'
         channelList.append(obj)
         return  channelList
-    def videoParse(self, channel, url,i):
+    def videoParse(self, channel, url,i,method,key):
         dataList = []
         para = {}
-        para['method']='views'
+        para['method']=method
         para['order']='desc'
         para['step']=i
+        if key!=None:
+            para['key']=key
         obj = httputil.getData(baseurl+url,para,header)
         for item in obj['data']['videos']:
             mp4Url  = item.get("url")

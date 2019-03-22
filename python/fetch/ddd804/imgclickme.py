@@ -73,6 +73,7 @@ class ImgParse(BaseParse):
                 ahref = item.first("a")
                 if ahref!=None:
                     try:
+                        print ahref.get('href')
                         obj = {}
                         obj['fileDate'] = ''
                         name = ahref.first("div",{"class":"item-text text-acronym-one"}).text
@@ -99,8 +100,7 @@ class ImgParse(BaseParse):
     def fetchImgs(self, url):
         pics = []
         soup = self.fetchUrl("https:",url)
-        data = soup.first("article", {"class": "article-content article-left"})
-        print data
+        data = soup.first("p")
         if data != None:
             try:
                 imgs = data.findAll('img')

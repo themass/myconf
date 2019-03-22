@@ -49,7 +49,7 @@ class ImgParse(BaseParse):
         print "解析 Img 图片ok----channl=", channel, '  页数=', i, " 数量=", len(objs)
         for obj in objs:
             try:
-                if len(obj['picList'])>5:
+                if len(obj['picList'])>4:
                     for picItem in obj['picList']:
                         item = {}
                         item['itemUrl'] = obj['url']

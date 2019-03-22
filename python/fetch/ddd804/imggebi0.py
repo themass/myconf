@@ -62,7 +62,7 @@ class ImgParse(BaseParse):
 
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(baseurl13,url)
-        div = soup.first("li", {"class": "box list channel"})
+        div = soup.first("div", {"class": "box list channel"})
         objs = []
         sortType = dateutil.y_m_d()
         if div!=None:

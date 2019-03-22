@@ -45,6 +45,7 @@ import nyg6_vip
 import g6858_vip
 import s58589_vip
 import ni345_vip
+import fuli750_vip
 from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
      jav101_vip,  youjiady_vip,\
     zooredtube_vip
@@ -73,6 +74,7 @@ def pase3():
     kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()
     fmcm_vip.parseVideo()
+    fuli750_vip.parseVideo()
 def pase4():
 #     iavbobo_vip.parseVideo()
 #     jjr128_vip.parseVideo()

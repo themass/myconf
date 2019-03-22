@@ -23,16 +23,16 @@ class VideoParse(BaseParse):
         print ' channel ok; len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
-#         for ch in chs:
-#             for i in range(1, maxVideoPage):
-#                 url= ch['url']
-#                 self.videoParse(ch['channel'],url, i,"created_at",None)
-#                 print '解析完成 ', ch['channel'], ' ---', i, '页'
-#         for ch in chs:
-#             for i in range(1, maxVideoPage):
-#                 url= ch['url']
-#                 self.videoParse(ch['channel'],url, i,"views",None)
-#                 print '解析完成 ', ch['channel'], ' ---', i, '页'
+        for ch in chs:
+            for i in range(1, maxVideoPage):
+                url= ch['url']
+                self.videoParse(ch['channel'],url, i,"created_at",None)
+                print '解析完成 ', ch['channel'], ' ---', i, '页'
+        for ch in chs:
+            for i in range(1, maxVideoPage):
+                url= ch['url']
+                self.videoParse(ch['channel'],url, i,"views",None)
+                print '解析完成 ', ch['channel'], ' ---', i, '页'
                 
         for ch in chs:
             channelObj = json.loads(channels)
@@ -79,7 +79,7 @@ class VideoParse(BaseParse):
             obj['name'] = item.get("video_name")
             obj['path'] = "qinzi%s"%(mp4Url)
             obj['videoType'] = "normal"
-#             print obj['videoType'],obj['name'],mp4Url,obj['pic']
+            print obj['videoType'],obj['name'],mp4Url,obj['pic']
             obj['updateTime'] = datetime.datetime.now()
             obj['channel'] = channel
             obj['baseurl'] = baseurl

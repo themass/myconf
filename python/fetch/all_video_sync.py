@@ -74,7 +74,7 @@ def pase3():
     kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()
     fmcm_vip.parseVideo()
-    fuli750_vip.parseVideo()
+###     fuli750_vip.parseVideo()
 def pase4():
 #     iavbobo_vip.parseVideo()
 #     jjr128_vip.parseVideo()

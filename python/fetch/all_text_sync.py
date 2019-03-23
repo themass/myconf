@@ -26,14 +26,15 @@ def pase2():
     ##aaw51_vip.parseText()
     ####seshu_vip.parseText()
     btw168_vip.parseText()
-    kedouwo_vip.parseText12()
+#     kedouwo_vip.parseText12()
     se8_vip.startWork()
     se8_vip.parseText()
     
     ####mayi01_vip.parseText()
 if __name__ == '__main__':
-    kedouwo_vip.parseText12()
     val = argsMap.get("-p",0)
+    pase1()
+    pase2()
     if int(val)==1:
         pase1()
     elif int(val)==2:

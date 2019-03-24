@@ -39,8 +39,6 @@ class TextChannelParse(BaseParse):
                     count = self.update(page_url, ops, channel)
                     dbVPN.commit()
                     dbVPN.close()
-                    if count == 0:
-                        break
             except Exception as e:
                 print common.format_exception(e)
     def textChannel(self):

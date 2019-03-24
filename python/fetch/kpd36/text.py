@@ -86,7 +86,7 @@ class TextChannelParse(BaseParse):
                         obj = {}
                         obj['fileDate'] = ''
                         obj['name'] = ahref.get("title")
-                        print name
+                        print obj['name'] 
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl
                         obj['channel'] = channel

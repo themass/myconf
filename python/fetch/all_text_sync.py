@@ -26,7 +26,7 @@ def pase1():
 def pase2():
     ##aaw51_vip.parseText()
     ####seshu_vip.parseText()
-    btw168_vip.parseText()
+    ###btw168_vip.parseText()
     
     se8_vip.startWork()
     se8_vip.parseText()

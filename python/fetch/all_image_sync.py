@@ -31,7 +31,7 @@ if __name__ == '__main__':
       
     ava99_vip.parseImg()
     bt2n_vip.pareImg()
-    btw168_vip.parseImg()
+    ###btw168_vip.parseImg()
     skswk9_img.parseImg()
     g6858_vip.parseImg()
     jjr128_vip.pareImg()

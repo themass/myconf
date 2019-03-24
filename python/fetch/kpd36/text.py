@@ -106,9 +106,8 @@ class TextChannelParse(BaseParse):
     def fetchText(self,url):
         print url
         soup = self.fetchUrl(url)
-        datas = soup.findAll("table",{"style":"border:1px dashed #eee;line-height:30px;"})
-        data = datas[0]
-        if data != None and len(data)>200:
+        data = soup.first("table",{"style":"border:1px dashed #eee;line-height:30px;"})
+        if data != None and len(data.text)>200:
             try:
                 obj = {}
                 obj['fileUrl'] = url

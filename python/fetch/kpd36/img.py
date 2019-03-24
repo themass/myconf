@@ -25,6 +25,7 @@ class ImgParse(BaseParse):
             channel = obj['url']
             page_url = obj['url'].replace('.html','')
             for i in range(1, maxImgPage):
+                url = page_url
                 if i!=1:
                     url = "%s%s%s%s"%(page_url,"index_",i,".html")
                 print page_url

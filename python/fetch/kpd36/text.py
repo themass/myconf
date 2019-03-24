@@ -107,7 +107,6 @@ class TextChannelParse(BaseParse):
         print url
         soup = self.fetchUrl(url)
         datas = soup.findAll("table",{"style":"border:1px dashed #eee;line-height:30px;"})
-        datas =datas.reverse()
         data = datas[0]
         if data != None and len(data)>200:
             try:

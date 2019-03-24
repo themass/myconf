@@ -23,6 +23,7 @@ import fff64_vip
 import btw168_vip
 import nyg6_vip
 import ni345_vip
+import kpd36_vip
 from fetch import bt2n_vip, g6858_vip
 
 if __name__ == '__main__':
@@ -35,7 +36,7 @@ if __name__ == '__main__':
     skswk9_img.parseImg()
     g6858_vip.parseImg()
     jjr128_vip.pareImg()
-     
+    kpd36_vip.pareImg()
 #     xieegif_vip.parsewowantImg()
 #     xieegif_vip.parserneihanImg()
 #     xieegif_vip.parseratooImg()

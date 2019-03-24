@@ -16,6 +16,7 @@ import mayi01_vip
 import btw168_vip
 import kedouwo_vip
 import ddd804_vip
+import kpd36_vip
 def pase1():
     fff64_vip.parseText()
     #novel941_vip.parseText()
@@ -25,6 +26,7 @@ def pase1():
     g6858_vip.parseText()
     ddd804_vip.parsetextddd804()
     ddd804_vip.parsetext65aeae()
+    kpd36_vip.parseText()
 def pase2():
     ##aaw51_vip.parseText()
     ####seshu_vip.parseText()

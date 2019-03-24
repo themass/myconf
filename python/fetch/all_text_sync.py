@@ -17,10 +17,10 @@ import btw168_vip
 import kedouwo_vip
 
 def pase1():
-#     fff64_vip.parseText()
-#     #novel941_vip.parseText()
-#     x2246_vip.parseText()
-#     kedouwo_vip.parseText12()
+    fff64_vip.parseText()
+    #novel941_vip.parseText()
+    x2246_vip.parseText()
+    kedouwo_vip.parseText12()
     jjr128_vip.parseText()
     g6858_vip.parseText()
 def pase2():

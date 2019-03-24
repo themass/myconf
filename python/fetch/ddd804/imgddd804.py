@@ -25,15 +25,26 @@ class ImgParse(BaseParse):
             page_url = obj['url']
             obj['url']=obj['name']
             ops.inertImgChannel(obj)
-            for i in range(1, maxImgPage):
+            max = self.getMaxpage(page_url)
+            for i in range(0, maxImgPage):
                 url = page_url
                 if i!=1:
                     url = url.replace('index.html',"")
-                    url = "%s%s%s%s"%(url,"list_",100-i,".html")
+                    url = "%s%s%s%s"%(url,"list_",max-i,".html")
                 print url
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()
-
+    def getMaxpage(self,url):
+        soup = self.fetchUrl(baseurl1,url)
+        div = soup.first("div",{"class":"bord mtop"})
+        if div!=None:
+            strong = div.first("strong")
+            if strong!=None:
+                fonts = strong.findAll("font")
+                for font in fonts:
+                    if font.count("/")>0:
+                        return int(font.replace("/",""))
+        return 150
     def parseChannel(self):
         objs = self.fetchddd804Head(baseurl1,'图片')
         for obj in objs:

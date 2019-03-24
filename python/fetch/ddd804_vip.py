@@ -52,6 +52,9 @@ def parseimgclickme():
 def parseimggebi0():
     imgop = imggebi0.ImgParse()
     imgop.run()
+def parsetextddd804():
+    textpare = textddd804.TextChannelParse()
+    textpare.run()
 def parsAll():
 #     parsejiqingyazhouImg()
 #     parse39vqImg()
@@ -66,7 +69,7 @@ def parsAll():
     parseimgclickme()
     parseimggebi0()
 if __name__ == '__main__':
-    parseddd804Img()
+    parsetextddd804()
 #     parse39vqImg()
 # #      
 #     parsedddImg()

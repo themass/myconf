@@ -41,10 +41,8 @@ class ImgParse(BaseParse):
         if div!=None:
             strong = div.first("strong")
             if strong!=None:
-                fonts = strong.findAll("font")
-                for font in fonts:
-                    if font.text.count("/")>0:
-                        return int(font.text.replace("/",""))
+                font = strong.first("font")
+                return int(strong.text.replace(font.text+"/",""))
         return 150
     def parseChannel(self):
         objs = self.fetchddd804Head(baseurl1,'图片')

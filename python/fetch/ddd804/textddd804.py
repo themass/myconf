@@ -86,7 +86,7 @@ class TextChannelParse(BaseParse):
 
     def fetchTextData(self, url, channel):
         try:
-            soup = self.fetchUrl(baseurl1+url)
+            soup = self.fetchUrl(baseurl1,url)
             div = soup.first("div", {"class": "typelist"})
             if div == None:
                 print '没有数据', url
@@ -119,7 +119,7 @@ class TextChannelParse(BaseParse):
         except Exception as e:
             print common.format_exception(e)
     def fetchText(self,url):
-        soup = self.fetchUrl(baseurl1+url)
+        soup = self.fetchUrl(baseurl1,url)
         data = soup.first("div", {"id": "view2"})
         if data != None:
             try:

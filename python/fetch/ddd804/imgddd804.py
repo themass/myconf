@@ -26,6 +26,7 @@ class ImgParse(BaseParse):
             obj['url']=obj['name']
             ops.inertImgChannel(obj)
             max = self.getMaxpage(page_url)
+            print 'max page=',max
             for i in range(0, maxImgPage):
                 url = page_url
                 if i!=1:
@@ -42,8 +43,8 @@ class ImgParse(BaseParse):
             if strong!=None:
                 fonts = strong.findAll("font")
                 for font in fonts:
-                    if font.count("/")>0:
-                        return int(font.replace("/",""))
+                    if font.text.count("/")>0:
+                        return int(font.text.replace("/",""))
         return 150
     def parseChannel(self):
         objs = self.fetchddd804Head(baseurl1,'图片')

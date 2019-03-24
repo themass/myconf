@@ -75,14 +75,12 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "panel-body"})
-            if div == None:
-                print '没有数据', url
-                return []
-            datalist = div.findAll("a")
+            
+            datalist = soup.findAll("table",{"style":"border:1px dashed #eee;line-height:35.9px;"})
             objs = []
             sortType = dateutil.y_m_d()
-            for ahref in datalist:
+            for item in datalist:
+                ahref = item.first("a")
                 if ahref!=None:
                     try:
                         obj = {}

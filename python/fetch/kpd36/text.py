@@ -104,6 +104,7 @@ class TextChannelParse(BaseParse):
         except Exception as e:
             print common.format_exception(e)
     def fetchText(self,url):
+        print url
         soup = self.fetchUrl(url)
         datas = soup.findAll("p")
         datas =datas.reverse()

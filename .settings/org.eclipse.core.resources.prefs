@@ -169,6 +169,7 @@ encoding//python/fetch/kedouwo_vip.py=utf-8
 encoding//python/fetch/kpd2_vip.py=utf-8
 encoding//python/fetch/kpd36/__init__.py=utf-8
 encoding//python/fetch/kpd36/baseparse.py=utf-8
+encoding//python/fetch/kpd36/img.py=utf-8
 encoding//python/fetch/kpd36/text.py=utf-8
 encoding//python/fetch/kpd36/video.py=utf-8
 encoding//python/fetch/kpd36_vip.py=utf-8

@@ -29,10 +29,13 @@ class TextChannelParse(BaseParse):
             print '开始解析频道---',item
             try:
                 channel = item['url']
+                max = self.getMaxpage(item['url'])
+                print 'max page=',max
                 for i in range(1, maxTextPage ):
                     page_url = item['url']
                     if i!=1:
-                        page_url="%s%s%s"%(page_url.replace('.html','-'),i,".html")
+                        page_url = page_url.replace('index.html',"")
+                        page_url = "%s%s%s%s"%(page_url,"list_",max-i,".html")
                     print page_url
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
@@ -43,6 +46,15 @@ class TextChannelParse(BaseParse):
                         break
             except Exception as e:
                 print common.format_exception(e)
+    def getMaxpage(self,url):
+        soup = self.fetchUrl(baseurl1,url)
+        div = soup.first("div",{"class":"bord mtop"})
+        if div!=None:
+            strong = div.first("strong")
+            if strong!=None:
+                font = strong.first("font")
+                return int(strong.text.replace(font.text+"/",""))
+        return 150
     def textChannel(self):
         objs = []
         ahrefs = self.header("header4.html")
@@ -50,7 +62,7 @@ class TextChannelParse(BaseParse):
             obj = {}
             obj['name']=ahref.text
             obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl
+            obj['baseurl']=baseurl1
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
@@ -74,12 +86,12 @@ class TextChannelParse(BaseParse):
 
     def fetchTextData(self, url, channel):
         try:
-            soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "vodlist_ll box"})
+            soup = self.fetchUrl(baseurl1+url)
+            div = soup.first("div", {"class": "typelist"})
             if div == None:
                 print '没有数据', url
                 return []
-            datalist = div.findAll("li")
+            datalist = div.findAll("ul")
             objs = []
             sortType = dateutil.y_m_d()
             for item in datalist:
@@ -87,12 +99,11 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        obj['fileDate'] = item.first('span').text
-                        name = ahref.text.replace(obj['fileDate'],'')
-                        obj['name'] = name
+                        obj['fileDate'] = ''
+                        obj['name'] = ahref.text
                         print name
                         obj['url'] = ahref.get('href')
-                        obj['baseurl'] = baseurl
+                        obj['baseurl'] = baseurl1
                         obj['channel'] = channel
                         obj['updateTime'] = datetime.datetime.now()
 #                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
@@ -108,8 +119,8 @@ class TextChannelParse(BaseParse):
         except Exception as e:
             print common.format_exception(e)
     def fetchText(self,url):
-        soup = self.fetchUrl(url)
-        data = soup.first("div", {"class": "content"})
+        soup = self.fetchUrl(baseurl1+url)
+        data = soup.first("div", {"id": "view2"})
         if data != None:
             try:
                 obj = {}

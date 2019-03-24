@@ -31,7 +31,7 @@ class BaseParse(threading.Thread):
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('utf8', errors='replace')
+                content = response.read().decode('utf8', errors='replace').replace("<!--","").replace("-->","")
                 if gzipped:
                     content = zlib.decompress(
                         content, -zlib.MAX_WBITS)  # 解压缩，得到网页源码

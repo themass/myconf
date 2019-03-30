@@ -83,24 +83,36 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
       
         try:
+            url = url.replace("/movie/index","").replace(".html","")
+            url = "%s%s%s"%("/play/",url,"-0-0.html")
             soup = self.fetchUrl(url)
-            tabContent = soup.first("div",{"class":"tab-content"})
-            div = tabContent.first("div")
-            if div!=None:
-                ahref = div.first("a")
-                if ahref!=None:
-                    soup = self.fetchUrl(ahref.get("href"))
-                    player = soup.first("div",{"class":"player"})
-                    if player!=None:
-                        script = player.first("script")
-                        if script!=None:
-                            content = unquote(str(script.text)).split("$")
-                            for item in content:
-                                match = regVideo.search(item)
-                                if match!=None: 
-                                    return "http"+match.group(1)+'m3u8'
-                                elif item.count(regVideoYun)>0:
-                                    return item
+            player = soup.first("div",{"class":"info clearfix"})
+            content = unquote(str(player.text)).split("$")
+            for item in content:
+                match = regVideo.search(item)
+                if match!=None: 
+                    return "http"+match.group(1)+'m3u8'
+                elif item.count(regVideoYun)>0:
+                    return item
+                                
+#             soup = self.fetchUrl(url)
+#             tabContent = soup.first("div",{"class":"tab-content"})
+#             div = tabContent.first("div")
+#             if div!=None:
+#                 ahref = div.first("a")
+#                 if ahref!=None:
+#                     soup = self.fetchUrl(ahref.get("href"))
+#                     player = soup.first("div",{"class":"player"})
+#                     if player!=None:
+#                         script = player.first("script")
+#                         if script!=None:
+#                             content = unquote(str(script.text)).split("$")
+#                             for item in content:
+#                                 match = regVideo.search(item)
+#                                 if match!=None: 
+#                                     return "http"+match.group(1)+'m3u8'
+#                                 elif item.count(regVideoYun)>0:
+#                                     return item
             print '没找到mp4'
             return None
         except Exception as e:

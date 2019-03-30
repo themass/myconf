@@ -69,7 +69,7 @@ class VideoParse(BaseParse):
                     obj['videoType'] = "normal"
                 obj['channel'] = channel
                 obj['baseurl'] = baseurl
-                print obj['videoType'],obj['url'],obj['pic']
+                print obj['name'],obj['videoType'],obj['url'],obj['pic']
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

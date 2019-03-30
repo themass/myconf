@@ -58,9 +58,9 @@ class VideoParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                img = ahref.first("img")
-                obj['pic'] = baseurl+img.get("src")
-                obj['name'] = img.get("alt")
+#                 img = ahref.first("img")
+                obj['pic'] = baseurl+ahref.get("data-original")
+                obj['name'] = ahref.get("title")
                 obj['path'] = "%s%s%s"%(channel,"-",obj['name'])
                 obj['updateTime'] = datetime.datetime.now()
                 if mp4Url.count("m3u8")==0:

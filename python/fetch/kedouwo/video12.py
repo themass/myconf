@@ -91,7 +91,7 @@ class VideoUserParse(BaseParse):
                     match = regVideoM3.search(item)
                     if match!=None:
                         videoUrl =match.group(1).replace("\/","/")
-                        return "%s%s%s"%("https://ck.ckbfq.com/999player-tian.html?purl=http",videoUrl,'m3u8http://sd.52avhd.com:9888/zp/DEE4708C/SD/playlist.m3u8&h=610&url=www.tlula44.com&hd=0')
+                        return "%s%s%s"%("https://ck.ckbfq.com/999player-tian.html?purl=http",videoUrl,'m3u8&h=610&url=www.tlula44.com&hd=0')
             print '没找到mp4'
             return None
         except Exception as e:

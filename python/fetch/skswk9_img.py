@@ -36,5 +36,5 @@ def parseText():
 if __name__ == '__main__':
 
 #     parseText()
-#     parseImg()
-    parseVideo()
+    parseImg()
+#     parseVideo()

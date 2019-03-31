@@ -24,7 +24,7 @@ class VideoUserParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= item['url']
                 if i!=1:
-                    url = "%s%s%s"%(item['url'],'/page/',i)
+                    url = "%s%s%s.html"%(item['url'],'/page_',i)
                 print url
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
@@ -48,9 +48,9 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(baseurl8+url,header8)
-        div = soup.first("div",{"class":"row listView"})
+        div = soup.first("div",{"class":"tc_nr l_b"})
         if div!=None:
-            lis = div.findAll("div",{"class":"col-xs-6 col-sm-6 col-md-4 contentItem"})
+            lis = div.findAll("li")
             for li in lis:
                 ahref = li.first("a")
                 obj = {}
@@ -60,8 +60,8 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = li.first("img")
-                obj['pic'] = img.get("src")
-                obj['name'] = li.first("a",{"class":"postTitle"}).text
+                obj['pic'] = img.get("data-original")
+                obj['name'] = li.first("h3").text
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "8xqc"+videourl.path

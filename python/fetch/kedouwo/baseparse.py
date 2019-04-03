@@ -46,8 +46,8 @@ header5 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
           'Cookie':"UM_distinctid=1655d8a945d4b3-04cf9c8cfb02c4-47e1039-1fa400-1655d8a945e132; PHPSESSID=tefc4f836ibs5s166aht5lvtp3; __51cke__=; CNZZDATA1273155436=2112313512-1534871260-null%7C1535037844; ggy_second=true; __tins__3892343=%7B%22sid%22%3A%201535038199894%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201535039999894%7D; __tins__19380135=%7B%22sid%22%3A%201535038188896%2C%20%22vd%22%3A%203%2C%20%22expires%22%3A%201535040034907%7D; __51laig__=4"}
 header6 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
-          'Cookie':"__cfduid=d44aa5159886044d753c8806d83e7539b1535038342; AVS=17jbicrqspfve3rn2gplbkpqk0; __51cke__=; UM_distinctid=165676aaa8164a-0532684d1256a1-47e1039-1fa400-165676aaa8f449; pgv_pvi=869407744; pgv_si=s269490176; __atuvc=1%7C34; CNZZDATA1271838784=1655185687-1535036227-null%7C1535041056; __tins__19458827=%7B%22sid%22%3A%201535044802928%2C%20%22vd%22%3A%206%2C%20%22expires%22%3A%201535046712534%7D; __tins__19308590=%7B%22sid%22%3A%201535044803126%2C%20%22vd%22%3A%206%2C%20%22expires%22%3A%201535046712562%7D; __51laig__=20"}
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl6,
+          'Cookie':"__cfduid=dc952231b7833331e12f0b7077fcb6a421554317883; __51cke__=; __tins__19308590=%7B%22sid%22%3A%201554318062876%2C%20%22vd%22%3A%207%2C%20%22expires%22%3A%201554320019257%7D; __51laig__=7"}
 header7 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
           'Cookie':"__cfduid=d04442510987cdc4647a03da1d8179ba61535135932; UM_distinctid=1656d3b55a10-0e0c6e23061c6c-47e1039-1fa400-1656d3b55a84a1; CNZZDATA1273905787=288757623-1535132900-%7C1535132900; PHPSESSID=5hfhpl7sbdl52hn6mfpq0ee3l1; security_session_verify=2879be1fd96735a49761b2ea855bdc65"}

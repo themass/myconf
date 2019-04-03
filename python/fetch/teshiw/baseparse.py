@@ -13,7 +13,8 @@ import re,os
 # http://www.dehyc.com
 baseurl = "https://www.teshiw.cc"
 header = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
+          "cookie":"Hm_lvt_000e6350ac21970841611d0451fec9f3=1553938506,1554316385; Hm_lpvt_000e6350ac21970841611d0451fec9f3=1554316408; security_session_verify=35c8b1ea9a4faf283a05f670fbedce5c"}
 maxCount = 3
 videoApi = re.compile(r'http(.*?)\.m3u8')
 videoId = re.compile("/vodhtml/(.*?)\.html")

@@ -75,8 +75,8 @@ class VideoParse(BaseParse):
                 continue
             obj = {}
             obj['url'] = "http://qiezsp889911.chuantouchi.com:8092"+mp4Url
-            obj['pic'] = "https://src.mnbvvbnm.com"+item.get("horizontal_cover")
-            obj['name'] = item.get("video_name")
+            obj['pic'] = "https://src.mnbvvbnm.com"+item.get("horizontal_cover",'')
+            obj['name'] = item.get("video_name",'')
             obj['path'] = "qinzi%s"%(mp4Url)
             obj['videoType'] = "normal"
             print obj['videoType'],obj['name'],mp4Url,obj['pic']

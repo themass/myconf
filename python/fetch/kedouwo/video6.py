@@ -57,7 +57,10 @@ class VideoUserParse(BaseParse):
                 continue
             obj['url'] = mp4Url
             img = ahref.first("img")
-            obj['pic'] = img.get("src")
+            if img!=None:
+                obj['pic'] = img.get("src")
+            else:
+                obj['pic'] = ''
             obj['name'] = li.first("h3").text
 
             videourl = urlparse(obj['url'])

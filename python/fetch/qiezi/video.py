@@ -75,7 +75,10 @@ class VideoParse(BaseParse):
                 continue
             obj = {}
             obj['url'] = "http://qiezsp889911.chuantouchi.com:8092"+mp4Url
-            obj['pic'] = "https://src.mnbvvbnm.com"+item.get("horizontal_cover",'')
+            if item.get("horizontal_cover",'')!=None:
+                obj['pic'] = "https://src.mnbvvbnm.com"+item.get("horizontal_cover",'')
+            else:
+                obj['pic'] =''
             obj['name'] = item.get("video_name",'')
             obj['path'] = "qinzi%s"%(mp4Url)
             obj['videoType'] = "normal"

@@ -24,7 +24,7 @@ class VideoUserParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= item['url']
                 if i!=1:
-                    url= "%s%s%s%s"%(item['url'].replace('.html',""),'-',i,".html")
+                    url= "%s%s%s%s"%(item['url'].replace('.html',"-pg-"),'-',i,".html")
                 print url
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
@@ -48,7 +48,7 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(baseurl3+url,header3)
-        div = soup.first("div", {"class": "box-video-list"})
+        div = soup.first("div", {"class": "hy-video-list"})
         if div!=None:
             lis = div.findAll("li",{"class":"col-md-2 col-sm-3 col-xs-4"})
             for li in lis:
@@ -90,9 +90,9 @@ class VideoUserParse(BaseParse):
             match = videoId3.search(url)
             if match!=None:
                 videoId = match.group(1)
-                videoUrlId = "/index.php?m=vod-play-id-%s-src-1-num-1.html"%(videoId)
+                videoUrlId = "/?m=vod-play-id-%s-src-1-num-1.html"%(videoId)
                 soup = self.fetchUrl(baseurl3+videoUrlId, header3)
-                DIV    = soup.first("div",{"class":"dyplayer"})
+                DIV    = soup.first("div",{"class":"hy-player clearfix"})
                 if DIV  !=None:
                         text = unquote(str(DIV.text))
                         texts = text.split(",")

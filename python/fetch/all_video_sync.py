@@ -92,7 +92,7 @@ def pase5():
     #meiyke_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo4()
-    nfss_vip.parseVideo3()
+    ###nfss_vip.parseVideo3()
     sp878_vip.parseVideo()
     g6858_vip.parseVideo()
     yezmw_vip.parseVideo()
@@ -135,7 +135,7 @@ def all():
     pase7()
 #     pase8()
 if __name__ == '__main__':
-#     pase8()
+    pase8()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

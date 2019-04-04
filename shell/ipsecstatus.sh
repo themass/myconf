@@ -33,6 +33,7 @@ status_send()
 	 	echo ${local_host}
 	 else
 	  	curl  -d "count=-1"  -d "localhost=${local_host}&ip=${local_ip}" -H"host=api.sspacee.com" http://47.88.7.156/vpn/api/noapp/collect.json
+	 	echo 'error'
 	 fi
 }
 usage() 

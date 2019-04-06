@@ -115,7 +115,7 @@ channels = '''
 '''
 baseurl = "http://www.acmite.vip"
 header = {'token':
-          'MTU1MzkzNzY4Mw==.eyJ1c2VyX2lkIjoyMzQyMTQ1fQ==.NDI3NDEyOTlkOWEyYzczZjkxMTQ2ZjMxMTJmYjBjNDY=', "Referer": baseurl
+          'bmFXcHBmemI0RzdJaVh5ZzlQOHNiZUh3L0FYa1pldzRoTmRScnByanN4bnJFalU1enlEdTlqM2pla09WNGw5U1NTN1BGSTd1enhDMkJDY1JQbFZjM0MvdnVPOUl1NUZNckJpRi81Z3RMUEpob1hkcktuMkhERkh3cUFvUEt3RTQ=', "Referer": baseurl
           ,"User-Agent": "okhttp/3.10.0"
 }
 maxCount = 3

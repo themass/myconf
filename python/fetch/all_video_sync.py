@@ -134,9 +134,9 @@ def all():
     pase5()
     pase6()
     pase7()
-#     pase8()
-if __name__ == '__main__':
     pase8()
+if __name__ == '__main__':
+#     pase8()
     val = argsMap.get("-p",0)
     if int(val)==1:
         pase1()

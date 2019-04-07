@@ -87,7 +87,7 @@ class VideoParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            soup = self.fet(url.replace("//www.cmdy5.com",""), header)
+            soup = self.fetchUrl(url.replace("//www.cmdy5.com",""), header)
             ul = soup.first('div',{"id":'vlink_1'})
             if ul!=None:
                 ahref = ul.first("a")

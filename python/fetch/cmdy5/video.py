@@ -92,7 +92,7 @@ class VideoParse(BaseParse):
             if ul!=None:
                 ahref = ul.first("a")
                 if ahref!=None:
-                    soup = self.fetchUrl(ahref.get("href"), header)
+                    soup = self.fetchUrl(ahref.get("href").replace("//www.cmdy5.com",""), header)
                     div = soup.first("div",{"class":"player mb"})
                     if div!=None:
                         script = div.first("script")

@@ -47,7 +47,7 @@ class VideoParse(BaseParse):
         return  channelList
     def videoParse(self, channel, url):
         dataList = []
-        soup = self.fetchUrl(url)
+        soup = self.fetchUrlWithBase(url)
         lis = soup.findAll("li", {"class": "p1 m1"})
         for li in lis:
             ahref = li.first('a')

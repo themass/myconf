@@ -6,7 +6,7 @@ from common import common
 from urllib import unquote
 import time
 from fetch.profile import *
-
+ 
 class VideoParse(BaseParse):
 
     def __init__(self):
@@ -24,7 +24,8 @@ class VideoParse(BaseParse):
         for ch in chs:
             for i in range(1, maxVideoPage):
                 url= ch['url']
-                url= "%s%s%s"%(ch['url'].replace('.html','/page/'),i,'.html')
+                if i!=1:
+                    url= "%s%s%s"%(ch['url'].replace('.html','-'),i,'.html')
                 self.videoParse(ch['channel'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -63,9 +64,9 @@ class VideoParse(BaseParse):
                 if img.get('data-original').count("http")>0:
                     obj['pic'] = img.get('data-original')
                 else:
-                    obj['pic'] = baseurl+img.get('data-original')
+                    obj['pic'] = "https"+img.get('data-original')
                 obj['name'] = ahref.get("title")
-                obj['path'] = "ly6080_%s%s%s"%(channel,"-",obj['name'])
+                obj['path'] = "cmd_%s%s%s"%(channel,"-",obj['name'])
                 if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                     obj['videoType'] = "webview"
                 else:
@@ -85,29 +86,33 @@ class VideoParse(BaseParse):
         dbVPN.close()
 
     def parseDomVideo(self, url):
-        header = {'User-Agent':
-                  'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
-            url = url.replace("/vod/detail/id/","").replace(".html","")
-            url = "/vod/play/id/%s/sid/1/nid/1.html"%(url)
             soup = self.fetchUrl(url, header)
-            ul = soup.first('div',{"class":'player mb'})
+            ul = soup.first('div',{"id":'vlink_1'})
             if ul!=None:
-                texts = unquote(ul.text).replace("http://player.ly6080.com/yunparse/?url=", "").replace("http://player.ly6080.com/odflv/index.php?url=", "").split("$")
-                for text in texts:
-                    match = videoApi.search(text)
-                    if match!=None:
-                        str= match.group(1)
-                        return "%s%s%s"%("http",str,".m3u8")
-                for text in texts:
-                    match = videoApiMp4.search(text)
-                    if match!=None:
-                        str= match.group(1)
-                        return "%s%s%s"%("http",str,".mp4")
-                for text in texts:
-                    match = shareVideo.search(text)
-                    if match!=None:
-                        return text.replace("'",'').replace(")",'').replace(";",'')
+                ahref = ul.first("a")
+                if ahref!=None:
+                    soup = self.fetchUrl(ahref.get("href"), header)
+                    div = soup.first("div",{"class":"player mb"})
+                    if div!=None:
+                        script = div.first("script")
+                        if script!=None:
+                            soup = self.fetchContentUrlWithBase(baseurl+script.get("src"), header)
+                            texts = unquote(soup).split("$")
+                            for text in texts:
+                                match = videoApi.search(text)
+                                if match!=None:
+                                    str= match.group(1)
+                                    return "%s%s%s"%("http",str,".m3u8")
+                            for text in texts:
+                                match = videoApiMp4.search(text)
+                                if match!=None:
+                                    str= match.group(1)
+                                    return "%s%s%s"%("http",str,".mp4")
+                            for text in texts:
+                                match = shareVideo.search(text)
+                                if match!=None:
+                                    return text.replace("'",'').replace(")",'').replace(";",'')
             print url,'没有mp4'
             return None
         except Exception as e:

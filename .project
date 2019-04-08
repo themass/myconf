@@ -20,15 +20,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.python.pydev.pythonNature</nature>
 	</natures>
-	<filteredResources>
-		<filter>
-			<id>1503034291320</id>
-			<name>python</name>
-			<type>22</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-true-false-*pyc</arguments>
-			</matcher>
-		</filter>
-	</filteredResources>
 </projectDescription>

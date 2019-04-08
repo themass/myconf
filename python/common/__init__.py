@@ -1,7 +1,0 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-"""
-通用包，包含数据库连接、锁和通用方法
-"""
-__all__ = ["common", "dateutil", "httputil", "MyQueue",
-           "AESUtil", "typeutil", 'excel', 'emailutil', 'envmod', "db_ops", "html_parse", "email_paser"]

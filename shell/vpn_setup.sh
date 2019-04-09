@@ -101,8 +101,8 @@ strongswan_config_port()
 	#cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	
 	cd ${WORKDIR}/myconf/shell
-	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-	cp  ../strongswan_conf_port/ipsec.conf /etc/ipsec.conf
+	#cp  /etc/ipsec.conf /etc/ipsec.conf.bak
+	#cp  ../strongswan_conf_port/ipsec.conf /etc/ipsec.conf
     
 	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
 	cp  ../strongswan_conf_port/charon.conf /etc/strongswan.d/charon.conf

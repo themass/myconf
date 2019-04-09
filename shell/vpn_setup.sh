@@ -107,10 +107,10 @@ strongswan_config_port()
 	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
 	cp  ../strongswan_conf_port/charon.conf /etc/strongswan.d/charon.conf
     
-	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-	cp  ../strongswan_conf_port/ipsec.secrets /etc/ipsec.secrets
+	#cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
+	#cp  ../strongswan_conf_port/ipsec.secrets /etc/ipsec.secrets
 	
-	cp  ../strongswan_conf_port/strongswan.conf /etc/strongswan.conf
+	#cp  ../strongswan_conf_port/strongswan.conf /etc/strongswan.conf
 	
 	ipsec restart
 }

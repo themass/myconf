@@ -15,8 +15,8 @@ channels = ['/vod/listing-0-0-0-0-0-0-0-0-0-','/vod/hot-0-0-0-0-0-0-0-0-0-','/vo
 baseurl = "https://android.fuliapps.com"
 header = {'token':
           'bmFXcHBmemI0RzdJaVh5ZzlQOHNiZUh3L0FYa1pldzRoTmRScnByanN4bWllUURzUzJZTUx3VXprWlZ4QXhVV0ZuVUJmNGlXSkZORHN6RmNZMmNqRmJ1WFhCVk04VlE2d25ZcnJhRXdxN0tENUNWYjd3dnZ3eGgzNnFmS0pDUnk=', "Referer": baseurl
-          ,"User-Agent": "okhttp/3.10.0",
-          "Cookie": "xxx_api_auth=6537386634636262663535656533363565313463373065313538636535636262"
+          ,"User-Agent": "okhttp/3.10.0"
+
 }
 maxCount = 3
 videoApi = re.compile(r'http(.*?)\.m3u8')

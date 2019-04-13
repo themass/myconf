@@ -46,7 +46,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url):
         dataList = []
         obj = httputil.getData(baseurl+url,{},header)
-        if obj==None or obj['data']==None or obj['data']['vodrows']==None:
+        if obj==None or obj.get('data',None)==None or obj.get('data',None).get('vodrows',None)==None:
             return 
         for item in obj['data']['vodrows']:
             mp4Url  = self.getMp4(item.get("play_url"))
@@ -74,6 +74,6 @@ class VideoParse(BaseParse):
     def getMp4(self,url):
         print url
         obj = httputil.getData(baseurl+url,{},header)
-        if obj==None or obj['data']==None or obj['data']['httpurl']==None:
+        if obj==None or obj.get('data',{})==None or obj.get('data',{}).get('httpurl',None)==None:
             return None
         return obj['data']['httpurl']

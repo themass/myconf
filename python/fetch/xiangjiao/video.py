@@ -72,5 +72,8 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
     def getMp4(self,url):
+        print url
         obj = httputil.getData(baseurl+url,{},header)
+        if obj==None or obj['data']==None or obj['data']['httpurl']==None:
+            return None
         return obj['data']['httpurl']

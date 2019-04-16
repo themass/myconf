@@ -29,9 +29,9 @@ class VideoParse(BaseParse):
                     if item['url'].count('女优专辑')>0:
                         print '解析女友专辑'
                         self.nvviderPaser(item['channel'], url)
-                    else:
-                        self.videoParse(
-                            item['channel'], url)
+#                     else:
+#                         self.videoParse(
+#                             item['channel'], url)
                     print '解析页数 ', item['url'], ' ---', i, '完成'
             except Exception as e:
                 pass
@@ -69,7 +69,7 @@ class VideoParse(BaseParse):
                 ahref = li.first('a')
                 if ahref != None:
                     for i in range(1, 10):
-                        print '解析女优频道',channel.ahref.get('href'),i
+                        print '解析女优频道',channel,ahref.get('href'),ahref.get('title'),i
                         url = ahref.get('href')
                         if i!=1:
                             url = "%s%s%s"%(ahref.replace(".html", "-"),i,".html")

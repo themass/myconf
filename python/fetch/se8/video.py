@@ -69,11 +69,14 @@ class VideoParse(BaseParse):
                 ahref = li.first('a')
                 if ahref != None:
                     for i in range(1, 10):
-                        print '解析女优频道',channel,ahref.get('href'),ahref.get('title'),i
-                        url = ahref.get('href')
-                        if i!=1:
-                            url = "%s%s%s"%(ahref.replace(".html", "-"),i,".html")
-                        self.videoParse(channel, url)
+                        try:
+                            print '解析女优频道',channel,ahref.get('href'),ahref.get('title'),i
+                            url = ahref.get('href')
+                            if i!=1:
+                                url = "%s%s%s"%(ahref.replace(".html", "-"),i,".html")
+                            self.videoParse(channel, url)
+                        except Exception as e:
+                            pass
                         
     def videoParse(self, channel, url):
         dataList = []

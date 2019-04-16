@@ -26,8 +26,11 @@ class VideoParse(BaseParse):
                     url = item['url']
                     if i!=1:
                         url = "%s%s%s"%(url.replace(".html", "-"),i,".html")
-                    self.videoParse(
-                        item['channel'], url)
+                        if item['url'].count('女优专辑')>0:
+                            self.nvviderPaser(item['channel'], url)
+                        else:
+                            self.videoParse(
+                                item['channel'], url)
                     print '解析页数 ', item['url'], ' ---', i, '完成'
             except Exception as e:
                 pass
@@ -56,6 +59,21 @@ class VideoParse(BaseParse):
                 channelList.append(obj)
         channelList.reverse()
         return channelList
+    def nvviderPaser(self, channel, url):
+        soup = self.fetchUrl(url)
+        div = soup.first("div", {"class": "text-list-html "})
+        if div!=None:
+            lis = div.findAll('li')
+            for li in lis:
+                ahref = li.first('a')
+                if ahref != None:
+                    for i in range(1, 10):
+                        print '解析女优频道',channel.ahref.get('href'),i
+                        url = ahref.get('href')
+                        if i!=1:
+                            url = "%s%s%s"%(ahref.replace(".html", "-"),i,".html")
+                        self.videoParse(channel, url)
+                        
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)

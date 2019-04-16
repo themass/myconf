@@ -27,7 +27,7 @@ regVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
 urlMap={"m3u8url_10":"https://768ii.com","m3u8url_24k":"https://768ii.com","m3u8url_new":"https://768ii.com",
         "m3u8url_69":"https://768ii.com","m3u8url_10_2":"https://768ii.com","m3u8url_24k_2":"https://768ii.com",
         "m3u8url_new_2":"https://768ii.com","m3u8url_69_2 ":"https://768ii.com"}
-m3u8Map = {"m3u8_host":"https://one.991video.com","m3u8_host1":"https://991video.com","m3u8_host2":"https://mmbfxl1.com"}
+m3u8Map = {"m3u8_host":"https://991video.com","m3u8_host1":"https://991video.com","m3u8_host2":"https://mmbfxl1.com"}
 rmbvideoUrl='http://555.maomixia555.com:888'
 rmbregVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
 class BaseParse(threading.Thread):

@@ -115,7 +115,7 @@ channels = '''
 '''
 baseurl = "http://www.cxj88.app"
 header = {'token':
-          'bmFXcHBmemI0RzdJaVh5ZzlQOHNiZUh3L0FYa1pldzRoTmRScnByanN4bXFTeTg3WVFVUXVEb3E1V0tSQnlpcFVNWE9lTlV5amM2NWFrdmc2UW1sdWNQeGZydWFUejhFZTRLR1BVWDJOTjZpbjZWNURYYmlrcERlTDZISFFtbzQ=', "Referer": baseurl
+          'bmFXcHBmemI0RzdJaVh5ZzlQOHNiZUh3L0FYa1pldzRoTmRScnByanN4bklYVlJaNEpMdVp2dVRxKzQ3TUFiSU5UWHJ4c1BpL2JIOHJScEFjZjQwd0puRGZFRkpHeWs2Q0tqQ1RuWW5oYlJJRmhHWFBwVHhDWkErbnVUdEZtRkE=', "Referer": baseurl
           ,"User-Agent": "okhttp/3.10.0"
 }
 maxCount = 3

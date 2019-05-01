@@ -127,8 +127,8 @@ def pase8():
     teshiw_vip.parseVideo()
 
 def all():
-    pase1()
-    pase2()
+#     pase1()
+#     pase2()
     pase3()
     pase4()
     pase5()

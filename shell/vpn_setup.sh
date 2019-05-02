@@ -299,6 +299,7 @@ usage()
       echo "strongswanconf_port    Setup strongswanconf_port"
     echo "all           Setup all aboves"
     echo "telegraf          Setup telegraf"
+    echo "check_mtr          Setup check_mtr"
 }
 
 ## =====================================

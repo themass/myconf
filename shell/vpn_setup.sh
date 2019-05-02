@@ -51,6 +51,21 @@ checkspeed()
  	#python speedtest.py 
  	wget -qO- git.io/superbench.sh | bash
 }
+checkmtr()
+{
+	cd ${TMP_HOME}
+	mkdir besttrace
+	cd besttrace
+	wget http://cdn.ipip.net/17mon/besttrace4linux.zip
+	unzip besttrace4linux.zip
+	chmod +x besttrace32
+	echo '测试广州移动'
+	./besttrace32 -q 1 gd.189.cn
+	echo '测试广州联通'
+	./besttrace32 -q 1 mall.gd10010.cn
+	echo '测试广州电信'
+	./besttrace32 -q 1 189.cn
+}
 #### open vz
 # ./configure  --enable-eap-identity --enable-eap-md5 \
 ##--enable-eap-mschapv2 --enable-eap-tls --enable-eap-ttls --enable-eap-peap  \
@@ -304,6 +319,7 @@ if [ $# != 0 ]; then
 	    check)          checkspeed;;
 	    check_vpn)          check_vpn;;
 	    telegraf)         setup_telegraf;;
+	    check_mtr)         checkmtr;;
 	    all)          setup_all;;
         esac
     done

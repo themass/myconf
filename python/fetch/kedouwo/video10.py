@@ -92,7 +92,7 @@ class VideoUserParse(BaseParse):
             if div !=None:
                 texts = unquote(div.text).split(";")
                 for text in texts:
-                    match = regVideoM3.search(text)
+                    match = regVideoM3dot.search(text)
                     if match!=None:
                         videoUrl =match.group(1)
                         return "%s%s%s"%("http",videoUrl,'.m3u8')

@@ -74,7 +74,7 @@ def parseVideoALl():
     parseVideo14()
 if __name__ == '__main__':
 #     parseVideo()
-    parseVideo14()
+   # parseVideo14()
 #     parseVideo3()
 #     parseVideo4() 
 #     parseVideo5()

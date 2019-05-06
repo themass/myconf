@@ -57,6 +57,10 @@ header8 = {'User-Agent':
 header14 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
           'Cookie':"Hm_lvt_64f3b8e72697945612104f755f0e6ce4=1557163354; __51cke__=; Hm_lpvt_64f3b8e72697945612104f755f0e6ce4=1557164611; __tins__19425543=%7B%22sid%22%3A%201557163355132%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201557166411669%7D; __51laig__=10"}
+header10 = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
+          'Cookie':"Hm_lvt_6b5abf5a20585b4286e789656e2978e1=1557163585; Hm_lvt_f2c715616879962068016a02d482faf2=1557163585; Hm_lpvt_6b5abf5a20585b4286e789656e2978e1=1557165909; Hm_lpvt_f2c715616879962068016a02d482faf2=1557165909"}
+
 
 maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")

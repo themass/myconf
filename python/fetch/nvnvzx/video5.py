@@ -81,9 +81,9 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrlWithBase(url,header)
-            video = soup.first("video",{"autoplay":"autoplay"})
+            video = soup.first("source")
             if video!=None:
-                return video.get("source").replace("end=120","end=12000")
+                return video.get("src").replace("end=120","end=12000")
             print '没找到mp4'
             return None
         except Exception as e:

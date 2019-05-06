@@ -48,9 +48,9 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(baseurl10+url,header10)
-        div = soup.first("div",{"class":"content bord mtop"})
+        div = soup.first("div",{"class":"mod"})
         if div!=None:
-            lis = div.findAll("li")
+            lis = div.findAll("dl")
             for li in lis:
                 ahref = li.first("a")
                 obj = {}
@@ -60,8 +60,8 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = li.first("img")
-                obj['pic'] = baseurl10+img.get("src")
-                obj['name'] = ahref.get("title")
+                obj['pic'] = baseurl10+img.get("data-original")
+                obj['name'] = img.get("alt")
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "jjj382"+videourl.path
@@ -91,7 +91,7 @@ class VideoUserParse(BaseParse):
             div = soup.first("div",{"class":"list"})
             if div!=None and div.first("a")!=None:
                     soup = self.fetchUrl(baseurl10+div.first("a").get("href"), header10)
-                    div   = soup.first("div",{"class":"player bord mtop"})
+                    div   = soup.first("div",{"class":"player"})
                     if div !=None:
                         texts = unquote(div.text).split(";")
                         for text in texts:

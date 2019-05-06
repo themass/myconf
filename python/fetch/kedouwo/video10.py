@@ -47,7 +47,7 @@ class VideoUserParse(BaseParse):
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
-        soup = self.fetchUrl(baseurl10+url,header8)
+        soup = self.fetchUrl(baseurl10+url,header10)
         div = soup.first("div",{"class":"content bord mtop"})
         if div!=None:
             lis = div.findAll("li")
@@ -87,10 +87,10 @@ class VideoUserParse(BaseParse):
         time.sleep(10)
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(baseurl10+url, header)
+            soup = self.fetchUrl(baseurl10+url, header10)
             div = soup.first("div",{"class":"list"})
             if div!=None and div.first("a")!=None:
-                    soup = self.fetchUrl(baseurl10+div.first("a").get("href"), header)
+                    soup = self.fetchUrl(baseurl10+div.first("a").get("href"), header10)
                     div   = soup.first("div",{"class":"player bord mtop"})
                     if div !=None:
                         texts = unquote(div.text).split(";")

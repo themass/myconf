@@ -20,7 +20,6 @@ import json
 from urlparse import urlparse
 from urllib import unquote
 import sys
-import fcntl
 reload(sys)
 sys.setdefaultencoding('utf8')
 str1 = '''
@@ -29,10 +28,11 @@ str1 = '''
 '''
 
 def fetchUrl(url):
-    req = urllib2.Request(url, headers={'Cookie':"td_cookie=18446744069599001696; UM_distinctid=16267a77486203-0a34f7eb9f837-454c092b-1fa400-16267a7748726f; CNZZDATA4033785=cnzz_eid%3D1967344694-1522153663-null%26ntime%3D1522153663; CNZZDATA1263493226=2025093065-1522155903-null%7C1522155903; PHPSESSID=cqppj1tg9v8tf27j95ogqogjs1; td_cookie=18446744069599206493; WSKY=6c172; jiathis_rdc=%7B%22http%3A//www.zxdy.cc/vod/22266.html%22%3A1739039602%2C%22http%3A//www.zxdy.cc/play/22266-0-1.html%22%3A1739044927%2C%22http%3A//www.zxdy.cc/Uploads/https%3A//tupian.tupianzy.com/pic/upload/vod/2018-03-03/201803031520062617.jpg%22%3A1739118415%2C%22http%3A//www.zxdy.cc/list/1-p-3-0.html%22%3A1739129605%2C%22http%3A//www.zxdy.cc/list/1-p-1-0.html%22%3A1739216767%2C%22http%3A//www.zxdy.cc/list/9-p-1-0.html%22%3A1739358031%2C%22http%3A//www.zxdy.cc/list/9-p-2-0.html%22%3A1739371664%2C%22http%3A//www.zxdy.cc/Uploads/https%3A//wx3.sinaimg.cn/mw690/005w5c6ogy1fjuo496v5uj30tu15ok3k.jpg%22%3A1739577535%2C%22http%3A//www.zxdy.cc/Uploads/https%3A//img.alicdn.com/imgextra/i4/2264228004/TB2UynHnQqvpuFjSZFhXXaOgXXa_%21%212264228004.jpg%22%3A1739585958%2C%22http%3A//www.zxdy.cc/%22%3A1739586271%2C%22http%3A//www.zxdy.cc/vod/5128.html%22%3A1739763188%2C%22http%3A//www.zxdy.cc/vod/1.html%22%3A1739772004%2C%22http%3A//www.zxdy.cc/play/1-0-1.html%22%3A1739777508%2C%22http%3A//www.zxdy.cc/vod/4063.html%22%3A1739811363%2C%22http%3A//www.zxdy.cc/play/4063-0-2.html%22%3A1739820736%2C%22http%3A//www.zxdy.cc/list/11-p-1-0.html%22%3A1739855919%2C%22http%3A//www.zxdy.cc/vod/22236.html%22%3A0%7C1522158279843%2C%22http%3A//www.zxdy.cc/play/22236-0-1.html%22%3A%220%7C1522158307282%22%7D",
-                'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":url})
-    req.encoding = 'utf-8'
-    response = urllib2.urlopen(req, timeout=300)
+    req = urllib2.Request(url, headers={'Cookie':"Hm_lvt_64f3b8e72697945612104f755f0e6ce4=1557163354; __51cke__=; Hm_lpvt_64f3b8e72697945612104f755f0e6ce4=1557164611; __tins__19425543=%7B%22sid%22%3A%201557163355132%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201557166411669%7D; __51laig__=10",
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36', "Referer":url
+                ,"Host": "gebi0.com"})
+#     req.encoding = 'utf-8'
+    response = urllib2.urlopen(req, timeout=3000)
     gzipped = response.headers.get(
         'Content-Encoding')  # 查看是否服务器是否支持gzip
     content = response.read().decode('utf8', errors='replace').replace("<![endif]-->","")
@@ -41,10 +41,10 @@ if __name__ == '__main__':
     baseurl = "https://www.asy1000.com/"
     header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
-          "cookie":"__cfduid=daf97951d263f43b40aa880057d128ec61534232909; PHPSESSID=df01o1psnjpnr67df4k4q53s50; UM_distinctid=1653768772b33e-00e6b1d3653486-47e1039-1fa400-1653768772c5f; CNZZDATA1274203680=1684804072-1534228697-%7C1534234099",
+          "cookie":"Hm_lvt_64f3b8e72697945612104f755f0e6ce4=1557163354; __51cke__=; Hm_lpvt_64f3b8e72697945612104f755f0e6ce4=1557164611; __tins__19425543=%7B%22sid%22%3A%201557163355132%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201557166411669%7D; __51laig__=10",
           "X-Requested-With":"XMLHttpRequest"}
-    print fetchUrl("https://www.f8dy.tv/vodtypehtml/7.html")
-    fcntl.flock('', fcntl.LOCK_EX)
+    print fetchUrl("http://gebi0.com/vodsearch/学----------2---.html")
+#     fcntl.flock('', fcntl.LOCK_EX)
 #     data = {}
 #     data['id']="1844"
 #     ret = httputil.postRequestWithParam("http://www.fuli750.com/api/payvideo.html", data, header)

@@ -45,7 +45,7 @@ class VideoUserParse(BaseParse):
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
-        soup = self.fetchUrl(baseurl14+url,header8)
+        soup = self.fetchUrl(baseurl14+url,header14)
         div = soup.first("main",{"class":"col-md-9 video-content"})
         if div!=None:
             lis = div.findAll("li",{"class":"col-sm-12 col-md-6 col-lg-4 video-col"})
@@ -86,7 +86,7 @@ class VideoUserParse(BaseParse):
         try:
             url = url.replace("/voddetail/","").replace(".html","")
             url = "%s%s%s"%("/vodplay/",url,"-1-1.html")
-            soup = self.fetchUrl(baseurl14+url, header)
+            soup = self.fetchUrl(baseurl14+url, header14)
             div   = soup.first("div",{"id":"myVideo"})
             if div !=None:
                 text = unquote(unquote(str(div.text)))

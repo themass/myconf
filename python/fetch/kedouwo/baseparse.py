@@ -54,6 +54,9 @@ header7 = {'User-Agent':
 header8 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
           'Cookie':"__cfduid=d04442510987cdc4647a03da1d8179ba61535135932; UM_distinctid=1656d3b55a10-0e0c6e23061c6c-47e1039-1fa400-1656d3b55a84a1; CNZZDATA1273905787=288757623-1535132900-%7C1535132900; PHPSESSID=5hfhpl7sbdl52hn6mfpq0ee3l1; security_session_verify=2879be1fd96735a49761b2ea855bdc65"}
+header14 = {'User-Agent':
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
+          'Cookie':"Hm_lvt_64f3b8e72697945612104f755f0e6ce4=1557163354; __51cke__=; Hm_lpvt_64f3b8e72697945612104f755f0e6ce4=1557164611; __tins__19425543=%7B%22sid%22%3A%201557163355132%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201557166411669%7D; __51laig__=10"}
 
 maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")

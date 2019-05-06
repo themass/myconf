@@ -92,10 +92,10 @@ class VideoUserParse(BaseParse):
             if div !=None:
                 texts = unquote(div.text).split(";")
                 for text in texts:
-                    match = regVideoM3dot.search(text)
+                    match = regVideoM310.search(text)
                     if match!=None:
                         videoUrl =match.group(1)
-                        return "%s%s%s"%("http",videoUrl,'.m3u8')
+                        return "%s%s%s"%("http",videoUrl,'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

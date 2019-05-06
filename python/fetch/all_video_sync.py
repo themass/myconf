@@ -57,7 +57,7 @@ def pase1():
     bt2n_vip.parseVideo()
     ###btw168_vip.parseVideo()
     ####cjg52_vip.parseVideo()
-    zanquye_vip.parseVideo()
+    ####zanquye_vip.parseVideo()
     ni345_vip.parseVideo()
 def pase2():
     dxg11_vip.parseVideo()

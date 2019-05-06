@@ -16,7 +16,7 @@ sys.setdefaultencoding('utf8')
 baseurl = "http://arcoc.org/"
 baseurl2 = "https://www.868hu.com/"
 baseurl3 = "http://zyz605.co/"
-baseurl5 = "https://xiaoluoli99.info/"
+baseurl5 = "https://xiaoluoli99.bid/"
 baseurl6 = "http://www.11111dv.com:538/"
 baseurl7 = "http://www.0077cao.com"
 

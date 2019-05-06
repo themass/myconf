@@ -23,7 +23,7 @@ class VideoUserParse(BaseParse):
         for item in chs:
             for i in range(1, maxVideoPage):
                 url= item['url']
-                url = item['url'].replace("-pg-1","-pg-"+str(i))
+                url = "%s%s%s"%(item['url'].replace("1---.html",""),i,"---.html")
                 self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -46,9 +46,9 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(baseurl14+url,header8)
-        div = soup.first("div",{"class":"box movie_list"})
+        div = soup.first("main",{"class":"col-md-9 video-content"})
         if div!=None:
-            lis = div.findAll("li")
+            lis = div.findAll("li",{"class":"col-sm-12 col-md-6 col-lg-4 video-col"})
             for li in lis:
                 ahref = li.first("a")
                 obj = {}
@@ -59,7 +59,7 @@ class VideoUserParse(BaseParse):
                 obj['url'] = mp4Url
                 img = li.first("img")
                 obj['pic'] = img.get("src")
-                obj['name'] = ahref.get("title")
+                obj['name'] = img.get("alt")
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "gebi0"+videourl.path
@@ -84,13 +84,13 @@ class VideoUserParse(BaseParse):
         dbVPN.close()
     def parseDomVideo(self, url):
         try:
-            url = url.replace("/vod-detail-id-","").replace(".html","")
-            url = "%s%s%s"%("/vod-play-id-",url,"-src-1-num-1.html")
+            url = url.replace("/voddetail/","").replace(".html","")
+            url = "%s%s%s"%("/vodplay/",url,"-1-1.html")
             soup = self.fetchUrl(baseurl14+url, header)
-            div   = soup.first("div",{"class":"box pic_text"})
+            div   = soup.first("div",{"id":"myVideo"})
             if div !=None:
                 text = unquote(unquote(str(div.text)))
-                texts = text.split("$")
+                texts = text.split(",")
                 for item in texts:
                     match = regVideoM3.search(item)
                     if match!=None:

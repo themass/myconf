@@ -65,6 +65,7 @@ header10 = {'User-Agent':
 maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")
 regVideoM3 = re.compile(r"http(.*?)m3u8")
+regVideoM3dot = re.compile(r"http(.*?)/.m3u8")
 regVideoM310 = re.compile(r'http(.*?)m3u8"')
 
 regVideoMp4 = re.compile(r"http(.*?)mp4")

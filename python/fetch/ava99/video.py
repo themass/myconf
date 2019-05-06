@@ -88,21 +88,19 @@ class VideoParse(BaseParse):
         try: 
 #             soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
             soup = self.fetchUrl("%s%s"%(url.replace(".html",""),"play.html"), header)
-            div = soup.first("div",{'class':'container'})
-            if div!=None:
-                scripts = div.findAll('script')
-                for script in scripts:
-                    if script.get("src")!=None and script.get("src").count("/upload/playdata")>0:
-                        text = unquote(self.fetchContentUrl(script.get("src"),header))
-                        match = regVideoCode.search(text)
-                        if match!=None:
-                            text = common.base64Decode(match.group(1)) 
-                            texts = unquote(text).split("$")
-                            for item in texts:
-                                match = regVideo.search(item)
-                                if match!=None:
-                                    videoUrl =match.group(1)
-                                    return "%s%s%s"%("http",videoUrl,'.m3u8')
+            scripts = soup.findAll('script')
+            for script in scripts:
+                if script.get("src")!=None and script.get("src").count("/upload/playdata")>0:
+                    text = unquote(self.fetchContentUrl(script.get("src"),header))
+                    match = regVideoCode.search(text)
+                    if match!=None:
+                        text = common.base64Decode(match.group(1)) 
+                        texts = unquote(text).split("$")
+                        for item in texts:
+                            match = regVideo.search(item)
+                            if match!=None:
+                                videoUrl =match.group(1)
+                                return "%s%s%s"%("http",videoUrl,'.m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

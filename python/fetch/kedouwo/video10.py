@@ -88,7 +88,7 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(baseurl10+url, header10)
-            div   = soup.first("div",{"class":"player"})
+            div   = soup.first("div",{"id":"player"})
             if div !=None:
                 texts = unquote(div.text).split(";")
                 for text in texts:

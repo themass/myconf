@@ -252,6 +252,7 @@ usage()
     echo "influx          Setup setup_influx"
      echo "rclocal          Setup rc.local"
     echo "all           Setup all aboves"
+    echo "bbrplus        Setup bbrplus"
 }
 setup_all()
 {

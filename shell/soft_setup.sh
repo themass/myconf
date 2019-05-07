@@ -230,8 +230,13 @@ setup_influx()
 	
 	
 }
-
-
+setup_bbrplus()
+{
+	cd ${TMP_HOME}
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/hotmop/Linux-NetSpeed/master/tcp.sh"
+	chmod +x tcp.sh
+	./tcp.sh
+}
 
 ## -----------------------
 ## Show help message
@@ -272,6 +277,7 @@ if [ $# != 0 ]; then
 			radius_client)         init_radius_client;;
 			rclocal)         setup_rclocal;;
 			all)          setup_all;;
+			bbrplus)      setup_bbrplus;;
         esac
     done
 else

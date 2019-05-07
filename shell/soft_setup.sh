@@ -233,7 +233,7 @@ setup_influx()
 setup_bbrplus()
 {
 	cd ${TMP_HOME}
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/hotmop/Linux-NetSpeed/master/tcp.sh"
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/themass/Linux-NetSpeed/master/tcp.sh"
 	chmod +x tcp.sh
 	./tcp.sh
 }

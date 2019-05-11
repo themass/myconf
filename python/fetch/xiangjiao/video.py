@@ -74,7 +74,11 @@ class VideoParse(BaseParse):
     def getMp4(self,url):
         print url
         obj = httputil.getData(baseurl+url,{},header)
-        if obj==None or obj.get('data',{})==None or obj.get('data',{}).get('httpurl',None)==None:
-            print obj,obj.get("errmsg")
+        if obj==None or obj.get('data',{})==None:
+            print obj.get("errmsg","")
             return None
-        return obj['data']['httpurl']
+        if  obj.get('data',{}).get('httpurl',None)!=None:
+            return obj['data']['httpurl']
+        if  obj.get('data',{}).get('httpurl_preview',None)!=None:
+            return obj['data']['httpurl_preview']
+        return None

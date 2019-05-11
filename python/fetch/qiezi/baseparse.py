@@ -113,7 +113,7 @@ channels = '''
         ]
 }
 '''
-baseurl = "http://www.cxj88.app"
+baseurl = "http://www.qzuxgkbal.com"
 header = {'token':
           'bmFXcHBmemI0RzdJaVh5ZzlQOHNiZUh3L0FYa1pldzRoTmRScnByanN4blNqUGJPRUtPUmg2VTJRdmlBT0lBTm5FVUszajVXZkhVdFNhck1jK2VRSExYNGxUMnZadEppVXpqMkNQQkJlRncxSFIxQWVPSkhxRjdzREZOeXVjWGI=', "Referer": baseurl
           ,"User-Agent": "okhttp/3.10.0"

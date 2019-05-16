@@ -17,6 +17,7 @@ import btw168_vip
 import kedouwo_vip
 import ddd804_vip
 import kpd36_vip
+from fetch import ava99_vip, bt2n_vip, ni345_vip
 def pase1():
     fff64_vip.parseText()
     novel941_vip.parseText()
@@ -34,6 +35,9 @@ def pase2():
     
     se8_vip.startWork()
     se8_vip.parseText()
+    
+    bt2n_vip.parseText()
+    ni345_vip.parseText()
     
     ####mayi01_vip.parseText()
 if __name__ == '__main__':

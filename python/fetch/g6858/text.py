@@ -89,6 +89,9 @@ class TextChannelParse(BaseParse):
                         obj['fileDate'] = ''
                         name = ahref.get("title").replace("【完】", '').replace("【", '').replace("】", '')
                         obj['name'] = name
+                        print name
+                        if name.count("笑傲神雕")>0:
+                            continue
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl
                         obj['channel'] = channel
@@ -100,8 +103,7 @@ class TextChannelParse(BaseParse):
                         obj['sortType'] = sortType
                         objs.append(obj)
                     except Exception as e:   
-#                         print  common.format_exception(e)
-                        pass
+                        print  common.format_exception(e)
             return objs
         except Exception as e:
             print common.format_exception(e)
@@ -121,8 +123,7 @@ class TextChannelParse(BaseParse):
                 print '解析文件 ', url,'完成'
                 return 1
             except Exception as e:
-#                 print common.format_exception(e)
-                pass
+                print common.format_exception(e)
         return None
         
 #             print self.t_url, ' 解析完成'

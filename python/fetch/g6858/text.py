@@ -100,7 +100,8 @@ class TextChannelParse(BaseParse):
                         obj['sortType'] = sortType
                         objs.append(obj)
                     except Exception as e:   
-                        print  common.format_exception(e)
+#                         print  common.format_exception(e)
+                        pass
             return objs
         except Exception as e:
             print common.format_exception(e)
@@ -120,7 +121,8 @@ class TextChannelParse(BaseParse):
                 print '解析文件 ', url,'完成'
                 return 1
             except Exception as e:
-                print common.format_exception(e)
+#                 print common.format_exception(e)
+                pass
         return None
         
 #             print self.t_url, ' 解析完成'

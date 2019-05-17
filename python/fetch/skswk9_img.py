@@ -35,6 +35,6 @@ def parseText():
     textpo.run()
 if __name__ == '__main__':
 
-#     parseText()
-    parseImg()
+    parseText()
+#     parseImg()
 #     parseVideo()

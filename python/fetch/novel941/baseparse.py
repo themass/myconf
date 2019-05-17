@@ -7,11 +7,12 @@ import threading
 from common.envmod import *
 from common import db_ops
 from common import common
-import threading
+import threading,os
 from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
 baseurl = "http://941novel.com"
+baseurl2 = "http://58.84.54.38:8010/"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
@@ -51,6 +52,16 @@ class BaseParse(threading.Thread):
                     obj['url']=ahref.get('href')
                     objs.append(obj)
         return objs
+    def headerHtml(self,name):
+#         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
+        with open("%s/%s"%("novel941",name)) as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchUrlWithBase(self, url, aheader=header):
         count = 0
         while count < maxCount:

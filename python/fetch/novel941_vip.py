@@ -18,5 +18,8 @@ sys.setdefaultencoding('utf8')
 def parseText():
     textpo = text.TextChannelParse()
     textpo.run()
+def parseText2():
+    textpo = text2.TextChannelParse()
+    textpo.run()
 if __name__ == '__main__':
-    parseText()
+    parseText2()

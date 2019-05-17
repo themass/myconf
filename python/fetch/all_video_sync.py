@@ -108,7 +108,7 @@ def pase6():
     sp1769_vip.parseVideo()
      
 def pase7():
-    cili_vip.parseVideo() 
+    ##cili_vip.parseVideo() 
     newlynet_vip.parseVideo() 
     ###sifangpian_vip.parseVideo()
     

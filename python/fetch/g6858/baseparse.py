@@ -12,7 +12,7 @@ from BeautifulSoup import BeautifulSoup
 import re
 import os
 nameChannel = {"乱伦":"乱伦小说","都市":"都市激情","武侠":"武侠古典","人妻":"人妻交换","另类":"另类小说","家庭":"家庭乱伦","性爱":"性爱技巧","情色":"情色笑话","校园":"校园春色","性爱":"性爱技巧"}
-baseurl = "https://www.540zh.com"
+baseurl = "https://www.116tb.com"
 cdn={"CN1":"m1-cdn.38cdn.com","CN2":"m2-cdn.38cdn.com","CN3":"m3-cdn.38cdn.com","CN4":"m4-cdn.38cdn.com"}
 header = {'Cookie':'__cfduid=d032a24f0d9331e50ece28c6a7daca8281545491555; Hm_lvt_0fc28040c0004ce0a9425155095ea6c8=1545491451; _ga=GA1.2.495163350.1545491452; _gid=GA1.2.1443008443.1545491452; HstCfa3699098=1545491461600; HstCmu3699098=1545491461600; HstCnv3699098=1; HstCns3699098=1; HstCla3699098=1545492378220; HstPn3699098=14; HstPt3699098=14; Hm_lpvt_0fc28040c0004ce0a9425155095ea6c8=1545492378', "Referer": baseurl,
                     "user-agent":" Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"}

@@ -109,7 +109,7 @@ def pase6():
      
 def pase7():
     ##cili_vip.parseVideo() 
-    newlynet_vip.parseVideo() 
+    ##newlynet_vip.parseVideo() 
     ###sifangpian_vip.parseVideo()
     
     tianjiyy123_vip.parseVideo()

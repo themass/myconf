@@ -38,7 +38,8 @@ def pase2():
     
     bt2n_vip.parseText()
     ni345_vip.parseText()
-    
+def pase3():
+    novel941_vip.parseText2()
     ####mayi01_vip.parseText()
 if __name__ == '__main__':
     val = argsMap.get("-p",0)

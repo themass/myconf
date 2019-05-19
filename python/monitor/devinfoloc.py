@@ -1,11 +1,8 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
-from baseparse import *
 from urlparse import urlparse
 from common import common
-from urllib import unquote
 import time
-from fetch.profile import *
 from common.envmod import *
 from common import db_ops
 from common import httputil

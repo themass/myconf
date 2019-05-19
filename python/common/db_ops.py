@@ -191,5 +191,6 @@ class DbOps(object):
         return self.conn.fetchAll()
     def updateDevinfoLoc(self,objs):
         for item in objs:
-            return self.conn.execute(
-            "update   devuseinfo set loc='%s' where devId='%s'" % ( item.get("loc"), item.get("devId")))
+            if item.get("loc")!=None:
+                return self.conn.execute(
+                "update   devuseinfo set loc='%s' where devId='%s'" % ( item.get("loc"), item.get("devId")))

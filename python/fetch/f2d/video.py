@@ -61,8 +61,8 @@ class VideoParse(BaseParse):
         para = {}
         url = baseurl+url+str(i)
         print url
-        obj = httputil.getData(url,para,header)
-        for item in obj.get('data',{}).get('info',[]):
+        objs = httputil.getData(url,para,header)
+        for item in objs.get('data',{}).get('info',[]):
             mp4Url  = item.get("href")
             if mp4Url==None:
                 continue
@@ -85,5 +85,5 @@ class VideoParse(BaseParse):
         print 'f8dy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-        return len(obj.get('data',{}).get('info',[]))
+        return len(objs.get('data',{}).get('info',[]))
    

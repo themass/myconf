@@ -185,3 +185,11 @@ class DbOps(object):
         for obj in objs:
             self.conn.execute(
                 "update iwanna set ip_local = '%s' where id=%s" % (obj['local'], obj['id']))
+    def selectDevInfoIpNull(self):
+        self.conn.execute(
+            "select devId,ip from devuseinfo where ip is not null and loc is null limit 300")
+        return self.conn.fetchAll()
+    def updateDevinfoLoc(self,objs):
+        for item in objs:
+            return self.conn.execute(
+            "update   devuseinfo set loc='%s' where devId='%s'" % ( item.get("loc"), item.get("devId")))

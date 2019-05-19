@@ -14,8 +14,9 @@ if __name__ == '__main__':
     objs = ops.selectDevInfoIpNull()
     for item in objs:
         ret =httputil.getData(IP_HOST+item.get("ip"), {}, {}) 
-        print ret.get("data",{}).get("country"),item.get("ip")
-        item['loc']=ret.get("data",{}).get("country")
+        print ret.get("data",{}).get("country",None),item.get("ip")
+        if ret.get("data",{}).get("country",None)!=None:
+            item['loc']=ret.get("data",{}).get("country")
     ops.updateDevinfoLoc(objs)
     dbVPN.commit()
     dbVPN.close()

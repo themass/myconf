@@ -48,7 +48,7 @@ import ni345_vip
 import fuli750_vip
 from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
      jav101_vip,  youjiady_vip,\
-    zooredtube_vip
+    zooredtube_vip, qiezi_vip, f2d_vip, xiangj_vip, siguo_vip
 
 def pase1():
 #     ava99_vip.parseVideo()
@@ -116,6 +116,10 @@ def pase7():
     tlbfao_vip.parseVideo()
     xiaiyy_vip.parseVideo()
     nvnvzx_vip.parseVideo2()
+    qiezi_vip.parseVideo()
+    f2d_vip.parseVideo()
+    xiangj_vip.parseVideo()
+    siguo_vip.parseVideo()
 #     zooredtube_vip.parseVideo()
 # 本机才能执行
 def pase8():

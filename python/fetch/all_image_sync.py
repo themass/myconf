@@ -52,6 +52,7 @@ if __name__ == '__main__':
     se8_vip.parseImg()
     
     tt192_vip.parseImg()
+    se8_vip.parseSound()
     
 
 

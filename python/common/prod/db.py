@@ -2,7 +2,7 @@
 # coding=utf-8
 
 from common.base.data_base import DataBase
-db_host = '127.0.0.1'
+db_host = '47.88.7.156'
 db_port = 6666
 db_user = 'vpn@server'
 db_passwd = 'Themass@5296'

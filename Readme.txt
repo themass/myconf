@@ -7,7 +7,7 @@ ap
 
 mkdir -p /home/web/install
 cd /home/web/install 
-wget https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2
+wget https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2 --no-check-certificate
 tar -xvjpf gmp-6.0.0a.tar.bz2
 cd gmp-6.0.0
 ./configure 
@@ -43,7 +43,7 @@ source ~/.profile
 
 
 cd /home/web/install
-wget https://bootstrap.pypa.io/get-pip.py
+wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate
 python get-pip.py
 pip install -U pip setuptools
 cd /home/web/local/python2.7/bin
@@ -60,7 +60,7 @@ pip install selenium
 #pip install MySQL-python
 # MySQLdb
 cd /home/web/install
-wget https://pypi.python.org/packages/a5/e9/51b544da85a36a68debe7a7091f068d802fc515a3a202652828c73453cad/MySQL-python-1.2.5.zip#md5=654f75b302db6ed8dc5a898c625e030c
+wget https://pypi.python.org/packages/a5/e9/51b544da85a36a68debe7a7091f068d802fc515a3a202652828c73453cad/MySQL-python-1.2.5.zip#md5=654f75b302db6ed8dc5a898c625e030c  --no-check-certificate
 unzip MySQL-python-1.2.5.zip
 cd MySQL-python-1.2.5
 python setup.py  install

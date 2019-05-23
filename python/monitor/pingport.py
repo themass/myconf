@@ -50,7 +50,7 @@ if __name__ == '__main__':
     for item in hosts:
         distinMap[item['gateway']]=item
     hList =  distinMap.values()
-    hList.sort(cmp=None, key="com", reverse=False)
+    hList.sort(cmp=None, key=lambda e:e.__getitem__('com'), reverse=False)
     for item in hList:
         #         if item['enable'] == 0:
         #             print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])

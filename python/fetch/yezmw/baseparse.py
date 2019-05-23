@@ -16,6 +16,7 @@ header = {'Cookie':"UM_distinctid=1657bef2d89118-0ca65ae184eaf5-47e1039-1fa400-1
                 'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":"http://yezmw.com/"}
 maxCount = 3
 regVideo = re.compile(r'{ type: "application/x-mpegurl", src:"(.*)" }')
+videoApi = re.compile(r'http(.*?)\.m3u8')
 
 
 class BaseParse(threading.Thread):

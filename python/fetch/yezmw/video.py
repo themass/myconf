@@ -3,6 +3,7 @@
 from baseparse import *
 from urlparse import urlparse
 from common import common
+from urllib import unquote
 from fetch.profile import *
 
 class VideoParse(BaseParse):
@@ -89,10 +90,15 @@ class VideoParse(BaseParse):
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
         try:
             soup = self.fetchUrl(url, header)
-            dz = soup.first("div", {"class": "dz"})
-            if dz == None:
-                return None
-            return dz.first('button').get("value")
+            dz = soup.findAll("script")
+            for item in dz:
+                texts = unquote(item.text).split(";")
+                for text in texts: 
+                    match = videoApi.search(text)
+                    if match!=None:
+                        str= match.group(1)
+                        return "%s%s%s"%("http",str,".m3u8")
+            return None
         except Exception as e:
             common.format_exception(e)
             return None

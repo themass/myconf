@@ -46,11 +46,13 @@ if __name__ == '__main__':
     #             print '---test ip--%s', item['gateway']
     #             os.popen(cmd)
     errorList = []
+    distinMap = {}
     for item in hosts:
+        distinMap[item['gateway']]=item
+    for item in distinMap.values():
         #         if item['enable'] == 0:
         #             print '公司：【%-15s】----国家：【%s】------ip: 【%-15s】 --------不可用' % (item['com'], myAlign(item['cname'], 7), item['gateway'])
         #             continue
-
         cmd = 'ping  -c2 -w2 %s' % (item['gateway'])
         lines = os.popen(cmd).readlines()
         num = parse(lines)

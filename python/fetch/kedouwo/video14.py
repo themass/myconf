@@ -48,7 +48,7 @@ class VideoUserParse(BaseParse):
         soup = self.fetchUrl(baseurl14+url,header14)
         div = soup.first("main",{"class":"col-md-9 video-content"})
         if div!=None:
-            lis = div.findAll("li",{"class":"col-sm-12 col-md-6 col-lg-4 video-col"})
+            lis = div.findAll("div",{"class":"col-sm-12 col-md-6 col-lg-4 video-col"})
             for li in lis:
                 ahref = li.first("a")
                 obj = {}

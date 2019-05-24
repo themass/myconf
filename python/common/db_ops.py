@@ -173,7 +173,7 @@ class DbOps(object):
 
     def getAllHost(self):
         self.conn.execute(
-            "select * from host_v2 order by com asc,cname desc")
+            "select * from host_v2 where enable=1 order by com asc,cname desc")
         return self.conn.fetchAll()
 
     def getAllwannaIplocalnull(self):

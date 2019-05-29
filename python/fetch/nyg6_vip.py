@@ -31,5 +31,5 @@ def parseImg2():
 if __name__ == '__main__':
     parseVideo()
     parseVideo2()
-#     parseImg()
-#     parseImg2()
+    parseImg()
+    parseImg2()

@@ -86,12 +86,15 @@ def pase4():
     ttyyy_vip.parseVideo()
     nyg6_vip.parseVideo()
     nyg6_vip.parseVideo2()
+    tianjiyy123_vip.parseVideo()
+    tlbfao_vip.parseVideo()
     
 def pase5():
     
     #meiyke_vip.parseVideo()
     ##nfss_vip.parseVideo2()
     nfss_vip.parseVideo4()
+    nvnvzx_vip.parseVideo2()
     ###nfss_vip.parseVideo3()
     sp878_vip.parseVideo()
     g6858_vip.parseVideo()
@@ -102,24 +105,23 @@ def pase6():
     ###ppyy55_vip.parseUserVideo()
     ##qh_vip.parseVideo2()
     s58589_vip.parseVideo2()
-    se8_vip.parseVideo() 
     sexx77_vip.parseVideo()  
     skswk9_img.parseVideo()
-    sp1769_vip.parseVideo()
      
 def pase7():
     ##cili_vip.parseVideo() 
     ##newlynet_vip.parseVideo() 
     ###sifangpian_vip.parseVideo()
     
-    tianjiyy123_vip.parseVideo()
-    tlbfao_vip.parseVideo()
     ###xiaiyy_vip.parseVideo()
-    nvnvzx_vip.parseVideo2()
+   
     qiezi_vip.parseVideo()
     f2d_vip.parseVideo()
     xiangj_vip.parseVideo()
     siguo_vip.parseVideo()
+    se8_vip.parseVideo() 
+    sp1769_vip.parseVideo()
+    
 #     zooredtube_vip.parseVideo()
 # 本机才能执行
 def pase8():

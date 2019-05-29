@@ -5,7 +5,7 @@ from urlparse import urlparse
 from common import common
 from fetch.profile import *
 from urllib import unquote
-import sys
+import sys,time
 # reload(sys)
 # 
 # sys.setdefaultencoding('utf8')
@@ -79,6 +79,7 @@ class VideoParse(BaseParse):
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
                     dataList.append(obj)
+                    time.sleep(1)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

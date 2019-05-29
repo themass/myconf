@@ -76,11 +76,7 @@ class ImgParse(BaseParse):
 
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "list"})
-        if div == None:
-            print '没有数据', url
-            return []
-        datalist = div.findAll("li",{"class":"li flex-row"})
+        datalist = soup.findAll("div",{"class":"grid_item"})
         objs = []
         sortType = dateutil.y_m_d()
         for item in datalist:
@@ -88,7 +84,7 @@ class ImgParse(BaseParse):
             if ahref!=None:
                 try:
                     obj = {}
-                    name = item.first("h5").text
+                    name = item.first("p").text
                     obj['url'] = ahref.get('href')
                     obj['baseUrl'] = baseurl
                     obj['channel'] = channel
@@ -112,7 +108,7 @@ class ImgParse(BaseParse):
     def fetchImgs(self, url):
         pics = []
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"class": "content"})
+        data = soup.first("div", {"class": "textarea"})
         if data != None:
             try:
                 imgs = data.findAll('img')

@@ -76,11 +76,7 @@ class ImgParse(BaseParse):
 
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "list"})
-        if div == None:
-            print '没有数据', url
-            return []
-        datalist = div.findAll("p",{"class":"wapper"})
+        datalist = soup.findAll("div",{"class":"grid_item"})
         objs = []
         sortType = dateutil.y_m_d()
         for item in datalist:
@@ -113,7 +109,7 @@ class ImgParse(BaseParse):
         datasrc = {}
         pics = []
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"id": "data"})
+        data = soup.first("div", {"class": "set_column"})
         if data != None:
             try:
                 imgs = data.findAll('img')

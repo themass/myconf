@@ -115,7 +115,7 @@ def pase7():
     
     ###xiaiyy_vip.parseVideo()
    
-    qiezi_vip.parseVideo()
+    ##qiezi_vip.parseVideo()
     f2d_vip.parseVideo()
     xiangj_vip.parseVideo()
     siguo_vip.parseVideo()

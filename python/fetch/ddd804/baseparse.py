@@ -74,7 +74,7 @@ class BaseParse(threading.Thread):
                 if active.count(name) > 0:
                     alist = menu.findAll('a')
                     for item in alist:
-                        if item.get('href')!="/":
+                        if item.get('href')!="/" and item.get('href')!="#":
                             obj={}
                             obj['name']=item.text
                             obj['url']=item.get('href')

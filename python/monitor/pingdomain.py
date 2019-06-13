@@ -139,7 +139,6 @@ if __name__ == '__main__':
     for item in domainList:
         cmd = 'ping  -c 2 -w 2 %s' % (item)
         lines = os.popen(cmd).readlines()
-        print lines
         num = parse(lines)
         if num == 10000:
             print 'error ',item

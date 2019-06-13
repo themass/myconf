@@ -61,7 +61,7 @@ def parsetext65aeae():
 def parsAll():
     #parsejiqingyazhouImg()
     ######parse39vqImg()
-    parse3wujiImg()
+    ######parse3wujiImg()
     parse58589sImg()
     parse52cjgImg()
     parsejjj382Img()

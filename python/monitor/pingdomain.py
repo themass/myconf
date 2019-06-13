@@ -141,5 +141,6 @@ if __name__ == '__main__':
         lines = os.popen(cmd).readlines()
         num = parse(lines)
         if num == 10000:
-            print 'error ',item
+            errorList.append(item)
+        print errorList
     sys.exit()

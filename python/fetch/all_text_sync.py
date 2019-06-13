@@ -19,12 +19,12 @@ import ddd804_vip
 import kpd36_vip
 from fetch import ava99_vip, bt2n_vip, ni345_vip
 def pase1():
-    fff64_vip.parseText()
-    novel941_vip.parseText()
-    ##x2246_vip.parseText()
-    kedouwo_vip.parseText12()
-    jjr128_vip.parseText()
-    g6858_vip.parseText()
+#     fff64_vip.parseText()
+#     novel941_vip.parseText()
+#     ##x2246_vip.parseText()
+#     kedouwo_vip.parseText12()
+#     jjr128_vip.parseText()
+#     g6858_vip.parseText()
     ddd804_vip.parsetextddd804()
     ddd804_vip.parsetext65aeae()
     kpd36_vip.parseText()

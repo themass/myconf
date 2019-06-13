@@ -105,6 +105,7 @@ class ImgParse(BaseParse):
             return objs
         except Exception as e:
             print common.format_exception(e)
+            return objs
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)

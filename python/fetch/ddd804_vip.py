@@ -72,7 +72,8 @@ def parsAll():
     parseimgclickme()
     parseimggebi0()
 if __name__ == '__main__':
-    parse65aeaeImg()
+    parseddd804Img()
+    parsetextddd804()
 #     parse39vqImg()
 # #      
 #     parsedddImg()

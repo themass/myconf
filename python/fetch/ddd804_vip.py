@@ -65,14 +65,14 @@ def parsAll():
     parse58589sImg()
     parse52cjgImg()
     parsejjj382Img()
-####     parse65aeaeImg()
+    parse65aeaeImg()
     parseasy1000Img()
     parseimgtlula44()
     parseddd804Img()
     parseimgclickme()
     parseimggebi0()
 if __name__ == '__main__':
-    parseimgtlula44()
+    parse65aeaeImg()
 #     parse39vqImg()
 # #      
 #     parsedddImg()

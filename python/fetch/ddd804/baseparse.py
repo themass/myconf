@@ -67,10 +67,10 @@ class BaseParse(threading.Thread):
     def fetchddd804Head(self, baseurl,name):
         try:
             soup = self.fetchUrl(baseurl,"/")
-            menus = soup.findAll("div", {"class": "menu"})
+            menus = soup.findAll("dl")
             channels=[]
             for menu in menus:
-                active = menu.first("a", {'class':"a2"}).text
+                active = menu.first("dt").text
                 if active.count(name) > 0:
                     alist = menu.findAll('a')
                     for item in alist:

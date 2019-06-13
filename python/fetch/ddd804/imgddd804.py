@@ -87,6 +87,7 @@ class ImgParse(BaseParse):
             print '没有数据', url
             return []
         datalist = div.findAll("li")
+        print len(datalist)
         objs = []
         sortType = dateutil.y_m_d()
         for item in datalist:

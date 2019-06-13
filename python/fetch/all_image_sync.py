@@ -28,10 +28,10 @@ from fetch import bt2n_vip, g6858_vip
 
 if __name__ == '__main__':
     
-    ddd804_vip.parsAll()
-      
-    ava99_vip.parseImg()
-    bt2n_vip.pareImg()
+#     ddd804_vip.parsAll()
+#       
+#     ava99_vip.parseImg()
+#     bt2n_vip.pareImg()
     ###btw168_vip.parseImg()
     skswk9_img.parseImg()
     g6858_vip.parseImg()

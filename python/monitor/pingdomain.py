@@ -142,5 +142,5 @@ if __name__ == '__main__':
         num = parse(lines)
         if num == 10000:
             errorList.append(item)
-        print errorList
+    print errorList
     sys.exit()

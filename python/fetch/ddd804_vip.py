@@ -59,8 +59,8 @@ def parsetext65aeae():
     textpare = text65aeae.TextChannelParse()
     textpare.run()
 def parsAll():
-    parsejiqingyazhouImg()
-    parse39vqImg()
+    #parsejiqingyazhouImg()
+    ######parse39vqImg()
     parse3wujiImg()
     parse58589sImg()
     parse52cjgImg()

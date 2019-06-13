@@ -72,7 +72,7 @@ class ImgParse(BaseParse):
     def fetchDataHead(self, url):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "piclist"})
+            div = soup.first("div", {"id": "colList"})
             if div != None:
                 return div.findAll('li')
 
@@ -82,11 +82,11 @@ class ImgParse(BaseParse):
 
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(baseurl1,url)
-        div = soup.first("div", {"class": "typelist"})
+        div = soup.first("div", {"id": "colList"})
         if div == None:
             print '没有数据', url
             return []
-        datalist = div.findAll("ul")
+        datalist = div.findAll("li")
         objs = []
         sortType = dateutil.y_m_d()
         for item in datalist:
@@ -94,13 +94,13 @@ class ImgParse(BaseParse):
             if ahref!=None:
                 try:
                     obj = {}
-                    name = ahref.text
+                    name = ahref.first("h2").text
                     obj['name'] = name
                     obj['url'] = ahref.get('href')
                     obj['baseurl'] = baseurl1
                     obj['channel'] = channel
                     obj['updateTime'] = datetime.datetime.now()
-                    obj['fileDate'] = item.first('font').text
+                    obj['fileDate'] = ahref.first('font').text
                     pics = self.fetchImgs(obj['url'])
                     if len(pics) == 0:
                         print '没有 图片文件--', obj['url'], '---', url
@@ -119,7 +119,7 @@ class ImgParse(BaseParse):
     def fetchImgs(self, url):
         pics = []
         soup = self.fetchUrl(baseurl1,url)
-        data = soup.first("div", {"id": "view1"})
+        data = soup.first("div", {"class": "main-content"})
         if data != None:
             try:
                 imgs = data.findAll('img')

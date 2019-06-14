@@ -16,6 +16,7 @@ import btw168_vip
 import kedouwo_vip
 import ddd804_vip
 import kpd36_vip
+import bt2n_vip
 from fetch import ava99_vip, bt2n_vip, ni345_vip
 def pase1():
 #     fff64_vip.parseText()
@@ -24,6 +25,7 @@ def pase1():
 #     kedouwo_vip.parseText12()
 #     jjr128_vip.parseText()
 #     g6858_vip.parseText()
+    bt2n_vip.parseText()
     ava99_vip.parseText()
     ddd804_vip.parsetextddd804()
     ddd804_vip.parsetext65aeae()

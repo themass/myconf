@@ -90,7 +90,6 @@ class VideoParse(BaseParse):
             scripts = soup.findAll('script')
             for script in scripts:
                 if script.text.count("base64decode")>0:
-                    print script.text
                     match = regVideoCode.search(script.text)
                     if match!=None:
                         text = common.base64Decode(match.group(1)) 

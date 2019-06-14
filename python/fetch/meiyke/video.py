@@ -86,7 +86,7 @@ class VideoParse(BaseParse):
       
         try:
             soup = self.fetchUrl(url)
-            iframe = soup.first("video-player")
+            iframe = soup.first("div",{"class":"video-player"})
             if iframe!=None:
                 aherf = iframe.first("script").get("src")
                 return aherf.replace("action=loadPlayer&","")

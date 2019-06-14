@@ -10,7 +10,6 @@ import sexx77_vip
 import x2246_vip
 import jjr128_vip
 import g6858_vip
-import aaw51_vip
 import seshu_vip
 import mayi01_vip
 import btw168_vip
@@ -25,11 +24,11 @@ def pase1():
 #     kedouwo_vip.parseText12()
 #     jjr128_vip.parseText()
 #     g6858_vip.parseText()
+    ava99_vip.parseText()
     ddd804_vip.parsetextddd804()
     ddd804_vip.parsetext65aeae()
     kpd36_vip.parseText()
 def pase2():
-    #aaw51_vip.parseText()
     ###seshu_vip.parseText()
     ##btw168_vip.parseText()
     

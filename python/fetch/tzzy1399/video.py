@@ -92,7 +92,7 @@ class VideoParse(BaseParse):
                     match = regVideo.search(ahref.text)
                     if match!=None:
                         videoUrl =match.group(1)
-                        obj['mp4']= "%s%s%s"%("http",videoUrl,'m3u8')
+                        obj['mp4']= "%s%s%s"%("http:",videoUrl,'m3u8')
                         return obj
             print '没找到mp4'
             return None

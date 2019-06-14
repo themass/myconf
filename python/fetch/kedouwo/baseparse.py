@@ -11,17 +11,13 @@ import threading,ssl
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "http://www.papa345.com"
 base_videourl = "?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=post_date&from=%s&_=1551981239756"
-baseurl2= "https://www.v88hd.space/"
 baseurl3= "https://www.asy3333.com"
 videoId3 = re.compile("/?m=vod-detail-id-(.*?).html")
 
-baseurl4 = "http://www.7mav4.club/"
-baseurl5 = "http://www.hnav01.xyz/"
-baseurl6 = "http://www.91av04.club/"
-baseurl7 = "http://115klav.icu/"
-baseurl8 = "https://7648x.com"
+baseurl4 = "http://www.7mav25.club/"
+baseurl7 = "http://117klav.icu/"
+baseurl8 = "https://bx88222.com"
 baseurl9 = "https://www.91uu9.com"
 baseurl10 = "https://www.jjj382.com"
 baseurl11 = "https://www.kpl023.com"

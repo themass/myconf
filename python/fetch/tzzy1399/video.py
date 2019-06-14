@@ -34,7 +34,7 @@ class VideoParse(BaseParse):
             ahrefs = ul.findAll('a')
             for ahref in ahrefs:
                 obj={}
-                if ahref.get('href')=="/" or ahref.text=='在线视频':
+                if ahref.get('href')=="/" or ahref.text=='在线视频' or ahref.text=='首页':
                     continue
                 obj['name']=ahref.text
                 obj['url']=ahref.get('href')

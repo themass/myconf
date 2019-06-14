@@ -18,8 +18,8 @@ header = {'Cookie':'PHPSESSID=p8s1tlsvnd590i800jajag0m51; __51cke__=; __tins__18
 maxCount = 3
 regVideo = re.compile(r'getmovurl\.html", {id:(.*?),td:(.*?)},')
 videoUrl = "https://www.52cjg.com/index/getmovurl.html"
-videoHeader= {"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8","Cookie":"PHPSESSID=6l8j7fn0tf874arecfkis20e82"
-              ,"Referer":"https://www.52cjg.com/","X-Requested-With":"XMLHttpRequest"}
+videoHeader= {"Cookie":"PHPSESSID=6l8j7fn0tf874arecfkis20e82"
+              ,"Referer":"https://www.52cjg.com/"}
 class BaseParse(threading.Thread):
 
     def __init__(self):
@@ -29,8 +29,7 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl + url, headers=videoHeader)
-                req.encoding = 'utf-8'
+                req = urllib2.Request(baseurl + url)
                 response = urllib2.urlopen(req, timeout=3000)
                 content = response.read().decode('utf8', errors='replace').replace("<![endif]-->","")
                 soup = BeautifulSoup(content)

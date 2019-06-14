@@ -72,7 +72,8 @@ def pase4():
     tianjiyy123_vip.parseVideo()
     tlbfao_vip.parseVideo()
     meiyke_vip.parseVideo()
-    
+    nfss_vip.parseVideo2()
+    nfss_vip.parseVideo4()
 def pase5():
     kedouwo_vip.parseVideoAll()
     g6858_vip.parseVideo()

@@ -86,10 +86,10 @@ class VideoParse(BaseParse):
       
         try:
             soup = self.fetchUrl(url)
-            iframe = soup.first("iframe")
+            iframe = soup.first("video-player")
             if iframe!=None:
-                aherf = iframe.get("src")
-                return aherf
+                aherf = iframe.first("script").get("src")
+                return aherf.replace("action=loadPlayer&","")
 #                 shell = "%s %s"%("wget ",aherf)
 #                 ret = os.popen(shell).read()
 #                 print ret

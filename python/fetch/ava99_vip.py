@@ -16,8 +16,8 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 def parseText():
-    text = text.TextChannelParse()
-    text.run()
+    textop = text.TextChannelParse()
+    textop.run()
 def parseImg():
     imgop = img.ImgParse()
     imgop.run()

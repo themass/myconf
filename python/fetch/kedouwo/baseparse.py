@@ -18,11 +18,8 @@ videoId3 = re.compile("/?m=vod-detail-id-(.*?).html")
 baseurl4 = "http://www.7mav25.club/"
 baseurl7 = "http://117klav.icu/"
 baseurl8 = "https://bx88222.com"
-baseurl9 = "https://www.91uu9.com"
 baseurl10 = "https://www.jjj382.com"
-baseurl11 = "https://www.kpl023.com"
 baseurl12 = "http://www.tlula44.com"
-baseurl13 = "http://www.caca043.com"
 baseurl14 = "http://gebi0.com"
 baseurl15 = "https://www.qzi2.com"
 header = {'User-Agent':

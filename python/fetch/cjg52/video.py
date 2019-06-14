@@ -6,6 +6,9 @@ from common import common, httputil
 from urllib import unquote
 import time
 from fetch.profile import *
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 class VideoParse(BaseParse):
 
     def __init__(self):

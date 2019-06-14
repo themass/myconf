@@ -46,40 +46,38 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "box-video-list"})
-        if div!=None:
-            lis = div.findAll("li",{"class":"col-md-2 col-sm-3 col-xs-4"})
-            for li in lis:
-                ahref = li.first("a")
-                #name,pic,url,userId,rate,updateTime,path
-                obj = {}
-                mp4Url = self.parseDomVideo(ahref.get("href"))
-                if mp4Url == None:
-                    print '没有mp4 文件:', ahref.get("href")
-                    continue
-                obj['url'] = mp4Url
+        lis = soup.findAll("li",{"class":"col-md-2 col-sm-3 col-xs-4"})
+        for li in lis:
+            ahref = li.first("a")
+            #name,pic,url,userId,rate,updateTime,path
+            obj = {}
+            mp4Url = self.parseDomVideo(ahref.get("href"))
+            if mp4Url == None:
+                print '没有mp4 文件:', ahref.get("href")
+                continue
+            obj['url'] = mp4Url
 #                 img = ahref.first("img")
 #                 if img.get("src").count("http")==0:
 #                     obj['pic'] = img.get("src")
 #                 else:
 #                     obj['pic'] = img.get("src")
-                obj['pic'] = ahref.get("data-original")
-                
-                obj['name'] = ahref.get('title').replace("'","")
-    
-                videourl = urlparse(obj['url'])
-                obj['path'] = "326ff"+videourl.path
-                obj['rate'] = 1.2
-                obj['updateTime'] = datetime.datetime.now()
-                obj['userId'] = userId
-                obj['baseUrl'] = baseurl
-                obj['showType'] = 3
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                    obj['videoType'] = "webview"
-                else:
-                    obj['videoType'] = "normal"
-                print mp4Url,obj['name'],obj['pic']
-                dataList.append(obj)
+            obj['pic'] = ahref.get("data-original")
+            
+            obj['name'] = ahref.get('title').replace("'","")
+
+            videourl = urlparse(obj['url'])
+            obj['path'] = "326ff"+videourl.path
+            obj['rate'] = 1.2
+            obj['updateTime'] = datetime.datetime.now()
+            obj['userId'] = userId
+            obj['baseUrl'] = baseurl
+            obj['showType'] = 3
+            if mp4Url.count(".m3u8")==0 and mp4Url.count(".mp4")==0:
+                obj['videoType'] = "webview"
+            else:
+                obj['videoType'] = "normal"
+            print mp4Url,obj['name'],obj['pic']
+            dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -101,27 +99,10 @@ class VideoUserParse(BaseParse):
                     for script in scripts:
                         text = unquote(str(script.text)).replace(' ', '')
                         
-                        match = iframeVideo.search(text)
+                        match = iframeVideo2.search(text)
                         if match!=None:
-                            iframeurl = match.group(1).replace("'","").replace("+","").replace(" ","")+".htm"
-                            soup = self.fetchUrl(iframeurl)
-                            scripts = soup.findAll("script")
-                            for script in scripts:
-                                text = unquote(str(script.text)).replace(' ', '')
-                                match = playVideo.search(text)
-                                if match!=None:
-                                    base = urlMap.get(match.group(1))
-                                    if base ==None:
-                                        print 'urlMap 没有找到base',match.group(1),match.group(2)
-                                        return None
-                                    return "%s%s%s"%(base,match.group(2),'.m3u8')
-                        match = playVideo.search(text)
-                        if match!=None:
-                            base = urlMap.get(match.group(1))
-                            if base ==None:
-                                print 'urlMap 没有找到base',match.group(1),match.group(2)
-                                return None
-                            return "%s%s%s"%(base,match.group(2),'.m3u8')
+                            iframeurl = match.group(1).replace("'","").replace("+","").replace(" ","")
+                            return "%s%s"%("https://xin.170du.com/",iframeurl)
             print '没找到mp4'
             return None
         except Exception as e:

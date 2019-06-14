@@ -26,7 +26,7 @@ class ImgParse(BaseParse):
             url = obj['url']
             for i in range(1, maxImgPage):
                 if i!=1:
-                    url= "%s%s%s%s"%(obj['url'],"index_",i,".html")
+                    url = "%s%s%s%s"%(obj['url'],"index-",i,".html")
                 print url
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()
@@ -64,53 +64,46 @@ class ImgParse(BaseParse):
                 print common.format_exception(e)
         return len(objs)
 
-    def fetchDataHead(self, url):
-        try:
-            soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "piclist"})
-            if div != None:
-                return div.findAll('li')
-
-        except Exception as e:
-            print common.format_exception(e)
-            return []
 
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(url)
-        datalist = soup.findAll("li", {"class": "col-md-3 col-sm-6 col-xs-12 clearfix news-box"})
+        ul = soup.first("ul", {"class": "list"})
         objs = []
-        sortType = dateutil.y_m_d()
-        for item in datalist:
-            ahref = item.first("a")
-            if ahref!=None:
-                try:
-                    obj = {}
-                    name = ahref.get("title")
-                    obj['name'] = name
-                    print name
-                    obj['url'] = ahref.get('href')
-                    obj['baseurl'] = baseurl
-                    obj['channel'] = channel
-                    obj['updateTime'] = datetime.datetime.now()
-                    obj['fileDate'] = ''
-                    pics = self.fetchImgs(obj['url'])
-                    if len(pics) == 0:
-                        print '没有 图片文件--', obj['url'], '---', url
-                        continue
-                    obj['picList'] = pics
-                    obj['showType'] = 3
-                    obj['pics'] = len(pics)
-                    obj['sortType'] = sortType
-                    print 'url=', obj['url'], '  图片数量=', len(pics)
-                    objs.append(obj)
-                except Exception as e:
-                    print common.format_exception(e)
+        if ul!=None:
+            datalist = ul.findAll("li")
+            sortType = dateutil.y_m_d()
+            for item in datalist:
+                ahref = item.first("a")
+                if ahref!=None:
+                    try:
+                        obj = {}
+                        
+                        obj['url'] = ahref.get('href')
+                        obj['baseurl'] = baseurl
+                        obj['channel'] = channel
+                        obj['updateTime'] = datetime.datetime.now()
+                        obj['fileDate'] = ahref.first("span").text
+                        name = ahref.text.replace(obj['fileDate'],"")
+                        obj['name'] = name
+                        print name
+                        pics = self.fetchImgs(obj['url'])
+                        if len(pics) == 0:
+                            print '没有 图片文件--', obj['url'], '---', url
+                            continue
+                        obj['picList'] = pics
+                        obj['showType'] = 3
+                        obj['pics'] = len(pics)
+                        obj['sortType'] = sortType
+                        print 'url=', obj['url'], '  图片数量=', len(pics)
+                        objs.append(obj)
+                    except Exception as e:
+                        print common.format_exception(e)
         return objs
 
     def fetchImgs(self, url):
         pics = []
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"class": "details-content text-justify"})
+        data = soup.first("div", {"class": "conttxt"})
         if data != None:
             try:
                 imgs = data.findAll('img')

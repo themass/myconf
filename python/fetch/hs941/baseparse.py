@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "https://www.739hs.com"
+baseurl = "https://www.286hs.com"
 header = {'cookie':'__cfduid=d19f5596c8aa154b12a69f83c1ddd78f11545236950; Hm_lvt_29b1db81c93c28a26e06c8b1d898ba60=1545236848; Hm_lpvt_29b1db81c93c28a26e06c8b1d898ba60=1545236848','User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3

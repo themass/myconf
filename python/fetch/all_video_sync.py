@@ -43,7 +43,7 @@ import s58589_vip
 import ni345_vip
 from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,  youjiady_vip,\
     zooredtube_vip, qiezi_vip, f2d_vip, xiangj_vip, siguo_vip, dy1716_vip,\
-    japanbeast_vip, jinzidu_vip, k9vidz_vip, kpd2_vip
+    japanbeast_vip, jinzidu_vip, k9vidz_vip, kpd2_vip, lele_vip
 
 def pase1():
     ava99_vip.parseVideo()
@@ -111,12 +111,9 @@ def pase7():
 # 本机才能执行
 def pase8():
     
-    #jav101_vip.parseVideo()
-    #####ly6080_vip.parseVideo()
-    #sy88_vip.parseVideo()
     kpd36_vip.parseVideo()
     teshiw_vip.parseVideo()
-    
+    lele_vip.parseVideo()
     dy1716_vip.parseVideo()
 
 def all():

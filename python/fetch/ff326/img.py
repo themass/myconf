@@ -102,7 +102,7 @@ class ImgParse(BaseParse):
             try:
                 imgs = data.findAll('img')
                 for img in imgs:
-                    pics.append(baseurl+img.get('src'))
+                    pics.append(img.get('src'))
             except Exception as e:
                 print common.format_exception(e)
         return pics

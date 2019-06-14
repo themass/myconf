@@ -68,7 +68,7 @@ def pase2():
 
     kedouwo_vip.parseVideoALl()
 def pase3():
-    ggfuil_vip.parseVideo()
+    #ggfuil_vip.parseVideo()
     kump4_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()
@@ -78,7 +78,7 @@ def pase4():
 # ##    iavbobo_vip.parseVideo()
 #@####     jjr128_vip.parseVideo()
     ###lusibi_vip.parseVideo()
-    mastv54_vip.parseVideo()
+    #mastv54_vip.parseVideo()
     tzzy1399_vip.parseVideo()
     urbanhenta_vip.parseVideo()
     youjiady_vip.parseVideo()

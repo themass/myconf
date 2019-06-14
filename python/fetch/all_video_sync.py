@@ -51,7 +51,7 @@ from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
     zooredtube_vip, qiezi_vip, f2d_vip, xiangj_vip, siguo_vip
 
 def pase1():
-#     ava99_vip.parseVideo()
+    ava99_vip.parseVideo()
     ax98_vip.parseVideo()
     ax98_vip.parseVideo2()
     bt2n_vip.parseVideo()
@@ -69,15 +69,14 @@ def pase2():
     kedouwo_vip.parseVideoALl()
 def pase3():
     ggfuil_vip.parseVideo()
-#     jinzidu_vip.parseVideo()
     kump4_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()
     fmcm_vip.parseVideo()
 ###     fuli750_vip.parseVideo()
 def pase4():
-#     iavbobo_vip.parseVideo()
-#     jjr128_vip.parseVideo()
+# ##    iavbobo_vip.parseVideo()
+#@####     jjr128_vip.parseVideo()
     ###lusibi_vip.parseVideo()
     mastv54_vip.parseVideo()
     tzzy1399_vip.parseVideo()
@@ -91,8 +90,8 @@ def pase4():
     
 def pase5():
     
-    #meiyke_vip.parseVideo()
-    ##nfss_vip.parseVideo2()
+    meiyke_vip.parseVideo()
+    nfss_vip.parseVideo2()
     nfss_vip.parseVideo4()
     nvnvzx_vip.parseVideo2()
     ###nfss_vip.parseVideo3()

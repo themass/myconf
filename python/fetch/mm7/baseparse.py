@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "https://7mm.tv"
+baseurl = "https://7mmtv.tv"
 header = {'Cookie':'__cfduid=d1d15c2d498733cada4b78811f4114c2e1548612262; PHPSESSID=c85vtnldn8mrmu7faiva3lkm50; UM_distinctid=168907bea2921b-0b38597540b9cc-47e1039-1fa400-168907bea2d352; HstCfa3415871=1548612268811; HstCmu3415871=1548612268811; c_ref_3415871=https%3A%2F%2Fwww.google.com%2F; splash_i=false; SC_unique_550883=0; SC_unique_553058=0; CNZZDATA1273421816=777958336-1548610618-%7C1548610618; SC_unique_563786=1; _ga=GA1.2.1331595716.1548614082; _gid=GA1.2.117258503.1548614082; CNZZDATA1273377176=2093245763-1548609279-https%253A%252F%252Fwww.google.com%252F%7C1548649570; HstCla3415871=1548654658528; HstPn3415871=1; HstPt3415871=29; HstCnv3415871=2; HstCns3415871=3','User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3

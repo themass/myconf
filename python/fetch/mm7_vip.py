@@ -20,7 +20,7 @@ def parseVideo(name):
     videop = video.VideoUserParse(name)
     videop.run()
 if __name__ == '__main__':
-#     parseVideo()
+    parseVideo("header.html")
     val = argsMap.get("-p",0)
     if int(val)==1:
         parseVideo("header.html")

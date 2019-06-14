@@ -20,7 +20,7 @@ import mayi01_vip
 import ava99_vip
 import skswk9_img
 import fff64_vip
-import btw168_vip
+import cjg52_vip
 import nyg6_vip
 import ni345_vip
 import kpd36_vip
@@ -32,8 +32,8 @@ if __name__ == '__main__':
 #       
     ava99_vip.parseImg()
     bt2n_vip.pareImg()
-    ###btw168_vip.parseImg()
-
+    cjg52_vip.pareImg()    
+        
     g6858_vip.parseImg()
     jjr128_vip.pareImg()
     kpd36_vip.pareImg()

@@ -46,8 +46,8 @@ def parseVideo15():
 def parseVideoAll():
 #     parseVideo3() 
 #     parseVideo4()
-    parseVideo7()
-    parseVideo8()
+#     parseVideo7()
+#     parseVideo8()
     parseVideo10()
     parseVideo12()
     parseVideo14()

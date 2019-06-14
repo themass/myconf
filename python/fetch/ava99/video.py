@@ -85,7 +85,9 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try: 
 #             soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
-            soup = self.fetchUrl("%s%s%s"%("/vod-play-id-",url.replace(".html","").replace("vod-detail-id-",""),"-src-1-num-1.html"), header)
+            url = "%s%s%s"%("/vod-play-id-",url.replace(".html","").replace("vod-detail-id-",""),"-src-1-num-1.html")
+            print url
+            soup = self.fetchUrl(url, header)
             scripts = soup.findAll('script')
             for script in scripts:
                 if script.get("src")!=None and script.text.count("base64decode")>0:

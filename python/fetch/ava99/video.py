@@ -85,7 +85,7 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try: 
 #             soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
-            url = "%s%s%s"%("/vod-play-id-",url.replace(".html","").replace("vod-detail-id-",""),"-src-1-num-1.html")
+            url = "%s%s%s"%("/vod-play-id-",url.replace(".html","").replace("/vod-detail-id-",""),"-src-1-num-1.html")
             soup = self.fetchUrl(url, header)
             scripts = soup.findAll('script')
             for script in scripts:

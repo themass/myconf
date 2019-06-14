@@ -22,9 +22,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
-                url = item['url']
-                if i!=1:
-                    url= "%s%s%s%s"%(item['url'],"index-",i,".html")
+                url= "/%s%s%s"%(item['url'].replace("1.html",""),i,".html")
                 print url
                 self.videoParse(item['channel'], url,item['baseurl'])
                 print '解析完成 ', item['baseurl'],item['channel'], ' ---', i, '页'
@@ -87,12 +85,11 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try: 
 #             soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
-            soup = self.fetchUrl("%s%s"%(url.replace(".html",""),"play.html"), header)
+            soup = self.fetchUrl("%s%s%s"%("/vod-play-id-",url.replace(".html","").replace("vod-detail-id-",""),"-src-1-num-1.html"), header)
             scripts = soup.findAll('script')
             for script in scripts:
-                if script.get("src")!=None and script.get("src").count("/upload/playdata")>0:
-                    text = unquote(self.fetchContentUrl(script.get("src"),header))
-                    match = regVideoCode.search(text)
+                if script.get("src")!=None and script.text.count("base64decode")>0:
+                    match = regVideoCode.search(script.text)
                     if match!=None:
                         text = common.base64Decode(match.group(1)) 
                         texts = unquote(text).split("$")

@@ -23,10 +23,10 @@ baseurl12 = "http://www.tlula44.com"
 baseurl14 = "http://gebi0.com"
 baseurl15 = "https://www.qzi2.com"
 header = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl3,
           'Cookie':"ASPro_3b178725fc4f483c1b3b540e9254fe69=rjglqktt458s6t79lurudu6u37; __51cke__=; __atuvc=5%7C34; __atuvs=5b7d8978e2390365001; __tins__19260318=%7B%22sid%22%3A%201534952887546%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279466%7D; __tins__18963094=%7B%22sid%22%3A%201534952887602%2C%20%22vd%22%3A%2012%2C%20%22expires%22%3A%201534956279478%7D; __51laig__=27"}
 header2 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl2,
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl3,
           'Cookie':"pxTK_2132_saltkey=CDKD7k08; pxTK_2132_lastvisit=1534866582; _ga=GA1.2.676201030.1534870386; _gid=GA1.2.1608862136.1534870386; Hm_lvt_a7f417c344bdcfebc00a1b4084b35417=1534870386,1534952916; pxTK_2132_sid=mFy09c; pxTK_2132_st_p=0%7C1534955323%7C896e471f57aa95da32adf071ecf4097b; pxTK_2132_viewid=tid_11237; pxTK_2132_st_t=0%7C1534955633%7C29fb8f0eb614b2081f3c458d979f7266; pxTK_2132_forum_lastvisit=D_45_1534955312D_38_1534955633; pxTK_2132_visitedfid=38D45; Hm_lpvt_a7f417c344bdcfebc00a1b4084b35417=1534955838; _gat_gtag_UA_118038554_1=1; pxTK_2132_lastact=1534955633%09home.php%09misc; pxTK_2132_sendmail=1"}
 header3 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl3,
@@ -39,7 +39,7 @@ header5 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
           'Cookie':"UM_distinctid=1655d8a945d4b3-04cf9c8cfb02c4-47e1039-1fa400-1655d8a945e132; PHPSESSID=tefc4f836ibs5s166aht5lvtp3; __51cke__=; CNZZDATA1273155436=2112313512-1534871260-null%7C1535037844; ggy_second=true; __tins__3892343=%7B%22sid%22%3A%201535038199894%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201535039999894%7D; __tins__19380135=%7B%22sid%22%3A%201535038188896%2C%20%22vd%22%3A%203%2C%20%22expires%22%3A%201535040034907%7D; __51laig__=4"}
 header6 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl6,
+          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl7,
           'Cookie':"__cfduid=dc952231b7833331e12f0b7077fcb6a421554317883; __51cke__=; __tins__19308590=%7B%22sid%22%3A%201554318062876%2C%20%22vd%22%3A%207%2C%20%22expires%22%3A%201554320019257%7D; __51laig__=7"}
 header7 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,

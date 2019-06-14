@@ -102,7 +102,7 @@ class VideoUserParse(BaseParse):
                         match = iframeVideo2.search(text)
                         if match!=None:
                             iframeurl = match.group(1).replace("'","").replace("+","").replace(" ","")
-                            return "%s%s%s"%("https://xin.170du.com/",iframeurl)
+                            return "%s%s"%("https://xin.170du.com/",iframeurl)
             print '没找到mp4'
             return None
         except Exception as e:

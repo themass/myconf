@@ -48,9 +48,9 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(baseurl3+url,header3)
-        div = soup.first("div", {"class": "hy-video-list"})
+        div = soup.first("div", {"class": "box-video-list"})
         if div!=None:
-            lis = div.findAll("li",{"class":"col-md-2 col-sm-3 col-xs-4"})
+            lis = div.findAll("li",{"class":"col-md-2 col-sm-3 col-xs-4 "})
             for li in lis:
                 #name,pic,url,userId,rate,updateTime,path
                 ahref = li.first("a")
@@ -61,7 +61,7 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 obj['pic'] = ahref.get("data-original")
-                obj['name'] = ahref.get('title')
+                obj['name'] = li.first("h5").text
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "asy1000"+videourl.path
@@ -90,9 +90,9 @@ class VideoUserParse(BaseParse):
             match = videoId3.search(url)
             if match!=None:
                 videoId = match.group(1)
-                videoUrlId = "/?m=vod-play-id-%s-src-1-num-1.html"%(videoId)
+                videoUrlId = "/index.php/vod/play/id/%s/sid/1/nid/1.html"%(videoId)
                 soup = self.fetchUrl(baseurl3+videoUrlId, header3)
-                DIV    = soup.first("div",{"class":"hy-player clearfix"})
+                DIV    = soup.first("div",{"class":"bofang_box"})
                 if DIV  !=None:
                         text = unquote(str(DIV.text))
                         texts = text.split(",")

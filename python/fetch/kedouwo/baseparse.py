@@ -13,7 +13,7 @@ import re
 import os
 base_videourl = "?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=post_date&from=%s&_=1551981239756"
 baseurl3= "https://www.asy3333.com"
-videoId3 = re.compile("/?m=vod-detail-id-(.*?).html")
+videoId3 = re.compile("/index.php/vod/detail/id/(.*?).html")
 
 baseurl4 = "http://www.7mav25.club/"
 baseurl7 = "http://117klav.icu/"

@@ -18,7 +18,7 @@ import ddd804_vip
 import kpd36_vip
 import bt2n_vip
 import ff326_vip
-from fetch import ava99_vip, bt2n_vip, ni345_vip
+from fetch import ava99_vip, bt2n_vip, ni345_vip, hs941_vip
 def pase1():
     fff64_vip.parseText()
 #     novel941_vip.parseText()
@@ -31,6 +31,7 @@ def pase1():
     ddd804_vip.parsetextddd804()
     ddd804_vip.parsetext65aeae()
     ff326_vip.parseText()
+    hs941_vip.parseText()
     
     kpd36_vip.parseText()
 def pase2():

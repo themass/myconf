@@ -94,7 +94,7 @@ class VideoUserParse(BaseParse):
                 soup = self.fetchUrl(baseurl3+videoUrlId, header3)
                 DIV    = soup.first("div",{"class":"bofang_box"})
                 if DIV  !=None:
-                        text = unquote(str(DIV.text))
+                        text = unquote(str(DIV.text)).replace("\/", "/")
                         texts = text.split(",")
                         for item in texts:
                             match = regVideoM3.search(item)

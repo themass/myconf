@@ -47,7 +47,8 @@ import ni345_vip
 import fuli750_vip
 from fetch import nvnvzx, nvnvzx_vip, btw168_vip, cjg52_vip, g6858_vip,\
      jav101_vip,  youjiady_vip,\
-    zooredtube_vip, qiezi_vip, f2d_vip, xiangj_vip, siguo_vip, dy1716_vip
+    zooredtube_vip, qiezi_vip, f2d_vip, xiangj_vip, siguo_vip, dy1716_vip,\
+    japanbeast_vip
 
 def pase1():
     ava99_vip.parseVideo()
@@ -61,17 +62,14 @@ def pase2():
     ff326_vip.parseVideo()
     fff64_vip.parseVideo()
     g6858_vip.parseVideo()
-    
     hs941_vip.parseVideo()
 
     kedouwo_vip.parseVideoALl()
 def pase3():
-    #ggfuil_vip.parseVideo()
-    #kump4_vip.parseVideo()
+    japanbeast_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()
     fmcm_vip.parseVideo()
-###     fuli750_vip.parseVideo()
 def pase4():
 # ##    iavbobo_vip.parseVideo()
 #@####     jjr128_vip.parseVideo()

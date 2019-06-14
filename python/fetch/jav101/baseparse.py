@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "https://cn.jav101.com"
+baseurl = "https://cn-v.jav101.com"
 header = {'Cookie':'__cfduid=dd4573f23e457274464ab236132a125081548501565; locale=cn; _ga=GA1.2.82358204.1548501415; _gid=GA1.2.1826257584.1548501415; XSRF-TOKEN=eyJpdiI6InR4NEVWZXAybXErSkVyQ3NcL1dtWlR3PT0iLCJ2YWx1ZSI6IkdNaXF0Q20xTWJzWTFzeTZaZXlGeFdnNEdvTXY0d2o1alwvU2dKZXo5SVV2eHNIOGptWTFcL09tTGlUdEp0enlIQSIsIm1hYyI6ImI2ODYzYzE1MTJiZWZjMjgxZjJiZGNjMTg4NjU5OTM4YmExNzlhNDExMzFjZDRkMmU0ZDNmZDQ2ODllZTYwNDcifQ%3D%3D; jav101_sessions=eyJpdiI6IjFJKzViZ3NxQ1dHRjBLVzlnbkNwdFE9PSIsInZhbHVlIjoibWF5K0ZpOXVOZVhka2dGRXFQQWtIQXU1am1od05HNWlqY1QzbVpTXC9qSHNkcGduXC9Ec3JvRFNEZjZWRVVcL1ZXVyIsIm1hYyI6IjMzNjhmZTQyNzk0MGNkNzc0NzAwNDY2MTVjNDU0MTY2M2Q1NWQ5YWZiYjQzOWEwOWY2Y2U4ZjVjMDdmNzg1YTgifQ%3D%3D; _gat_UA-51244524-6=1; _gat_UA-51244524-1=1','User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3

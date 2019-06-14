@@ -55,7 +55,7 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
-        metas = soup.findAll("div", {"class": "topic_box"})
+        metas = soup.findAll("div", {"class": "col-xs-50  col-sm-33 col-lg-25"})
         for meta in metas:
             obj = {}
             ahref = meta.first("a")
@@ -67,10 +67,9 @@ class VideoUserParse(BaseParse):
             title = ""
             if meta.first('video')==None:
                 img = meta.first('img').get("src")
-                title= meta.first('img').get("title").replace("'","")
             else:
                 img = meta.first('video').get("poster")
-                title= meta.first('video').get("title").replace("'","")
+            title= meta.first('h2').text 
             obj['url'] = mp4Url
             obj['pic'] = img
             obj['name'] = title

@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
-        soup = self.fetchUrl('/')
+        soup = self.fetchUrl('/jjzy/')
         ul = soup.first('div',{'class':'nav'})
         channelList =[]
         if ul!=None:

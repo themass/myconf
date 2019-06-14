@@ -22,9 +22,6 @@ def parseddd804Img():
 def parsejiqingyazhouImg():
     imgop = imgjiqingyazhou.ImgParse()
     imgop.run()
-def parse39vqImg():
-    imgop = img39vq.ImgParse()
-    imgop.run()
 def parse3wujiImg():
     imgop = img3wuji.ImgParse()
     imgop.run()
@@ -59,9 +56,8 @@ def parsetext65aeae():
     textpare = text65aeae.TextChannelParse()
     textpare.run()
 def parsAll():
-    #parsejiqingyazhouImg()
-    ######parse39vqImg()
-    ######parse3wujiImg()
+    parsejiqingyazhouImg()
+    parse3wujiImg()
     parse58589sImg()
     parse52cjgImg()
     parsejjj382Img()
@@ -72,8 +68,7 @@ def parsAll():
     parseimgclickme()
     parseimggebi0()
 if __name__ == '__main__':
-    parseddd804Img()
-    parsetextddd804()
+    parsAll()
 #     parse39vqImg()
 # #      
 #     parsedddImg()

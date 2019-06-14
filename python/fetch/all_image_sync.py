@@ -37,6 +37,7 @@ if __name__ == '__main__':
      
     g6858_vip.parseImg()
     ff326_vip.pareImg()
+    fff64_vip.parseImg()
     
     jjr128_vip.pareImg()
     kpd36_vip.pareImg()

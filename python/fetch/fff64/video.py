@@ -94,7 +94,7 @@ class VideoParse(BaseParse):
                         for text in texts:
                             match = videoApi.search(text)
                             if match!=None:
-                                return "%s%s%s"%("http",match.group(1).replace("\/","/"),".m3u8")
+                                return "%s%s%s"%("http",match.group(1).replace("\/","/").replace("//index","/index"),".m3u8")
             print url,'没有mp4'
             return None
         except Exception as e:

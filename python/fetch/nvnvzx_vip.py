@@ -34,7 +34,7 @@ def parseVideo6():
 def parseAll():
     #parseVideo()
     #parseVideo2()
-    parseVideo3()
+    #parseVideo3()
     parseVideo5()
     parseVideo6()
 if __name__ == '__main__':

@@ -6,13 +6,10 @@ from common.envmod import *
 import fff64_vip
 import novel941_vip
 import se8_vip
-import sexx77_vip
+import sp878_vip
 import x2246_vip
 import jjr128_vip
 import g6858_vip
-import seshu_vip
-import mayi01_vip
-import btw168_vip
 import kedouwo_vip
 import ddd804_vip
 import kpd36_vip
@@ -35,6 +32,7 @@ def pase1():
     
     kpd36_vip.parseText()
     bx88222_vip.parseText()
+    sp878_vip.parseText()
 def pase2():
     ###seshu_vip.parseText()
     ##btw168_vip.parseText()

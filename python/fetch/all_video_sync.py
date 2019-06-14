@@ -64,6 +64,7 @@ def pase3():
     jinzidu_vip.parseVideo()
     k9vidz_vip.parseVideo()
     kpd2_vip.parseVideo()
+    ttyyy_vip.parseVideo()
 def pase4():
     nyg6_vip.parseVideo()
     nyg6_vip.parseVideo2()
@@ -98,7 +99,7 @@ def pase7():
     siguo_vip.parseVideo()
     se8_vip.parseVideo() 
     sp1769_vip.parseVideo()
-    
+    sp878_vip.parseVideo()
 #     zooredtube_vip.parseVideo()
 # 本机才能执行
 def pase8():

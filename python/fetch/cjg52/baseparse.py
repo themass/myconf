@@ -34,6 +34,7 @@ class BaseParse(threading.Thread):
                 response = urllib2.urlopen(req, timeout=3000)
                 content = response.read().decode('utf8', errors='replace').replace("<![endif]-->","")
                 soup = BeautifulSoup(content)
+                print content
                 return soup
             except Exception as e:
                 print common.format_exception(e)

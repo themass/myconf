@@ -26,8 +26,6 @@ def parseText():
     textRun.run()
 if __name__ == '__main__':
 
-#     textRun = text.TextChannelParse(queue)
-#     textRun.run()
-
-    parseText()
-#     parseVideo()
+#     parseText()
+    parseVideo()
+    pareImg()

@@ -96,6 +96,7 @@ class VideoParse(BaseParse):
                         param['id']=match.group(1)
                         param['td']=match.group(2)
                         videoUrlm3 = httputil.postData(videoUrl, param, videoHeader)
+                        print videoUrlm3
                         return videoUrlm3
             print '没找到mp4'
             return None

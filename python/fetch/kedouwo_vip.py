@@ -19,20 +19,11 @@ def parseText12():
     textop = text12.TextChannelParse()
     textop.run()
     
-def parseVideo2():
-    videop = video2.VideoUserParse()
-    videop.run()
 def parseVideo3():
     videop = video3.VideoUserParse()
     videop.run()
 def parseVideo4():
     videop = video4.VideoUserParse()
-    videop.run()
-def parseVideo5():
-    videop = video5.VideoUserParse()
-    videop.run()
-def parseVideo6():
-    videop = video6.VideoUserParse()
     videop.run()
 def parseVideo7():
     videop = video7.VideoUserParse()
@@ -43,17 +34,8 @@ def parseVideo8():
 def parseVideo10():
     videop = video10.VideoUserParse()
     videop.run()
-def parseVideo9():
-    videop = video9.VideoUserParse()
-    videop.run()
-def parseVideo11():
-    videop = video11.VideoParse()
-    videop.run()
 def parseVideo12():
     videop = video12.VideoUserParse()
-    videop.run()
-def parseVideo13():
-    videop = video13.VideoUserParse()
     videop.run()
 def parseVideo14():
     videop = video14.VideoUserParse()
@@ -61,20 +43,16 @@ def parseVideo14():
 def parseVideo15():
     videop = video15.VideoUserParse()
     videop.run()
-def parseVideoALl():
-    #####parseVideo9()
-#     parseVideo2()
-#     parseVideo3() 
-#     parseVideo4()
-#     ##parseVideo5()
-#     parseVideo6()
+def parseVideoAll():
+    parseVideo3() 
+    parseVideo4()
     parseVideo7()
     parseVideo8()
     parseVideo10()
-    parseVideo11()
     parseVideo12()
-    parseVideo13()
     parseVideo14()
+    parseVideo15()
+    parseText12()
 if __name__ == '__main__':
 #     parseVideo()
    # parseVideo14()
@@ -86,5 +64,5 @@ if __name__ == '__main__':
 #     parseVideo8()
 #     parseVideo10()
 #     parseVideo13()
-    parseVideoALl()
+    parseVideoAll()
 #     parseVideo15()

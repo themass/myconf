@@ -30,7 +30,7 @@ class VideoParse(BaseParse):
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
         channelList = []
-        ahrefs = self.header()
+        ahrefs = self.header("header.html")
         for ahref in ahrefs:
             obj={}
             obj['name']=ahref.text

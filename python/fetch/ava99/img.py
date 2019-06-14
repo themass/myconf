@@ -26,8 +26,7 @@ class ImgParse(BaseParse):
         for obj in objs:
             for i in range(1, maxImgPage):
                 url = obj['url']
-                if i!=1:
-                    url= "/%s%s%s%s"%(obj['url'],"index-",i,".html")
+                url= "/%s%s%s"%(obj['url'].replace("1.html",""),i,".html")
                 print url
                 count = self.update(url, ops, obj['url'], i)
                 dbVPN.commit()
@@ -65,7 +64,7 @@ class ImgParse(BaseParse):
     def fetchDataHead(self, url):
         try:
             soup = self.fetchUrl(url)
-            return soup.findAll('li',{"class":" mso-1px-b1"})
+            return soup.findAll('li',{"class":"col-md-14 col-sm-16 col-xs-12 clearfix news-box"})
 
         except Exception as e:
             print common.format_exception(e)
@@ -80,9 +79,9 @@ class ImgParse(BaseParse):
                 ahref = li.first("a")
                 if ahref!=None:
                     obj = {}
-                    obj['name'] = ahref.first("div",{"class":"i-hotword-title"}).text
+                    obj['name'] = ahref.get("title")
                     obj['url'] = ahref.get('href')
-                    obj['fileDate'] = ahref.first("div",{"class":"i-hotword-num line-1"}).text
+                    obj['fileDate'] = ''
                     obj['baseurl'] = baseurl
                     obj['channel'] = channel
                     obj['updateTime'] = datetime.datetime.now()
@@ -102,7 +101,7 @@ class ImgParse(BaseParse):
 
     def fetchImgs(self, url):
         soup = self.fetchUrl(url)
-        picData = soup.first("article")
+        picData = soup.first("div",{"class":"details-content text-justify"})
         picList = picData.findAll("img")
         pics = []
         for item in picList:

@@ -86,11 +86,11 @@ class VideoParse(BaseParse):
         try: 
 #             soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
             url = "%s%s%s"%("/vod-play-id-",url.replace(".html","").replace("vod-detail-id-",""),"-src-1-num-1.html")
-            print url
             soup = self.fetchUrl(url, header)
             scripts = soup.findAll('script')
             for script in scripts:
-                if script.get("src")!=None and script.text.count("base64decode")>0:
+                if script.text.count("base64decode")>0:
+                    print script.text
                     match = regVideoCode.search(script.text)
                     if match!=None:
                         text = common.base64Decode(match.group(1)) 

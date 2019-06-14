@@ -31,13 +31,8 @@ class BaseParse(threading.Thread):
             try:
                 req = urllib2.Request(baseurl + url, headers=videoHeader)
                 req.encoding = 'utf-8'
-                response = urllib2.urlopen(req, timeout=300)
-                gzipped = response.headers.get(
-                    'Content-Encoding')  # 查看是否服务器是否支持gzip
-                content = response.read().decode('utf8', errors='replace').replace("<!--","").replace("-->","")
-                if gzipped:
-                    content = zlib.decompress(
-                        content, -zlib.MAX_WBITS)  # 解压缩，得到网页源码
+                response = urllib2.urlopen(req, timeout=3000)
+                content = response.read().decode('utf8', errors='replace').replace("<![endif]-->","")
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:

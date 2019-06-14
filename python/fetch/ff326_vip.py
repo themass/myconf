@@ -14,7 +14,9 @@ import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-
+def pareImg():
+    imgrun = img.ImgParse()
+    imgrun.run()
 def parseText():
     textop = text.TextChannelParse()
     textop.run()
@@ -23,3 +25,5 @@ def parseVideo():
     videop.run()
 if __name__ == '__main__':
     parseVideo()
+    pareImg()
+    parseText()

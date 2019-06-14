@@ -24,7 +24,8 @@ import cjg52_vip
 import nyg6_vip
 import ni345_vip
 import kpd36_vip
-from fetch import bt2n_vip, g6858_vip, ff326_vip, hs941_vip, bx88222_vip
+from fetch import bt2n_vip, g6858_vip, ff326_vip, hs941_vip, bx88222_vip,\
+    sp878_vip
 
 if __name__ == '__main__':
     
@@ -47,7 +48,8 @@ if __name__ == '__main__':
     nyg6_vip.parseImg2()
     ni345_vip.parseImg()
     bx88222_vip.parseImg()  
-
+    sp878_vip.pareImg()
+    
     se8_vip.startWork()
     se8_vip.parseGirlImg()
     skswk9_img.parseImg()

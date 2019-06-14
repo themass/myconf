@@ -26,6 +26,6 @@ def parseVideo():
     videop.run()
 if __name__ == '__main__':
    
-    parseImg()
+#     parseImg()
     parseText()
     parseVideo()

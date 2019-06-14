@@ -37,14 +37,12 @@ class TextChannelParse(BaseParse):
             print '开始解析频道---',item
             try :
                 channel = item['url']
-                for i in range(1, maxTextPage):
-                    url = obj['url']
-                if i!=1:
-                    url= "/%s%s%s%s"%(obj['url'],"index-",i,".html")
-                print url
                 dbVPN = db.DbVPN()
                 ops = db_ops.DbOps(dbVPN)
-                count = self.update(url, ops, channel)
+                for i in range(1, maxTextPage):
+                    url= "/%s%s%s"%(obj['url'].replace("1.html",""),i,".html")
+                    print url
+                    count = self.update(url, ops, channel)
                 dbVPN.commit()
                 dbVPN.close()
                 if count == 0:
@@ -66,11 +64,7 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div", {"class": "box list channel"})
-            if div == None:
-                print '没有数据', url
-                return []
-            datalist = div.findAll("li")
+            datalist = soup.findAll("li",{"class":"col-md-14 col-sm-16 col-xs-12 clearfix news-box"})
             objs = []
             sortType = dateutil.y_m_d()
             for item in datalist:
@@ -78,14 +72,13 @@ class TextChannelParse(BaseParse):
                 if ahref!=None:
                     try:
                         obj = {}
-                        obj['fileDate'] = ahref.first('span').text
-                        obj['name'] = ahref.text.replace(obj['fileDate'],'')
+                        obj['fileDate'] = ahref.get("tiltle")
+                        obj['name'] = ""
                         print name
                         obj['url'] = ahref.get('href')
                         obj['baseurl'] = baseurl
                         obj['channel'] = channel
                         obj['updateTime'] = datetime.datetime.now()
-#                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
                         ret = self.fetchText(ahref.get('href'))
                         if ret==None:
                             print '没有文章数据',ahref.get('href')
@@ -99,7 +92,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"class": "content"})
+        data = soup.first("div", {"class": "details-content text-justify"})
         if data != None:
             try:
                 obj = {}

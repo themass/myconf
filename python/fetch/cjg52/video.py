@@ -72,8 +72,8 @@ class VideoParse(BaseParse):
             dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-#         for obj in dataList:
-#             ops.inertVideo(obj,obj['videoType'],baseurl)
+        for obj in dataList:
+            ops.inertVideo(obj,obj['videoType'],baseurl)
 
         print 'qh video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

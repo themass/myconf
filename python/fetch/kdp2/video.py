@@ -92,8 +92,7 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url)
             ul = soup.first('div',{"class":'player'})
             if ul!=None and ul.first("script")!=None:
-                co = self.fetchContentUrlWithBase(baseurl+url)
-                print co
+                co = self.fetchContentUrlWithBase(baseurl+ul.first("script").get("src"))
                 texts = unquote(co).replace(")","$").replace("http://player.ly6080.com/yunparse/?url=", "").replace("http://player.ly6080.com/odflv/index.php?url=", "").split("$")
                 texts.reverse()
                 for text in texts:

@@ -32,7 +32,7 @@ def parseVideo6():
     videop = video6.VideoUserParse()
     videop.run()
 def parseAll():
-    parseVideo()
+    #parseVideo()
     parseVideo2()
     parseVideo3()
     parseVideo5()

@@ -77,11 +77,7 @@ class ImgParse(BaseParse):
 
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(url)
-        div = soup.first("ul", {"class": "col-sm-12 col-xs-12 p-0 clearfix"})
-        if div == None:
-            print '没有数据', url
-            return []
-        datalist = div.findAll("li")
+        datalist = soup.findAll("li", {"class": "col-md-3 col-sm-6 col-xs-12 clearfix news-box"})
         objs = []
         sortType = dateutil.y_m_d()
         for item in datalist:

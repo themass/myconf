@@ -6,13 +6,11 @@ from common.envmod import *
 import se8_vip
 import yezmw_vip
 import fff64_vip
-import sexx77_vip
 import sp1769_vip
 import seman_vip
 import ax98_vip
 import kuyunzy_vip
 import tianjiyy123_vip
-import urbanhenta_vip
 import zanquye_vip
 import meiyke_vip
 import dxg11_vip
@@ -78,6 +76,7 @@ def pase5():
     g6858_vip.parseVideo()
     yezmw_vip.parseVideo()
     ni345_vip.parseVideo()
+    tzzy1399_vip.parseVideo()
 def pase6():
     nvnvzx_vip.parseAll()
     ozsese_vip.passVideo()
@@ -89,10 +88,6 @@ def pase6():
 def pase7():
     ##cili_vip.parseVideo() 
     ##newlynet_vip.parseVideo() 
-    ###sifangpian_vip.parseVideo()
-    
-    ###xiaiyy_vip.parseVideo()
-   
     #qiezi_vip.parseVideo()
     f2d_vip.parseVideo()
     xiangj_vip.parseVideo()

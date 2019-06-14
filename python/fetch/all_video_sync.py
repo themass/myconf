@@ -125,7 +125,7 @@ def pase7():
 # 本机才能执行
 def pase8():
     
-    jav101_vip.parseVideo()
+    #jav101_vip.parseVideo()
     #####ly6080_vip.parseVideo()
     #sy88_vip.parseVideo()
     kpd36_vip.parseVideo()

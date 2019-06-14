@@ -25,7 +25,7 @@ def pase1():
 #     ##x2246_vip.parseText()
 #     kedouwo_vip.parseText12()
 #     jjr128_vip.parseText()
-#     g6858_vip.parseText()
+    g6858_vip.parseText()
     bt2n_vip.parseText()
     ava99_vip.parseText()
     ddd804_vip.parsetextddd804()

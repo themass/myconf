@@ -61,6 +61,7 @@ def pase2():
     ff326_vip.parseVideo()
     fff64_vip.parseVideo()
     g6858_vip.parseVideo()
+    
     hs941_vip.parseVideo()
 
     kedouwo_vip.parseVideoALl()

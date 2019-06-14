@@ -67,18 +67,11 @@ def pase3():
     k9vidz_vip.parseVideo()
     kpd2_vip.parseVideo()
 def pase4():
-# ##    iavbobo_vip.parseVideo()
-#@####     jjr128_vip.parseVideo()
-    ###lusibi_vip.parseVideo()
-    #mastv54_vip.parseVideo()
-#     tzzy1399_vip.parseVideo()
-#     urbanhenta_vip.parseVideo()
-#     youjiady_vip.parseVideo()
-#     ttyyy_vip.parseVideo()
     nyg6_vip.parseVideo()
     nyg6_vip.parseVideo2()
     tianjiyy123_vip.parseVideo()
     tlbfao_vip.parseVideo()
+    meiyke_vip.parseVideo()
     
 def pase5():
     kedouwo_vip.parseVideoAll()

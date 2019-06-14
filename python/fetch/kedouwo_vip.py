@@ -63,7 +63,7 @@ def parseVideo15():
     videop.run()
 def parseVideoALl():
     #####parseVideo9()
-    parseVideo2()
+#     parseVideo2()
 #     parseVideo3() 
 #     parseVideo4()
 #     ##parseVideo5()

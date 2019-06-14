@@ -40,7 +40,6 @@ import yin22_vip
 import ttyyy_vip
 import sy88_vip
 import fmcm_vip
-import ly6080_vip
 import nyg6_vip
 import g6858_vip
 import s58589_vip

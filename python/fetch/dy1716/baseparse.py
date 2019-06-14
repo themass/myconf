@@ -31,7 +31,7 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(baseurl + url, headers=aheader)
-                content = urllib2.urlopen(req, timeout=5000).read()
+                content = urllib2.urlopen(req, timeout=60).read()
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
@@ -46,7 +46,7 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(url, headers=aheader)
-                content = urllib2.urlopen(req, timeout=300).read()
+                content = urllib2.urlopen(req, timeout=60).read()
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:
@@ -62,7 +62,7 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(url, headers=aheader)
-                content = urllib2.urlopen(req, timeout=300).read()
+                content = urllib2.urlopen(req, timeout=60).read()
                 return content
             except Exception as e:
                 print common.format_exception(e)

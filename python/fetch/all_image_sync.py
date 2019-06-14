@@ -9,18 +9,13 @@ import tt192_vip
 #黄土
 import se8_vip
 #漫画
-import singlove_vip
 #黄土
-import skswk9_img
 import jjr128_vip
-import sexx77_vip
 import ddd804_vip
 import xieegif_vip
-import mayi01_vip
 import ava99_vip
 import skswk9_img
 import fff64_vip
-import cjg52_vip
 import nyg6_vip
 import ni345_vip
 import kpd36_vip
@@ -33,7 +28,6 @@ if __name__ == '__main__':
 #       
     ava99_vip.parseImg()
     bt2n_vip.pareImg()
-    cjg52_vip.pareImg()    
     
      
     g6858_vip.parseImg()

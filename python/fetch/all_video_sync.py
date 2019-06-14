@@ -16,11 +16,8 @@ import urbanhenta_vip
 import zanquye_vip
 import meiyke_vip
 import dxg11_vip
-import mastv54_vip
 import sp878_vip
 import tzzy1399_vip
-import qh_vip
-import sifangpian_vip
 import bt2n_vip
 import ff326_vip
 import hs941_vip
@@ -43,14 +40,15 @@ import s58589_vip
 import ni345_vip
 from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,  youjiady_vip,\
     zooredtube_vip, qiezi_vip, f2d_vip, xiangj_vip, siguo_vip, dy1716_vip,\
-    japanbeast_vip, jinzidu_vip, k9vidz_vip, kpd2_vip, lele_vip
+    japanbeast_vip, jinzidu_vip, k9vidz_vip, kpd2_vip, lele_vip, ozsese_vip,\
+    singlove_vip
 
 def pase1():
     ava99_vip.parseVideo()
     ax98_vip.parseVideo()
     ax98_vip.parseVideo2()
     bt2n_vip.parseVideo()
-    ####zanquye_vip.parseVideo()
+    singlove_vip.parseVideo()
     ni345_vip.parseVideo()
 def pase2():
     dxg11_vip.parseVideo()
@@ -81,8 +79,8 @@ def pase5():
     ni345_vip.parseVideo()
 def pase6():
     nvnvzx_vip.parseAll()
+    ozsese_vip.passVideo()
     ###ppyy55_vip.parseUserVideo()
-    ##qh_vip.parseVideo2()
     s58589_vip.parseVideo2()
     sexx77_vip.parseVideo()  
     skswk9_img.parseVideo()
@@ -94,7 +92,7 @@ def pase7():
     
     ###xiaiyy_vip.parseVideo()
    
-    ##qiezi_vip.parseVideo()
+    #qiezi_vip.parseVideo()
     f2d_vip.parseVideo()
     xiangj_vip.parseVideo()
     siguo_vip.parseVideo()

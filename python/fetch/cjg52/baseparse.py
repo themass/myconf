@@ -18,7 +18,7 @@ header = {'Cookie':'PHPSESSID=p8s1tlsvnd590i800jajag0m51; __51cke__=; __tins__18
 maxCount = 3
 regVideo = re.compile(r'getmovurl\.html", {id:(.*?),td:(.*?)},')
 videoUrl = "https://www.52cjg.com/index/getmovurl.html"
-videoHeader= {"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8","Cookie":"PHPSESSID=fj2ljn71gr0g4hgoh01agsrge6"
+videoHeader= {"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8","Cookie":"PHPSESSID=6l8j7fn0tf874arecfkis20e82"
               ,"Referer":"https://www.52cjg.com/","X-Requested-With":"XMLHttpRequest"}
 class BaseParse(threading.Thread):
 

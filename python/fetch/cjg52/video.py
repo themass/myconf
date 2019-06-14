@@ -50,6 +50,7 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         metas = soup.findAll("div",{"class":"x3 margin-top"})
+        print url,metas
         for meta in metas:
             obj = {}
             ahref = meta.first("a")

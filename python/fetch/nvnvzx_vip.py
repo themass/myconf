@@ -15,13 +15,6 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-
-def parseVideo():
-    videop = video.VideoUserParse()
-    videop.run()
-def parseVideo2():
-    videop = video2.VideoUserParse()
-    videop.run()
 def parseVideo3():
     videop = video3.VideoUserParse()
     videop.run()
@@ -32,9 +25,7 @@ def parseVideo6():
     videop = video6.VideoUserParse()
     videop.run()
 def parseAll():
-    #parseVideo()
-    #parseVideo2()
-    #parseVideo3()
+    parseVideo3()
     parseVideo5()
     parseVideo6()
 if __name__ == '__main__':
@@ -42,6 +33,6 @@ if __name__ == '__main__':
 #     parseAll()
 #      parseVideo3()
 # ##     #parseVideo4()
-    parseVideo5()
+    parseAll()
 #     parseVideo6()
 #     parseVideo7()

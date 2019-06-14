@@ -23,7 +23,11 @@ def parseText():
 def parseVideo():
     videop = video.VideoUserParse()
     videop.run()
+def parseVideo2():
+    videop = video2.VideoUserParse()
+    videop.run()
 if __name__ == '__main__':
     parseVideo()
+    parseVideo2()
     pareImg()
     parseText()

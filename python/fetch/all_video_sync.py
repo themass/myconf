@@ -90,10 +90,10 @@ def pase4():
     
 def pase5():
     
-    meiyke_vip.parseVideo()
+    #meiyke_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo4()
-    nvnvzx_vip.parseVideo2()
+    #nvnvzx_vip.parseVideo2()
     ###nfss_vip.parseVideo3()
     sp878_vip.parseVideo()
     g6858_vip.parseVideo()

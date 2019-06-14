@@ -9,14 +9,18 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from cjg52 import *
+from fff64 import *
 import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-
-def pareImg():
-    imgrun = img.ImgParse()
-    imgrun.run()
+maxCount = 5
+def parseText():
+    textop = text.TextChannelParse()
+    textop.run()
+def parseImg():
+    imgop = img.ImgParse()
+    imgop.run()
 if __name__ == '__main__':
-    pareImg()
+    parseText()
+    parseImg()

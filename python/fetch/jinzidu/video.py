@@ -97,8 +97,8 @@ class VideoParse(BaseParse):
             soup = self.fetchUrlWithBase(base+url, header)
             div = soup.first("iframe")
             if div!=None and div.get("src")!=None:
-                if div.get("src").count("http://pp.aism.cc/kb.php?vid=")!=0:
-                    item = div.get("src").replace("http://pp.aism.cc/kb.php?vid=","").replace("~m3u8","")
+                if div.get("src").count("//pp.aism.cc/kb.php?vid=")!=0:
+                    item = div.get("src").replace("http://pp.aism.cc/kb.php?vid=","").replace("//pp.aism.cc/kb.php?vid=","").replace("~m3u8","")
                     match = regVideo.search(item)
                     videoItem = {}
                     if match!=None:

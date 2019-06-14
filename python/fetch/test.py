@@ -43,7 +43,8 @@ if __name__ == '__main__':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           "cookie":"Hm_lvt_64f3b8e72697945612104f755f0e6ce4=1557163354; __51cke__=; Hm_lpvt_64f3b8e72697945612104f755f0e6ce4=1557164611; __tins__19425543=%7B%22sid%22%3A%201557163355132%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201557166411669%7D; __51laig__=10",
           "X-Requested-With":"XMLHttpRequest"}
-    print fetchUrl("https://www.52cjg.com/index/movlst/id/1.html")
+    soup= fetchUrl("https://www.52cjg.com/index/movlst/id/1.html")
+    print soup.findAll("div",{"class":"x3 margin-top"})
 #     fcntl.flock('', fcntl.LOCK_EX)
 #     data = {}
 #     data['id']="1844"

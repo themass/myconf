@@ -82,7 +82,7 @@ def pase4():
 #     tzzy1399_vip.parseVideo()
 #     urbanhenta_vip.parseVideo()
 #     youjiady_vip.parseVideo()
-    ttyyy_vip.parseVideo()
+#     ttyyy_vip.parseVideo()
     nyg6_vip.parseVideo()
     nyg6_vip.parseVideo2()
     tianjiyy123_vip.parseVideo()

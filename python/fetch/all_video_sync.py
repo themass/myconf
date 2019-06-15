@@ -72,7 +72,6 @@ def pase5():
     kedouwo_vip.parseVideoAll()
     g6858_vip.parseVideo()
     yezmw_vip.parseVideo()
-    ni345_vip.parseVideo()
     tzzy1399_vip.parseVideo()
 def pase6():
     nvnvzx_vip.parseAll()

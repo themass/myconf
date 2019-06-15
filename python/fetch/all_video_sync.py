@@ -39,11 +39,11 @@ from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,\
     singlove_vip
 
 def pase1():
-    ava99_vip.parseVideo()
-    ax98_vip.parseVideo()
-    ax98_vip.parseVideo2()
-    bt2n_vip.parseVideo()
-    singlove_vip.parseVideo()
+#     ava99_vip.parseVideo()
+#     ax98_vip.parseVideo()
+#     ax98_vip.parseVideo2()
+#     bt2n_vip.parseVideo()
+#     singlove_vip.parseVideo()
     ni345_vip.parseVideo()
 def pase2():
     dxg11_vip.parseVideo()

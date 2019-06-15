@@ -16,6 +16,7 @@ header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")
+regImg = re.compile(r"http(.*?)jpg")
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
 
 class BaseParse(threading.Thread):
@@ -46,11 +47,11 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
-    def header(self):
+    def header(self,name):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("yin22/header.html") as f:
+        with open("yin22/"+name) as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         soup= BeautifulSoup(content)

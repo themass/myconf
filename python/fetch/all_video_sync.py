@@ -39,11 +39,11 @@ from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,\
     singlove_vip
 
 def pase1():
-#     ava99_vip.parseVideo()
-#     ax98_vip.parseVideo()
-#     ax98_vip.parseVideo2()
-#     bt2n_vip.parseVideo()
-#     singlove_vip.parseVideo()
+    ava99_vip.parseVideo()
+    ax98_vip.parseVideo()
+    ax98_vip.parseVideo2()
+    bt2n_vip.parseVideo()
+    singlove_vip.parseVideo()
     ni345_vip.parseVideo()
 def pase2():
     dxg11_vip.parseVideo()
@@ -53,17 +53,17 @@ def pase2():
     hs941_vip.parseVideo()
 
 def pase3():
-#     japanbeast_vip.parseVideo()
-#     kuyunzy_vip.parseVideo()
-#     seman_vip.parseVideo()
-#     jinzidu_vip.parseVideo()
+    japanbeast_vip.parseVideo()
+    kuyunzy_vip.parseVideo()
+    seman_vip.parseVideo()
+    jinzidu_vip.parseVideo()
     k9vidz_vip.parseVideo()
     kpd2_vip.parseVideo()
     ttyyy_vip.parseVideo()
 def pase4():
 #     nyg6_vip.parseVideo()
 #     nyg6_vip.parseVideo2()
-#     tianjiyy123_vip.parseVideo()
+    tianjiyy123_vip.parseVideo()
     tlbfao_vip.parseVideo()
     meiyke_vip.parseVideo()
     nfss_vip.parseVideo2()
@@ -103,13 +103,13 @@ def pase8():
     sy88_vip.parseVideo()
 
 def all():
-#     pase1()
-#     pase2()
-#     pase3()
+    pase1()
+    pase2()
+    pase3()
     pase4()
     pase5()
-#     pase6()
-#     pase7()
+    pase6()
+    pase7()
     pase8()
 if __name__ == '__main__':
 #     pase8()

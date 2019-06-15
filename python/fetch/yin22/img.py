@@ -95,7 +95,7 @@ class ImgParse(BaseParse):
 
     def fetchImgs(self, url):
         pics = []
-        soup = self.fetchUrl(url)
+        soup = self.fetchUrl("/"+url)
         scripts = soup.findAll("script")
         for script in scripts:
             try:

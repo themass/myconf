@@ -51,23 +51,24 @@ def pase2():
     fff64_vip.parseVideo()
     g6858_vip.parseVideo()
     hs941_vip.parseVideo()
-
+    kpd36_vip.parseVideo()
 def pase3():
-    japanbeast_vip.parseVideo()
+    #     tianjiyy123_vip.parseVideo()
+#     tlbfao_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     seman_vip.parseVideo()
     jinzidu_vip.parseVideo()
-    k9vidz_vip.parseVideo()
     kpd2_vip.parseVideo()
     ttyyy_vip.parseVideo()
 def pase4():
 #     nyg6_vip.parseVideo()
 #     nyg6_vip.parseVideo2()
-    tianjiyy123_vip.parseVideo()
-    tlbfao_vip.parseVideo()
+
+    japanbeast_vip.parseVideo()
     meiyke_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo4()
+    k9vidz_vip.parseVideo()
 def pase5():
     kedouwo_vip.parseVideoAll()
     g6858_vip.parseVideo()
@@ -95,7 +96,6 @@ def pase7():
 # 本机才能执行
 def pase8():
     
-    kpd36_vip.parseVideo()
     teshiw_vip.parseVideo()
     lele_vip.parseVideo()
     dy1716_vip.parseVideo()

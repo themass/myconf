@@ -99,7 +99,7 @@ class ImgParse(BaseParse):
                     obj['pics'] = len(pics)
                     obj['name'] = name
                     obj['sortType'] = sortType
-                    print obj['name'],'url=', obj['url'], '  图片数量=', len(pics)
+                    print obj['name'],'url=', obj['url'],pics[0], '  图片数量=', len(pics)
                     objs.append(obj)
                 except Exception as e:
                     print common.format_exception(e)

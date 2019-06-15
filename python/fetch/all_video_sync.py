@@ -64,11 +64,11 @@ def pase4():
 #     nyg6_vip.parseVideo()
 #     nyg6_vip.parseVideo2()
 
-    japanbeast_vip.parseVideo()
+#     japanbeast_vip.parseVideo()
     meiyke_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo4()
-    k9vidz_vip.parseVideo()
+#     k9vidz_vip.parseVideo()
 def pase5():
     kedouwo_vip.parseVideoAll()
     g6858_vip.parseVideo()

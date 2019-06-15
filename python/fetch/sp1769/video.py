@@ -44,7 +44,7 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channelType']='1769_all'
             channelList.append(obj)
-        channelList.reverse()
+#         channelList.reverse()
         return  channelList
     def videoParse(self, channel, url):
         dataList = []
@@ -88,7 +88,7 @@ class VideoParse(BaseParse):
         print '1769 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-
+        time.sleep(0.5)
     def parseDomVideo(self, url):
         try:
             if url.count("script")==0:

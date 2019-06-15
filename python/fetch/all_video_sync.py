@@ -55,8 +55,8 @@ def pase2():
 def pase3():
 #     japanbeast_vip.parseVideo()
 #     kuyunzy_vip.parseVideo()
-    seman_vip.parseVideo()
-    jinzidu_vip.parseVideo()
+#     seman_vip.parseVideo()
+#     jinzidu_vip.parseVideo()
     k9vidz_vip.parseVideo()
     kpd2_vip.parseVideo()
     ttyyy_vip.parseVideo()
@@ -103,7 +103,7 @@ def pase8():
     sy88_vip.parseVideo()
 
 def all():
-    pase1()
+#     pase1()
 #     pase2()
     pase3()
     pase4()

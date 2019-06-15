@@ -49,29 +49,30 @@ class VideoUserParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(baseurl12+url,header8)
         div = soup.first("div",{"class":"box dy_list"})
-        lis = div.findAll("li")
-        for li in lis:
-            ahref = li.first("a")
-            obj = {}
-            mp4Url = self.parseDomVideo(ahref.get("href"))
-            if mp4Url == None:
-                print '没有mp4 文件:', ahref.get("href")
-                continue
-            obj['url'] = mp4Url
-            img = li.first("img")
-            obj['pic'] = img.get("src")
-            obj['name'] = li.first("h3").text
-
-            videourl = urlparse(obj['url'])
-            obj['path'] = "tlula44"+videourl.path
-            obj['rate'] = 1.2
-            obj['updateTime'] = datetime.datetime.now() 
-            obj['userId'] = userId
-            obj['baseUrl'] = baseurl12
-            obj['showType'] = 3
-            obj['videoType'] = "webview"
-            print obj['videoType'],obj['name'],mp4Url,obj['pic']
-            dataList.append(obj)
+        if div!=None:
+            lis = div.findAll("li")
+            for li in lis:
+                ahref = li.first("a")
+                obj = {}
+                mp4Url = self.parseDomVideo(ahref.get("href"))
+                if mp4Url == None:
+                    print '没有mp4 文件:', ahref.get("href")
+                    continue
+                obj['url'] = mp4Url
+                img = li.first("img")
+                obj['pic'] = img.get("src")
+                obj['name'] = li.first("h3").text
+    
+                videourl = urlparse(obj['url'])
+                obj['path'] = "tlula44"+videourl.path
+                obj['rate'] = 1.2
+                obj['updateTime'] = datetime.datetime.now() 
+                obj['userId'] = userId
+                obj['baseUrl'] = baseurl12
+                obj['showType'] = 3
+                obj['videoType'] = "webview"
+                print obj['videoType'],obj['name'],mp4Url,obj['pic']
+                dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

@@ -105,6 +105,10 @@ class ImgParse(BaseParse):
                     match = regImg.search(item)
                     if match!=None:
                         pics.append("%s%s%s"%("http",match.group(1),"jpg"))
+                        continue
+                    match = regImgGif.search(item)
+                    if match!=None:
+                        pics.append("%s%s%s"%("http",match.group(1),"gif"))
                 if len(pics)>3:
                     break
             except Exception as e:

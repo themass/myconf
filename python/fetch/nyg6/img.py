@@ -114,7 +114,7 @@ class ImgParse(BaseParse):
             try:
                 imgs = data.findAll('img')
                 for img in imgs:
-                    pics.append(img.get('data-src'))
+                    pics.append(img.get('data-src').replace("?max-age=3600",""))
                 datasrc['pic']=pics
                 h1 = soup.first("h1",{"class":"h1"})
                 datasrc['name']= ''

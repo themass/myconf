@@ -25,7 +25,7 @@ class ImgParse(BaseParse):
         for obj in channels:
             channel = obj['url']
             for i in range(0, maxImgPage):
-                url = "%s%s%s%s"%(obj['url'].replace("0.html",""),i,".html")
+                url = "%s%s%s"%(obj['url'].replace("0.html",""),i,".html")
                 print url
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()

@@ -105,7 +105,7 @@ def pase8():
 def all():
 #     pase1()
 #     pase2()
-    pase3()
+#     pase3()
     pase4()
     pase5()
 #     pase6()

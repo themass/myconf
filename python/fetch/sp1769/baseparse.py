@@ -10,9 +10,9 @@ from common import common
 import threading,os
 from BeautifulSoup import BeautifulSoup
 import re,sys
-# reload(sys)
+reload(sys)
 # 
-# sys.setdefaultencoding('utf8')
+sys.setdefaultencoding('utf8')
 
 # http://www.dehyc.com
 baseurl = "http://www.1024988.com"

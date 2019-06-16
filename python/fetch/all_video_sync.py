@@ -44,7 +44,7 @@ def pase1():
     ax98_vip.parseVideo2()
     bt2n_vip.parseVideo()
     singlove_vip.parseVideo()
-    ni345_vip.parseVideo()
+#     ni345_vip.parseVideo()
 def pase2():
     dxg11_vip.parseVideo()
     ff326_vip.parseVideo()

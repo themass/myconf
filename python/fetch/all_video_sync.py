@@ -85,14 +85,14 @@ def pase7():
     ##cili_vip.parseVideo() 
     ##newlynet_vip.parseVideo() 
     #qiezi_vip.parseVideo()
-#     f2d_vip.parseVideo()
-#     xiangj_vip.parseVideo()
-#     siguo_vip.parseVideo()
-    se8_vip.parseVideo() 
-    sp1769_vip.parseVideo()
-    sp878_vip.parseVideo()
-    zooredtube_vip.parseVideo()
-    yin22_vip.parseVideo()
+    f2d_vip.parseVideo()
+    xiangj_vip.parseVideo()
+    siguo_vip.parseVideo()
+#     se8_vip.parseVideo() 
+#     sp1769_vip.parseVideo()
+#     sp878_vip.parseVideo()
+#     zooredtube_vip.parseVideo()
+#     yin22_vip.parseVideo()
 # 本机才能执行
 def pase8():
     

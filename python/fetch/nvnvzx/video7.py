@@ -22,14 +22,14 @@ class VideoUserParse(BaseParse):
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
-                i = item['url']
+                url = item['url']
                 if i!=1:
                     url= "/%s%s%s"%(item['url'].replace(".html","/page/"),i,".html")
                 print url
-                count = self.videoParse(item['channel'], url,item['userId'])
+                count = self.videoParse(url, url,item['userId'])
                 if count==0:
                     break
-                print '解析完成 ', item['channel'], ' ---', i, '页'
+                print '解析完成 ', url, ' ---', i, '页'
     def videoChannel(self):
         ahrefs = self.header7()
         channelList = []

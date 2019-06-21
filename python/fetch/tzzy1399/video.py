@@ -42,7 +42,7 @@ class VideoParse(BaseParse):
                 obj['updateTime']=datetime.datetime.now()
                 obj['pic']=''
                 obj['rate']=1.2
-                obj['channel']=baseurl.replace("http://", "").replace("https://", "")+ahref.get('href').replace("?","").replace("=","")
+                obj['channel']="99ziyuan"+ahref.text
                 obj['showType']=3
                 obj['channelType']='normal'
                 channelList.append(obj)
@@ -86,7 +86,7 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url, header)
             playtool = soup.first("div",{'class':'play-wapper'})
             if playtool!=None:
-                obj['pic']=playtool.first('img').get('src')
+                obj['pic']="https://"+playtool.first('img').get('src')
                 ahrefs = playtool.findAll('a')
                 for ahref in ahrefs:
                     match = regVideo.search(ahref.text)

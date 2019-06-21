@@ -86,7 +86,7 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url, header)
             playtool = soup.first("div",{'class':'play-wapper'})
             if playtool!=None:
-                obj['pic']="https://"+playtool.first('img').get('src')
+                obj['pic']="https:"+playtool.first('img').get('src')
                 ahrefs = playtool.findAll('a')
                 for ahref in ahrefs:
                     match = regVideo.search(ahref.text)

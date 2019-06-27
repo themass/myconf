@@ -28,8 +28,7 @@ class VideoParse(BaseParse):
                         url = "%s%s%s"%(url.replace(".html", "-"),i,".html")
                     if item['url'].count('女优专辑')>0:
                         print '解析女友专辑'
-#                         self.nvviderPaser(item['channel'], url)
-                        pass
+                        self.nvviderPaser(item['channel'], url)
                     else:
                         self.videoParse(
                             item['channel'], url)

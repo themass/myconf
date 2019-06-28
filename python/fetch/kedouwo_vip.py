@@ -63,5 +63,5 @@ if __name__ == '__main__':
 #     parseVideo8()
 #     parseVideo10()
 #     parseVideo13()
-    parseVideoAll()
+    parseVideo8()
 #     parseVideo15()

@@ -87,7 +87,7 @@ class VideoParse(BaseParse):
 #             soup = self.fetchUrl("/%s%s%s"%("vod-play-id-",id,"-src-1-num-1.html"), header)
             urls = url.split("/")
             if len(urls)!=2:
-                print url,'没找到mp4'
+                print len(urls),url,'没找到mp4'
                 return None
             url = urls[1]
             url = "%s%s%s"%("/vod-play-id-",url.replace(".html","").replace("/vod-detail-id-",""),"-src-1-num-1.html")

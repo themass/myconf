@@ -17,7 +17,8 @@ videoId3 = re.compile("/index.php/vod/detail/id/(.*?).html")
 
 baseurl4 = "http://www.7mav25.club/"
 baseurl7 = "http://117klav.icu/"
-baseurl8 = "https://bx88222.com"
+#https://bxchua.com
+baseurl8 = "https://bxjiao.com"
 baseurl10 = "https://www.jjj382.com"
 baseurl12 = "http://www.tlula44.com"
 baseurl14 = "http://gebi0.com"

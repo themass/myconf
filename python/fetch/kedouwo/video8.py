@@ -89,7 +89,7 @@ class VideoUserParse(BaseParse):
             soup = self.fetchUrl(baseurl8+url, header)
             div   = soup.first("span",{"id":"vpath"})
             if div !=None:
-                return "%s%s"%("https://v.8xzizizi1.com/v/",div.text)
+                return "%s%s"%("https://jiuktp.com/v/",div.text)
             print '没找到mp4'
             return None
         except Exception as e:

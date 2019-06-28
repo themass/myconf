@@ -26,6 +26,7 @@ baseurl10 = "https://www.asy3333.com"
 baseurl11 = "http://www.tlula44.com"
 baseurl12 = "https://r18.clickme.net"
 baseurl13 = "http://gebi0.com"
+baseurl14 = "https://bxjiao.com"
 
 maxCount = 5
 class BaseParse(threading.Thread):

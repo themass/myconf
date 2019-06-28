@@ -84,8 +84,7 @@ class VideoUserParse(BaseParse):
         dbVPN.close()
     def parseDomVideo(self, url):
         try:
-            url = url.replace("/voddetail/","").replace(".html","")
-            url = "%s%s%s"%("/vodplay/",url,"-1-1.html")
+            url = url.replace("/voddetail/","/vodplay/").replace(".html","-1-1.html")
             soup = self.fetchUrl(baseurl14+url, header14)
             div   = soup.first("div",{"id":"myVideo"})
             if div !=None:

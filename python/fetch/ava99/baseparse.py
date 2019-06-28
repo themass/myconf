@@ -19,6 +19,7 @@ maxCount = 3
 regVideo = re.compile(r"http(.*?)\.m3u8")
 regVideoCode = re.compile(r"unescape\(base64decode\('(.*?)'\)\);")
 videoId = re.compile("/vod-detail-id-(.*?)\.html")
+videoIdUrl=re.compile("/(.*?)\.html")
 class BaseParse(threading.Thread):
 
     def __init__(self):

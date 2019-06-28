@@ -15,7 +15,7 @@ base_videourl = "?mode=async&function=get_block&block_id=list_videos_common_vide
 baseurl3= "https://www.asy3333.com"
 videoId3 = re.compile("/index.php/vod/detail/id/(.*?).html")
 
-baseurl4 = "http://www.7mav25.club/"
+baseurl4 = "http://www.7bam.icu/"
 baseurl7 = "http://117klav.icu/"
 #https://bxchua.com
 baseurl8 = "https://bxjiao.com"

@@ -9,7 +9,7 @@ from common.base.data_base import DataBase
 # db_vpn = 'vpn'
 
 db_host = '127.0.0.1'
-db_port = 6666
+db_port = 3308
 db_user = 'vpn@server'
 db_passwd = 'Themass@5296'
 db_vpn = 'vpn'

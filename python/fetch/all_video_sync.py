@@ -59,7 +59,7 @@ def pase3():
     seman_vip.parseVideo()
     jinzidu_vip.parseVideo()
     kpd2_vip.parseVideo()
-    ttyyy_vip.parseVideo()
+    ###ttyyy_vip.parseVideo()
 def pase4():
     nyg6_vip.parseVideo()
     nyg6_vip.parseVideo2()

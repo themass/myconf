@@ -71,7 +71,7 @@ class VideoParse(BaseParse):
         print 'f8dy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-        time.sleep(2)
+        time.sleep(10)
     def getMp4(self,url):
         print url
         obj = httputil.getData(baseurl+url,{},header)

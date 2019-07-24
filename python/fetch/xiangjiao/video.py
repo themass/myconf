@@ -75,7 +75,6 @@ class VideoParse(BaseParse):
         print url
         obj = httputil.getData(baseurl+url,{},header)
         if obj==None or obj.get('data',{})==None:
-            print obj.get("errmsg","")
             return None
         if  obj.get('data',{}).get('httpurl',None)!=None:
             return obj['data']['httpurl']

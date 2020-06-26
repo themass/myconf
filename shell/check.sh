@@ -21,3 +21,6 @@ grep '\<CONFIG_IPV6_MULTIPLE_TABLES\>' /boot/config-`uname -r`
 grep '\<CONFIG_NETFILTER\>' /boot/config-`uname -r`
 grep '\<CONFIG_NETFILTER_XTABLES\>' /boot/config-`uname -r`
 grep '\<CONFIG_NETFILTER_XT_MATCH_POLICY\>' /boot/config-`uname -r`
+
+
+#mount /dev/vdb1 /mnt/

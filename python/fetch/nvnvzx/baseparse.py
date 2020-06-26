@@ -13,12 +13,12 @@ import re
 import os,sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl3 = "http://zyz605.com/"
-baseurl5 = "https://xiaoluoli99.date/"
-baseurl6 = "http://www.11111dv.com/"
-baseurl7 = "https://www.byt0obz9s7bb81fl44.top:52789"
-baseurl8 = "http://www.225mz.com/"
-baseurl9 = "https://www.699pi.com"
+#baseurl3 = "http://zyz605.com/"
+#baseurl5 = "https://xiaoluoli99.date/"
+#baseurl6 = "http://www.11111dv.com/"
+baseurl7 = "https://www.bylj5a9019w0ccl9u8j88983w23.xyz:52789/"
+#baseurl8 = "http://www.225mz.com/"
+#baseurl9 = "https://www.699pi.com"
 
 header = {'User-Agent': 
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl3}

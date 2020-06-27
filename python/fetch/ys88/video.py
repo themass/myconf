@@ -81,10 +81,10 @@ class VideoParse(BaseParse):
         print 'f8dy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        time.sleep(5)
 
     def parseDomVideo(self, url):
-        header = {'User-Agent':
-                  'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}
+        header = {"User-Agent":"Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)", "Referer": url}
         try:
             match = videoId.search(url)
             if match!=None:

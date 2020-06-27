@@ -14,8 +14,8 @@ import StringIO
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-#662cf,579cf,298cf
-baseurl = "https://www.58b8af512ab0.com/"
+#662cf,579cf,298cf,v5c5
+baseurl = "https://www.4219fc69f1ea.com/"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 soundUrl = "/yousheng/index.html"

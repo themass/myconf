@@ -26,7 +26,7 @@ maxCount = 3
 regVideo = re.compile(r"http(.*)m3u8")
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
 regVideo2282yy = re.compile(r"vHLSurl=(.*)m3u8")
-regVideo1345ju = re.compile(r'source:"//"+m3u8+"(.*?)\.m3u8",')
+regVideo1345ju = re.compile(r'source:"//"\+m3u8\+"(.*?)\.m3u8",')
 class BaseParse(threading.Thread):
 
     def __init__(self):

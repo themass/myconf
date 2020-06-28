@@ -66,8 +66,10 @@ class VideoParse(BaseParse):
                 obj = {}
                 obj['url'] = mp4Url
                 img = ahref.first("img")
-                if img.get('data-original').count("http")>0:
+                if img.get('data-original').count("http")==1:
                     obj['pic'] = img.get('data-original')
+                elif img.get('data-original').count("http")>1:
+                    obj['pic'] = img.get('data-original').replace("https://cmdyimg.tjyjj.cn/",'')
                 else:
                     obj['pic'] = "https"+img.get('data-original')
                 obj['name'] = ahref.get("title")

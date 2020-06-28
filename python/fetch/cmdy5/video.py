@@ -92,12 +92,12 @@ class VideoParse(BaseParse):
         return True
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(url.replace("//www.cmdy5.com",""), header)
+            soup = self.fetchUrl(url.replace("https://www.cmdy5.com",""), header)
             ul = soup.first('div',{"id":'vlink_1'})
             if ul!=None:
                 ahref = ul.first("a")
                 if ahref!=None:
-                    soup = self.fetchUrl(ahref.get("href").replace("//www.cmdy5.com",""), header)
+                    soup = self.fetchUrl(ahref.get("href").replace("https://www.cmdy5.com",""), header)
                     div = soup.first("div",{"class":"player mb"})
                     if div!=None:
                         script = div.first("script")

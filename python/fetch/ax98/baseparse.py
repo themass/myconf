@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
-baseurl = "https://cn.av101.net"
+baseurl = "https://cn.ax101.me/"
 baseurl2="https://avhd101.com"
 #'/hd','/chinese',
 urlList =['/uncensored']

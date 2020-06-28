@@ -26,7 +26,10 @@ class VideoUserParse(BaseParse):
                 if i!=1:
                     url= "/%s%s%s%s"%(item['url'],"index-",i,".html")
                 print url
-                self.videoParse(item['channel'], url,item['userId'])
+                con = self.videoParse(item['channel'], url,item['userId'])
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                    break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         ahrefs = self.header4()
@@ -39,7 +42,7 @@ class VideoUserParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']='' 
             obj['rate']=1.2
-            obj['channel']='599zh_all'
+            obj['channel']='8x8x拔插'
             obj['userId']=ahref.text
             obj['showType']=3
             obj['channelType']='normal'
@@ -48,9 +51,11 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrlWithBase(baseurl4+url, header4)
-        div = soup.first("div", {"class": "box-video-list"})
+        div = soup.first("div", {"class": "stui-pannel_bd"})
         if div!=None:
-            lis = div.findAll("li",{'class':"col-md-2 col-sm-3 col-xs-4"})
+            lis = div.findAll("li",{'class':"col-md-6 col-sm-4 col-xs-3"})
+            if len(lis)==0:
+                return False
             for li in lis:
                 #name,pic,url,userId,rate,updateTime,path
                 ahref = li.first("a")
@@ -85,20 +90,28 @@ class VideoUserParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         time.sleep(1)
+        return True
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrlWithBase(baseurl4+url, header4)
-            adiv = soup.first("ul",{"class":"playul"})
-            if adiv!=None:
-                soup = self.fetchUrlWithBase(baseurl4+adiv.first("a").get("href"),header4)
-                adiv = soup.first("div",{"class":"player"})
-                scripts = adiv.findAll('script')
-                for script in scripts:
-                    text = unquote(str(script.text)).replace(" ", "").replace('"//"+avod+"', "").replace('"//"+bvod+"', "")
-                    match = regVideo2282yy.search(text)
-                    if match!=None:
-                        videoUrl =match.group(1)
-                        return "%s%s%s"%("https://cdn.846u.com",videoUrl,'m3u8')
+            scripts = soup.findAll("script")
+            for s in scripts:
+                match = regVideo1345ju.search(s.text.replace(" ",""))
+                if match!=None:
+                    return "https://hlsplayer.88e.la%s.m3u8"%(match.group(1))
+
+#             soup = self.fetchUrlWithBase(baseurl4+url, header4)
+#             adiv = soup.first("ul",{"class":"playul"})
+#             if adiv!=None:
+#                 soup = self.fetchUrlWithBase(baseurl4+adiv.first("a").get("href"),header4)
+#                 adiv = soup.first("div",{"class":"player"})
+#                 scripts = adiv.findAll('script')
+#                 for script in scripts:
+#                     text = unquote(str(script.text)).replace(" ", "").replace('"//"+avod+"', "").replace('"//"+bvod+"', "")
+#                     match = regVideo2282yy.search(text)
+#                     if match!=None:
+#                         videoUrl =match.group(1)
+#                         return "%s%s%s"%("https://hlsplayer.88e.la",videoUrl,'m3u8')
             print '没找到mp4'
             return None
         except Exception as e:

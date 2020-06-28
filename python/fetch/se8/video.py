@@ -23,6 +23,8 @@ class VideoParse(BaseParse):
         for item in chs:
             try:
                 for i in range(1, maxVideoPage):
+                    if item['url'].count('短视频')>0:
+                        continue
                     url = item['url']
                     if i!=1:
                         url = "%s%s%s"%(url.replace(".html", "-"),i,".html")

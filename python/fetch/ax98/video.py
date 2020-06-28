@@ -73,10 +73,10 @@ class VideoParse(BaseParse):
         print 'ax98 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-        time.sleep(5)
 
     def parseDomVideo(self, url):
         try:
+            time.sleep(1)
             soup = self.fetchUrl(url, header)
             source = soup.first('source')
             if source!=None:

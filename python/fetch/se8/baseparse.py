@@ -22,7 +22,9 @@ soundUrl = "/yousheng/index.html"
 queue = MyQueue.MyQueue(200)
 maxCount = 5
 videoUrl='http://m.123456xia.com:888'
-m3u8regVideo = re.compile(r"varvHLSurl=(.*?)\+'(.*?)';")
+#m3u8regVideo = re.compile(r"varvHLSurl=(.*?)\+'(.*?)';")
+
+m3u8regVideo = re.compile(r"varvideo='(.*?)\.m3u8';")
 regVideo = re.compile(r'generate_down\((.*) \+ "(.*)"\);')
 urlMap={"m3u8url_10":"https://768ii.com","m3u8url_24k":"https://768ii.com","m3u8url_new":"https://768ii.com",
         "m3u8url_69":"https://768ii.com","m3u8url_10_2":"https://768ii.com","m3u8url_24k_2":"https://768ii.com",

@@ -134,6 +134,7 @@ class VideoParse(BaseParse):
                     for s in scripts:
                         match = m3u8regVideo.search(s.text.replace(" ",""))
                         if match!=None:
+                            return "https://s2.cdn-23147ed7c1b03e86.com%s.m3u8"%(match.group(1))
                             if m3u8Map.get(match.group(1)) !=None:
                                 return m3u8Map.get(match.group(1))+str(match.group(2))
             scripts = soup.findAll("script", {"type": "text/javascript"})

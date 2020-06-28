@@ -12,7 +12,7 @@ import zlib,os
 from common.envmod import *
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "http://e1.wkcsncjdbd.top/pw/"
+baseurl = "http://k5.colin1994.com/pw/"
 img_channel_title = re.compile(r"\[[0-9]+P\]")
 img_channel_date = re.compile(r"\[[0-9\.]+\]")
 img_channels = {"唯美写真": "thread.php?fid=14&page=", "露出激情": "thread.php?fid=16&page=",

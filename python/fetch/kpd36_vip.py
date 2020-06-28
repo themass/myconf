@@ -24,7 +24,7 @@ def pareImg():
     imgrun = img.ImgParse()
     imgrun.run()
 if __name__ == '__main__':
-    pareImg()
-    parseText()
+#     pareImg()
+#     parseText()
     parseVideo()
     

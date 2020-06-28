@@ -16,7 +16,7 @@ sys.setdefaultencoding('utf8')
 #baseurl3 = "http://zyz605.com/"
 #baseurl5 = "https://xiaoluoli99.date/"
 #baseurl6 = "http://www.11111dv.com/"
-baseurl7 = "https://www.bylj5a9019w0ccl9u8j88983w23.xyz:52789/"
+baseurl7 = "https://www.byg6f64ipa4gk655rvap8zw84u.xyz:52789/"
 #baseurl8 = "http://www.225mz.com/"
 #baseurl9 = "https://www.699pi.com"
 

@@ -26,7 +26,10 @@ class VideoParse(BaseParse):
                 url= ch['url']
                 if i!=1:
                     url= "%s%s%s"%(ch['url'].replace('.html','-'),i,'.html')
-                self.videoParse(ch['channel'], url)
+                con = self.videoParse(ch['channel'], url)
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',ch['name'],ch['url']
+                    break
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
         channelList = []
@@ -49,6 +52,8 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         lis = soup.findAll("li", {"class": "p1 m1"})
+        if len(lis)==0:
+            return False
         for li in lis:
             ahref = li.first('a')
             if ahref!=None:
@@ -81,10 +86,10 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj,obj['videoType'],baseurl)
 
-        print 'f8dy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'cmdy5 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-
+        return True
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url.replace("//www.cmdy5.com",""), header)

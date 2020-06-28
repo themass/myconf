@@ -10,8 +10,10 @@ from common import typeutil
 from common import db_ops
 from common import MyQueue
 from nfss import *
+
 import re
 import sys
+from fetch import nvnvzx_vip
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -23,5 +25,6 @@ def parseVideo4():
     videop = video4.VideoUserParse()
     videop.run()
 if __name__ == '__main__':
-    parseVideo2()
+#     parseVideo2()
     parseVideo4()
+    nvnvzx_vip.parseVideo7()

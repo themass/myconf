@@ -13,7 +13,7 @@ import re
 import os,sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-#baseurl2 = "http://www.13aeae.com/"
+baseurl2 = "http://www.13aeae.com/"
 baseurl4 = "https://www.1345ju.com"
 header2 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl2,

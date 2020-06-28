@@ -34,6 +34,8 @@ class VideoParse(BaseParse):
         if div!=None:
             ahrefs = div.findAll('a')
             for ahref in ahrefs:
+                if ahref.text.count("动作")>0:
+                    continue
                 obj={}
                 obj['name']=ahref.text
                 obj['url']=ahref.get('href')

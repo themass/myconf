@@ -11,7 +11,11 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re
 import os
-baseurl = "http://www.nyg32.com"
+#nyg32备用一：https://fpbmyc.com
+#备用二：https://fpbcmy.com
+#备用三：https://mydfpb.com
+#备用四：https://dmydh.com
+baseurl = "http://www.fpbmya.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3

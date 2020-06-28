@@ -88,14 +88,24 @@ class VideoParse(BaseParse):
                     soup = self.fetchUrl(ahref.get('href'), header)
                     div = soup.first('div',{'class':"info clearfix"})
                     if div!=None:
-                        play = div.first("script").get("src")
-                        if play!=None:
-                            text = self.fetchContentUrlWithBase(baseurl+play, {})
-                            content = unquote(str(text)).split("$")
-                            for item in content:
-                                match = regVideo.search(item)
-                                if match!=None:
-                                    return "http"+match.group(1)+'m3u8'
+                        #play = div.first("script").get("src")
+                        #if play!=None:
+                            #text = self.fetchContentUrlWithBase(baseurl+play, {})
+                            #content = unquote(str(text)).split("$")
+                        content = unquote(str(div.text)).split("$")
+                        for item in content:
+                            match = regVideo.search(item)
+                            if match!=None:
+                                return "http"+match.group(1)+'m3u8'
+                        for text in content:
+                            match = videoApiMp4.search(text)
+                            if match!=None:
+                                str= match.group(1)
+                                return "%s%s%s"%("http",str,".mp4")
+                        for text in content:
+                            match = shareVideo.search(text)
+                            if match!=None:
+                                return text.replace("'",'').replace(")",'').replace(";",'')
             print '没找到mp4'
             return None
         except Exception as e:

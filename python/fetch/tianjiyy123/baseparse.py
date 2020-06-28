@@ -16,7 +16,9 @@ header={'Cookie':"td_cookie=18446744069599001696; UM_distinctid=16267a77486203-0
                 'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")
+videoApiMp4 = re.compile(r'http(.*?)\.mp4')
 
+shareVideo = re.compile(r"http(.*?)/share/(.*?)")
 
 class BaseParse(threading.Thread):
 

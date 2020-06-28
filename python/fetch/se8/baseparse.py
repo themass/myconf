@@ -42,7 +42,7 @@ class BaseParse(threading.Thread):
         while count < maxCount:
             try:
                 req = urllib2.Request(baseurl + url, headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": baseurl})
+                    'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer": baseurl,'Cookie':' _ga=GA1.2.330215259.1593160900; Hm_lvt_3543e29c6ddfec226d134afef16f9f54=1593160900,1593349888; Hm_lvt_f343b6d40a7d6aeb9c7e1dc87ffbd27c=1593160900,1593349888; _gid=GA1.2.1460935595.1593349888; runno=1; tiaoss=0; _gat_gtag_UA_159847605_3=1; _gat_gtag_UA_159847605_4=1; Hm_lpvt_3543e29c6ddfec226d134afef16f9f54=1593353637; Hm_lpvt_f343b6d40a7d6aeb9c7e1dc87ffbd27c=1593353637; playss=18'})
                 req.encoding = 'utf-8'
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(

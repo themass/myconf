@@ -28,36 +28,33 @@ class VideoParse(BaseParse):
                         url = "%s%s%s"%(url.replace(".html", "-"),i,".html")
                     if item['url'].count('女优专辑')>0:
                         print '解析女友专辑'
-                        self.nvviderPaser(item['channel'], url)
+                        con = self.nvviderPaser(item['channel'], url)
+                        if con==False:
+                            print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                            break
                     else:
-                        self.videoParse(
+                        con = self.videoParse(
                             item['channel'], url)
+                        if con==False:
+                            print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                            break
                     print '解析页数 ', item['url'], ' ---', i, '完成'
             except Exception as e:
                 pass
     def videoChannel(self):
-        soup = self.fetchUrl(self.t_obj['url'])
-        tds = soup.first('div',{"class":"row category-content"})
         channelList =[]
-        if tds!=None:
-            alist = tds.findAll("a")
-            for ahref in alist:
-                obj={}
-                obj['name']='超爽自拍'
-                obj['url']=ahref.get('href')
-                obj['baseurl']=baseurl
-                obj['updateTime']=datetime.datetime.now()
-                img = ahref.first('img')
-                if img.get("data-original")==None:
-                    obj['pic']=baseurl+img.get('src')
-                else:
-                    obj['pic']=img.get('data-original')
-                obj['rate']=1.2
-                obj['showType']=3
-                obj['channel']="www.233cf.com"+ahref.get('href')
-                obj['showType']=3
-                obj['channelType']='normal'
-                channelList.append(obj)
+        obj={}
+        obj['name']='超爽自拍'
+        obj['url']=self.t_obj['url']
+        obj['baseurl']=baseurl
+        obj['updateTime']=datetime.datetime.now()
+        obj['pic'] = ''
+        obj['rate']=1.2
+        obj['showType']=3
+        obj['channel']="www.233cf.com"+self.t_obj['url']
+        obj['showType']=3
+        obj['channelType']='normal'
+        channelList.append(obj)
         channelList.reverse()
         return channelList
     def nvviderPaser(self, channel, url):
@@ -65,6 +62,8 @@ class VideoParse(BaseParse):
         div = soup.first("div", {"class": "text-list-html "})
         if div!=None:
             lis = div.findAll('li')
+            if len(lis)==0:
+                return False
             for li in lis:
                 ahref = li.first('a')
                 if ahref != None:
@@ -77,13 +76,15 @@ class VideoParse(BaseParse):
                             self.videoParse(channel, url)
                         except Exception as e:
                             pass
-                        
+            return True           
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
         div = soup.first("div", {"class": "text-list-html "})
         if div!=None:
             lis = div.findAll('li')
+            if len(lis)==0:
+                return False
             for li in lis:
                 ahref = li.first('a')
                 if ahref != None:
@@ -119,7 +120,8 @@ class VideoParse(BaseParse):
         print 'se8 video -- ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-
+        return True
+    
     def parseDomVideo(self, url):
         header = {'User-Agent':
                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": url}

@@ -110,9 +110,9 @@ if __name__ == '__main__':
     
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
     parseVideo()
-    parseSound()
-    parseGirlImg()
-    parseImg()
-    parseText()
+#     parseSound()
+#     parseGirlImg()
+#     parseImg()
+#     parseText()
     
 #     parseVideoRmb()

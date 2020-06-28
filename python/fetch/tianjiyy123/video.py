@@ -24,7 +24,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             for i in range(1, maxVideoPage):
-                url= "%s%s%s"%(item['url'].replace('1-------.html',''),i,"---0-0---.html")
+                url= item['url'].replace('pg-1','pg-'+i)
                 self.videoParse(item['channel'], url)
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -34,8 +34,6 @@ class VideoParse(BaseParse):
         if div!=None:
             ahrefs = div.findAll('a')
             for ahref in ahrefs:
-                if ahref.text.count("动作")>0:
-                    continue
                 obj={}
                 obj['name']=ahref.text
                 obj['url']=ahref.get('href')

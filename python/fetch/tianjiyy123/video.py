@@ -92,7 +92,7 @@ class VideoParse(BaseParse):
                         #if play!=None:
                             #text = self.fetchContentUrlWithBase(baseurl+play, {})
                             #content = unquote(str(text)).split("$")
-                        content = unquote(str(div.text)).split("$")
+                        content = unquote(div.text).split("$")
                         for item in content:
                             match = regVideo.search(item)
                             if match!=None:

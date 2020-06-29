@@ -110,7 +110,7 @@ class VideoUserParse(BaseParse):
             adiv = soup.first("ul",{"class":"playul"})
             if adiv!=None:
                 soup = self.fetchUrl(adiv.first("a").get("href"), header)
-                adiv = soup.first("div",{"class":"player"})
+                adiv = soup.first("div",{"class":"container"})
                 text = unquote(str(adiv.text))
                 texts = text.split(";")
                 for item in texts:

@@ -65,8 +65,8 @@ class VideoUserParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                img = ahref.first("img")
-                obj['pic'] = img.get("src")
+                img = ahref.first("div")
+                obj['pic'] = img.get("style").replace("background-image:url('",'').replace("');",'')
                 obj['name'] = ahref.first("h3").text
     
                 videourl = urlparse(obj['url'])

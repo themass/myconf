@@ -80,7 +80,7 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 obj['pic'] = ahref.get("data-original")
-                obj['name'] = ahref.get('title')
+                obj['name'] = li.first('h5').text
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "599zh"+videourl.path

@@ -8,7 +8,9 @@ import time
 from fetch.profile import *
 from baseparse import baseurl
 import json
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 class VideoParse(BaseParse):
 
     def __init__(self):
@@ -45,7 +47,7 @@ class VideoParse(BaseParse):
         return  channelList
     def videoParse(self, channel, url):
         dataList = []
-        obj = httputil.getData(baseurl+url,{},header)
+        obj = httputil.getData(baseurl+url,{},header,isGzip=True)
         if obj==None or obj.get('data',None)==None or obj.get('data',None).get('vodrows',None)==None:
             return 
         for item in obj['data']['vodrows']:
@@ -74,7 +76,7 @@ class VideoParse(BaseParse):
         time.sleep(5)
     def getMp4(self,url):
         print url
-        obj = httputil.getData(baseurl+url,{},header)
+        obj = httputil.getData(baseurl+url,{},header,isGzip=True)
         if obj==None or obj.get('data',{})==None:
             return None
         if  obj.get('data',{}).get('httpurl',None)!=None:

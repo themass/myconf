@@ -27,7 +27,10 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url'].replace('1.html','')
             for i in range(1, maxVideoPage):
-                self.videoParse(item['channel'], (url + "?page=%s") % (i))
+                con = self.videoParse(item['channel'], (url + "?page=%s") % (i))
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                    break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         channelList = []
@@ -52,6 +55,8 @@ class VideoParse(BaseParse):
         div = soup.first('div',{"class":"mdui-row-xs-3 mdui-grid-list list-videos"})
         if div!=None:
             divs = div.findAll("div", {"class": "mdui-col"})
+            if len(divs)==0:
+                return False
             for item in divs:
                 ahref = item.first('a')
                 if ahref != None:
@@ -89,6 +94,7 @@ class VideoParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         time.sleep(0.5)
+        return True
     def parseDomVideo(self, url):
         try:
             if url.count("script")==0:

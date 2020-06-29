@@ -26,7 +26,10 @@ class VideoUserParse(BaseParse):
                 if i!=1:
                     url= "%s%s%s%s"%(item['url'],"index_",i,".html")
                 print url
-                self.videoParse(item['channel'], url,item['userId'])
+                con = self.videoParse(item['channel'], url,item['userId'])
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                    break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         ahrefs = self.header8()
@@ -39,7 +42,7 @@ class VideoUserParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']='' 
             obj['rate']=1.2
-            obj['channel']='shuimi_all'
+            obj['channel']='nvnvzx_all'
             obj['userId']='shuimi_'+ahref.text
             obj['showType']=3
             obj['channelType']='normal'
@@ -51,6 +54,8 @@ class VideoUserParse(BaseParse):
         div = soup.first("div",{"class":"box movie2_list"})
         if div!=None:
             lis = div.findAll("li")
+            if len(lis)==0:
+                return False
             for li in lis:
                 #name,pic,url,userId,rate,updateTime,path
                 ahref = li.first("a")
@@ -85,6 +90,7 @@ class VideoUserParse(BaseParse):
         print 'shuimi video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        return True
 
     def parseDomVideo(self, url):
         try:

@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re,os
 # http://www.dehyc.com
-channels = ['/vod/listing-0-0-0-0-0-0-0-0-0-','/vod/hot-0-0-0-0-0-0-0-0-0-','/vod/latest-0-0-0-0-0-0-0-0-0-']
+channels = ['/vod/listing-0-0-0-0-0-0-0-0-0-']
 baseurl = "https://wtsw28ah5a8q75g07ywb.lagoapps.com"
 header = {'token':
           'bmFXcHBmemI0RzdJaVh5ZzlQOHNiZUh3L0FYa1pldzRoTmRScnByanN4bWllUURzUzJZTUx3VXprWlZ4QXhVV0ZuVUJmNGlXSkZORHN6RmNZMmNqRmJ1WFhCVk04VlE2d25ZcnJhRXdxN0tENUNWYjd3dnZ3eGgzNnFmS0pDUnk=', "Referer": baseurl

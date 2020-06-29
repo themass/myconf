@@ -10,14 +10,15 @@ from common import common
 import threading
 from BeautifulSoup import BeautifulSoup
 import re,os
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 # http://www.dehyc.com
 channels = ['/vod/listing-0-0-0-0-0-0-0-0-0-']
 baseurl = "https://wtsw28ah5a8q75g07ywb.lagoapps.com"
-header = {'token':
-          'bmFXcHBmemI0RzdJaVh5ZzlQOHNiZUh3L0FYa1pldzRoTmRScnByanN4bWllUURzUzJZTUx3VXprWlZ4QXhVV0ZuVUJmNGlXSkZORHN6RmNZMmNqRmJ1WFhCVk04VlE2d25ZcnJhRXdxN0tENUNWYjd3dnZ3eGgzNnFmS0pDUnk=', "Referer": baseurl
-          ,"User-Agent": "okhttp/3.10.0","Host": "wtsw28ah5a8q75g07ywb.lagoapps.com","Accept-Encoding": "gzip"
-
-}
+header = {'Cookie':'UM_distinctid=172f618d129281-055f55fad65761-47e1039-100200-172f618d12c2fb; ASPSESSIONIDCGTBTCBS=PMKJAEJDCEIHOGLMBCBGIGIA; ASPSESSIONIDCGQDTBDT=BGBOJDKDFAEGAAILGPKJOHOA; MAX_HISTORY={video:[{"name":"\u673A\u5173\u67AA\u56DA\u5F92","link":"http://www.tlyy.cc/dy/dy1/jiguanqiangqiutu/","pic":"https://pic.kssxdd.com/uploadimg/2020-6/20206249343540317.jpg"},{"name":"\u5E08\u7236","link":"http://www.tlyy.cc/dy/dy1/shifu/","pic":"https://pic.kssxdd.com/uploadimg/2015-12/201512140295682712.jpg"}]}; CNZZDATA4664080=cnzz_eid%3D1805056799-1593266144-https%253A%252F%252Fwww.baidu.com%252F%26ntime%3D1593271544; ASPSESSIONIDAERDRBDS=EMCIHLKDNJLPGOMGOJBGOHLF; ASPSESSIONIDAESDRADS=BGDFMLJDMFPAJIJOKKICJKFM; cscpvrich6565_fidx=3',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36', "Referer":baseurl
+                ,"Host": "wtsw28ah5a8q75g07ywb.lagoapps.com","Accept-Encoding": "gzip"}
 maxCount = 3
 videoApi = re.compile(r'http(.*?)\.m3u8')
 videoApiMp4 = re.compile(r'http(.*?)\.mp4')

@@ -9,7 +9,7 @@ import StringIO
 import gzip
 import requests
 DEFULT_ENCODEING = 'utf-8'
-DEFULT_TIMEOUT = 20
+DEFULT_TIMEOUT = 30
 
 
 def postRequestWithBody(url, data={}, header={}):
@@ -49,6 +49,7 @@ def getData(url, data={}, header={}, isGzip=False):
         try:
             datastr = urllib.urlencode(data)
             url = "%s?%s" % (url, datastr)
+            
             req = urllib2.Request(url, headers=header)
             apidata = urllib2.urlopen(req, timeout=DEFULT_TIMEOUT).read()
             if isGzip:

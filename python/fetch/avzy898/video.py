@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url']
             for i in range(1, maxVideoPage):
-                con = self.videoParse(item['channel'], '%s%s%s'%(url.replace('.html','-pg-'),i,'html'))
+                con = self.videoParse(item['channel'], '%s%s%s'%(url.replace('.html','-pg-'),i,'.html'))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break

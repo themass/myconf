@@ -30,7 +30,7 @@ str1 = '''
 def fetchUrl(url):
     req = urllib2.Request(url, headers={'Cookie':'UM_distinctid=172f618d129281-055f55fad65761-47e1039-100200-172f618d12c2fb; ASPSESSIONIDCGTBTCBS=PMKJAEJDCEIHOGLMBCBGIGIA; ASPSESSIONIDCGQDTBDT=BGBOJDKDFAEGAAILGPKJOHOA; MAX_HISTORY={video:[{"name":"\u673A\u5173\u67AA\u56DA\u5F92","link":"http://www.tlyy.cc/dy/dy1/jiguanqiangqiutu/","pic":"https://pic.kssxdd.com/uploadimg/2020-6/20206249343540317.jpg"},{"name":"\u5E08\u7236","link":"http://www.tlyy.cc/dy/dy1/shifu/","pic":"https://pic.kssxdd.com/uploadimg/2015-12/201512140295682712.jpg"}]}; CNZZDATA4664080=cnzz_eid%3D1805056799-1593266144-https%253A%252F%252Fwww.baidu.com%252F%26ntime%3D1593271544; ASPSESSIONIDAERDRBDS=EMCIHLKDNJLPGOMGOJBGOHLF; ASPSESSIONIDAESDRADS=BGDFMLJDMFPAJIJOKKICJKFM; cscpvrich6565_fidx=3',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36', "Referer":url
-                ,"Host": "gebi0.com"})
+                ,"Host": "wtsw28ah5a8q75g07ywb.lagoapps.com","Accept-Encoding": "gzip"})
 #     req.encoding = 'utf-8'
     response = urllib2.urlopen(req, timeout=3000)
     gzipped = response.headers.get(
@@ -44,15 +44,15 @@ if __name__ == '__main__':
           "cookie":"Hm_lvt_64f3b8e72697945612104f755f0e6ce4=1557163354; __51cke__=; Hm_lpvt_64f3b8e72697945612104f755f0e6ce4=1557164611; __tins__19425543=%7B%22sid%22%3A%201557163355132%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201557166411669%7D; __51laig__=10",
           "X-Requested-With":"XMLHttpRequest"}
    
-    videoId = re.compile("(.*\/)(\d+)\.html")
-    match = videoId.search('dongzuopian/202006/91671.html')
-    if match!=None:
-        
-        Id= match.group(2)
-        print match.group(1),Id
-        url  = 'vod-play-id-%s-src-1-num-1.html'%(Id)
-        print url
-    soup= fetchUrl("https://www.tlyy.com/dy/dy1/")
+#     videoId = re.compile("(.*\/)(\d+)\.html")
+#     match = videoId.search('dongzuopian/202006/91671.html')
+#     if match!=None:
+#         
+#         Id= match.group(2)
+#         print match.group(1),Id
+#         url  = 'vod-play-id-%s-src-1-num-1.html'%(Id)
+#         print url
+    soup= fetchUrl("https://wtsw28ah5a8q75g07ywb.lagoapps.com/vod/listing-0-0-0-0-0-0-0-0-0-1")
     print soup
     #print soup.findAll("div",{"class":"x3 margin-top"})
 #     fcntl.flock('', fcntl.LOCK_EX)

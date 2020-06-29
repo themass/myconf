@@ -42,7 +42,7 @@ def postData(url, data={}, header={}):
         return resp
     except Exception as e:
         raise HTTPException('url=%s' % (url), ex=e)
-def getData(url, data={}, header={}):
+def getData(url, data={}, header={}, isGzip=False):
     count = 0
     maxCount = 3
     while count < maxCount:
@@ -51,6 +51,10 @@ def getData(url, data={}, header={}):
             url = "%s?%s" % (url, datastr)
             req = urllib2.Request(url, headers=header)
             apidata = urllib2.urlopen(req, timeout=DEFULT_TIMEOUT).read()
+            if isGzip:
+                compressedstream = StringIO.StringIO(apidata)
+                gzipper = gzip.GzipFile(fileobj=compressedstream)
+                apidata = gzipper.read()
             return json.loads(apidata, encoding=DEFULT_ENCODEING)
         except Exception as e:
             print '打开页面错误,重试', 'url=%s' % (url), '次数', count

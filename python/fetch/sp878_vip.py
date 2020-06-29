@@ -27,8 +27,8 @@ def parseText():
     textRun.run()
 if __name__ == '__main__':
 
-    parseText()
-    
-    pareImg()
+#     parseText()
+#     
+#     pareImg()
     parseVideo()
 

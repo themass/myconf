@@ -27,4 +27,3 @@ def parseVideo4():
 if __name__ == '__main__':
 #     parseVideo2()
     parseVideo4()
-    nvnvzx_vip.parseVideo7()

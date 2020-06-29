@@ -41,7 +41,7 @@ class VideoUserParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']='' 
             obj['rate']=1.2
-            obj['channel']='baoyu_all'
+            obj['channel']='8x8x拔插'
             obj['userId']='baoyu_'+ahref.text
             obj['showType']=3
             obj['channelType']='normal'

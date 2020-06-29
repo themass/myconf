@@ -20,7 +20,7 @@ def parseText():
     textpo.run()
 def parseVideo():
     videop = video.VideoUserParse()
-    videop.run()
+    videop.run() 
 def parseImg():
     imgop = img.ImgParse()
     imgop.run()

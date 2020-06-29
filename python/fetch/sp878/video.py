@@ -26,7 +26,10 @@ class VideoUserParse(BaseParse):
                 if i!=1:
                     url= "%s%s%s%s"%(item['url'],"index-",i,".html")
                 print url
-                self.videoParse(item['channel'], url,item['userId'])
+                con= self.videoParse(item['channel'], url,item['userId'])
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                    break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
         ahrefs = self.header("header.html")
@@ -51,6 +54,8 @@ class VideoUserParse(BaseParse):
         div = soup.first("div", {"class": "box movie_list"})
         if div!=None:
             lis = div.findAll("li")
+            if len(lis)==0:
+                return False
             for li in lis:
                 #name,pic,url,userId,rate,updateTime,path
                 ahref = li.first("a")
@@ -85,7 +90,7 @@ class VideoUserParse(BaseParse):
         print '599zh video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-
+        return True
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url, header)

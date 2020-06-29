@@ -51,7 +51,7 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div", {"class": "box movie_list"})
+        div = soup.first("div", {"class": "box movie2_list"})
         if div!=None:
             lis = div.findAll("li")
             if len(lis)==0:
@@ -105,7 +105,7 @@ class VideoUserParse(BaseParse):
                         if videoUrl.count("d.9xxav.com")==0:
                             print videoUrl,"有遗漏",url 
                             return None
-                        videoUrl = videoUrl.replace('d.9xxav.com', "p.672sp.com")
+                        videoUrl = videoUrl.replace('d.9xxav.com', "p.8papaii.com")
                         return "%s%s%s"%("http",videoUrl,'mp4.m3u8')
             print '没找到mp4'
             return None

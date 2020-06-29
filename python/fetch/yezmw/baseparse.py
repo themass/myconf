@@ -10,7 +10,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re,os
 # http://www.dehyc.com
-baseurl = "http://yezmw.com"
+baseurl = "https://yezmw.com"
 channel_pre = 'self_yezmw_'
 header = {'Cookie':"UM_distinctid=1657bef2d89118-0ca65ae184eaf5-47e1039-1fa400-1657bef2d8a12b; Hm_lvt_e4fa146ca527418cd9e1709678bb7628=1535382597; CNZZDATA1271275477=278914166-1535377470-%7C1535382870; Hm_lpvt_e4fa146ca527418cd9e1709678bb7628=1535383002",
                 'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":"http://yezmw.com/"}

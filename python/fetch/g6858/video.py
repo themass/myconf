@@ -110,14 +110,14 @@ class VideoUserParse(BaseParse):
             adiv = soup.first("ul",{"class":"playul"})
             if adiv!=None:
                 soup = self.fetchUrl(adiv.first("a").get("href"), header)
-                adiv = soup.first("div",{"class":"container"})
+                adiv = soup.first("div",{"id":"player"})
                 text = unquote(str(adiv.text))
                 texts = text.split(";")
                 for item in texts:
                     match = regVideo.search(item)
                     if match!=None:
                         videoUrl =match.group(1)
-                        videoUrl = videoUrl.replace('"+CN3+"', "m3u8.46cdn.com").replace('"+CN1+"', "m3u8.46cdn.com").replace('"+CN2+"', "m3u8.46cdn.com").replace('"+CN4+"', "m3u8.46cdn.com")
+                        videoUrl = videoUrl.replace('"+CN3+"', "m3u8.41cdn.com").replace('"+CN1+"', "m3u8.41cdn.com").replace('"+CN2+"', "m3u8.41cdn.com").replace('"+CN4+"', "m3u8.41cdn.com")
                         return "%s%s%s"%("http",videoUrl,'m3u8')
             print '没找到mp4'
             return None

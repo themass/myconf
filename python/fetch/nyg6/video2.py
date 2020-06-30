@@ -112,6 +112,8 @@ class VideoParse(BaseParse):
         print 'nyg6 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        if len(dataList)==0:
+            return False
         return True
 
     def parseDomVideo(self, url):

@@ -19,7 +19,7 @@ baseurl5 = "https://xiaoluoli99.date/"
 baseurl6 = "http://www.11111dv.com/"
 
 
-
+##########     www.by8832.com  鲍鱼
 baseurl7 = "https://www.byg6f64ipa4gk655rvap8zw84u.xyz:52789/"
 baseurl8 = "https://www.48mm.xyz/"
 baseurl9 = "https://www.6678ge.com/"
@@ -40,6 +40,8 @@ maxCount = 2
 regVideo = re.compile(r"http(.*?)m3u8")
 regVideo2 = re.compile(r"http(.*?)\.m3u8")
 regVideoEm = re.compile(r'src="http(.*?)" frameborder="0"')
+regVideo7 = re.compile(r'"url":"(.*?)m3u8"')
+
 
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
 regVideo6hu58 = re.compile(r"varvHLSurl=m3u8_host\+'(.*?)m3u8")

@@ -56,7 +56,7 @@ class VideoUserParse(BaseParse):
             ahref = li.first("a")
             if ahref!=None:
                 obj = {}
-                mp4Url = self.parseDomVideo(ahref.get('data-original'))
+                mp4Url = self.parseDomVideo(ahref.get('href'))
                 if mp4Url == None:
                     print '没有mp4 文件:', ahref.get("href")
                     continue
@@ -89,10 +89,21 @@ class VideoUserParse(BaseParse):
         return len(dataList)
     def parseDomVideo(self, url):
         try:
-            if url.count("https://imgcdn1.weilekangnet.com:59666")==0:
-                print url,'没有mp4'
-                return None
-            return url.replace("https://imgcdn1.weilekangnet.com:59666","https://bycdn0l.weilekangnet.com:59666").replace("pic.jpg","index.m3u8")
+            soup = self.fetchUrlWithBase(baseurl7+url, header7)
+            div = soup.first("div", {"class":"stui-player__video embed-responsive embed-responsive-16by9 clearfix"})
+            if div !=None:
+                text = unquote(div.text)
+                texts = text.split(",")
+                for item in texts:
+                    match = regVideo7.search(item)
+                    if match!=None:
+                        videoUrl =match.group(1)
+                        return "%s%s%s"%("https://baiducdncnnmsla.weilekangnet.com:59666",videoUrl,'m3u8')
+ 
+ #if url.count("https://imgcdn1.weilekangnet.com:59666")==0:
+#                 print url,'没有mp4'
+#                 return None
+#             return url.replace("https://imgcdn1.weilekangnet.com:59666","https://bycdn0l.weilekangnet.com:59666").replace("pic.jpg","index.m3u8")
         except Exception as e:
             print common.format_exception(e)
             return None

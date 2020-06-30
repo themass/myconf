@@ -27,8 +27,11 @@ class VideoParse(BaseParse):
                     url= "%s%s%s"%(ch['url'],"?page=",i)
                 else:
                     url= "%spage_%s.html"%(ch['url'],i)
-                self.videoParse(ch['channel'], url)
+                con = self.videoParse(ch['channel'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',ch['name'],ch['url']
+                    break
     def videoChannel(self):
         objs = []
         
@@ -80,6 +83,8 @@ class VideoParse(BaseParse):
             grids = soup.findAll("div",{"class":"grid_item"})
         if len(grids)==0:
             grids = soup.findAll("div",{"class":"grid_item grid_type1"})
+        if len(grids)==0:
+                return False
         for li in grids:
             ahref = li.first('a')
             if ahref!=None:
@@ -107,6 +112,7 @@ class VideoParse(BaseParse):
         print 'nyg6 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        return True
 
     def parseDomVideo(self, url):
         try:

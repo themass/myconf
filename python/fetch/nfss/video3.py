@@ -32,7 +32,7 @@ class VideoUserParse(BaseParse):
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
     def videoChannel(self):
-        ahrefs = self.header2()
+        ahrefs = self.header3()
         channelList = []
         for ahref in ahrefs:
             obj={}

@@ -11,19 +11,14 @@ import g6858_vip
 import kedouwo_vip
 import ddd804_vip
 import kpd36_vip
-import ff326_vip
-from fetch import ava99_vip, bt2n_vip, ni345_vip, hs941_vip, bx88222_vip
+from fetch import  bx88222_vip
 def pase1():
     fff64_vip.parseText()
     novel941_vip.parseText()
     kedouwo_vip.parseText12()
     g6858_vip.parseText()
-    bt2n_vip.parseText()
-    ava99_vip.parseText()
     ddd804_vip.parsetextddd804()
     ddd804_vip.parsetext65aeae()
-    ff326_vip.parseText()
-    hs941_vip.parseText()
     
     kpd36_vip.parseText()
     bx88222_vip.parseText()
@@ -35,8 +30,6 @@ def pase2():
     se8_vip.startWork()
     se8_vip.parseText()
     
-    bt2n_vip.parseText()
-    ni345_vip.parseText()
 def pase3():
     novel941_vip.parseText2()
     ####mayi01_vip.parseText()

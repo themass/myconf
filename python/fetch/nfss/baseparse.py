@@ -82,7 +82,9 @@ class BaseParse(threading.Thread):
         with open("nfss/header5.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
-        return BeautifulSoup(content)
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchUrlWithBase(self, url, aheader=header):
         count = 0
         while count < maxCount:

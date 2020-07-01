@@ -52,6 +52,7 @@ class VideoUserParse(BaseParse):
         dataList = []
         soup = self.fetchUrlWithBase(baseurl5+url, header4)
         div = soup.first("div", {"class": "vodlist dylist"})
+        print div
         if div!=None:
             lis = div.findAll("div",{"class",'listpic'})
             if len(lis)==0:

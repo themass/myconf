@@ -66,7 +66,7 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 obj['pic'] = ahref.get("data-original")
-                obj['name'] = ahref.first("div",{"class":"vodname"}).text
+                obj['name'] = li.first("div",{"class":"vodname"}).text
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "tlula44_"+videourl.path

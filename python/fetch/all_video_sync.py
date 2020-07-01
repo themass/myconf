@@ -14,7 +14,6 @@ import sp878_vip
 import tzzy1399_vip
 import kpd36_vip
 import nfss_vip
-import tlbfao_vip
 import teshiw_vip
 import sy88_vip
 import nyg6_vip
@@ -32,7 +31,6 @@ def pase2():
     kpd36_vip.parseVideo()
 def pase3():
     tianjiyy123_vip.parseVideo()
-    tlbfao_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kpd2_vip.parseVideo()
     ###ttyyy_vip.parseVideo()
@@ -66,8 +64,8 @@ def pase8():
     cmdy5_vip.parseVideo()
 
 def all():
-    pase1()
-    pase2()
+#     pase1()
+#     pase2()
     pase3()
     pase4()
     pase5()

@@ -14,6 +14,7 @@ import os,sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl2 = "http://www.13aeae.com/"
+baseurl3 = "http://www.asy3333.com/"
 baseurl4 = "https://www.1345ju.com"
 header2 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl2,
@@ -27,6 +28,7 @@ regVideo = re.compile(r"http(.*)m3u8")
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
 regVideo2282yy = re.compile(r"vHLSurl=(.*)m3u8")
 regVideo1345ju = re.compile(r'source:"//"\+m3u8\+"(.*?)\.m3u8",')
+regVideoasy3333 = re.compile(r'source:"//"\+m3u8\+"(.*?)\.m3u8",')
 class BaseParse(threading.Thread):
 
     def __init__(self):

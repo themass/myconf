@@ -36,27 +36,19 @@ import ni345_vip
 from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,\
     zooredtube_vip, qiezi_vip, f2d_vip, xiangj_vip, siguo_vip, dy1716_vip,\
     japanbeast_vip, jinzidu_vip, k9vidz_vip, kpd2_vip, lele_vip, ozsese_vip,\
-    singlove_vip
+    singlove_vip, avzy88_vip, cmdy5_vip
 
 def pase1():
-    ava99_vip.parseVideo()
     ax98_vip.parseVideo()
     ax98_vip.parseVideo2()
-    bt2n_vip.parseVideo()
-    singlove_vip.parseVideo()
-#     ni345_vip.parseVideo()
+    avzy88_vip.parseVideo()
 def pase2():
-    dxg11_vip.parseVideo()
-    ff326_vip.parseVideo()
-    fff64_vip.parseVideo()
     g6858_vip.parseVideo()
-    hs941_vip.parseVideo()
     kpd36_vip.parseVideo()
 def pase3():
     tianjiyy123_vip.parseVideo()
     tlbfao_vip.parseVideo()
     kuyunzy_vip.parseVideo()
-    seman_vip.parseVideo()
     jinzidu_vip.parseVideo()
     kpd2_vip.parseVideo()
     ###ttyyy_vip.parseVideo()
@@ -64,42 +56,30 @@ def pase4():
     nyg6_vip.parseVideo()
     nyg6_vip.parseVideo2()
 
-    japanbeast_vip.parseVideo()
-    meiyke_vip.parseVideo()
     nfss_vip.parseVideo2()
     nfss_vip.parseVideo4()
     k9vidz_vip.parseVideo()
 def pase5():
     kedouwo_vip.parseVideoAll()
-    g6858_vip.parseVideo()
     yezmw_vip.parseVideo()
     tzzy1399_vip.parseVideo()
 def pase6():
     nvnvzx_vip.parseAll()
-    ozsese_vip.passVideo()
+    k9vidz_vip.parseVideo()
     ###ppyy55_vip.parseUserVideo()
-    s58589_vip.parseVideo2()
-    skswk9_img.parseVideo()
      
 def pase7():
-    #cili_vip.parseVideo() 
-    #newlynet_vip.parseVideo() 
     ##qiezi_vip.parseVideo()
-    f2d_vip.parseVideo()
     xiangj_vip.parseVideo()
-    siguo_vip.parseVideo()
     se8_vip.parseVideo() 
     sp1769_vip.parseVideo()
     sp878_vip.parseVideo()
     zooredtube_vip.parseVideo()
-    yin22_vip.parseVideo()
 # 本机才能执行
 def pase8():
-    
-    teshiw_vip.parseVideo()
-    lele_vip.parseVideo()
     dy1716_vip.parseVideo()
     sy88_vip.parseVideo()
+    cmdy5_vip.parseVideo()
 
 def all():
     pase1()

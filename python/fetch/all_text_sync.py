@@ -13,7 +13,6 @@ import ddd804_vip
 import kpd36_vip
 from fetch import  bx88222_vip
 def pase1():
-    fff64_vip.parseText()
     novel941_vip.parseText()
     kedouwo_vip.parseText12()
     g6858_vip.parseText()

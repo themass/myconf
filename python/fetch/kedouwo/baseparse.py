@@ -20,7 +20,7 @@ videoId3 = re.compile("/index.php/vod/detail/id/(.*?).html")
 #https://bxchua.com
 #baseurl8 = "https://bxjiao.com"
 #baseurl10 = "https://www.jjj382.com"
-#baseurl12 = "http://www.tlula44.com"
+baseurl12 = "http://www.tlula44.com"
 #baseurl14 = "http://gebi0.com"
 #baseurl15 = "https://www.qzi2.com"
 header = {'User-Agent':
@@ -33,29 +33,6 @@ header3 = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl3,
           'Cookie':"__cfduid=daf97951d263f43b40aa880057d128ec61534232909; PHPSESSID=df01o1psnjpnr67df4k4q53s50; UM_distinctid=1653768772b33e-00e6b1d3653486-47e1039-1fa400-1653768772c5f; CNZZDATA1274203680=1684804072-1534228697-%7C1534234099",
           "X-Requested-With":"XMLHttpRequest"}
-header4 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
-          'Cookie':"__cfduid=db7f29cd10852fa511d1e0668e89d05001534872686; UM_distinctid=1655d8a8baa6f6-003fe3a1f827f5-47e1039-1fa400-1655d8a8bac102; ASPro_8af8761312ef191adf2017005f0d1eed=0vnasb2ejvpc1d3bquf7lt6vc7; __atuvc=1%7C34; CNZZDATA1274401056=2115274732-1534871498-null%7C1535039855"}
-header5 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
-          'Cookie':"UM_distinctid=1655d8a945d4b3-04cf9c8cfb02c4-47e1039-1fa400-1655d8a945e132; PHPSESSID=tefc4f836ibs5s166aht5lvtp3; __51cke__=; CNZZDATA1273155436=2112313512-1534871260-null%7C1535037844; ggy_second=true; __tins__3892343=%7B%22sid%22%3A%201535038199894%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201535039999894%7D; __tins__19380135=%7B%22sid%22%3A%201535038188896%2C%20%22vd%22%3A%203%2C%20%22expires%22%3A%201535040034907%7D; __51laig__=4"}
-header6 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl7,
-          'Cookie':"__cfduid=dc952231b7833331e12f0b7077fcb6a421554317883; __51cke__=; __tins__19308590=%7B%22sid%22%3A%201554318062876%2C%20%22vd%22%3A%207%2C%20%22expires%22%3A%201554320019257%7D; __51laig__=7"}
-header7 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
-          'Cookie':"__cfduid=d04442510987cdc4647a03da1d8179ba61535135932; UM_distinctid=1656d3b55a10-0e0c6e23061c6c-47e1039-1fa400-1656d3b55a84a1; CNZZDATA1273905787=288757623-1535132900-%7C1535132900; PHPSESSID=5hfhpl7sbdl52hn6mfpq0ee3l1; security_session_verify=2879be1fd96735a49761b2ea855bdc65"}
-header8 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
-          'Cookie':"__cfduid=d04442510987cdc4647a03da1d8179ba61535135932; UM_distinctid=1656d3b55a10-0e0c6e23061c6c-47e1039-1fa400-1656d3b55a84a1; CNZZDATA1273905787=288757623-1535132900-%7C1535132900; PHPSESSID=5hfhpl7sbdl52hn6mfpq0ee3l1; security_session_verify=2879be1fd96735a49761b2ea855bdc65"}
-header14 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
-          'Cookie':"Hm_lvt_64f3b8e72697945612104f755f0e6ce4=1557163354; __51cke__=; Hm_lpvt_64f3b8e72697945612104f755f0e6ce4=1557164611; __tins__19425543=%7B%22sid%22%3A%201557163355132%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201557166411669%7D; __51laig__=10"}
-header10 = {'User-Agent':
-          'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl4,
-          'Cookie':"Hm_lvt_6b5abf5a20585b4286e789656e2978e1=1557163585; Hm_lvt_f2c715616879962068016a02d482faf2=1557163585; Hm_lpvt_6b5abf5a20585b4286e789656e2978e1=1557165909; Hm_lpvt_f2c715616879962068016a02d482faf2=1557165909"}
-
-
 maxCount = 3
 regVideo = re.compile(r"src=\"(.*?)\"frameborder")
 regVideoM3 = re.compile(r"http(.*?)m3u8")
@@ -79,96 +56,7 @@ class BaseParse(threading.Thread):
         soup= BeautifulSoup(content)
         alist = soup.findAll('a')
         return alist
-    def header2(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header2.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def header3(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header3.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def header5(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header5.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def header6(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header6.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def header7(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header7.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def header8(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header8.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def header9(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header9.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def header10(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header10.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
-    def header11(self):
-#         content = self.fetchContentUrl(headerUrl, header)
-        content=''
-        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("kedouwo/header11.html") as f:
-            for line in f.readlines():
-                content = "%s%s"%(content,line)
-        soup= BeautifulSoup(content)
-        alist = soup.findAll('a')
-        return alist
+
     def headers(self,name):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''

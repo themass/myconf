@@ -60,7 +60,7 @@ def pase4():
     nfss_vip.parseVideo4()
     k9vidz_vip.parseVideo()
 def pase5():
-    kedouwo_vip.parseVideoAll()
+    #kedouwo_vip.parseVideoAll()
     yezmw_vip.parseVideo()
     tzzy1399_vip.parseVideo()
 def pase6():

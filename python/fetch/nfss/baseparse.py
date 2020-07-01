@@ -95,7 +95,7 @@ class BaseParse(threading.Thread):
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
                 content = response.read().decode('utf8', errors='replace')
-#                 print content
+                print content
                 soup = BeautifulSoup(content)
                 return soup
             except Exception as e:

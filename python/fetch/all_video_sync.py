@@ -5,7 +5,6 @@ import urllib2
 from common.envmod import *
 import se8_vip
 import yezmw_vip
-import fff64_vip
 import sp1769_vip
 import ax98_vip
 import kuyunzy_vip
@@ -66,9 +65,9 @@ def pase8():
 def all():
 #     pase1()
 #     pase2()
-    pase3()
-    pase4()
-    pase5()
+#     pase3()
+#     pase4()
+#     pase5()
     pase6()
     pase7()
     pase8()

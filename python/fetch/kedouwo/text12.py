@@ -103,7 +103,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(baseurl12+url,header)
-        data = soup.first("div", {"class": "content"})
+        data = soup.first("div", {"class": "nbodys"})
         if data != None:
             try:
                 obj = {}

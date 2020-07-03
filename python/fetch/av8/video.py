@@ -95,7 +95,7 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             Id = url.replace("/vod-detail-id-","").replace(".html","")
-            url = "vod-play-id-%s-src-1-num-1.html"%(Id)
+            url = "/vod-play-id-%s-src-1-num-1.html"%(Id)
             soup = self.fetchUrl(url)
             div   = soup.first("div",{"id":"cms_player"})
             if div !=None:

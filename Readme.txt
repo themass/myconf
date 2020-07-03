@@ -65,6 +65,7 @@ unzip MySQL-python-1.2.5.zip
 cd MySQL-python-1.2.5
 python setup.py  install
 #  失败请看	 http://www.cnblogs.com/bincoding/p/6480884.html
+# sudo apt-get install mysql-server mysql-client 
 #http://asdf314159265.iteye.com/blog/1841963
 #http://blog.csdn.net/it_dream_er/article/details/50760020
 #sudo ln -s /home/web/install/mysql-5.6.10-linux-glibc2.5-x86_64/lib/libmysqlclient.so /usr/lib/libmysqlclient.so.18

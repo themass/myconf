@@ -22,8 +22,6 @@ def pase1():
     bx88222_vip.parseText()
     sp878_vip.parseText()
 def pase2():
-    ###seshu_vip.parseText()
-    ##btw168_vip.parseText()
     
     se8_vip.startWork()
     se8_vip.parseText()

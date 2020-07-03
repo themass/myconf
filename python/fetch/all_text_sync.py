@@ -29,8 +29,6 @@ def pase2():
     ####mayi01_vip.parseText()
 if __name__ == '__main__':
     val = argsMap.get("-p",0)
-    pase1()
-    pase2()
     if int(val)==1:
         pase1()
     elif int(val)==2:

@@ -3,7 +3,6 @@
 import datetime
 import urllib2
 from common.envmod import *
-import fff64_vip
 import novel941_vip
 import se8_vip
 import sp878_vip

@@ -23,7 +23,7 @@ class VideoUserParse(BaseParse):
         for item in chs:
             for i in range(1, maxVideoPage):
                 url= item['url']
-                url = "%s.html"%(item['url'].replace("1.html",i))
+                url = "%s%s.html"%(item['url'].replace("1.html",""),i)
                 print url
                 con = self.videoParse(item['channel'], url,item['userId'])
                 if con==False:

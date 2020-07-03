@@ -14,7 +14,7 @@ from fetch import  bx88222_vip
 def pase1():
 #     novel941_vip.parseText()
     kedouwo_vip.parseText12()
-    g6858_vip.parseText()
+#     g6858_vip.parseText()
     ddd804_vip.parsetextddd804()
     ddd804_vip.parsetext65aeae()
     

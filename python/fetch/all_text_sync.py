@@ -13,10 +13,10 @@ import kpd36_vip
 from fetch import  bx88222_vip
 def pase1():
 #     novel941_vip.parseText()
-    kedouwo_vip.parseText12()
+#     kedouwo_vip.parseText12()
 #     g6858_vip.parseText()
-    ddd804_vip.parsetextddd804()
-    ddd804_vip.parsetext65aeae()
+#     ddd804_vip.parsetextddd804()
+#     ddd804_vip.parsetext65aeae()
     
     kpd36_vip.parseText()
     bx88222_vip.parseText()
@@ -25,8 +25,6 @@ def pase2():
     
     se8_vip.startWork()
     se8_vip.parseText()
-    
-def pase3():
     novel941_vip.parseText2()
     ####mayi01_vip.parseText()
 if __name__ == '__main__':

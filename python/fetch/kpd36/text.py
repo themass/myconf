@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import threading
+import time
 from common.envmod import *
 from common import common
 from common import db_ops
@@ -39,6 +40,9 @@ class TextChannelParse(BaseParse):
                     count = self.update(page_url, ops, channel)
                     dbVPN.commit()
                     dbVPN.close()
+                    if count ==0:
+                        break
+                    time.sleep(3)
             except Exception as e:
                 print common.format_exception(e)
     def textChannel(self):

@@ -66,9 +66,9 @@ class ImgParse(BaseParse):
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(baseurl1+url)
         div = soup.first("div",{"class":"box list channel"})
+        objs = []
         if div!=None:
             datalist = div.findAll("li")
-            objs = []
             sortType = dateutil.y_m_d()
             for item in datalist:
                 ahref = item.first("a")

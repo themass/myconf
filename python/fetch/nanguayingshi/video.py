@@ -55,27 +55,30 @@ class VideoParse(BaseParse):
             return False
         for li in lis:
             ahref = li.first('a')
-            if ahref!=None:
-                mp4Url  = self.parseDomVideo(ahref.get("href"))
-                if mp4Url==None:
-                    continue
-                if mp4Url.count('.html')!=0 :
-                    print mp4Url,"爱奇艺，忽略"
-                    continue
-                obj = {}
-                obj['url'] = mp4Url
-                obj['pic'] = baseurl+ahref.get('data-original')
-                obj['name'] = ahref.get("title")
-                obj['path'] = "nanguayingshi_%s%s%s"%(channel,"-",obj['name'])
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
-                    obj['videoType'] = "webview"
-                else:
-                    obj['videoType'] = "normal"
-                print obj['videoType'],obj['name'],mp4Url,obj['pic']
-                obj['updateTime'] = datetime.datetime.now()
-                obj['channel'] = channel
-                obj['baseurl'] = baseurl
-                dataList.append(obj)
+            try:
+                if ahref!=None:
+                    mp4Url  = self.parseDomVideo(ahref.get("href"))
+                    if mp4Url==None:
+                        continue
+                    if mp4Url.count('.html')!=0 :
+                        print mp4Url,"爱奇艺，忽略"
+                        continue
+                    obj = {}
+                    obj['url'] = mp4Url
+                    obj['pic'] = baseurl+str(ahref.get('data-original'))
+                    obj['name'] = ahref.get("title")
+                    obj['path'] = "nanguayingshi_%s%s%s"%(channel,"-",obj['name'])
+                    if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                        obj['videoType'] = "webview"
+                    else:
+                        obj['videoType'] = "normal"
+                    print obj['videoType'],obj['name'],mp4Url,obj['pic']
+                    obj['updateTime'] = datetime.datetime.now()
+                    obj['channel'] = channel
+                    obj['baseurl'] = baseurl
+                    dataList.append(obj)
+            except Exception as e:
+                print common.format_exception(e)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

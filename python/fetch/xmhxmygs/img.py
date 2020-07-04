@@ -66,6 +66,7 @@ class ImgParse(BaseParse):
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(baseurl1+url)
         div = soup.first("div",{"class":"box list channel"})
+        print div
         objs = []
         if div!=None:
             datalist = div.findAll("li")

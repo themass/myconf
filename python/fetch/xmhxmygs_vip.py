@@ -21,6 +21,10 @@ def parseVideo1():
 def parseVideo2():
     videop = video2.VideoUserParse()
     videop.run()
+def pareImg():
+    imgrun = img.ImgParse()
+    imgrun.run()
 if __name__ == '__main__':
 #     parseVideo1()
-    parseVideo2()
+#     parseVideo2()
+    pareImg()

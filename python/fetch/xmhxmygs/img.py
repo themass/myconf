@@ -31,7 +31,8 @@ class ImgParse(BaseParse):
                 dbVPN.commit()
                 if count == 0:
                     break
-
+        dbVPN.commit()
+        dbVPN.close()
     def parseChannel(self):
         objs = self.header('header3.html')
         data = []

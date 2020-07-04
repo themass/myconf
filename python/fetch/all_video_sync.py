@@ -19,13 +19,15 @@ import nyg6_vip
 from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,\
     zooredtube_vip, qiezi_vip , dy1716_vip,\
      k9vidz_vip, kpd2_vip,\
-    avzy88_vip, cmdy5_vip,xiangj_vip, av8_vip
+    avzy88_vip, cmdy5_vip,xiangj_vip, av8_vip, xmhxmygs_vip
 
 def pase1():
     ax98_vip.parseVideo()
     ax98_vip.parseVideo2()
     avzy88_vip.parseVideo()
     av8_vip.parseVideo()
+    xmhxmygs_vip.parseVideo1()
+    xmhxmygs_vip.parseVideo2()
 def pase2():
     g6858_vip.parseVideo()
     kpd36_vip.parseVideo()

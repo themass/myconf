@@ -71,7 +71,6 @@ class ImgParse(BaseParse):
             datalist = div.findAll("li")
             sortType = dateutil.y_m_d()
             for item in datalist:
-                print item
                 ahref = item.first("a")
                 if ahref!=None:
                     try:

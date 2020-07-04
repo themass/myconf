@@ -76,7 +76,7 @@ class VideoUserParse(BaseParse):
                 obj['rate'] = 1.2
                 obj['updateTime'] = datetime.datetime.now() 
                 obj['userId'] = userId
-                obj['baseUrl'] = baseurl1
+                obj['baseUrl'] = baseurl2
                 obj['showType'] = 3
                 if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                     obj['videoType'] = "webview"
@@ -98,10 +98,11 @@ class VideoUserParse(BaseParse):
             Id = url.replace("/index.php/vod/detail/id/","").replace(".html","")
             url = "/index.php/vod/play/id/%s/sid/2/nid/1.html"%(Id)
             soup = self.fetchUrl(baseurl2+url)
-            div   = soup.first("div",{"class":"player"})
+            div   = soup.first("div",{"class":"box play"})
             if div !=None:
                 texts = unquote(div.text.replace("'",'').replace(")",'').replace(";",'').replace('"url":"','').replace('"',"").replace("\/",'/')).split(",")
                 for text in texts:
+                    print text
                     match = videoApi.search(text)
                     if match!=None:
                         str= match.group(1)

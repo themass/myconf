@@ -51,10 +51,11 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(baseurl1+url)
-        div = soup.first("div",{"id":"tpl-img-content"})
+        div = soup.first("div",{"class":"box movie_list"})
         if div!=None:
             lis = div.findAll("li")
             if len(lis)==0:
+                print '没有数据1'
                 return False
             for li in lis:
                 ahref = li.first("a")

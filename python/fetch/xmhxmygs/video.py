@@ -97,7 +97,7 @@ class VideoUserParse(BaseParse):
         try:
             Id = url.replace("/index.php/vod/detail/id/","").replace(".html","")
             url = "/index.php/vod/play/id/%s/sid/1/nid/1.html"%(Id)
-            soup = self.fetchUrl(url)
+            soup = self.fetchUrl(baseurl1+url)
             div   = soup.first("div",{"class":"play-body"})
             if div !=None:
                 texts = unquote(div.text).split(",")

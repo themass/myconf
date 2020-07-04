@@ -102,7 +102,6 @@ class VideoUserParse(BaseParse):
             if div !=None:
                 texts = unquote(div.text.replace("'",'').replace(")",'').replace(";",'').replace('"url":"','').replace('"',"").replace("\/",'/')).split(",")
                 for text in texts:
-                    print text
                     match = videoApi.search(text)
                     if match!=None:
                         str= match.group(1)

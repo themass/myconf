@@ -33,7 +33,7 @@ class ChannelFetch(threading.Thread):
             ops = db_ops.DbOps(dbVPN)
             sortType = dateutil.y_m_d()
             sortType = "2020-07-03"
-            for i in range(1, 20000):
+            for i in range(503, 20000):
                 #                 ret = ops.getTextChannelItems(self.t_item["url"], i)
                 ret = ops.getTextChannelItemsById(i, sortType)
                 if len(ret) == 0:

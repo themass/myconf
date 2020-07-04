@@ -64,7 +64,6 @@ class ImgParse(BaseParse):
         return len(objs)
 
     def fetchImgItemsData(self, url, channel):
-        print url
         soup = self.fetchUrl(baseurl1+url)
         div = soup.first("div",{"class":"box list channel"})
         objs = []
@@ -72,6 +71,7 @@ class ImgParse(BaseParse):
             datalist = div.findAll("li")
             sortType = dateutil.y_m_d()
             for item in datalist:
+                print item
                 ahref = item.first("a")
                 if ahref!=None:
                     try:
@@ -101,6 +101,7 @@ class ImgParse(BaseParse):
     def fetchImgs(self, url):
         pics = []
         soup = self.fetchUrl(baseurl1+url)
+        print url
         data = soup.first("div", {"class": "content"})
         if data != None:
             try:

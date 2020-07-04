@@ -38,7 +38,7 @@ class VideoUserParse(BaseParse):
             obj={}
             obj['name']=ahref.text
             obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl1
+            obj['baseurl']=baseurl2
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
@@ -50,7 +50,7 @@ class VideoUserParse(BaseParse):
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []
-        soup = self.fetchUrl(baseurl1+url)
+        soup = self.fetchUrl(baseurl2+url)
         div = soup.first("div",{"class":"box movie_list"})
         if div!=None:
             lis = div.findAll("li")
@@ -97,7 +97,7 @@ class VideoUserParse(BaseParse):
         try:
             Id = url.replace("/index.php/vod/detail/id/","").replace(".html","")
             url = "/index.php/vod/play/id/%s/sid/2/nid/1.html"%(Id)
-            soup = self.fetchUrl(baseurl1+url)
+            soup = self.fetchUrl(baseurl2+url)
             div   = soup.first("div",{"class":"player"})
             if div !=None:
                 texts = unquote(div.text.replace("'",'').replace(")",'').replace(";",'').replace('"url":"','').replace('"',"").replace("\/",'/')).split(",")

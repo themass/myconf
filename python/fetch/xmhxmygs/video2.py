@@ -96,7 +96,7 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             Id = url.replace("/index.php/vod/detail/id/","").replace(".html","")
-            url = "/index.php/vod/play/id/%s/sid/2/nid/1.html"%(Id)
+            url = "/index.php/vod/play/id/%s/sid/1/nid/1.html"%(Id)
             soup = self.fetchUrl(baseurl2+url)
             div   = soup.first("div",{"class":"box play"})
             if div !=None:

@@ -26,5 +26,5 @@ def pareImg():
     imgrun.run()
 if __name__ == '__main__':
 #     parseVideo1()
-#     parseVideo2()
-    pareImg()
+    parseVideo2()
+#     pareImg()

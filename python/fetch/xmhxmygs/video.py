@@ -102,6 +102,7 @@ class VideoUserParse(BaseParse):
             if div !=None:
                 texts = unquote(div.text).split(",")
                 for text in texts:
+                    print text
                     match = videoApi.search(text)
                     if match!=None:
                         str= match.group(1)

@@ -60,7 +60,7 @@ class VideoParse(BaseParse):
                 print obj['name'],mp4Url,obj['pic']
 
                 videourl = urlparse(obj['url'])
-                obj['path'] = videourl.path
+                obj['path'] = "av98_"+videourl.path
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
                 obj['baseurl'] = baseurl2

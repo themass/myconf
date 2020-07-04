@@ -180,6 +180,7 @@ encoding//python/fetch/xiangjiao/video.py=utf-8
 encoding//python/fetch/xieegif_vip.py=utf-8
 encoding//python/fetch/xmhxmygs/__init__.py=utf-8
 encoding//python/fetch/xmhxmygs/baseparse.py=utf-8
+encoding//python/fetch/xmhxmygs/img.py=utf-8
 encoding//python/fetch/xmhxmygs/video.py=utf-8
 encoding//python/fetch/xmhxmygs/video2.py=utf-8
 encoding//python/fetch/xmhxmygs_vip.py=utf-8

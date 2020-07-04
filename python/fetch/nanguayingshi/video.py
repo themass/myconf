@@ -23,8 +23,8 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for ch in chs:
             start = 1
-            if ch['name'].count("伦理")>0:
-                start=272
+            if ch['name'].count("恐怖")>0:
+                start=40
             for i in range(start, maxVideoPage):
                 url= ch['url']
                 url = "%s/page/%s.html"%(ch['url'].replace(".html",""),i)

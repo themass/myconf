@@ -100,9 +100,8 @@ class VideoUserParse(BaseParse):
             soup = self.fetchUrl(baseurl1+url)
             div   = soup.first("div",{"class":"play-body"})
             if div !=None:
-                texts = unquote(div.text).split(",")
+                texts = unquote(div.text.replace("'",'').replace(")",'').replace(";",'').replace('"url":"','').replace('"',"").replace("\/",'/')).split(",")
                 for text in texts:
-                    print text
                     match = videoApi.search(text)
                     if match!=None:
                         str= match.group(1)
@@ -110,7 +109,7 @@ class VideoUserParse(BaseParse):
                 for text in texts:
                     match = shareVideo.search(text)
                     if match!=None:
-                        return text.replace("'",'').replace(")",'').replace(";",'').replace('"url":"','').replace('"',"").replace("\/",'/')
+                        return text
             
             print url,'没有mp4'
             return None

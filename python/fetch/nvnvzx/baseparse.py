@@ -15,7 +15,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl3 = "http://zyz605.com/"
 #https://pipijidi.life/#/
-baseurl5 = "https://xiaoluoli99.date/"
+baseurl5 = "https://pipijidi.life/"
 baseurl6 = "http://www.11111dv.com/"
 
 

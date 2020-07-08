@@ -35,7 +35,7 @@ def pase2():
     jinzidu_vip.parseVideo()
     tv1009_vip.parseVideo()
 def pase3():
-    tianjiyy123_vip.parseVideo()
+#     tianjiyy123_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kpd2_vip.parseVideo()
     ###ttyyy_vip.parseVideo()
@@ -73,8 +73,8 @@ def pase8():
     nanguayingshi_vip.parseVideo()
     ys88_vip.parseVideo()
 def all():
-    pase1()
-    pase2()
+#     pase1()
+#     pase2()
     pase3()
     pase4()
     pase5()

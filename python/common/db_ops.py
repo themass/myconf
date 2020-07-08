@@ -65,7 +65,7 @@ class DbOps(object):
 #         return self.conn.fetchAll()
 
     def inertImgChannel(self, obj):
-#         return 1
+        return 1
         return self.conn.execute(
             "replace into  imgchannel (name,baseurl,url,updateTime,rate,pic,showType,channel) values ('%s','%s','%s','%s',%s,'%s',%s,'%s')"
             % (
@@ -158,7 +158,7 @@ class DbOps(object):
 
     def inertVideoUser(self, obj):
         try:
-#             return 1
+            return 1
             return self.conn.execute(
                 "insert ignore into  video_user_1 (name,pic,userId,rate,updateTime,channel,showType,baseurl) values ('%s','%s','%s','%s','%s','%s','%s','%s')"
                 % (

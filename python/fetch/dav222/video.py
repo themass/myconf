@@ -23,7 +23,7 @@ class VideoUserParse(BaseParse):
         for item in chs:
             start = 1
             if item['name'].count('抖阴视频')>0:
-                start = 44
+                start = 60
             for i in range(start, maxVideoPage):
                 url= item['url']
                 if i!=1:

@@ -35,7 +35,7 @@ def pase2():
     jinzidu_vip.parseVideo()
     tv1009_vip.parseVideo()
 def pase3():
-#     tianjiyy123_vip.parseVideo()
+    tianjiyy123_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kpd2_vip.parseVideo()
     ###ttyyy_vip.parseVideo()
@@ -75,10 +75,10 @@ def pase8():
 def all():
 #     pase1()
 #     pase2()
-    pase3()
-    pase4()
-    pase5()
-    pase6()
+#     pase3()
+#     pase4()
+#     pase5()
+#     pase6()
     pase7()
     pase8()
 if __name__ == '__main__':

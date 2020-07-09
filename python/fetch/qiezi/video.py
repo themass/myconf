@@ -69,7 +69,8 @@ class VideoParse(BaseParse):
         if key!=None:
             para['key']=key
         obj = httputil.getData(baseurl+url,para,header)
-        for item in obj['data']['videos']:
+        print url,para
+        for item in obj['data'].get('videos',{}):
             mp4Url  = item.get("url")
             if mp4Url==None:
                 continue

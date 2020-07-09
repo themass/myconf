@@ -22,8 +22,8 @@ class VideoUserParse(BaseParse):
         dbVPN.close()
         for item in chs:
             start = 1
-            if item['name'].count('抖阴视频')>0:
-                start = 60
+            if item['name'].count('91视频')>0:
+                start = 20
             for i in range(start, maxVideoPage):
                 url= item['url']
                 if i!=1:

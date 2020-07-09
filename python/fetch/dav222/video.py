@@ -23,7 +23,7 @@ class VideoUserParse(BaseParse):
         for item in chs:
             start = 1
             if item['name'].count('91视频')>0:
-                start = 20
+                start = 80
             for i in range(start, maxVideoPage):
                 url= item['url']
                 if i!=1:

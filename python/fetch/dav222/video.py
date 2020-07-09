@@ -21,7 +21,10 @@ class VideoUserParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            for i in range(1, maxVideoPage):
+            start = 1
+            if item['name'].count('国产自拍')>0:
+                start = 177
+            for i in range(start, maxVideoPage):
                 url= item['url']
                 if i!=1:
                     url = "%sindex_%s.html"%(item['url'],i)

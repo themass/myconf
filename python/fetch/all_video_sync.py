@@ -49,7 +49,6 @@ def pase4():
     nfss_vip.parseVideo5()
     k9vidz_vip.parseVideo()
 def pase5():
-    #kedouwo_vip.parseVideoAll()
     yezmw_vip.parseVideo()
     tzzy1399_vip.parseVideo()
 def pase6():
@@ -73,12 +72,12 @@ def pase8():
     nanguayingshi_vip.parseVideo()
     ys88_vip.parseVideo()
 def all():
-#     pase1()
-#     pase2()
-#     pase3()
-#     pase4()
-#     pase5()
-#     pase6()
+    pase1()
+    pase2()
+    pase3()
+    pase4()
+    pase5()
+    pase6()
     pase7()
     pase8()
 if __name__ == '__main__':

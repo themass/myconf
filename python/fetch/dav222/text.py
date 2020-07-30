@@ -34,6 +34,7 @@ class TextChannelParse(BaseParse):
                 channel = item['url']
                 page_url = item['url'].replace('.html','')
                 for i in range(1, maxTextPage):
+                    url = page_url
                     if i!=1:
                         url = (page_url+"index_%s.html")%(i)
                     dbVPN = db.DbVPN()

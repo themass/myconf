@@ -17,7 +17,7 @@ class TextChannelParse(BaseParse):
         pass
     
     def run(self):
-        channels = self.parsChannelText()
+        channels = self.textChannel()
         
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

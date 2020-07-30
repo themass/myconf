@@ -15,10 +15,12 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-
+def parseText():
+    textpo = text.TextChannelParse()
+    textpo.run()
 def parseVideo():
     videop = video.VideoUserParse()
     videop.run()
 
 if __name__ == '__main__':
-    parseVideo()
+    parseText()

@@ -23,8 +23,8 @@ from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,\
     nanguayingshi_vip, jinzidu_vip, ys88_vip, tv1009_vip, tlyy_vip
 
 def pase1():
-    ax98_vip.parseVideo()
-    ax98_vip.parseVideo2()
+#     ax98_vip.parseVideo()
+#     ax98_vip.parseVideo2()
     avzy88_vip.parseVideo()
     av8_vip.parseVideo()
     xmhxmygs_vip.parseVideo1()

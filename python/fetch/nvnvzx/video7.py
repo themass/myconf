@@ -98,7 +98,7 @@ class VideoUserParse(BaseParse):
                     match = regVideo7.search(item)
                     if match!=None:
                         videoUrl =match.group(1)
-                        return "%s%s%s"%("https://baiducdncnnmsla.weilekangnet.com:59666",videoUrl.replace("\/","/"),'m3u8')
+                        return "%s%s%s"%("https://z.weilekangnet.com:59666",videoUrl.replace("\/","/"),'m3u8')
  
  #if url.count("https://imgcdn1.weilekangnet.com:59666")==0:
 #                 print url,'没有mp4'

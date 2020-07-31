@@ -71,7 +71,7 @@ class VideoUserParse(BaseParse):
                 obj['name'] = li.first('h3').text
     
                 videourl = urlparse(obj['url'])
-                obj['path'] = "51jpav"+videourl.path
+                obj['path'] = "51jpav"+userId+videourl.path
                 obj['rate'] = 1.2
                 obj['updateTime'] = datetime.datetime.now() 
                 obj['userId'] = userId

@@ -93,6 +93,7 @@ class VideoUserParse(BaseParse):
         print '8x8x video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        time.sleep(3)
         return True
     def parseDomVideo(self, url):
         try:

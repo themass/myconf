@@ -20,7 +20,7 @@ baseurl6 = "http://www.11111dv.com/"
 
 
 ##########     www.by8832.com  鲍鱼
-baseurl7 = "https://www.byg6f64ipa4gk655rvap8zw84u.xyz:52789/"
+baseurl7 = "https://www.byf8rt5p17001sc8667kmd.top:52789/"
 baseurl8 = "https://www.48mm.xyz/"
 baseurl9 = "https://www.6678ge.com/"
 

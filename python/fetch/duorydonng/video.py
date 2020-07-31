@@ -66,7 +66,7 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = li.first("img")
-                obj['pic'] = "https"+img.get("src")
+                obj['pic'] = img.get("src")
                 obj['name'] = li.first('strong').text
     
                 videourl = urlparse(obj['url'])

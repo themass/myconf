@@ -97,9 +97,9 @@ class VideoUserParse(BaseParse):
             Id = url.replace("/play/","").replace(".html","")
             url = "https://m4-player-c-jp-en.7mao.club/10_iiQI2/vs/%s.js"%(Id)
             co = self.fetchContentUrlWithBase(url)
-            texts = unquote(co).replace(" ","").replace("video/mp4", "").split("document.writeln(")
+            texts = unquote(co).replace(" ","").replace("video/mp4", "").split("document.writeln")
             for text in texts:
-                match = videoApi.search(text)
+                match = videoApiMp4.search(text)
                 if match!=None:
                     str= match.group(1)
                     return "%s%s%s"%("http",str,".mp4")

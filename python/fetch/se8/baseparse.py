@@ -15,7 +15,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 #662cf,579cf,298cf,v5c5
-baseurl = "https://www.cb3b4969244f.com/"
+baseurl = "https://www.0b0aa45b70ed.com/"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 soundUrl = "/yousheng/index.html"

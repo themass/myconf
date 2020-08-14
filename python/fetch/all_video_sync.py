@@ -20,7 +20,8 @@ from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,\
     zooredtube_vip, qiezi_vip , dy1716_vip,\
      k9vidz_vip, kpd2_vip,\
     avzy88_vip, cmdy5_vip,xiangj_vip, av8_vip, xmhxmygs_vip, bx88222_vip,\
-    nanguayingshi_vip, jinzidu_vip, ys88_vip, tv1009_vip, tlyy_vip
+    nanguayingshi_vip, jinzidu_vip, ys88_vip, tv1009_vip, tlyy_vip,\
+    duorydonng_vip, jpav51_vip, dav222_vip
 
 def pase1():
 #     ax98_vip.parseVideo()
@@ -71,18 +72,18 @@ def pase8():
     bx88222_vip.parseVideo()
     nanguayingshi_vip.parseVideo()
     ys88_vip.parseVideo()
+    duorydonng_vip.parseVideo()
+    jpav51_vip.parseVideo()
+    dav222_vip.parseVideo()
 def all():
-#     pase1()
-#     pase2()
-#     pase3()
-#     pase4()
-#     pase5()
-#     pase6()
-#     pase7()
-#     pase8()
-    nvnvzx_vip.parseVideo7()
-    se8_vip.parseVideo()
-    se8_vip.parseSound()
+    pase1()
+    pase2()
+    pase3()
+    pase4()
+    pase5()
+    pase6()
+    pase7()
+    pase8()
 if __name__ == '__main__':
 #     pase8()
     val = argsMap.get("-p",0)

@@ -16,7 +16,7 @@ sys.setdefaultencoding('utf8')
 baseurl3 = "http://zyz605.com/"
 #https://pipijidi.life/#/
 baseurl5 = "https://pipijidi.life/"
-baseurl6 = "http://www.11111dv.com/"
+baseurl6 = "https://www.11111dv.com/"
 
 
 ##########     www.by8832.com  鲍鱼

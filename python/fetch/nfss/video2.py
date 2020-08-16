@@ -64,9 +64,9 @@ class VideoUserParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                img = ahref.first("div")
+                img = ahref.first("div",{"class":"vodpic vodpicx lazyload"})
                 obj['pic'] = img.get("data-original")
-                obj['name'] = ahref.first("div",{"class","vodname"})
+                obj['name'] = ahref.first("div",{"class":"vodname"}).text
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "wose11_"+videourl.path

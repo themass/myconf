@@ -55,7 +55,6 @@ def pase5():
 def pase6():
     nvnvzx_vip.parseAll()
     k9vidz_vip.parseVideo()
-    tlyy_vip.parseVideo()
     ###ppyy55_vip.parseUserVideo()
      
 def pase7():

@@ -26,8 +26,11 @@ class VideoUserParse(BaseParse):
                 if i!=1:
                     url= "/%s%s%s"%(item['url'].replace(".html","-"),i,".html")
                 print url
-                self.videoParse(item['channel'], url,item['userId'])
+                con = self.videoParse(item['channel'], url,item['userId'])
                 print '解析完成 ', item['channel'], ' ---', i, '页'
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                    break
     def videoChannel(self):
         ahrefs = self.header2()
         channelList = []
@@ -48,9 +51,11 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrlWithBase(baseurl2+url,header2)
-        div = soup.first("div", {"class": "indexbox"})
+        div = soup.first("div", {"class": "vodlist dylist"})
         if div!=None:
             lis = div.findAll("a")
+            if len(lis)==0:
+                return False
             for ahref in lis:
                 #name,pic,url,userId,rate,updateTime,path
                 obj = {}
@@ -59,12 +64,9 @@ class VideoUserParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                img = ahref.first("img")
-                if img.get("src").count("http")==0:
-                    obj['pic'] = baseurl2+img.get("src")
-                else:
-                    obj['pic'] = img.get("src")
-                obj['name'] = ahref.get("title")
+                img = ahref.first("div",{"class","vodpic vodpicx lazyload"})
+                obj['pic'] = img.get("data-original")
+                obj['name'] = ahref.first("div",{"class","vodname"})
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "wose11_"+videourl.path
@@ -87,12 +89,17 @@ class VideoUserParse(BaseParse):
         print 'nfss video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-
+        if len(dataList)==0:
+            return False
+        return True
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrlWithBase(baseurl2+url, header2)
             adiv = soup.first("div",{"class":"player"})
             if adiv!=None:
+                source = adiv.first("source")
+                if source!=None:
+                    return source.get("src")
                 script = adiv.first('script')
                 if script!=None:
                     text = unquote(str(script.text))

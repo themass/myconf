@@ -64,7 +64,7 @@ class VideoUserParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                img = ahref.first("div",{"class","vodpic vodpicx lazyload"})
+                img = ahref.first("div")
                 obj['pic'] = img.get("data-original")
                 obj['name'] = ahref.first("div",{"class","vodname"})
     
@@ -89,6 +89,7 @@ class VideoUserParse(BaseParse):
         print 'nfss video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        time.sleep(1)
         if len(dataList)==0:
             return False
         return True

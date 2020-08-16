@@ -95,7 +95,7 @@ class VideoUserParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrlWithBase(baseurl2+url, header2)
-            adiv = soup.first("div",{"class":"player"})
+            adiv = soup.first("div",{"id":"player"})
             if adiv!=None:
                 source = adiv.first("source")
                 if source!=None:

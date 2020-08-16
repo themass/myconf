@@ -91,7 +91,7 @@ class BaseParse(threading.Thread):
             try:
                 req = urllib2.Request(url, headers=aheader)
                 req.encoding = 'utf-8'
-                response = urllib2.urlopen(req, timeout=300)
+                response = urllib2.urlopen(req, timeout=30)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip
                 content = response.read().decode('utf8', errors='replace').replace("<!--","").replace("-->","")

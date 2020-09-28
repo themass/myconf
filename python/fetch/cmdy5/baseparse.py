@@ -11,7 +11,7 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re,os
 # http://www.dehyc.com
-baseurl = "https://www.cmdy5.com"
+baseurl = "https://www.cmcm5.com/"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
@@ -27,6 +27,7 @@ class BaseParse(threading.Thread):
         threading.Thread.__init__(self)
 
     def fetchUrl(self, url, aheader=header):
+        url = url.replace(baseurl,"")
         count = 0
         while count < maxCount:
             try:

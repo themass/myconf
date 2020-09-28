@@ -51,7 +51,7 @@ class VideoUserParse(BaseParse):
     def videoParse(self, channel, url,userId):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first("div",{"class":"tc_nr l_b"})
+        div = soup.first("div",{"class":"container"})
         if div!=None:
             lis = div.findAll("li")
             if len(lis)==0:
@@ -67,8 +67,10 @@ class VideoUserParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 img = li.first("img")
-                obj['pic'] = img.get("data-original")
-                obj['name'] = li.first('h3').text
+                if img ==None:
+                    continue
+                obj['pic'] = baseurl+img.get("src")
+                obj['name'] = li.first('p').text
     
                 videourl = urlparse(obj['url'])
                 obj['path'] = "8x8x"+videourl.path
@@ -97,7 +99,8 @@ class VideoUserParse(BaseParse):
             soup = self.fetchUrl(url)
             div   = soup.first("span",{"id":"vpath"})
             if div !=None:
-                return "%s%s"%("https://v.8exu.com/v/",div.text)
+                #https://v.8exu.com/v/
+                return "%s%s"%("https://8xf52.com/v/",div.text)
             print '没找到mp4'
             return None
         except Exception as e:

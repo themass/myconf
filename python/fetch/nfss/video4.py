@@ -98,7 +98,7 @@ class VideoUserParse(BaseParse):
             for s in scripts:
                 match = regVideo1345ju.search(s.text.replace(" ",""))
                 if match!=None:
-                    return "https://hlsplayer.88e.la%s.m3u8"%(match.group(1))
+                    return "http://m3u8.0000cdn.com%s.m3u8"%(match.group(1))
 
 #             soup = self.fetchUrlWithBase(baseurl4+url, header4)
 #             adiv = soup.first("ul",{"class":"playul"})

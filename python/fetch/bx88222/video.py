@@ -57,6 +57,9 @@ class VideoUserParse(BaseParse):
             if len(lis)==0:
                 return False
             for li in lis:
+                lm_lbimg = li.first('div',{'class':"lm_lbimg"})
+                if lm_lbimg==None:
+                    continue
                 ahref = li.first("a")
                 if ahref ==None:
                     continue

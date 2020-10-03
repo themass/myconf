@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from tv1009 import *
+from nx2233 import *
 import re
 import sys
 reload(sys)

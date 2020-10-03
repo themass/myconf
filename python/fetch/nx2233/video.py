@@ -22,10 +22,10 @@ class VideoUserParse(BaseParse):
         dbVPN.close()
         for item in chs:
             start=1
-            for i in range(start, 100):
+            for i in range(start, 50):
                 url= item['url']
                 if i!=1:
-                    url = "%s%s.html"%(item['url'].replace("index.html","list_"),100-i)
+                    url = "%s%s.html"%(item['url'].replace("index.html","list_"),i)
                 print url
                 con = self.videoParse(item['channel'], url,item['userId'])
                 if con==False:

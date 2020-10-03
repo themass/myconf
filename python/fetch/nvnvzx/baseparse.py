@@ -19,8 +19,8 @@ baseurl5 = "https://pipijidi.life/"
 baseurl6 = "https://www.11111dv.com/"
 
 
-##########     www.by8832.com  鲍鱼
-baseurl7 = "https://www.byf8rt5p17001sc8667kmd.top:52789/"
+##########     www.by2252.com  鲍鱼
+baseurl7 = "https://www.byu439ua6fjmii0iwrw0iyqy9.com:52789/"
 baseurl8 = "https://www.48mm.xyz/"
 baseurl9 = "https://www.6678ge.com/"
 

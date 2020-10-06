@@ -44,7 +44,14 @@ if __name__ == '__main__':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl,
           "cookie":"Hm_lvt_64f3b8e72697945612104f755f0e6ce4=1557163354; __51cke__=; Hm_lpvt_64f3b8e72697945612104f755f0e6ce4=1557164611; __tins__19425543=%7B%22sid%22%3A%201557163355132%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201557166411669%7D; __51laig__=10",
           "X-Requested-With":"XMLHttpRequest"}
-   
+    str = '{"isdv":1,"type":5,"ispass":1,"url":"https://tv2.youkutv.cc/2020/08/29/BKdKI8YSVGmW5QPN/playlist.m3u8'
+    content = str.replace('"', "").split("url:")
+    shareVideo = re.compile(r"http(.*?)/2020/(.*?)")
+    for text in content:
+        print text
+        match = shareVideo.search(text)
+        if match!=None:
+            print match.group(0),"-------",match.group(1),"-------",match.group(2)
 #     videoId = re.compile("(.*\/)(\d+)\.html")
 #     match = videoId.search('dongzuopian/202006/91671.html')
 #     if match!=None:
@@ -53,8 +60,8 @@ if __name__ == '__main__':
 #         print match.group(1),Id
 #         url  = 'vod-play-id-%s-src-1-num-1.html'%(Id)
 #         print url
-    soup= fetchUrl("http://yepu.swapdox.com/api/ShortVideo/AddWahtchRecord/cak?newsId=c6d3d478-e65c-44cf-931f-5863074b7788")
-    print soup
+#     soup= fetchUrl("http://yepu.swapdox.com/api/ShortVideo/AddWahtchRecord/cak?newsId=c6d3d478-e65c-44cf-931f-5863074b7788")
+#     print soup
     #print soup.findAll("div",{"class":"x3 margin-top"})
 #     fcntl.flock('', fcntl.LOCK_EX)
 #     data = {}

@@ -17,28 +17,24 @@ import teshiw_vip
 import sy88_vip
 import nyg6_vip
 from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,\
-    zooredtube_vip, qiezi_vip , dy1716_vip,\
+    zooredtube_vip, qiezi_vip ,\
      k9vidz_vip, kpd2_vip,\
-    avzy88_vip, cmdy5_vip,xiangj_vip, av8_vip, xmhxmygs_vip, bx88222_vip,\
-    nanguayingshi_vip, jinzidu_vip, ys88_vip, tv1009_vip, tlyy_vip,\
-    duorydonng_vip, jpav51_vip, dav222_vip
+    avzy88_vip, cmdy5_vip, bx88222_vip,\
+    nanguayingshi_vip, jinzidu_vip, ys88_vip,duorydonng_vip
 
 def pase1():
 #     ax98_vip.parseVideo()
 #     ax98_vip.parseVideo2()
     avzy88_vip.parseVideo()
-    av8_vip.parseVideo()
-    xmhxmygs_vip.parseVideo1()
-    xmhxmygs_vip.parseVideo2()
 def pase2():
     g6858_vip.parseVideo()
     kpd36_vip.parseVideo()
     jinzidu_vip.parseVideo()
-    tv1009_vip.parseVideo()
 def pase3():
     tianjiyy123_vip.parseVideo()
     kuyunzy_vip.parseVideo()
     kpd2_vip.parseVideo()
+    duorydonng_vip.parseVideo()
     ###ttyyy_vip.parseVideo()
 def pase4():
     nyg6_vip.parseVideo()
@@ -59,23 +55,18 @@ def pase6():
      
 def pase7():
     qiezi_vip.parseVideo()
-    xiangj_vip.parseVideo()
     se8_vip.parseVideo() 
     sp1769_vip.parseVideo()
     sp878_vip.parseVideo()
 # 本机才能执行
 def pase8():
-    dy1716_vip.parseVideo()
     sy88_vip.parseVideo()
     cmdy5_vip.parseVideo()
     bx88222_vip.parseVideo()
     nanguayingshi_vip.parseVideo()
     ys88_vip.parseVideo()
-    duorydonng_vip.parseVideo()
-    jpav51_vip.parseVideo()
-    dav222_vip.parseVideo()
 def all():
-    pase1()
+    #pase1()
     pase2()
     pase3()
     pase4()

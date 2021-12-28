@@ -11,7 +11,7 @@ APP_HOME=/root/local
 TMP_HOME=/root/soft
 
 MYSQL_VERSION=mysql-5.6.40-linux-glibc2.12-x86_64
-RADIUS_VERSION=freeradius-server-2.1.12
+RADIUS_VERSION=release_2_1_12
 
 mkdir -p ${APP_HOME}
 mkdir -p ${TMP_HOME}
@@ -138,8 +138,9 @@ setup_radius()
     rm -f ${RADIUS_VERSION}.tar.gz
     rm -rf ${APP_HOME}/${RADIUS_VERSION}
     rm -rf /usr/local/etc/raddb
-    wget ${URL}/soft/${RADIUS_VERSION}.tar.gz
-	tar -zxvf ${RADIUS_VERSION}.tar.gz
+    #wget ${URL}/soft/${RADIUS_VERSION}.tar.gz
+	#tar -zxvf ${RADIUS_VERSION}.tar.gz
+	git clone https://github.com/FreeRADIUS/freeradius-server/tree/release_2_1_12
 	cd ${RADIUS_VERSION}
 	./configure 
 	make

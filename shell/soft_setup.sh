@@ -142,7 +142,7 @@ setup_radius()
 	#tar -zxvf ${RADIUS_VERSION}.tar.gz
 	git clone https://github.com/FreeRADIUS/freeradius-server/
 	cd ${RADIUS_VERSION}
-	git checkout v2.x.x
+	git checkout v3.0.x
 	./configure 
 	make
 	make install

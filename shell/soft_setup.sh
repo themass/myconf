@@ -61,29 +61,7 @@ setup_kernel()
 	#update-grub
 	#reboot
 }
-setup_user() {
- 	useradd -r -m -s /bin/bash web
- 	useradd -r -m -s /bin/bash work
- 	useradd -r -m -s /bin/bash mysql
- 	passwd web  
- 	passwd work  
- 	passwd mysql  
- 	chmod u+w /etc/sudoers
- 	vi  /etc/sudoers
- 	#root ALL=(ALL) ALL
- 	su - work
- 	mkdir -p local
- 	mkdir -p webroot 
- 	mkdir -p var/log 
- 	mkdir -p var/run
- 	mkdir -p soft 
- 	su - web 
- 	mkdir -p local
- 	mkdir -p webroot 
- 	mkdir -p var/log 
- 	mkdir -p var/run
- 	mkdir -p soft 
-}
+
 ## -----------------------
 ## Setup MySQL
 ## -----------------------
@@ -257,7 +235,6 @@ usage()
 }
 setup_all()
 {
-	setup_user
 	setup_mysql
 	setup_kernel
 	setup_radius
@@ -269,7 +246,6 @@ setup_all()
 if [ $# != 0 ]; then
     for arg in $*; do
         case "$arg" in
-			user)          setup_user;;
 			mysql)          setup_mysql;;
 			mysql)          setup_mysql;;
 			kernel)          setup_kernel;;

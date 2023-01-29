@@ -68,23 +68,31 @@ mkdir -p /root/work
 ##	flush privileges
 ##	quit
 #}
-
-## -----------------------
-## Setup redis
-## -----------------------
 setup_user() {
+ 	useradd -r -m -s /bin/bash web
  	useradd -r -m -s /bin/bash work
- 	passwd work  
+ 	useradd -r -m -s /bin/bash mysql
+ 	passwd web
+ 	passwd work
+ 	passwd mysql
  	chmod u+w /etc/sudoers
  	vi  /etc/sudoers
  	#root ALL=(ALL) ALL
  	su - work
- 	mkdir local
- 	mkdir  webroot 
- 	mkdir -p var/log 
-
+ 	mkdir -p local
+ 	mkdir -p webroot
+ 	mkdir -p var/log
+ 	mkdir -p var/run
+ 	mkdir -p soft
+ 	exit
+ 	su - web
+ 	mkdir -p local
+ 	mkdir -p webroot
+ 	mkdir -p var/log
+ 	mkdir -p var/run
+ 	mkdir -p soft
+ 	exit
 }
-
 ## -----------------------
 ## Setup nginx
 ## -----------------------
@@ -94,7 +102,7 @@ setup_nginx() {
     git clone https://github.com/openssl/openssl
     cd openssl/
     ./configure --with-openssl-includes=/root/soft/openssl --with-openssl-libraries=/root/soft/openssl
-
+    cd ../
     rm pcre-8.39.tar.gz
     wget https://onboardcloud.dl.sourceforge.net/project/pcre/pcre/8.39/pcre-8.39.tar.gz --no-check-certificate
     tar -zxvf pcre-8.39.tar.gz
@@ -116,10 +124,10 @@ setup_nginx() {
     tar -zxvf nginx-1.16.1.tar.gz
     cd nginx-1.16.1/
     ./configure --prefix=/root/local/nginx-1.16.1 --with-http_stub_status_module  --with-cc-opt="-Wimplicit-fallthrough=0" --with-http_gzip_static_module --with-pcre=../pcre-8.39 --add-module=../redis2-nginx-module --add-module=../srcache-nginx-module --add-module=../ngx_devel_kit-0.3.1 --add-module=../ngx_cache_purge --add-module=../ngx_http_consistent_hash --add-module=../ngx_http_php_session --add-module=../ngx_slowfs_cache   --add-module=../set-misc-nginx-module
-#    --with-http_ssl_module --with-openssl=/root/soft  --add-module=../ngx_http_redis-0.3.7
+#    --with-http_ssl_module --with-openssl=/root/soft  --add-module=../ngx_http_redis-0.3.7  zlib
     make
     make install
-    mkdir -p /root/local/nginx-11.16.1/logs/
+    mkdir -p /root/local/nginx-1.16.1/logs/
     rm -rf /root/local/nginx
     ln -s /root/local/nginx-1.16.1 /root/local/nginx
     rm /root/local/nginx/conf/nginx.conf
@@ -162,6 +170,7 @@ if [ $# != 0 ]; then
         case "$arg" in
             nginx)          setup_nginx;;
 	    	    mysql)	    setup_mysql;;
+	    	    user)	    setup_user;;
             *)              usage;;
         esac
     done

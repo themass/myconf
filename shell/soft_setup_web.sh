@@ -25,11 +25,7 @@ mkdir -p /home/web/work
 setup_jdk() {
   #https://www.oracle.com/java/technologies/javase/javase8u211-later-archive-downloads.html
   #mvn clean install -Ppro
-  wget https://download.oracle.com/java/18/archive/jdk-18.0.2.1_linux-x64_bin.tar.gz --no-check-certificate
-  tar -zxvf jdk-18.0.2.1_linux-x64_bin.tar.gz
-  cd /home/web/local
-  rm -rf jdk-18.0.2.1
-  mv ../soft/jdk-18.0.2.1 .
+
   echo "。profile and java - version"
 
 
@@ -49,7 +45,7 @@ setup_maven(){
   cd /home/web/soft
   wget https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz --no-check-certificate
   tar -zxvf apache-maven-3.8.7-bin.tar.gz
-  cd cd /home/web/local
+  cd /home/web/local
    mv ../soft/apache-maven-3.8.7 .
    echo " mod .profile"
 
@@ -60,8 +56,10 @@ setup_redis()
   cd /home/web/local
   wget http://download.redis.io/releases/redis-6.2.6.tar.gz
   tar -zxvf redis-6.2.6.tar.gz
+  cd redis-6.2.6
   make
   cp ../../soft/myconf/redis/redis.conf  .
+  cd src
   ./redis-server ../redis.conf  &
 
 

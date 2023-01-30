@@ -102,9 +102,9 @@ strongswan_config()
 strongswan_config_port() 
 {
 	#unzip strongswan_conf.zip
-	dos2unix strongswan_conf/ipsec.conf
-	dos2unix strongswan_conf/charon.conf
-	dos2unix strongswan_conf/ipsec.secrets
+#	dos2unix strongswan_conf/ipsec.conf
+#	dos2unix strongswan_conf/charon.conf
+#	dos2unix strongswan_conf/ipsec.secrets
 	#
 #	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
 #	cp  strongswan_conf/ipsec.conf /etc/ipsec.conf

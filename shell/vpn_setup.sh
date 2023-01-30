@@ -102,30 +102,30 @@ strongswan_config()
 strongswan_config_port() 
 {
 	#unzip strongswan_conf.zip
-	#dos2unix strongswan_conf/ipsec.conf
-	#dos2unix strongswan_conf/charon.conf
-	#dos2unix strongswan_conf/ipsec.secrets
+	dos2unix strongswan_conf/ipsec.conf
+	dos2unix strongswan_conf/charon.conf
+	dos2unix strongswan_conf/ipsec.secrets
 	#
-	#cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-	#cp  strongswan_conf/ipsec.conf /etc/ipsec.conf
-    #
-	#cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
-	#cp  strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
-    #
-	#cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-	#cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
+#	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
+#	cp  strongswan_conf/ipsec.conf /etc/ipsec.conf
+#    #
+#	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
+#	cp  strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
+#    #
+#	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
+#	cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	
 	cd ${WORKDIR}/myconf/shell
-	#cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-	#cp  ../strongswan_conf_port/ipsec.conf /etc/ipsec.conf
+	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
+	cp  ../strongswan_conf_port/ipsec.conf /etc/ipsec.conf
     
 	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
 	cp  ../strongswan_conf_port/charon.conf /etc/strongswan.d/charon.conf
     
-	#cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-	#cp  ../strongswan_conf_port/ipsec.secrets /etc/ipsec.secrets
+	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
+	cp  ../strongswan_conf_port/ipsec.secrets /etc/ipsec.secrets
 	
-	#cp  ../strongswan_conf_port/strongswan.conf /etc/strongswan.conf
+	cp  ../strongswan_conf_port/strongswan.conf /etc/strongswan.conf
 	
 	ipsec restart
 }

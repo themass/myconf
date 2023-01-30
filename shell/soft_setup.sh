@@ -69,23 +69,25 @@ setup_mysql() {
 #https://cdn.mysql.com//Downloads/MySQL-5.6/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz
 	shelldir=`pwd`
     useradd -r -m -s /bin/bash mysql
-    cd ${TMP_HOME}
-    rm -f ${MYSQL_VERSION}.tar.gz
-    rm -rf ${APP_HOME}/${MYSQL_VERSION}
+    apt install libaio1
+    apt install libnuma1
+    cd /root/soft
     rm -rf /home/mysql/db_data/*
-    #wget ${URL}/soft/${MYSQL_VERSION}.tar.gz
-    wget https://cdn.mysql.com/archives/mysql-5.6/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz
-    cd ${APP_HOME}
-    tar zxvf ${TMP_HOME}/${MYSQL_VERSION}.tar.gz
+    wget https://cdn.mysql.com/archives/mysql-5.6/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz --no-check-certificate
+    cd /root/local
+    tar -zxvf /root/soft/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz.tar.gz
+    mv mysql-5.6.40-linux-glibc2.12-x86_64 mysql-5.6.40
     rm -rf /home/mysql/mysql
-    ln -s ${APP_HOME}/${MYSQL_VERSION} /home/mysql/mysql
+    ln -s /root/local/mysql-5.6.40 /home/mysql/mysql
     rm -rf /usr/local/mysql
-    ln -s ${APP_HOME}/${MYSQL_VERSION} /usr/local/mysql
+    ln -s /root/local/mysql-5.6.40 /usr/local/mysql
     cd /home/mysql/mysql
     chown -R mysql .
     chgrp -R mysql .
     mkdir -p /home/mysql/db_data
     chown mysql:mysql /home/mysql/db_data
+    mkdir -p /home/mysql/log_data
+    chown mysql:mysql /home/mysql/log_data
     rm -rf /var/log/mysql  /var/run/mysqld /var/lib/mysql
     mkdir -p /var/log/mysql
     mkdir -p /var/run/mysqld
@@ -102,45 +104,62 @@ setup_mysql() {
     rm -f /etc/my.cnf
     cp ../mysql/my.cnf /etc/my.cnf
     rm /etc/mysql/my.cnf
-    echo 'profile /usr/local/mysql/bin'
+    echo 'export PATH=$PATH:/usr/local/mysql/bin'
     cp /home/mysql/mysql/share/english/errmsg.sys  /usr/share/mysql/
     mysqld_safe  &
     #show variables like "%char%"; ->utf-8
-    
+
+    mysql -u root -p
+    use mysql;
+    UPDATE user SET password=password('Themass@5296') WHERE user='root';
+    CREATE USER 'radius'@'%' IDENTIFIED BY 'Themass@5296';
+    CREATE USER 'vpn@server'@'%' IDENTIFIED BY 'Themass@5296';
+    CREATE USER 'root'@'%' IDENTIFIED BY 'Themass@5296';
+    flush privileges;
 }
 setup_radius()
 {
-	shelldir=`pwd`
-	apt-get install  freeradius-mysql
-	cd ${TMP_HOME}
-    rm -f ${RADIUS_VERSION}.tar.gz
-    rm -rf ${APP_HOME}/${RADIUS_VERSION}
+    shelldir=`pwd`
+    cd /root/soft
+    apt-get install  freeradius-mysql
     rm -rf /usr/local/etc/raddb
-    #wget ${URL}/soft/${RADIUS_VERSION}.tar.gz
-	#tar -zxvf ${RADIUS_VERSION}.tar.gz
-	git clone https://github.com/FreeRADIUS/freeradius-server/
-	cd ${RADIUS_VERSION}
-	git checkout v3.0.x
-	./configure 
-	make
-	make install
-	cd ${shelldir}
-	echo ${shelldir}
-	#mysqladmin -u root -p create radius
-	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
-	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql
-	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
-	#mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
-	#mysql -u root -p < ../radius/radius.sql
-	cp ../radius/default /usr/local/etc/raddb/sites-enabled/
-	cp ../radius/inner-tunnel /usr/local/etc/raddb/sites-enabled/
-	cp ../radius/sql.conf /usr/local/etc/raddb/
-	cp ../radius/radiusd.conf /usr/local/etc/raddb/
-	cp ../radius/users /usr/local/etc/raddb/
-	cp ../radius/dictionary /usr/local/etc/raddb/
-	cp ../radius/clients.conf /usr/local/etc/raddb/
-	cp ../radius/dialup.conf /usr/local/etc/raddb/sql/mysql/
-	cp ../radius/counter.conf /usr/local/etc/raddb/sql/mysql/
+    wget https://github.com/FreeRADIUS/freeradius-server/archive/refs/tags/release_2_1_12.tar.gz
+    tar -zxvf release_2_1_12.tar.gz
+    cd freeradius-server-release_2_1_12/
+    ./configure
+    make
+    cd ..
+    git clone https://github.com/openssl/openssl
+    cd openssl/
+    ll
+    ./config
+    make
+    make test
+    make install
+    cd ../freeradius-server-release_2_1_12/
+    ./configure
+    make
+    make install
+    echo  ' test  radiusd -X'
+	  echo 'radtest vpn themass localhost 1812 testing123'
+	  echo 'service freeradius stop'
+    cd ${shelldir}
+    echo ${shelldir}
+    #mysqladmin -u root -p create radius
+    #mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/schema.sql
+    #mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/nas.sql
+    #mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/ippool.sql
+    #mysql -u root -p radius < /usr/local/etc/raddb/sql/mysql/wimax.sql
+    #mysql -u root -p < ../radius/radius.sql
+    cp ../radius/default /usr/local/etc/raddb/sites-enabled/
+    cp ../radius/inner-tunnel /usr/local/etc/raddb/sites-enabled/
+    cp ../radius/sql.conf /usr/local/etc/raddb/
+    cp ../radius/radiusd.conf /usr/local/etc/raddb/
+    cp ../radius/users /usr/local/etc/raddb/
+    cp ../radius/dictionary /usr/local/etc/raddb/
+    cp ../radius/clients.conf /usr/local/etc/raddb/
+    cp ../radius/dialup.conf /usr/local/etc/raddb/sql/mysql/
+    cp ../radius/counter.conf /usr/local/etc/raddb/sql/mysql/
 	
 	echo  ' test  radiusd -X'
 	echo 'radtest vpn themass localhost 1812 testing123'

@@ -1,16 +1,10 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
-import datetime
-import urllib2
 from common.envmod import *
 import novel941_vip
-import se8_vip
-import sp878_vip
-import g6858_vip
-import kedouwo_vip
-import ddd804_vip
-import kpd36_vip
-from fetch import  bx88222_vip
+from fetch.不能用 import g6858_vip, sp878_vip, kedouwo_vip, kpd36_vip, ddd804_vip, bx88222_vip
+
+
 def pase1():
 #     novel941_vip.parseText()
 #     ddd804_vip.parsetext65aeae()

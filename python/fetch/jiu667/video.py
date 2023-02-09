@@ -21,13 +21,17 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 'avzy898 video -- channel ok;,len=',len(chs)
+        print 'jiu667 video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
             url= item['url']
             for i in range(1, maxVideoPage):
-                con = self.videoParse(item['channel'], '%s%s%s'%(url.replace('.html','-pg-'),i,'.html'))
+                con = False
+                if i==1:
+                    con = self.videoParse(item['channel'], url)
+                else:
+                    con = self.videoParse(item['channel'], '%s%s%s'%(url.replace('index.html','list_'),maxVideoPage-i,'.html'))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
@@ -43,18 +47,18 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']='avzy898'+ahref.text
+            obj['channel']='jiu667'+ahref.text
             obj['showType']=3
-            obj['channelType']='avzy898_all'
+            obj['channelType']='jiu667_all'
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList
     def videoParse(self, channel, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first('ul',{"class":"videoContent"})
+        div = soup.first('div',{"class":"mod channel-list"})
         if div!=None:
-            divs = div.findAll("li")
+            divs = div.findAll("dl")
             if len(divs)==0:
                 return False
             for item in divs:
@@ -62,17 +66,18 @@ class VideoParse(BaseParse):
                 if ahref != None:
                     obj = {}
                     mp4Url = self.parseDomVideo(ahref.get("href"))
-                    if mp4Url == None or len(mp4Url)==0:
+                    if mp4Url == None:
                         print '没有mp4 文件:', ahref.get("href")
                         continue
-                    obj['url'] = mp4Url.get('url')
-                    obj['pic'] = mp4Url.get('pic')
+                    obj['url'] = mp4Url
+                    img = ahref.first('img')
+                    obj['pic'] = baseurl+img.get('data-original')
 #                     item.first('h3').text.replace(" ","")
-                    obj['name'] = ahref.text
+                    obj['name'] = ahref.get('title')
                     print obj['name'],obj['url'],obj['pic']
     
                     videourl = urlparse(obj['url'])
-                    obj['path'] = "avzy898"+videourl.path
+                    obj['path'] = "jiu667_"+videourl.path
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
@@ -82,27 +87,22 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj,"normal",baseurl)
 
-        print 'avzy898 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'jiu667 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
         return True
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(url)
-            div = soup.first('div',{"class":'play-wapper'})
-            if div!=None:
-                mp4url={}
-                img = div.first('img')
-                if img!=None:
-                    mp4url['pic']=img.get('src')
-                else:
-                    mp4url['pic']=''
-                input = div.first('input')
-                if input!=None:
-                    mp4url['url']=input.get('value')
-                else:
-                    return None
-                return mp4url
+            if url.count("script")==0:
+                soup = self.fetchUrl(url)
+                scripts = soup.findAll("script")
+                for s in scripts:
+                    text = unquote(s.text)
+                    texts = text.split('"')
+                    for item in texts:
+                        match = regVideo.search(item)
+                        if match!=None:
+                            return "http"+match.group(1)+'m3u8'
             print '没找到mp4'
             return None
         except Exception as e:

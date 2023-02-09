@@ -9,15 +9,15 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from avzy898 import *
+from fetch.duorydonng import *
 import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+
 def parseVideo():
-    videop = video.VideoParse()
+    videop = video.VideoUserParse()
     videop.run()
 if __name__ == '__main__':
-   
     parseVideo()

@@ -9,26 +9,15 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from kedouwo import *
+from fetch.jiu667 import *
 import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-def parseText12():
-    textop = text12.TextChannelParse()
-    textop.run()
-
+def parseVideo():
+    videop = video.VideoParse()
+    videop.run()
 if __name__ == '__main__':
-#     parseVideo()
-   # parseVideo14()
-#     parseVideo3()
-#     parseVideo4() 
-#     parseVideo5()
-#     parseVideo6()
-#     parseVideo7()
-#     parseVideo8()
-#     parseVideo10()
-#     parseVideo13()
-    parseText12()
-#     parseVideo15()
+   
+    parseVideo()

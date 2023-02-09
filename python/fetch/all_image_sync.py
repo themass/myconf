@@ -1,8 +1,5 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
-import datetime
-import urllib2
-from common.envmod import *
 #艺术图片，需要下载到德国及
 #美图
 import tt192_vip
@@ -10,13 +7,8 @@ import tt192_vip
 import se8_vip
 #漫画
 #黄土
-import ddd804_vip
-import xieegif_vip
-import skswk9_img
-import nyg6_vip
-import kpd36_vip
-from fetch import g6858_vip, bx88222_vip,\
-    sp878_vip, xmhxmygs_vip
+from fetch import xmhxmygs_vip
+from fetch.不能用 import g6858_vip, nyg6_vip, skswk9_img, sp878_vip, kpd36_vip, ddd804_vip, xieegif_vip, bx88222_vip
 
 if __name__ == '__main__':
     

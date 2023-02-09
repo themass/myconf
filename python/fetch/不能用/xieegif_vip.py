@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from gif import *
+from fetch.gif import *
 import re
 import sys
 from fetch.gif import *

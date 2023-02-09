@@ -43,7 +43,7 @@ source ~/.profile
 
 
 cd /home/web/install
-wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate
+wget https://bootstrap.pypa.io/pip/2.7/get-pip.py --no-check-certificate
 python get-pip.py
 pip install -U pip setuptools
 cd /home/web/local/python2.7/bin

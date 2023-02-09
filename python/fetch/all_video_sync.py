@@ -1,26 +1,13 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
-import datetime
-import urllib2
 from common.envmod import *
 import se8_vip
-import yezmw_vip
-import sp1769_vip
-import ax98_vip
 import kuyunzy_vip
-import tianjiyy123_vip
-import sp878_vip
-import tzzy1399_vip
-import kpd36_vip
 import nfss_vip
-import teshiw_vip
-import sy88_vip
-import nyg6_vip
-from fetch import nvnvzx, nvnvzx_vip,  g6858_vip,\
-    zooredtube_vip, qiezi_vip ,\
-     k9vidz_vip, kpd2_vip,\
-    avzy88_vip, cmdy5_vip, bx88222_vip,\
-    nanguayingshi_vip, jinzidu_vip, ys88_vip,duorydonng_vip
+from fetch.不能用 import nanguayingshi_vip, g6858_vip, duorydonng_vip, nyg6_vip, k9vidz_vip, cmdy5_vip, sp878_vip, \
+    kpd36_vip, qiezi_vip, avzy88_vip, sy88_vip, kpd2_vip, nvnvzx_vip, sp1769_vip, jinzidu_vip, ys88_vip, tzzy1399_vip, \
+    tianjiyy123_vip, bx88222_vip, yezmw_vip
+
 
 def pase1():
 #     ax98_vip.parseVideo()

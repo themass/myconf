@@ -1,1 +1,1 @@
-__all__ = ['db', 'mongo', 'redisutil', 'log']
+__all__ = ['db', 'redisutil', 'log']

@@ -123,23 +123,20 @@ setup_radius()
     cd /root/soft
     apt-get install  freeradius-mysql
     rm -rf /usr/local/etc/raddb
+
+    git clone https://github.com/openssl/openssl
+    cd openssl/
+    git checkout OpenSSL_1_0_1-stable
+    ./configure
+    make
+
     wget https://github.com/FreeRADIUS/freeradius-server/archive/refs/tags/release_2_1_12.tar.gz
     tar -zxvf release_2_1_12.tar.gz
     cd freeradius-server-release_2_1_12/
-    ./configure
-    make
-    cd ..
-    git clone https://github.com/openssl/openssl
-    cd openssl/
-    ll
-    ./config
-    make
-    make test
-    make install
-    cd ../freeradius-server-release_2_1_12/
-    ./configure
+    ./configure --with-openssl-includes=/root/soft/openssl/ --with-openssl-libraries=/root/soft/openssl/
     make
     make install
+
     echo  ' test  radiusd -X'
 	  echo 'radtest vpn themass localhost 1812 testing123'
 	  echo 'service freeradius stop'

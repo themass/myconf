@@ -141,7 +141,7 @@ setup_php()
     #cd ${PHP_VERSION}
     
     
-    ./configure --prefix=${APP_HOME}/php-7.1.13 --with-config-file-path=${APP_HOME}/php-7.1.13/etc \
+    ./configure --prefix=/home/web/local/php-7.1.13 --with-config-file-path=${APP_HOME}/php-7.1.13/etc \
     --with-curl --with-pear --with-gd --with-jpeg-dir --with-vpx-dir --with-png-dir \
     --with-zlib --with-xpm-dir --with-freetype-dir --with-mcrypt --with-mhash --with-mysql \
     --with-mysqli --enable-pdo --with-pdo-mysql --with-openssl  --enable-fpm --enable-exif --enable-wddx --enable-zip \

@@ -16,6 +16,7 @@ class VideoParse(BaseParse):
         pass
 
     def run(self,start,end):
+        print 'start page=',start,'; end page=',end
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         chs = self.videoChannel()

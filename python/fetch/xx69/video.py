@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url']
             for i in range(1, 4000):
-                con = self.videoParse(item['channel'], '%s%s'%(url,i))
+                con = self.videoParse(item['channel'],item['channelType'], '%s%s'%(url,i))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
@@ -49,7 +49,7 @@ class VideoParse(BaseParse):
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList
-    def videoParse(self, channel, url):
+    def videoParse(self, channel,channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
         divs = soup.findAll("li",{'class':"avdata video-item-col"})
@@ -76,6 +76,7 @@ class VideoParse(BaseParse):
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
                 obj['baseurl'] = baseurl
+                obj['channelType'] = channelType
                 dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

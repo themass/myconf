@@ -10,6 +10,7 @@ from common import typeutil
 from common import db_ops
 from common import MyQueue
 from fetch.xx69 import *
+import re
 import sys
 
 reload(sys)
@@ -22,4 +23,4 @@ def parseVideo(start, end):
 
 
 if __name__ == '__main__':
-    parseVideo(1032, 1300)
+    parseVideo(1329, 4000)

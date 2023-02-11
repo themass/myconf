@@ -26,7 +26,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url= item['url']
-            for i in range(1301, 4000):
+            for i in range(1, maxVideoPage):
                 con = self.videoParse(item['channel'],item['channelType'], '%s%s'%(url,i))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
@@ -81,7 +81,7 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,"normal",baseurl,channelType)
 
         print 'xx69 video --解析完毕 ; channel =', channel,';channelType = ',channelType,'; len=', len(dataList), url
         dbVPN.commit()

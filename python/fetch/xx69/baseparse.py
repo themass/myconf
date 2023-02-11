@@ -14,7 +14,22 @@ reload(sys)
 # 
 sys.setdefaultencoding('utf8')
 
-# 9226688.com 8182277.com 8283377.com qqav10.com qqav9.com qqav8.com qqav7.com qqav6.com qqav5.com 
+#
+# https://69xx275.xyz
+#
+# https://69xx215.xyz
+#
+# https://69xx254.xyz
+#
+# https://69xx259.xyz
+#
+# https://69xx277.xyz
+#
+# https://69xx234.xyz
+#
+# https://69xx262.xyz
+#
+# https://69xx201.xyz
 baseurl = "https://69xx.one/"
 header = {'User-Agent':
           'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 

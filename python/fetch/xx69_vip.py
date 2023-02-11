@@ -10,16 +10,16 @@ from common import typeutil
 from common import db_ops
 from common import MyQueue
 from fetch.xx69 import *
-import re
 import sys
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-def parseVideo(start,end):
-    videop = video.VideoParse()
-    videop.run(start,end)
-if __name__ == '__main__':
-    start = argsMap.get("-start",0)
-    end = argsMap.get("-end",1)
 
-    parseVideo(int(start), int(end))
+def parseVideo(start, end):
+    videop = video.VideoParse()
+    videop.run(start, end)
+
+
+if __name__ == '__main__':
+    parseVideo(1032, 1300)

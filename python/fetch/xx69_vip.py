@@ -19,7 +19,7 @@ def parseVideo(start,end):
     videop = video.VideoParse()
     videop.run(start,end)
 if __name__ == '__main__':
-    start = argsMap.get("-p",0)
-    end = argsMap.get("-p",1)
+    start = argsMap.get("-s",0)
+    end = argsMap.get("-e",1)
 
     parseVideo(int(start), int(end))

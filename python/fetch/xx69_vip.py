@@ -15,9 +15,11 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-def parseVideo():
+def parseVideo(start,end):
     videop = video.VideoParse()
-    videop.run()
+    videop.run(start,end)
 if __name__ == '__main__':
-   
-    parseVideo()
+    start = argsMap.get("-p",0)
+    end = argsMap.get("-p",1)
+
+    parseVideo(int(start), int(end))

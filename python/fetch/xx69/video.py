@@ -76,7 +76,7 @@ class VideoParse(BaseParse):
                 obj['path'] = "xx69_"+videourl.path
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
-                obj['baseurl'] = baseurl
+                obj['baseurl'] = 'https://69xx.one/'
                 obj['channelType'] = channelType
                 dataList.append(obj)
         dbVPN = db.DbVPN()
@@ -97,7 +97,7 @@ class VideoParse(BaseParse):
                     text = source.text.replace(' ','')
                     match = regVideo.search(text)
                     if match!=None:
-                        return baseurl+match.group(1)
+                        return baseurl+match.group(1)+'.m3u8?video_server=cncdn&hash=bfbd49973'
 
             print '没找到mp4'
             return None

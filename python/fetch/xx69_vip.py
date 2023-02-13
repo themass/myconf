@@ -22,4 +22,4 @@ def parseVideo(start, end):
 
 
 if __name__ == '__main__':
-    parseVideo(1032, 1300)
+    parseVideo(1, 10)

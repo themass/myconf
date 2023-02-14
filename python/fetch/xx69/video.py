@@ -29,7 +29,7 @@ class VideoParse(BaseParse):
             url= item['url']
             for i in range(start, end):
                 if i!=1:
-                    con = self.videoParse(item['channel'],item['channelType'], '%s%s'%(url,i))
+                    con = self.videoParse(item['channel'],item['channelType'], '%s/%s'%(url,i))
                 else:
                     con = self.videoParse(item['channel'],item['channelType'], url)
                 if con==False:
@@ -100,7 +100,7 @@ class VideoParse(BaseParse):
                     text = source.text.replace(' ','')
                     match = regVideo.search(text)
                     if match!=None:
-                        return baseurl+match.group(1)+'.m3u8?video_server=cncdn&hash=bfbd49973'
+                        return baseurl+match.group(1)+'m3u8?video_server=cncdn&hash=bfbd49973'
 
             print '没找到mp4'
             return None

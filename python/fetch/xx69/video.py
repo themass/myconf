@@ -28,7 +28,10 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url']
             for i in range(start, end):
-                con = self.videoParse(item['channel'],item['channelType'], '%s%s'%(url,i))
+                if i!=1:
+                    con = self.videoParse(item['channel'],item['channelType'], '%s%s'%(url,i))
+                else:
+                    con = self.videoParse(item['channel'],item['channelType'], url)
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break

@@ -111,10 +111,10 @@ setup_mysql() {
 
     mysql -u root -p
     use mysql;
-    UPDATE user SET password=password('Themass@5296') WHERE user='root';
-    CREATE USER 'radius'@'%' IDENTIFIED BY 'Themass@5296';
-    CREATE USER 'vpn@server'@'%' IDENTIFIED BY 'Themass@5296';
-    CREATE USER 'root'@'%' IDENTIFIED BY 'Themass@5296';
+    UPDATE user SET password=password('Themass@5296') WHERE user='root'
+    CREATE USER 'radius'@'%' IDENTIFIED BY 'Themass@5296'
+    CREATE USER 'vpn@server'@'%' IDENTIFIED BY 'Themass@5296'
+    CREATE USER 'root'@'%' IDENTIFIED BY 'Themass@5296'
     flush privileges;
 }
 setup_radius()

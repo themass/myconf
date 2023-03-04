@@ -4,9 +4,10 @@ from common.envmod import *
 import se8_vip
 import kuyunzy_vip
 import nfss_vip
-from fetch.不能用 import nanguayingshi_vip, g6858_vip, duorydonng_vip, nyg6_vip, k9vidz_vip, cmdy5_vip, sp878_vip, \
-    kpd36_vip, qiezi_vip, avzy88_vip, sy88_vip, kpd2_vip, nvnvzx_vip, sp1769_vip, jinzidu_vip, ys88_vip, tzzy1399_vip, \
+from fetch.不能用 import nanguayingshi_vip, g6858_vip, duorydonng_vip, k9vidz_vip, cmdy5_vip, sp878_vip, \
+    kpd36_vip, avzy88_vip, sy88_vip, kpd2_vip, nvnvzx_vip, sp1769_vip, jinzidu_vip, ys88_vip, tzzy1399_vip, \
     tianjiyy123_vip, bx88222_vip, yezmw_vip
+from fetch import qiezi_vip, nyg6_vip
 
 
 def pase1():

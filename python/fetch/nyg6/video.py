@@ -34,7 +34,7 @@ class VideoUserParse(BaseParse):
         
         ahrefs = self.header("header.html")
         for ahref in ahrefs:
-            for i in range(1, 10):
+            for i in range(1, 100):
                 url= "%spage_%s.html"%(ahref.get("href"),i)
                 soup = self.fetchUrl(url)
                 grids = soup.findAll("div",{"class":"grid_item"})

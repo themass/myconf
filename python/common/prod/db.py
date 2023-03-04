@@ -3,7 +3,7 @@
 
 from common.base.data_base import DataBase
 # db_host = '47.88.7.156'
-db_host = '140.99.4.68'
+db_host = 'mysql.sspacee.com'
 db_port = 6666
 db_user = 'vpn@server'
 db_passwd = 'Themass@5296'

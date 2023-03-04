@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from qiezi import *
+from fetch.不能用.qiezi import *
 import re
 import sys
 reload(sys)

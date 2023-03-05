@@ -32,6 +32,7 @@ class VideoParse(BaseParse):
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
+
     def videoChannel(self):
         channelList = []
         ahrefs = self.header()
@@ -78,6 +79,7 @@ class VideoParse(BaseParse):
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl
                     dataList.append(obj)
+                    time.sleep(1)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:

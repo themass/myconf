@@ -47,9 +47,8 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        lis = soup.findAll("li", {"class": "hl-list-item hl-col-xs-4 hl-col-sm-3 hl-col-md-20w hl-col-lg-2"})
-        for li in lis:
-            ahref = li.first('a')
+        ahrefs = soup.findAll("a", {"class": "hl-item-thumb hl-lazy"})
+        for ahref in ahrefs:
             if ahref!=None:
                 mp4Url  = self.parseDomVideo(ahref.get("href"))
                 if mp4Url==None:
@@ -63,7 +62,7 @@ class VideoParse(BaseParse):
                 obj['name'] = ahref.get("title")
                 if obj['name']!=None and obj['name'].count("预告")!=0:
                     continue
-                obj['path'] = "88ys_%s%s%s"%(channel,"-",obj['name'])
+                obj['path'] = "a7xi_%s%s%s"%(channel,"-",obj['name'])
                 if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                     obj['videoType'] = "webview"
                 else:
@@ -89,18 +88,20 @@ class VideoParse(BaseParse):
             match = videoId.search(url)
             if match!=None:
                 Id= match.group(2)
-                url  = '/voddetail/%s.html'%(Id)
+                url  = '/vodplay/%s-1-1.html'%(Id)
                 soup = self.fetchUrl(url, header)
-                scripts = soup.findAll("script")
-                for script in scripts:
-                    text = unquote(script.text.replace("\"","").replace("\/","/").replace(" ",''))
-                    lines = text.split(",")
-                    for t in lines:
-                        match = videoApi.search(text)
-                        if match!=None:
-                            videoUrl =match.group(1)
-                            return "%s%s%s"%("http",videoUrl,'m3u8')
-                print '没找到mp4'
+                div = soup.first('div',{'class':'hl-col-xs-12 hl-col-md-70w hl-col-lg-9'})
+                if div!= None:
+                    scripts = div.findAll("script")
+                    for script in scripts:
+                        text = unquote(script.text.replace("\"","").replace("\/","/").replace(" ",''))
+                        lines = text.split(",")
+                        for t in lines:
+                            match = videoApi.search(text)
+                            if match!=None:
+                                videoUrl =match.group(1)
+                                return "%s%s%s"%("http",videoUrl,'m3u8')
+                print '没找到mp4',url
             return None
         except Exception as e:
             print common.format_exception(e)

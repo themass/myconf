@@ -11,11 +11,11 @@ import threading
 from BeautifulSoup import BeautifulSoup
 import re,os
 # http://www.dehyc.com
-baseurl = "https://www.88ys.com"
+baseurl = "https://www.7xi.tv"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
-videoApi = re.compile(r'"url":"http(.*?)\.m3u8')
+videoApi = re.compile(r'url:http(.*?)\.m3u8')
 videoApiMp4 = re.compile(r'http(.*?)\.mp4')
 
 shareVideo = re.compile(r"http(.*?)/share/(.*?)")

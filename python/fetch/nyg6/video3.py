@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
                     url= "%s%s%s"%(ch['url'],"?page=",i)
                 else:
                     url= "%spage_%s.html"%(ch['url'],i)
-                con = self.videoParse(ch['channel'], url)
+                con = self.videoParse(ch['channel'],ch['channelType'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',ch['name'],ch['url']
@@ -49,7 +49,7 @@ class VideoParse(BaseParse):
             obj['channelType']='nyg6_all_list'
             objs.append(obj)
         return  objs
-    def videoParse(self, channel, url):
+    def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
         grids = soup.findAll("div",{"class":"grid_item "})
@@ -81,7 +81,7 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,"normal",baseurl,channelType)
 
         print 'nyg6 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

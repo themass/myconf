@@ -27,8 +27,8 @@ class VideoParse(BaseParse):
                     url= "%s%s%s"%(ch['url'],"?page=",i)
                 else:
                     url= "%spage_%s.html"%(ch['url'],i)
-                con = self.videoParse(ch['channel'], url)
-                print '解析完成 ', ch['channel'], ' ---', i, '页'
+                con = self.videoParse(ch['channel'], ch['channelType'],url)
+                print '解析完成 ', ch['channel'],'--',ch['channelType'], ' ---', i, '页'
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',ch['name'],ch['url']
                     break
@@ -46,7 +46,7 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']='nyg6'+obj['name']
             obj['showType']=3
-            obj['channelType']='zhubo_list'
+            obj['channelType']='nvyou'
             objs.append(obj)
         ahrefs = self.header("header3.html")
         for html in ahrefs:
@@ -59,7 +59,7 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']='nyg6'+obj['name']
             obj['showType']=3
-            obj['channelType']='normal'
+            obj['channelType']='nvyou'
             objs.append(obj)
         ahrefs = self.header("header4.html")
         for html in ahrefs:
@@ -72,10 +72,10 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']=obj['name']
             obj['showType']=3
-            obj['channelType']='sanji'
+            obj['channelType']='nvyou'
             objs.append(obj)
         return  objs
-    def videoParse(self, channel, url):
+    def videoParse(self, channel,channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
         grids = soup.findAll("div",{"class":"grid_item "})
@@ -107,7 +107,7 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,"normal",baseurl,channelType)
 
         print 'nyg6 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

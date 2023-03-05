@@ -167,9 +167,9 @@ class DbOps(object):
             return 0
     def inertVideoUserItem(self, obj):
         return self.conn.execute(
-            "replace into  video_user_item_1 (name,pic,url,userId,rate,updateTime,path,baseurl,videoType,showType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
+            "replace into  video_user_item_1 (name,pic,url,userId,rate,updateTime,path,baseurl,videoType,showType,channel) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
             % (
-                obj.get("name").replace("'",""), obj.get("pic"), obj.get("url"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("path"), obj.get("baseUrl"), obj.get("videoType"), obj.get("showType")))
+                obj.get("name").replace("'",""), obj.get("pic"), obj.get("url"), obj.get("userId"), obj.get("rate"), obj.get("updateTime"), obj.get("path"), obj.get("baseUrl"), obj.get("videoType"), obj.get("showType"), obj.get("channel")))
 
     def getAllHost(self):
         self.conn.execute(

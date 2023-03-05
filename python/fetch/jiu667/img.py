@@ -32,8 +32,6 @@ class ImgParse(BaseParse):
                 print url
                 count = self.update(url, ops, channel, i)
                 dbVPN.commit()
-                if count == 0:
-                    break
 
     def parseChannel(self):
         ahrefs = self.headerImg()

@@ -89,7 +89,7 @@ class VideoParse(BaseParse):
         return True
     def parseDomVideo(self, url):
         try:
-            soup = self.fetchUrl(url, header)
+            soup = self.fetchUrl(url)
             scripts = soup.findAll("script")
             for script in scripts:
                 text = unquote(script.text.replace("\"","").replace("\/","/").replace(" ",''))

@@ -98,6 +98,7 @@ class ImgParse(BaseParse):
                     obj['showType'] = 3
                     obj['pics'] = len(data['pic'])
                     obj['name'] = data['name']
+                    obj['channelName'] = channel
                     obj['sortType'] = sortType
                     print obj['name'],'url=', obj['url'],data['pic'][0], '  图片数量=', len(data['pic'])
                     objs.append(obj)

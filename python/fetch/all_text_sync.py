@@ -1,8 +1,7 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
 from common.envmod import *
-import novel941_vip
-from fetch.不能用 import g6858_vip, sp878_vip, kedouwo_vip, kpd36_vip, ddd804_vip, bx88222_vip
+from fetch.不能用 import g6858_vip, sp878_vip, kedouwo_vip, kpd36_vip, ddd804_vip, bx88222_vip, novel941_vip
 
 
 def pase1():

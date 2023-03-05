@@ -4,11 +4,10 @@
 #美图
 import tt192_vip
 #黄土
-import se8_vip
 #漫画
 #黄土
 from fetch import xmhxmygs_vip, nyg6_vip
-from fetch.不能用 import g6858_vip, skswk9_img, sp878_vip, kpd36_vip, ddd804_vip, xieegif_vip, bx88222_vip
+from fetch.不能用 import g6858_vip, skswk9_img, sp878_vip, kpd36_vip, ddd804_vip, xieegif_vip, bx88222_vip, se8_vip
 
 if __name__ == '__main__':
     

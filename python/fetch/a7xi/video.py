@@ -100,7 +100,7 @@ class VideoParse(BaseParse):
                             match = videoApi.search(text)
                             if match!=None:
                                 videoUrl =match.group(1)
-                                return "%s%s%s"%("http",videoUrl,'m3u8')
+                                return "%s%s%s"%("http",videoUrl,'.m3u8')
                 print '没找到mp4',url
             return None
         except Exception as e:

@@ -19,7 +19,11 @@ sys.setdefaultencoding('utf8')
 def parseVideo(start, end):
     videop = video.VideoParse()
     videop.run(start, end)
+def parseVideo2(start, end):
+    videop = video2.VideoParse()
+    videop.run(start, end)
 
 
 if __name__ == '__main__':
-    parseVideo(1, 10)
+    # parseVideo(1, 10)
+    parseVideo2(1, 140)

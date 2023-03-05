@@ -79,6 +79,7 @@ class VideoUserParse(BaseParse):
                 obj['userId'] = userId
                 obj['baseUrl'] = baseurl
                 obj['showType'] = 3
+                obj['channel'] = channel
                 if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
                     obj['videoType'] = "webview"
                 else:

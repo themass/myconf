@@ -78,6 +78,17 @@ class BaseParse(threading.Thread):
         soup= BeautifulSoup(content)
         alist = soup.findAll('a')
         return alist
+    def headerImg(self):
+        #         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__))
+        with open("jiu667/header2.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        print content
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
     def fetchContentUrlWithBase(self, url):
         count = 0
         while count < maxCount:

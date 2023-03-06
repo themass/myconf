@@ -49,7 +49,7 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']='69xx2'+ahref.text
             obj['showType']=3
-            obj['channelType']='69xx_all2'
+            obj['channelType']='69xx_all'
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList

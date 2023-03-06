@@ -77,34 +77,36 @@ class ImgParse(BaseParse):
 
     def fetchImgItemsData(self, url, channel):
         soup = self.fetchUrl(url)
-        datalist = soup.findAll("div",{"class":"col clearfix"})
+        div = soup.first("div",{"class":"col clearfix"})
         objs = []
         sortType = dateutil.y_m_d()
-        for item in datalist:
-            ahref = item.first("a")
-            if ahref!=None:
-                try:
-                    obj = {}
-                    name = ahref.text
-                    obj['url'] = ahref.get('href')
-                    obj['baseUrl'] = baseurl
-                    obj['channel'] = channel
-                    obj['updateTime'] = datetime.datetime.now()
-                    obj['fileDate'] = ''
-                    data = self.fetchImgs(obj['url'])
-                    if len(data['pic']) == 0:
-                        print '没有 图片文件--', obj['url'], '---', url
-                        continue
-                    obj['picList'] = data['pic']
-                    obj['showType'] = 3
-                    obj['pics'] = len(data['pic'])
-                    obj['name'] = data['name']
-                    obj['channelName'] = channel
-                    obj['sortType'] = sortType
-                    print obj['name'],'url=', obj['url'],data['pic'][0], '  图片数量=', len(data['pic'])
-                    objs.append(obj)
-                except Exception as e:
-                    print common.format_exception(e)
+        if div!=None:
+            items = div.findAll('li')
+            for item in items:
+                ahref = item.first("a")
+                if ahref!=None:
+                    try:
+                        obj = {}
+                        name = ahref.text
+                        obj['url'] = ahref.get('href')
+                        obj['baseUrl'] = baseurl
+                        obj['channel'] = channel
+                        obj['updateTime'] = datetime.datetime.now()
+                        obj['fileDate'] = ''
+                        data = self.fetchImgs(obj['url'])
+                        if len(data['pic']) == 0:
+                            print '没有 图片文件--', obj['url'], '---', url
+                            continue
+                        obj['picList'] = data['pic']
+                        obj['showType'] = 3
+                        obj['pics'] = len(data['pic'])
+                        obj['name'] = data['name']
+                        obj['channelName'] = channel
+                        obj['sortType'] = sortType
+                        print obj['name'],'url=', obj['url'],data['pic'][0], '  图片数量=', len(data['pic'])
+                        objs.append(obj)
+                    except Exception as e:
+                        print common.format_exception(e)
         return objs
 
     def fetchImgs(self, url):

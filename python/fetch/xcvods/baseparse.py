@@ -20,7 +20,7 @@ videoApiMp4 = re.compile(r'http(.*?)\.mp4')
 
 shareVideo = re.compile(r"http(.*?)/share/(.*?)")
 
-videoId = re.compile("(.*\/)(\d+)\.html")
+videoId = re.compile("(.*)(\d+)\.html")
 class BaseParse(threading.Thread):
 
     def __init__(self):

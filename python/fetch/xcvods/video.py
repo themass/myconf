@@ -87,7 +87,7 @@ class VideoParse(BaseParse):
         try:
             match = videoId.search(url)
             if match!=None:
-                Id= match.group(2)
+                Id= match.group(1)
                 url  = '/vod-play-id-%s-src-1-num-1.html'%(Id)
                 soup = self.fetchUrl(url, header)
                 div = soup.first('div',{'class':'macplus-player__video embed-responsive embed-responsive-16by9'})

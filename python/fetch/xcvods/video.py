@@ -80,7 +80,6 @@ class VideoParse(BaseParse):
         print 'xcvods video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-        time.sleep(0.3)
 
     def parseDomVideo(self, url):
         header = {"User-Agent":"Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)", "Referer": url}

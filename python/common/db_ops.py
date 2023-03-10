@@ -136,6 +136,7 @@ class DbOps(object):
     def updateVideoItemsChannelType(self):
         self.conn.execute("update videoitems_1 i set channelType=(select channelType from videochannel c where i.channel=c.channel limit 1)")
     def inertVideoChannel(self, obj):
+        return 1
         try:
             # return 1
             return self.conn.execute(

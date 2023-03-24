@@ -11,11 +11,11 @@ import hanime_vip
 import profile
 
 if __name__ == '__main__':
-    # a7xi_vip.parseVideo()
-    # hsex_vip.parseVideo()
-    # jiu667_vip.parseVideo()
-    # nyg6_vip.parseVideo()
-    # xcvods_vip.parseVideo()
+    a7xi_vip.parseVideo()
+    hsex_vip.parseVideo()
+    nyg6_vip.parseVideo()
+    xcvods_vip.parseVideo()
     xx69_vip.parseVideo(1, profile.maxVideoPage)
     xx69_vip.parseVideo2(1, profile.maxVideoPage)
     hanime_vip.parseVideo()
+    jiu667_vip.parseVideo()

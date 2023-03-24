@@ -1,5 +1,5 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
-maxVideoPage=7
+maxVideoPage=3
 maxImgPage = 100
 maxTextPage=5

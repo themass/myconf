@@ -31,7 +31,7 @@ class VideoUserParse(BaseParse):
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
-                time.sleep(2)
+                time.sleep(0.3)
     def videoChannel(self):
         ahrefs = self.header("header2.html")
         channelList = []

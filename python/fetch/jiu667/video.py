@@ -26,7 +26,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url= item['url']
-            for i in range(1, maxVideoPage):
+            for i in range(40, maxVideoPage):
                 con = False
                 if i==1:
                     con = self.videoParse(item['channel'], url)

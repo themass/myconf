@@ -66,8 +66,8 @@ setup_kernel()
 ## Setup MySQL
 ## -----------------------
 setup_mysql() {
-#https://cdn.mysql.com//Downloads/MySQL-5.6/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz
-	shelldir=`pwd`
+    #https://cdn.mysql.com//Downloads/MySQL-5.6/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz
+	  shelldir=`pwd`
     useradd -r -m -s /bin/bash mysql
     apt install libaio1
     apt install libnuma1
@@ -109,16 +109,17 @@ setup_mysql() {
     mysqld_safe  &
     #show variables like "%char%"; ->utf-8
 
-    mysql -u root -p
-    use mysql;
-    UPDATE user SET password=password('Themass@5296') WHERE user='root'
-    CREATE USER 'radius'@'%' IDENTIFIED BY 'Themass@5296'
-    CREATE USER 'vpn@server'@'%' IDENTIFIED BY 'Themass@5296'
-    CREATE USER 'root'@'%' IDENTIFIED BY 'Themass@5296'
-    flush privileges;
+#    mysql -u root -p
+#    use mysql;
+#    UPDATE user SET password=password('Themass@5296') WHERE user='root'
+#    CREATE USER 'radius'@'%' IDENTIFIED BY 'Themass@5296'
+#    CREATE USER 'vpn@server'@'%' IDENTIFIED BY 'Themass@5296'
+#    CREATE USER 'root'@'%' IDENTIFIED BY 'Themass@5296'
+#    flush privileges
 }
-setup_radius()
-{
+#/////
+#
+setup_radius() {
     shelldir=`pwd`
     cd /root/soft
     apt-get install  freeradius-mysql
@@ -168,15 +169,13 @@ setup_radius()
 	#ln -s /usr/local/mysql/bin/mysql_config /usr/local/bin/mysql_config
 	# vi /etc/ld.so.conf  find  / -name libmysqlclient*    ldconfig
 }
-init_radius_client()
-{
+init_radius_client() {
 	rm /usr/local/etc/raddb/clients.conf
 	cp ../radius/clients.conf /usr/local/etc/raddb/
 	sh radiusd.sh stop
 	sh radiusd.sh start
 }
-setup_rclocal()
-{
+setup_rclocal() {
 	cp ../monitor/rc-local.service /etc/systemd/system/
 	cp ../monitor/rc.local /etc/
 	chmod +x /etc/rc.local

@@ -310,7 +310,7 @@ if [ $# != 0 ]; then
         case "$arg" in
             soft)            init_soft;;
             strongswan)          strongswan_setup;;
-	    ca)          init_ca $2;;
+	      ca)          init_ca $2;;
 	     caip)          setup_caip;;
 	    iptables)          setup_iptables;;
 	    strongswanconf)          strongswan_config;;

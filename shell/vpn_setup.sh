@@ -160,7 +160,9 @@ init_ca()
 setup_iptables() 
 {
 	iptables -A INPUT -p udp --dport 500 -j ACCEPT 
-	iptables -A INPUT -p udp --dport 4500 -j ACCEPT 
+	iptables -A INPUT -p udp --dport 4500 -j ACCEPT
+	iptables -A INPUT -p udp --dport 8080 -j ACCEPT
+	iptables -A INPUT -p udp --dport 8081 -j ACCEPT
 	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o $1 -j MASQUERADE 
 	iptables -A FORWARD -s 10.0.0.0/24 -j ACCEPT 
 	iptables -A FORWARD -d 10.0.0.0/24 -j ACCEPT
@@ -240,6 +242,46 @@ setup_fail2ban()
     cp ../monitor/jail.conf /etc/fail2ban/
     service fail2ban restart
 }
+#init bbr
+setup_kernel()
+{
+#	cd ${TMP_HOME}
+#	rm -rf kernel
+#	mkdir kernel
+#	cd kernel
+	#http://kernel.ubuntu.com/~kernel-ppa/mainline
+	#wget  ${URL}/soft/linux-kernel/linux-headers-4.9.0-040900_4.9.0-040900.201612111631_all.deb
+	#wget  ${URL}/soft/linux-kernel/linux-headers-4.9.0-040900-generic_4.9.0-040900.201612111631_amd64.deb
+	#wget  ${URL}/soft/linux-kernel/linux-image-4.9.0-040900-generic_4.9.0-040900.201612111631_amd64.deb
+	#wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.12/linux-headers-4.12.0-041200_4.12.0-041200.201707022031_all.deb
+	#wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.12/linux-headers-4.12.0-041200-generic_4.12.0-041200.201707022031_amd64.deb
+	#wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.12/linux-image-4.12.0-041200-generic_4.12.0-041200.201707022031_amd64.deb
+
+
+	#wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.13.16/linux-headers-4.13.16-041316_4.13.16-041316.201711240901_all.deb
+	#wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.13.16/linux-headers-4.13.16-041316-generic_4.13.16-041316.201711240901_amd64.deb
+	#wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.13.16/linux-image-4.13.16-041316-generic_4.13.16-041316.201711240901_amd64.deb
+
+	 #wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.9.135/linux-headers-4.9.135-0409135_4.9.135-0409135.201810200830_all.deb
+	 #wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.9.135/linux-headers-4.9.135-0409135-generic_4.9.135-0409135.201810200830_amd64.deb
+	 #wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.9.135/linux-image-4.9.135-0409135-generic_4.9.135-0409135.201810200830_amd64.deb
+
+	#dpkg -i *.deb
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+	sysctl -p
+	sysctl net.ipv4.tcp_available_congestion_control
+	lsmod | grep bbr
+	#grep menuentry /boot/grub/grub.cfg
+	# /etc/default/grub GRUB_DEFAULT=0-銆�2
+	#update-grub
+	#reboot
+}
+setup_rclocal() {
+	cp ../monitor/rc-local.service /etc/systemd/system/
+	cp ../monitor/rc.local /etc/
+	chmod +x /etc/rc.local
+}
 ## -----------------------
 ## Setup all aboves
 ## -----------------------
@@ -254,7 +296,9 @@ setup_all()
     setup_iptables $dev
     #setup_fail2ban
     net
-    setup_telegraf
+    strongswanconf_port
+    setup_kernel
+    setup_rclocal
     echo "crotab-----------------------------"
     echo "crotab-----------------------------"
     echo "crotab-----------------------------"

@@ -2,6 +2,8 @@
 # coding=utf-8
 import MySQLdb
 import dateutil
+from common import common
+
 
 class DbOps(object):
 
@@ -144,7 +146,7 @@ class DbOps(object):
                 % (
                     obj.get("name"), obj.get("url"), obj.get("baseurl"), obj.get("updateTime"), 1.2, obj.get("showType",3), 1, obj.get("channel").replace(".com",'-'), obj.get("channelType")))
         except Exception as e:
-            pass
+            print common.format_exception(e)
     def renameVideo(self,obj):
         return self.conn.execute(
             "update   videoitems_1 set name='%s' where path='%s'" % ( obj.get("name"), obj.get("path")))

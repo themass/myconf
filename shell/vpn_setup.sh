@@ -153,6 +153,17 @@ init_ca()
 	cp clientCert.pem /etc/ipsec.d/certs/
 	cp clientKey.pem /etc/ipsec.d/private/
 	ipsec restart
+
+#	多ip情况下可以为每个ip都指定一个caCert，但是key有使用相同的
+#	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.109" --ca --outform pem > caCert2.pem
+#	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert2.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.109" --san="154.22.124.109" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert2.pem
+#	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert2.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert2.pem
+#	openssl pkcs12 -export -inkey clientKey.pem -in clientCert2.pem -name "client" -certfile caCert2.pem -caname "154.22.124.109" -out clientCert2.p12
+#	cp caCert2.pem /etc/ipsec.d/cacerts/
+#	cp serverCert2.pem /etc/ipsec.d/certs/
+#	cp clientCert2.pem /etc/ipsec.d/certs/
+
+
 }
 
 
@@ -173,6 +184,7 @@ setup_iptables()
 	#service iptables save
 	#service iptables restart
 	#systemctl restart iptables
+	#	iptables -t nat -A POSTROUTING -s 10.2.0.0/24 -o eth0 -j SNAT --to 154.22.124.109  多ip指定出口ip
 	iptables-save
 	#iptables-restore  https://blog.csdn.net/hack8/article/details/6772958
 	#tcpdump -s 0 -n -i eth0 'esp or udp and (port 500 or port 4500)'

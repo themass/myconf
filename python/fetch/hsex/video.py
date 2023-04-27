@@ -89,6 +89,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         return True
     def parseDomVideo(self, url):
+        time.sleep(0.5)
         try:
             if url.count("script")==0:
                 soup = self.fetchUrl(url)

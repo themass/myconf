@@ -2,7 +2,7 @@
 # coding=utf-8
 import MySQLdb
 import dateutil
-from common import common
+import common
 
 
 class DbOps(object):

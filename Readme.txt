@@ -21,7 +21,7 @@ wget https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tar.xz
 xz -d Python-2.7.10.tar.xz
 tar -xvf Python-2.7.10.tar
 cd Python-2.7.10
-./configure --prefix=/home/web/local/python2.7.10/
+./configure --prefix=/root/local/python2.7.10/
 make && make install
 
 cd /home/web/local/
@@ -36,7 +36,7 @@ echo 'export PYTHONPATH=/home/web/work/myconf/python'  >> ~/.bash_profile
 source ~/.bash_profile
 
 
-echo 'export PYTHONE_HOME=/home/web/local/python2.7' >> ~/.profile
+echo 'export PYTHONE_HOME=/root/local/python2.7' >> ~/.profile
 echo 'export PATH=$PYTHONE_HOME/bin:/$PATH'  >> ~/.profile
 echo 'export PYTHONPATH=/home/web/work/myconf/python'  >> ~/.profile
 source ~/.profile
@@ -65,8 +65,13 @@ unzip MySQL-python-1.2.5.zip
 cd MySQL-python-1.2.5
 python setup.py  install
 #  失败请看	 http://www.cnblogs.com/bincoding/p/6480884.html
-# sudo apt-get install mysql-server mysql-client 
+# sudo apt-get install mysql-server mysql-client  libmysqld-dev libmysqlclient-dev
 #http://asdf314159265.iteye.com/blog/1841963
 #http://blog.csdn.net/it_dream_er/article/details/50760020
 #sudo ln -s /home/web/install/mysql-5.6.10-linux-glibc2.5-x86_64/lib/libmysqlclient.so /usr/lib/libmysqlclient.so.18
 #windows  http://www.mamicode.com/info-detail-2206925.html
+
+_mysql.c:29:10: fatal error: Python.h: No such file or directory
+ #include "Python.h"
+          ^~~~~~~~~~
+apt-get install python-dev

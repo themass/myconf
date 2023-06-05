@@ -32,11 +32,11 @@ class TextChannelParse(BaseParse):
             try:
                 channel = item['url']
                 for i in range(1, maxTextPage ):
-                    page_url = "%s%s%s"%(channel,"&pageindex=",i)
+                    page_url = "%s%s"%("/page/",i)
                     print page_url
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
-                    count = self.update(page_url, ops, channel)
+                    count = self.update(page_url, ops, channel,item['name'])
                     dbVPN.commit()
                     dbVPN.close()
                     if count == 0:
@@ -45,23 +45,21 @@ class TextChannelParse(BaseParse):
                 print common.format_exception(e)
     def textChannel(self):
         objs = []
-        ahrefs = self.headerHtml("header2.html")
-        for ahref in ahrefs:
-            obj = {}
-            obj['name']=ahref.text
-            obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl2
-            obj['updateTime']=datetime.datetime.now()
-            obj['pic']=''
-            obj['rate']=1.2
-            obj['channel']=obj['url']
-            obj['showType']=3
-            obj['channelType']='normal'
-            objs.append(obj)
+        obj={}
+        obj['url']="941novel"
+        obj['name']="我爱激情"
+        obj['baseurl']=baseurl
+        obj['updateTime']=datetime.datetime.now()
+        obj['pic']=''
+        obj['rate']=1.2
+        obj['channel']=obj['url']
+        obj['showType']=3
+        obj['channelType']='normal'
+        objs.append(obj)
         return  objs
 
-    def update(self, url, ops, channel):
-        objs = self.fetchTextData(url, channel)
+    def update(self, url, ops, channel,channelName):
+        objs = self.fetchTextData(url, channel,channelName)
         print "解析Txt小说 ok----channl=", channel, '  数量=', len(objs)
         for obj in objs:
             try:
@@ -72,13 +70,17 @@ class TextChannelParse(BaseParse):
                 print  common.format_exception(e)
         return len(objs)
 
-    def fetchTextData(self, url, channel):
+    def fetchTextData(self, url, channel,channelName):
         try:
-            soup = self.fetchUrlWithBase(baseurl2+url,header)
-            divs = soup.findAll("div", {"class": "range"})
+            soup = self.fetchUrl(url)
+            div = soup.first("div", {"id": "archive-posts"})
+            if div == None:
+                print '没有数据', url
+                return []
+            datalist = div.findAll("h3")
             objs = []
             sortType = dateutil.y_m_d()
-            for item in divs:
+            for item in datalist:
                 ahref = item.first("a")
                 if ahref!=None:
                     try:
@@ -97,6 +99,7 @@ class TextChannelParse(BaseParse):
                             print '没有文章数据',ahref.get('href')
                             continue
                         obj['sortType'] = sortType
+                        obj['channelName'] = channelName
                         objs.append(obj)
                     except Exception as e:   
                         print  common.format_exception(e)
@@ -104,8 +107,8 @@ class TextChannelParse(BaseParse):
         except Exception as e:
             print common.format_exception(e)
     def fetchText(self,url):
-        soup = self.fetchUrlWithBase(baseurl2+url,header)
-        data = soup.first("div", {"id": "ChapterContents"})
+        soup = self.fetchUrlWithBase(url,header)
+        data = soup.first("div", {"class": "entry-content clearfix"})
         if data != None:
             try:
                 obj = {}

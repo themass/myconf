@@ -35,7 +35,7 @@ class TextChannelParse(BaseParse):
                     print page_url
                     dbVPN = db.DbVPN()
                     ops = db_ops.DbOps(dbVPN)
-                    count = self.update(page_url, ops, channel)
+                    count = self.update(page_url, ops, channel,item['name'])
                     dbVPN.commit()
                     dbVPN.close()
                     if count == 0:
@@ -59,8 +59,8 @@ class TextChannelParse(BaseParse):
             objs.append(obj)
         return objs
 
-    def update(self, url, ops, channel):
-        objs = self.fetchTextData(url, channel)
+    def update(self, url, ops, channel,name):
+        objs = self.fetchTextData(url, channel,name)
         print "解析Txt小说 ok----channl=", channel, '  数量=', len(objs)
         for obj in objs:
             try:
@@ -71,7 +71,7 @@ class TextChannelParse(BaseParse):
                 print  common.format_exception(e)
         return len(objs)
 
-    def fetchTextData(self, url, channel):
+    def fetchTextData(self, url, channel,name):
         try:
             soup = self.fetchUrl(baseurl,url)
             datalist = soup.findAll("tr",{"class":"tr3 t_one"})
@@ -97,6 +97,7 @@ class TextChannelParse(BaseParse):
                                 print '没有文章数据',itemUrl
                                 continue
                             obj['sortType'] = sortType
+                            obj['channelName'] = name
                             objs.append(obj)
                         except Exception as e:
                             print  common.format_exception(e)

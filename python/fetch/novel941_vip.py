@@ -23,3 +23,4 @@ def parseText2():
     textpo.run()
 if __name__ == '__main__':
     parseText2()
+    parseText()

@@ -12,7 +12,6 @@ from BeautifulSoup import BeautifulSoup
 import re
 # http://www.dehyc.com
 baseurl = "http://941novel.com"
-baseurl2 = "http://58.84.54.38:8010/"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3

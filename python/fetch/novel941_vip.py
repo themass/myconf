@@ -8,7 +8,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from novel941 import *
+from tt7g48s3s4mo import *
 import re
 import sys
 import getopt
@@ -18,9 +18,5 @@ sys.setdefaultencoding('utf8')
 def parseText():
     textpo = text.TextChannelParse()
     textpo.run()
-def parseText2():
-    textpo = text2.TextChannelParse()
-    textpo.run()
 if __name__ == '__main__':
-    parseText2()
     parseText()

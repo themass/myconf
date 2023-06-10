@@ -98,7 +98,7 @@ class VideoParse(BaseParse):
                 scripts = soup.findAll("script")
                 for s in scripts:
                     text = unquote(s.text)
-                    texts = text.split('"')
+                    texts = text.split(';')
                     for item in texts:
                         match = regVideo.search(item)
                         if match!=None:

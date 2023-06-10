@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url']
             channelType = item['channelType']
-            for i in range(40, maxVideoPage):
+            for i in range(1, maxVideoPage):
                 con = False
                 if i==1:
                     con = self.videoParse(item['channel'], url,channelType)

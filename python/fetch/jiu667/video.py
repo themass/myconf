@@ -26,12 +26,13 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url= item['url']
+            channelType = item['channelType']
             for i in range(40, maxVideoPage):
                 con = False
                 if i==1:
-                    con = self.videoParse(item['channel'], url)
+                    con = self.videoParse(item['channel'], url,channelType)
                 else:
-                    con = self.videoParse(item['channel'], '%s%s%s'%(url.replace('index.html','list_'),maxVideoPage-i,'.html'))
+                    con = self.videoParse(item['channel'], '%s%s%s'%(url.replace('index.html','list_'),maxVideoPage-i,'.html'),channelType)
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
@@ -53,7 +54,7 @@ class VideoParse(BaseParse):
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList
-    def videoParse(self, channel, url):
+    def videoParse(self, channel, url,channelType):
         dataList = []
         soup = self.fetchUrl(url)
         div = soup.first('div',{"class":"mod channel-list"})
@@ -85,7 +86,7 @@ class VideoParse(BaseParse):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl)
+            ops.inertVideo(obj,"normal",baseurl,channelType)
 
         print 'jiu667 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()

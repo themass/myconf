@@ -9,6 +9,8 @@ import xcvods_vip
 import xx69_vip
 import hanime_vip
 import profile
+import  ip38_vip
+import tianlalu_vip
 
 if __name__ == '__main__':
     a7xi_vip.parseVideo()
@@ -19,3 +21,5 @@ if __name__ == '__main__':
     # xx69_vip.parseVideo2(1, profile.maxVideoPage)
     # hanime_vip.parseVideo()
     # jiu667_vip.parseVideo()
+    ip38_vip.parseVideo()
+    tianlalu_vip.parseVideo()

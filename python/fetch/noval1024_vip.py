@@ -24,5 +24,5 @@ def parseText2():
 if __name__ == '__main__':
    
     # parseVideo()
-    parseText()
-    # parseText2()
+    # parseText()
+    parseText2()

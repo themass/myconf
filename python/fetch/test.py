@@ -12,7 +12,6 @@ from common import MyQueue
 from common import dateutil
 from common import html_parse
 from common import httputil
-import requests  
 import re
 import os
 import sys
@@ -48,10 +47,10 @@ if __name__ == '__main__':
     content = str.replace('"', "").split("url:")
     shareVideo = re.compile(r"http(.*?)/2020/(.*?)")
     for text in content:
-        print text
+        print(text)
         match = shareVideo.search(text)
         if match!=None:
-            print match.group(0),"-------",match.group(1),"-------",match.group(2)
+            print(match.group(0), "-------", match.group(1), "-------", match.group(2))
 #     videoId = re.compile("(.*\/)(\d+)\.html")
 #     match = videoId.search('dongzuopian/202006/91671.html')
 #     if match!=None:

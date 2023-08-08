@@ -95,14 +95,13 @@ class VideoParse(BaseParse):
         try:
             if url.count("script")==0:
                 soup = self.fetchUrl(url)
-                source = soup.first("div",{'class':'__player__container ui embed'})
-                if source != None:
-                    text = source.text.replace(' ','')
-                    match = regVideo.search(text)
+                scripts = soup.findAll("script")
+                for s in scripts:
+                    match = regVideo.search(s.text.replace(" ",""))
                     if match!=None:
-                        return baseurl+match.group(1)+'m3u8?video_server=cncdn&hash=bfbd49973'
+                        return "https://7.bbdata.cc/videos/%s/g.m3u8?h=cfed10034fbdf1a"%(match.group(1))
 
-            print '没找到mp4'
+            print '没找到mp4',url
             return None
         except Exception as e:
             print common.format_exception(e)

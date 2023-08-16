@@ -8,7 +8,7 @@ from fetch import noval1024_vip
 def pase1():
     novel941_vip.parseText()
     noval1024_vip.parseText()
-    noval1024_vip.parseText2()
+    # noval1024_vip.parseText2()
 
 
 if __name__ == '__main__':

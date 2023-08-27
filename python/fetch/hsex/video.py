@@ -1,6 +1,7 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
 from baseparse import *
+from urlall import *
 from urlparse import urlparse
 from common import common
 from fetch.profile import *
@@ -32,6 +33,16 @@ class VideoParse(BaseParse):
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
+    def runUrls(self):
+        for url in urls:
+            for i in range(1, maxVideoPage):
+                page = '%s%s%s'%('search-',i,'.htm')
+                print page
+                con = self.videoParse('hsex.men', 'hsex_all',url.replace('search.htm',page))
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',url
+                    break
+                print '解析完成 ', url, ' ---', i, '页'
     def videoChannel(self):
         channelList = []
         ahrefs = self.header()

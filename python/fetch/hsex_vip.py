@@ -23,5 +23,5 @@ def parseVideoUrls():
     videop.runUrls()
 if __name__ == '__main__':
 
-    # parseVideoUrls()
-    parseVideo()
+    parseVideoUrls()
+    # parseVideo()

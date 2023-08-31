@@ -24,4 +24,4 @@ def parseVideoUrls():
 if __name__ == '__main__':
 
     parseVideoUrls()
-    # parseVideo()
+    parseVideo()

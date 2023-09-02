@@ -75,7 +75,7 @@ setup_mysql() {
     rm -rf /home/mysql/db_data/*
     wget https://cdn.mysql.com/archives/mysql-5.6/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz --no-check-certificate
     cd /root/local
-    tar -zxvf /root/soft/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz.tar.gz
+    tar -zxvf /root/soft/mysql-5.6.40-linux-glibc2.12-x86_64.tar.gz
     mv mysql-5.6.40-linux-glibc2.12-x86_64 mysql-5.6.40
     rm -rf /home/mysql/mysql
     ln -s /root/local/mysql-5.6.40 /home/mysql/mysql

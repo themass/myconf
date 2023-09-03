@@ -6,6 +6,7 @@ passwd web
 ap
 
 mkdir -p /home/web/install
+mkdir -p /home/web/local
 cd /home/web/install 
 wget https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2 --no-check-certificate
 tar -xvjpf gmp-6.0.0a.tar.bz2
@@ -21,7 +22,7 @@ wget https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tar.xz
 xz -d Python-2.7.10.tar.xz
 tar -xvf Python-2.7.10.tar
 cd Python-2.7.10
-./configure --prefix=/root/local/python2.7.10/
+./configure --prefix=/home/web/local/python2.7.10/
 make && make install
 
 cd /home/web/local/

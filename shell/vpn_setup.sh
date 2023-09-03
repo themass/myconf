@@ -155,14 +155,26 @@ init_ca()
 	ipsec restart
 
 #	多ip情况下可以为每个ip都指定一个caCert，但是key有使用相同的
-#	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.109" --ca --outform pem > caCert2.pem
-#	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert2.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.109" --san="154.22.124.109" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert2.pem
-#	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert2.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert2.pem
-#	openssl pkcs12 -export -inkey clientKey.pem -in clientCert2.pem -name "client" -certfile caCert2.pem -caname "154.22.124.109" -out clientCert2.p12
-#	cp caCert2.pem /etc/ipsec.d/cacerts/
-#	cp serverCert2.pem /etc/ipsec.d/certs/
-#	cp clientCert2.pem /etc/ipsec.d/certs/
-
+	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.96" --ca --outform pem > caCert3.pem
+	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.96" --san="154.22.124.96" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert3.pem
+	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert3.pem
+	openssl pkcs12 -export -inkey clientKey.pem -in clientCert3.pem -name "client" -certfile caCert3.pem -caname "154.22.124.96" -out clientCert3.p12
+	cp caCert3.pem /etc/ipsec.d/cacerts/
+	cp serverCert3.pem /etc/ipsec.d/certs/
+	cp clientCert3.pem /etc/ipsec.d/certs/
+#iptables -A INPUT -p udp --dport 500 -j ACCEPT
+#iptables -A INPUT -p udp --dport 4500 -j ACCEPT
+#iptables -A INPUT -p udp --dport 8080 -j ACCEPT
+#iptables -A INPUT -p udp --dport 8081 -j ACCEPT
+#iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth0 -j MASQUERADE
+#iptables -A FORWARD -s 10.0.0.0/24 -j ACCEPT
+#iptables -A FORWARD -d 10.0.0.0/24 -j ACCEPT
+#ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
+#ip6tables -A INPUT -p udp --dport 4500 -j ACCEPT
+#ip6tables -A INPUT -m frag -m connmark --mark 0x42 -j ACCEPT
+#iptables -A FORWARD -s 10.2.0.0/24 -j ACCEPT
+#iptables -A FORWARD -d 10.2.0.0/24 -j ACCEPT
+#iptables -t nat -A POSTROUTING -s 10.2.0.0/24 -o eth0 -j SNAT --to 154.22.124.109
 
 }
 

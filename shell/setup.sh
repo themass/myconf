@@ -65,6 +65,12 @@ mkdir -p /root/work
 ##	update user set password=password("vpn@5296") where user="vpn"
 ##	create database vpn
 ##	grant all on vpn.* to 'vpn'
+
+#create database sspanel;
+#create database radius;
+#GRANT ALL ON radius.* TO 'root'@'%';
+#GRANT ALL ON  sspanel.* TO 'root'@'%';
+#GRANT ALL ON vpn.* TO 'root'@'%';
 ##	flush privileges
 ##	quit
 #}
@@ -97,11 +103,12 @@ setup_user() {
 ## Setup nginx
 ## -----------------------
 setup_nginx() {
+    apt-get install libssl1.0-dev
     cd ${TMP_HOME}
     rm -rf openssl
     git clone https://github.com/openssl/openssl
     cd openssl/
-    ./configure --with-openssl-includes=/root/soft/openssl --with-openssl-libraries=/root/soft/openssl
+    ./config --with-openssl-includes=/root/soft/openssl --with-openssl-libraries=/root/soft/openssl
     cd ../
     rm pcre-8.39.tar.gz
     wget https://onboardcloud.dl.sourceforge.net/project/pcre/pcre/8.39/pcre-8.39.tar.gz --no-check-certificate
@@ -123,7 +130,7 @@ setup_nginx() {
     tar -zxvf v0.3.1.tar.gz
     tar -zxvf nginx-1.16.1.tar.gz
     cd nginx-1.16.1/
-    ./configure --prefix=/root/local/nginx-1.16.1 --with-http_stub_status_module   --with-http_ssl_module --with-cc-opt="-Wimplicit-fallthrough=0" --with-http_gzip_static_module --with-pcre=../pcre-8.39 --add-module=../redis2-nginx-module --add-module=../srcache-nginx-module --add-module=../ngx_devel_kit-0.3.1 --add-module=../ngx_cache_purge --add-module=../ngx_http_consistent_hash --add-module=../ngx_http_php_session --add-module=../ngx_slowfs_cache   --add-module=../set-misc-nginx-module
+./configure --prefix=/root/local/nginx-1.16.1 --with-http_stub_status_module   --with-http_ssl_module --with-cc-opt="-Wimplicit-fallthrough=0" --with-http_gzip_static_module --with-pcre=../pcre-8.39 --add-module=../redis2-nginx-module --add-module=../srcache-nginx-module --add-module=../ngx_devel_kit-0.3.1 --add-module=../ngx_cache_purge --add-module=../ngx_http_consistent_hash --add-module=../ngx_http_php_session --add-module=../ngx_slowfs_cache   --add-module=../set-misc-nginx-module
 #    --with-http_ssl_module --with-openssl=/root/soft  --add-module=../ngx_http_redis-0.3.7  zlib
     make
     make install
@@ -134,7 +141,7 @@ setup_nginx() {
 
     mkdir -p /home/file/nginx/cache/temp
     mkdir -p /home/file/nginx_cache/cache/body
-    cd /root/work/nginx/conf/
+    cd /root/local/nginx/conf/
     mkdir server
     cp /root/work/myconf/nginx-sample/nginx.conf  .
     cp /root/work/myconf/nginx-sample/nginx_check.conf  server/.

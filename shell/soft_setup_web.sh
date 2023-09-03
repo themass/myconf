@@ -43,10 +43,10 @@ setup_jdk() {
 
 setup_maven(){
   cd /home/web/soft
-  wget https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz --no-check-certificate
-  tar -zxvf apache-maven-3.8.7-bin.tar.gz
+  wget https://dlcdn.apache.org/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz --no-check-certificate
+  tar -zxvf apache-maven-3.8.8-bin.tar.gz
   cd /home/web/local
-   mv ../soft/apache-maven-3.8.7 .
+   mv ../soft/apache-maven-3.8.8 .
    echo " mod .profile"
 
 }

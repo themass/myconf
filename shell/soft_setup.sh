@@ -128,7 +128,7 @@ setup_radius() {
     git clone https://github.com/openssl/openssl
     cd openssl/
     git checkout OpenSSL_1_0_1-stable
-    ./configure
+    ./config
     make
 
     wget https://github.com/FreeRADIUS/freeradius-server/archive/refs/tags/release_2_1_12.tar.gz
@@ -138,9 +138,9 @@ setup_radius() {
     make
     make install
 
-    echo  ' test  radiusd -X'
-	  echo 'radtest vpn themass localhost 1812 testing123'
-	  echo 'service freeradius stop'
+    export LD_LIBARY_PATH="/usr/local/lib"
+    /sbin/ldconfig -v
+
     cd ${shelldir}
     echo ${shelldir}
     #mysqladmin -u root -p create radius
@@ -261,7 +261,6 @@ setup_all()
 if [ $# != 0 ]; then
     for arg in $*; do
         case "$arg" in
-			mysql)          setup_mysql;;
 			mysql)          setup_mysql;;
 			kernel)          setup_kernel;;
 			check)          setup_check;;

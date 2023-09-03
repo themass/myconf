@@ -58,7 +58,7 @@ setup_redis()
   tar -zxvf redis-6.2.6.tar.gz
   cd redis-6.2.6
   make
-  cp ../../soft/myconf/redis/redis.conf  .
+  cp ../../work/myconf/redis/redis.conf  .
   cd src
   ./redis-server ../redis.conf  &
 

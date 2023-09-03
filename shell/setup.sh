@@ -71,6 +71,7 @@ mkdir -p /root/work
 #GRANT ALL ON radius.* TO 'root'@'%';
 #GRANT ALL ON  sspanel.* TO 'root'@'%';
 #GRANT ALL ON vpn.* TO 'root'@'%';
+#GRANT ALL ON radius.* TO 'radius'@'%';
 ##	flush privileges
 ##	quit
 #}

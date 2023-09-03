@@ -160,7 +160,7 @@ setup_radius() {
     cp ../radius/counter.conf /usr/local/etc/raddb/sql/mysql/
 	
 	echo  ' test  radiusd -X'
-	echo 'radtest vpn themass localhost 1812 testing123'
+	echo 'radtest themass 111111 radius.sspacee.com 1812 FreeVPN@vpn5296'
 	echo 'service freeradius stop'
 	
 	#https://blog.csdn.net/laoxiao1987/article/details/16980147
@@ -242,6 +242,7 @@ usage()
     echo "mysql          Setup mysql"
     echo "kernel          Setup kernel"
     echo "check          Setup check"
+    echo "radius          Setup setup_radius"
     echo "radius_client          Setup radius_client"
     echo "influx          Setup setup_influx"
      echo "rclocal          Setup rc.local"

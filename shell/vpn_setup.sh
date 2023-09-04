@@ -155,13 +155,13 @@ init_ca()
 	ipsec restart
 
 #	多ip情况下可以为每个ip都指定一个caCert，但是key有使用相同的
-	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.96" --ca --outform pem > caCert3.pem
-	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.96" --san="154.22.124.96" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert3.pem
-	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert3.pem
-	openssl pkcs12 -export -inkey clientKey.pem -in clientCert3.pem -name "client" -certfile caCert3.pem -caname "154.22.124.96" -out clientCert3.p12
-	cp caCert3.pem /etc/ipsec.d/cacerts/
-	cp serverCert3.pem /etc/ipsec.d/certs/
-	cp clientCert3.pem /etc/ipsec.d/certs/
+#	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.96" --ca --outform pem > caCert3.pem
+#	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=154.22.124.96" --san="154.22.124.96" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert3.pem
+#	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert3.pem
+#	openssl pkcs12 -export -inkey clientKey.pem -in clientCert3.pem -name "client" -certfile caCert3.pem -caname "154.22.124.96" -out clientCert3.p12
+#	cp caCert3.pem /etc/ipsec.d/cacerts/
+#	cp serverCert3.pem /etc/ipsec.d/certs/
+#	cp clientCert3.pem /etc/ipsec.d/certs/
 #iptables -A INPUT -p udp --dport 500 -j ACCEPT
 #iptables -A INPUT -p udp --dport 4500 -j ACCEPT
 #iptables -A INPUT -p udp --dport 8080 -j ACCEPT

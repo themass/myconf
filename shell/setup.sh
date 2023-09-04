@@ -72,6 +72,7 @@ mkdir -p /root/work
 #GRANT ALL ON  sspanel.* TO 'root'@'%';
 #GRANT ALL ON vpn.* TO 'root'@'%';
 #GRANT ALL ON radius.* TO 'radius'@'%';
+##	grant all on sspanel.* to 'vpn@server'@'%';
 ##	flush privileges
 ##	quit
 #}

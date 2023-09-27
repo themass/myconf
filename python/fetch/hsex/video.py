@@ -35,7 +35,7 @@ class VideoParse(BaseParse):
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def runUrls(self):
         for url in urls:
-            for i in range(1, maxVideoPage):
+            for i in range(1, 180):
                 page = '%s%s%s'%('search-',i,'.htm')
                 print page
                 con = self.videoParse('hsex.men', 'hsex_all',url.replace('search.htm',page))

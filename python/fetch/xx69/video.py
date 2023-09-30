@@ -99,7 +99,7 @@ class VideoParse(BaseParse):
                 for s in scripts:
                     match = regVideo.search(s.text.replace(" ",""))
                     if match!=None:
-                        return "https://7.bbdata.cc/videos/%s/g.m3u8?h=cfed10034fbdf1a"%(match.group(1))
+                        return "https://g1.cdata.cc/videos/%s/g.m3u8?h=cfed10034fbdf1a"%(match.group(1))
 
             print '没找到mp4',url
             return None

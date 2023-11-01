@@ -15,7 +15,7 @@ import sys
 import ssl,os
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://ujzgm.cfd:8/"
+baseurl = "https://ujzgm.cfd:14/"
 
 maxCount = 5
 class BaseParse(threading.Thread):

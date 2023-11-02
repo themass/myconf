@@ -82,13 +82,14 @@ class VideoParse(BaseParse):
                     obj['pic'] = imgdiv.get("style").replace("background-image: url('","").replace("')","")
 #                     item.first('h3').text.replace(" ","")
                     obj['name'] = imgdiv.get("title")
-                    print obj['name'],obj['url'],obj['pic']
+
     
                     videourl = urlparse(obj['url'])
-                    obj['path'] = "hsex_"+videourl.path
+                    obj['path'] = baseurl+ahref.get("href")
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
-                    obj['baseurl'] = baseurl
+                    obj['baseurl'] = baseurl+ahref.get("href")
+                    print obj['name'],obj['url'],obj['pic'],obj['baseurl']
                     dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)

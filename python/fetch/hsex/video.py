@@ -108,9 +108,7 @@ class VideoParse(BaseParse):
                 source = soup.first("source")
                 if source != None:
                     text = source.get("src")
-                    match = regVideo.search(text)
-                    if match!=None:
-                        return "http"+match.group(1)+'m3u8'
+                    return text
 
             print '没找到mp4'
             return None

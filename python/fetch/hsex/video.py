@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url= item['url']
-            for i in range(1630, maxVideoPage):
+            for i in range(1680, maxVideoPage):
                 con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('1.htm',''),i,'.htm'))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
@@ -93,9 +93,13 @@ class VideoParse(BaseParse):
                     dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-        for obj in dataList:
-            ops.inertVideo(obj,"normal",baseurl,channelType)
-
+        for i in range(1, 3):
+            try:
+                for obj in dataList:
+                    ops.inertVideo(obj,"normal",baseurl,channelType)
+                break
+            except Exception as e:
+                print common.format_exception(e)
         print 'hsex video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()

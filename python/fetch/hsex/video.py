@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url= item['url']
-            for i in range(1, 10):
+            for i in range(2620, maxVideoPage):
                 con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('1.htm',''),i,'.htm'))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']

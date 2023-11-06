@@ -99,6 +99,9 @@ class VideoParse(BaseParse):
 
                     if match!=None:
                         path = match.group(1)
+                        if path.count('www.formax23')!=0:
+                            print '没找到mp4'
+                            return None
                         pathurl = path.replace("t23aa.cdn2020",'t23a.cdn2020'). \
                             replace("t23.cdn2020",'t23a.cdn2020'). \
                             replace("t22.cdn2020",'t22a.cdn2020').\

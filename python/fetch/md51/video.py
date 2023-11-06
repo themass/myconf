@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url']
             for i in range(1, maxVideoPage):
-                con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('.htm','/page/'),i,'.html'))
+                con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('.html','/page/'),i,'.html'))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
@@ -97,7 +97,11 @@ class VideoParse(BaseParse):
                 texts = div.text.replace(' ','').replace('\/','/').split(',')
                 for item in texts:
                     match = regVideo.search(item)
+
                     if match!=None:
+                        path = match.group(1)
+                        path.replace("https://t23aa.cdn2020",'https://t23a.cdn2020')
+                        path.replace("https://t22.cdn2020",'https://t22a.cdn2020.')
                         return 'http'+match.group(1)+'index.m3u8'
 
             print '没找到mp4'

@@ -99,11 +99,10 @@ class VideoParse(BaseParse):
 
                     if match!=None:
                         path = match.group(1)
-                        pathurl = path.replace("t23aa.cdn2020",'t23a.cdn2020').\
+                        pathurl = path.replace("t23aa.cdn2020",'t23a.cdn2020'). \
+                            replace("t23.cdn2020",'t23a.cdn2020'). \
                             replace("t22.cdn2020",'t22a.cdn2020').\
-                            replace("t19.cdn2020",'t19a.cdn2020').\
-                            replace("t19aa.cdn2020",'t19a.cdn2020').\
-                            replace("t18.cdn2020",'t18a.cdn2020')
+                            replace("t22aa.cdn2020",'t22a.cdn2020')
                         return 'http'+pathurl+'index.m3u8'
 
             print '没找到mp4'

@@ -94,13 +94,17 @@ class VideoParse(BaseParse):
             soup = self.fetchUrl(url)
             div = soup.first("div",{'id':'bofang_box'})
             if div != None:
-                texts = div.text.replace(' ','').replace('\/','/').split(',')
+                texts = div.text.replace(' ','').replace('\\',"").replace('\/','/').split(',')
                 for item in texts:
                     match = regVideo.search(item)
 
                     if match!=None:
                         path = match.group(1)
-                        pathurl = path.replace("t23aa.cdn2020",'t23a.cdn2020').replace("t22.cdn2020",'t22a.cdn2020')
+                        pathurl = path.replace("t23aa.cdn2020",'t23a.cdn2020').\
+                            replace("t22.cdn2020",'t22a.cdn2020').\
+                            replace("t19.cdn2020",'t19a.cdn2020').\
+                            replace("t19aa.cdn2020",'t19a.cdn2020').\
+                            replace("t18.cdn2020",'t18a.cdn2020')
                         return 'http'+pathurl+'index.m3u8'
 
             print '没找到mp4'

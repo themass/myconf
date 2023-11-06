@@ -1,7 +1,6 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
 from baseparse import *
-from urlall import *
 from urlparse import urlparse
 from common import common
 from fetch.profile import *
@@ -22,27 +21,17 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 'hsex video -- channel ok;,len=',len(chs)
+        print '51md video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
             url= item['url']
             for i in range(1, maxVideoPage):
-                con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('1.htm',''),i,'.htm'))
+                con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('.htm','/page/'),i,'.html'))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
-    def runUrls(self):
-        for url in urls:
-            for i in range(1, 40):
-                page = '%s%s%s'%('search-',i,'.htm')
-                print page
-                con = self.videoParse('hsex.men', 'hsex_all',url.replace('search.htm',page))
-                if con==False:
-                    print '没有数据了啊-======页数',i,'---',url
-                    break
-                print '解析完成 ', url, ' ---', i, '页'
     def videoChannel(self):
         channelList = []
         ahrefs = self.header()
@@ -54,18 +43,18 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']='hsex'+ahref.text
+            obj['channel']='51md'+ahref.text
             obj['showType']=3
-            obj['channelType']='hsex_all'
+            obj['channelType']='51md_all'
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first('div',{"class":"row body"})
+        div = soup.first('div',{"class":"detail_right_div"})
         if div!=None:
-            divs = div.findAll("div",{"class":"thumbnail"})
+            divs = div.findAll("p",{"class":"img"})
             if len(divs)==0:
                 return False
             for item in divs:
@@ -77,15 +66,10 @@ class VideoParse(BaseParse):
                         print '没有mp4 文件:', ahref.get("href")
                         continue
                     obj['url'] = mp4Url
-                    imgdiv = ahref.first('div',{"class":"image"})
+                    obj['pic'] = item.first('img').get('src')
+                    obj['name'] = item.first('img').get("alt")
 
-                    obj['pic'] = imgdiv.get("style").replace("background-image: url('","").replace("')","")
-#                     item.first('h3').text.replace(" ","")
-                    obj['name'] = imgdiv.get("title")
-
-    
-                    videourl = urlparse(obj['url'])
-                    obj['path'] = baseurl+ahref.get("href")
+                    obj['path'] = '51md'+ahref.get("href")
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
                     obj['baseurl'] = baseurl+ahref.get("href")
@@ -100,19 +84,21 @@ class VideoParse(BaseParse):
                 break
             except Exception as e:
                 print common.format_exception(e)
-        print 'hsex video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print '51md video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
         return True
     def parseDomVideo(self, url):
         time.sleep(1)
         try:
-            if url.count("script")==0:
-                soup = self.fetchUrl(url)
-                source = soup.first("source")
-                if source != None:
-                    text = source.get("src")
-                    return text
+            soup = self.fetchUrl(url)
+            div = soup.first("div",{'id':'bofang_box'})
+            if div != None:
+                texts = div.text.replace(' ','').replace('\/','/').split(',')
+                for item in texts:
+                    match = regVideo.search(item)
+                    if match!=None:
+                        return 'http'+match.group(1)+'index.m3u8'
 
             print '没找到mp4'
             return None

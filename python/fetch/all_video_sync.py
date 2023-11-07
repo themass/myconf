@@ -11,16 +11,21 @@ import hanime_vip
 import profile
 import  ip38_vip
 import tianlalu_vip
+import hsck_vip
+import md51_vip
 
 if __name__ == '__main__':
-    # hsex_vip.parseVideo()
-    # xx69_vip.parseVideo(1, profile.maxVideoPage)
-    # xx69_vip.parseVideo2(1, profile.maxVideoPage)
-    nyg6_vip.parseVideo()
+    hsex_vip.parseVideo()
+    xx69_vip.parseVideo(1, profile.maxVideoPage)
+    xx69_vip.parseVideo2(1, profile.maxVideoPage)
+    # nyg6_vip.parseVideo()
     jiu667_vip.parseVideo()
     tianlalu_vip.parseVideo()
+    hsck_vip.parseVideo()
+    md51_vip.parseVideo()
 
     a7xi_vip.parseVideo()
     xcvods_vip.parseVideo()
     hanime_vip.parseVideo()
     ip38_vip.parseVideo()
+

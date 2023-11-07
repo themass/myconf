@@ -11,7 +11,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 class VideoParse(BaseParse):
-
+    names = ''
     def __init__(self):
         pass
 
@@ -53,6 +53,7 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         divs = soup.findAll("div",{"class":"stui-vodlist__box"})
+        nameTemp = ''
         if len(divs)==0:
             return False
         for item in divs:
@@ -73,6 +74,7 @@ class VideoParse(BaseParse):
                 obj['baseurl'] = baseurl+ahref.get("href")
                 print obj['name'],obj['url'],obj['pic'],obj['baseurl']
                 dataList.append(obj)
+                nameTemp= nameTemp+obj['name']
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for i in range(1, 3):
@@ -85,6 +87,11 @@ class VideoParse(BaseParse):
         print 'hsck video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        if nameTemp == self.names:
+            print nameTemp
+            return False
+        else:
+            self.names = nameTemp
         return True
     def parseDomVideo(self, url):
         try:

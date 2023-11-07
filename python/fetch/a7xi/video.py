@@ -23,8 +23,8 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for ch in chs:
             for i in range(1, maxVideoPage):
-                url= ch['url'].replace(".html",'')
-                url= "%s--------%s---%s"%(url,i,'.html')
+                url= ch['url'].replace(".html",'/page/')
+                url= "%s%s%s"%(url,i,'.html')
                 self.videoParse(ch['channel'], ch['channelType'], url)
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -47,8 +47,9 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        ahrefs = soup.findAll("a", {"class": "hl-item-thumb hl-lazy"})
-        for ahref in ahrefs:
+        divs = soup.findAll("div", {"class": "right rel flex-auto"})
+        for div in divs:
+            ahref = div.first('a')
             if ahref!=None:
                 mp4Url  = self.parseDomVideo(ahref.get("href"))
                 if mp4Url==None:

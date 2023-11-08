@@ -43,9 +43,9 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']='testlist'
+            obj['channel']='hsck'+ahref.text
             obj['showType']=3
-            obj['channelType']='testlist'
+            obj['channelType']='hsck_all'
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList
@@ -68,7 +68,7 @@ class VideoParse(BaseParse):
                 obj['pic'] = ahref.get('data-original')
                 obj['name'] = ahref.get("title")
 
-                obj['path'] = 'testlist'+ahref.get("href")
+                obj['path'] = 'hsck'+ahref.get("href")
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
                 obj['baseurl'] = baseurl+ahref.get("href")

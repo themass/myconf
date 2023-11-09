@@ -25,7 +25,7 @@ if __name__ == '__main__':
     tianlalu_vip.parseVideo()
 
 
-    a7xi_vip.parseVideo()
+    # a7xi_vip.parseVideo()
     xcvods_vip.parseVideo()
     hanime_vip.parseVideo()
     ip38_vip.parseVideo()

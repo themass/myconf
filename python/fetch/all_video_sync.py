@@ -18,11 +18,12 @@ if __name__ == '__main__':
     hsex_vip.parseVideo()
     hsck_vip.parseVideo()
     md51_vip.parseVideo()
-    xx69_vip.parseVideo(1, profile.maxVideoPage)
-    xx69_vip.parseVideo2(1, profile.maxVideoPage)
+
     # nyg6_vip.parseVideo()
     jiu667_vip.parseVideo()
     tianlalu_vip.parseVideo()
+    xx69_vip.parseVideo(1, profile.maxVideoPage)
+    xx69_vip.parseVideo2(1, profile.maxVideoPage)
 
 
     # a7xi_vip.parseVideo()

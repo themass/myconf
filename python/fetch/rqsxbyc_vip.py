@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from fetch.a7xi import *
+from fetch.rqsxbyc import *
 import re
 import sys
 reload(sys)

@@ -85,7 +85,7 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         header = {"User-Agent":"Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)", "Referer": url}
         try:
-            vid = url._replace('/yyets/','').replace('/','')
+            vid = url.replace('/yyets/','').replace('/','')
             if vid!=None:
                 url  = '/yyets/%s-1-1/'%(vid)
                 soup = self.fetchUrl(url, header)

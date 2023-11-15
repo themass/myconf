@@ -92,7 +92,7 @@ class VideoParse(BaseParse):
                 div = soup.first('div',{'class':'player-wrap'})
                 if div!= None:
                     script = div.first("script")
-                    text = unquote(script.text.replace("\"","").replace("\/","/").replace(" ",''))
+                    text = unquote(script.text.replace("\/","/").replace(" ",''))
                     lines = text.split(",")
                     for t in lines:
                         match = videoApi.search(text)
@@ -107,3 +107,10 @@ class VideoParse(BaseParse):
 
 def videoParse(queue):
     queue.put(VideoParse())
+if __name__ == '__main__':
+    script='"url":"https:\/\/hnzy.bfvvs.com\/play\/Rb4G46aB1"'
+    text = unquote(script.replace("\/","/").replace(" ",''))
+    print text
+    match = videoApi.search(text)
+    videoUrl =match.group(1)
+    print match.group(0),videoUrl

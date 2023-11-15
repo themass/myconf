@@ -171,9 +171,9 @@ if __name__ == '__main__':
            else:
                   yip.append(ip)
     print yip
-    for i in ips:
-        if yip.count(i)==0:
-            print i
+    # for i in ips:
+    #     if yip.count(i)==0:
+    #         print i
 
 
     # baseurl = "https://www.asy1000.com/"

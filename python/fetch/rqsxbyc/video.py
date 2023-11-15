@@ -23,10 +23,10 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for ch in chs:
             for i in range(1, maxVideoPage):
-                url= ch['url'].replace(".html",'/page/')
-                url= "%s%s%s"%(url,i,'.html')
+                url= ch['url'].replace("---/",'')
+                url= "%s%s%s"%(url,i,'---/')
                 self.videoParse(ch['channel'], ch['channelType'], url)
-                print '解析完成 ', ch['channel'], ' ---', i, '页'
+                print 'rqsxbyc 解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
         channelList = []
         ahrefs = self.header()
@@ -47,7 +47,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        divs = soup.findAll("div", {"class": "right rel flex-auto"})
+        divs = soup.findAll("div", {"class": "movie-item"})
         for div in divs:
             ahref = div.first('a')
             if ahref!=None:
@@ -59,12 +59,12 @@ class VideoParse(BaseParse):
                     continue
                 obj = {}
                 obj['url'] = mp4Url
-                obj['pic'] = ahref.get("data-original")
-                obj['name'] = ahref.get("title")
+                obj['pic'] = div.first('img').get("data-original")
+                obj['name'] = div.first('img').get('alt')
                 if obj['name']!=None and obj['name'].count("预告")!=0:
                     continue
-                obj['path'] = "a7xi_%s%s%s"%(channel,"-",obj['name'])
-                if mp4Url.count("m3u8")==0 and mp4Url.count("mp4")==0:
+                obj['path'] = "rqsxbyc_%s%s%s"%(channel,"-",obj['name'])
+                if mp4Url.count(".m3u8")==0 and mp4Url.count(".mp4")==0:
                     obj['videoType'] = "webview"
                 else:
                     obj['videoType'] = "normal"
@@ -78,29 +78,27 @@ class VideoParse(BaseParse):
         for obj in dataList:
             ops.inertVideo(obj,obj['videoType'],baseurl,channelType)
 
-        print 'f8dy video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'rqsxbyc video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
 
     def parseDomVideo(self, url):
         header = {"User-Agent":"Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)", "Referer": url}
         try:
-            match = videoId.search(url)
-            if match!=None:
-                Id= match.group(2)
-                url  = '/vodplay/%s-1-1.html'%(Id)
+            vid = url._replace('/yyets/','').replace('/','')
+            if vid!=None:
+                url  = '/yyets/%s-1-1/'%(vid)
                 soup = self.fetchUrl(url, header)
-                div = soup.first('div',{'class':'hl-col-xs-12 hl-col-md-70w hl-col-lg-9'})
+                div = soup.first('div',{'class':'player-wrap'})
                 if div!= None:
-                    scripts = div.findAll("script")
-                    for script in scripts:
-                        text = unquote(script.text.replace("\"","").replace("\/","/").replace(" ",''))
-                        lines = text.split(",")
-                        for t in lines:
-                            match = videoApi.search(text)
-                            if match!=None:
-                                videoUrl =match.group(1)
-                                return "%s%s%s"%("http",videoUrl,'.m3u8')
+                    script = div.first("script")
+                    text = unquote(script.text.replace("\"","").replace("\/","/").replace(" ",''))
+                    lines = text.split(",")
+                    for t in lines:
+                        match = videoApi.search(text)
+                        if match!=None:
+                            videoUrl =match.group(1)
+                            return "%s%s"%("http",videoUrl)
                 print '没找到mp4',url
             return None
         except Exception as e:

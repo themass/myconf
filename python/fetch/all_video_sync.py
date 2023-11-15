@@ -1,7 +1,7 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
 from common.envmod import *
-import a7xi_vip
+import rqsxbyc_vip
 import hsex_vip
 import jiu667_vip
 import nyg6_vip

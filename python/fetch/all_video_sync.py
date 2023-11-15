@@ -4,7 +4,6 @@ from common.envmod import *
 import rqsxbyc_vip
 import hsex_vip
 import jiu667_vip
-import nyg6_vip
 import xcvods_vip
 import xx69_vip
 import hanime_vip
@@ -13,6 +12,7 @@ import  ip38_vip
 import tianlalu_vip
 import hsck_vip
 import md51_vip
+import rqsxbyc_vip
 
 if __name__ == '__main__':
     hsex_vip.parseVideo()
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     xx69_vip.parseVideo2(1, profile.maxVideoPage)
 
 
-    # a7xi_vip.parseVideo()
+    rqsxbyc_vip.parseVideo()
     xcvods_vip.parseVideo()
     hanime_vip.parseVideo()
     ip38_vip.parseVideo()

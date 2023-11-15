@@ -87,7 +87,7 @@ class VideoParse(BaseParse):
         try:
             vid = url.replace('/yyets/','').replace('/','')
             if vid!=None:
-                url  = '/yyets/%s-1-1/'%(vid)
+                url  = '/yyetsp/%s-1-1/'%(vid)
                 soup = self.fetchUrl(url, header)
                 div = soup.first('div',{'class':'player-wrap'})
                 if div!= None:

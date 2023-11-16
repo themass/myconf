@@ -8,7 +8,7 @@ import time
 from fetch.profile import *
 
 class VideoParse(BaseParse):
-
+    names = ''
     def __init__(self):
         pass
 
@@ -25,8 +25,11 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= ch['url'].replace("---/",'')
                 url= "%s%s%s"%(url,i,'---/')
-                self.videoParse(ch['channel'], ch['channelType'], url)
+                con = self.videoParse(ch['channel'], ch['channelType'], url)
                 print 'rqsxbyc 解析完成 ', ch['channel'], ' ---', i, '页'
+                if con==False:
+                    print 'rqsxbyc 没有数据了啊-======页数',i,'---',ch['name'],ch['url']
+                    break
     def videoChannel(self):
         channelList = []
         ahrefs = self.header()
@@ -48,6 +51,7 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         divs = soup.findAll("div", {"class": "movie-item"})
+        nameTemp = ''
         for div in divs:
             ahref = div.first('a')
             if ahref!=None:
@@ -73,6 +77,7 @@ class VideoParse(BaseParse):
                 obj['channel'] = channel
                 obj['baseurl'] = baseurl
                 dataList.append(obj)
+                nameTemp= nameTemp+obj['name']
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for obj in dataList:
@@ -81,7 +86,12 @@ class VideoParse(BaseParse):
         print 'rqsxbyc video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
-
+        if nameTemp == self.names:
+            print nameTemp
+            return False
+        else:
+            self.names = nameTemp
+        return True
     def parseDomVideo(self, url):
         header = {"User-Agent":"Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)", "Referer": url}
         try:

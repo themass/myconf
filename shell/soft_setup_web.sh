@@ -51,13 +51,13 @@ setup_maven(){
 
 }
 setup_tomcat(){
-  wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.95/bin/apache-tomcat-8.5.95.tar.gz
-  tar -zxvf apache-tomcat-8.5.95.tar.gz
-  mkdir -p apache-tomcat-8.5.95/conf/Catalina/localhost/
-  vi apache-tomcat-8.5.95/conf/Catalina/localhost/vvv.xml
+  wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.98/bin/apache-tomcat-8.5.98.tar.gz
+  tar -zxvf apache-tomcat-8.5.98.tar.gz
+  mkdir -p apache-tomcat-8.5.98/conf/Catalina/localhost/
+  vi apache-tomcat-8.5.98/conf/Catalina/localhost/vvv.xml
   #  <Context docBase="/home/web/webroot/testserverV/target/vpn-api/" path="/vvv" reloadable="true" />
-  cd local/apache-tomcat-8.5.95/bin/
-  rm -rf local/apache-tomcat-8.5.95/webapps/ROOT
+  cd local/apache-tomcat-8.5.98/bin/
+  rm -rf local/apache-tomcat-8.5.98/webapps/ROOT
   #alias mtail='killall java;cd /home/web/webroot/testserverV;git pull;mvn install -Ppro;  cd /home/web/local/apache-tomcat-8.5.93/bin; sh startup.sh; cd; tail -f var/log/vpn/vpn-info.log'
 }
 setup_redis() 

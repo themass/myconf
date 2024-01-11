@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import zlib
+import time
 import urllib2
 import threading
 from common.envmod import *
@@ -67,6 +68,7 @@ class BaseParse(threading.Thread):
                 print common.format_exception(e)
                 print '打开页面错误,重试', baseurl + url, '次数', count
                 count = count + 1
+                time.sleep(1)
 
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
@@ -83,6 +85,7 @@ class BaseParse(threading.Thread):
                 print common.format_exception(e)
                 print '打开页面错误,重试', url, '次数', count
                 count = count + 1
+                time.sleep(1)
 
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
@@ -119,6 +122,7 @@ class BaseParse(threading.Thread):
                 print common.format_exception(e)
                 print '打开页面错误,重试', url, '次数', count
                 count = count + 1
+                time.sleep(1)
 
         print '打开页面错误,重试3次还是错误', url
         return ''

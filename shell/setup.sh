@@ -116,9 +116,9 @@ setup_nginx() {
     wget https://onboardcloud.dl.sourceforge.net/project/pcre/pcre/8.39/pcre-8.39.tar.gz --no-check-certificate
     tar -zxvf pcre-8.39.tar.gz
 
-    rm -rf nginx-1.16.1.tar.gz
-    rm -rf nginx-1.16.1
-    wget http://nginx.org/download/nginx-1.16.1.tar.gz
+    rm -rf nginx-1.24.0.tar.gz
+    rm -rf nginx-1.24.0
+    wget https://nginx.org/download/nginx-1.24.0.tar.gz
     git clone https://github.com/openresty/redis2-nginx-module
     git clone https://github.com/openresty/srcache-nginx-module
     git clone https://github.com/openresty/set-misc-nginx-module
@@ -130,15 +130,15 @@ setup_nginx() {
     git clone https://github.com/Yongke/ngx_http_redis-0.3.7
     git clone http://github.com/FRiCKLE/ngx_slowfs_cache/
     tar -zxvf v0.3.1.tar.gz
-    tar -zxvf nginx-1.16.1.tar.gz
-    cd nginx-1.16.1/
-./configure --prefix=/root/local/nginx-1.16.1 --with-http_stub_status_module   --with-http_ssl_module --with-cc-opt="-Wimplicit-fallthrough=0" --with-http_gzip_static_module --with-pcre=../pcre-8.39 --add-module=../redis2-nginx-module --add-module=../srcache-nginx-module --add-module=../ngx_devel_kit-0.3.1 --add-module=../ngx_cache_purge --add-module=../ngx_http_consistent_hash --add-module=../ngx_http_php_session --add-module=../ngx_slowfs_cache   --add-module=../set-misc-nginx-module
+      tar -zxvf nginx-1.24.0.tar.gz
+      cd nginx-1.24.0/
+./configure --prefix=/root/local/nginx-1.24.0 --with-http_stub_status_module   --with-http_ssl_module --with-cc-opt="-Wimplicit-fallthrough=0" --with-http_gzip_static_module --with-pcre=../pcre-8.39 --add-module=../redis2-nginx-module --add-module=../srcache-nginx-module --add-module=../ngx_devel_kit-0.3.1 --add-module=../ngx_cache_purge --add-module=../ngx_http_consistent_hash --add-module=../ngx_http_php_session --add-module=../ngx_slowfs_cache   --add-module=../set-misc-nginx-module
 #    --with-http_ssl_module --with-openssl=/root/soft  --add-module=../ngx_http_redis-0.3.7  zlib
     make
     make install
-    mkdir -p /root/local/nginx-1.16.1/logs/
+    mkdir -p /root/local/nginx-1.24.0/logs/
     rm -rf /root/local/nginx
-    ln -s /root/local/nginx-1.16.1 /root/local/nginx
+    ln -s /root/local/nginx-1.24.0 /root/local/nginx
     rm /root/local/nginx/conf/nginx.conf
 
     mkdir -p /home/file/nginx/cache/temp

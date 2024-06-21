@@ -23,6 +23,4 @@ def parseText2():
     textP.run()
 if __name__ == '__main__':
    
-    # parseVideo()
-    # parseText()
-    parseText2()
+    parseText()

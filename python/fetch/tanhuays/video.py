@@ -97,7 +97,7 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div",{'div':'yui-player__video border-radius embed-responsive clearfix'})
+            div = soup.first("div",{'div':'myui-player__video border-radius embed-responsive clearfix'})
             if div != None:
                 texts = div.text.replace(' ','').replace('\\',"").replace('\/','/').split(',')
                 for item in texts:

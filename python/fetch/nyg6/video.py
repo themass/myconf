@@ -51,6 +51,7 @@ class VideoUserParse(BaseParse):
                     obj['showType']=3
                     obj['channelType']='normal'
                     channelList.append(obj)
+                print '下载ok', url
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []

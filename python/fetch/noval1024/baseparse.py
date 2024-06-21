@@ -15,7 +15,7 @@ import sys
 import ssl,os
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://a2306k.cc/pw/"
+baseurl = "https://x618p.click/pw/"
 baseurl2 = "http://38.163.30.253"
 maxCount = 5
 class BaseParse(threading.Thread):

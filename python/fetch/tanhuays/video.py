@@ -54,30 +54,28 @@ class VideoParse(BaseParse):
         dataList = []
         nameTemp = ''
         soup = self.fetchUrl(url)
-        div = soup.first('ul',{"class":"myui-myui-vodlist clearfix"})
-        if div!=None:
-            divs = div.findAll("div",{"class":"myui-vodlist__box"})
-            if len(divs)==0:
-                return False
-            for item in divs:
-                ahref = item.first('a')
-                if ahref != None:
-                    obj = {}
-                    mp4Url = self.parseDomVideo(ahref.get("href"))
-                    if mp4Url == None:
-                        print '没有mp4 文件:', ahref.get("href")
-                        continue
-                    obj['url'] = mp4Url
-                    obj['pic'] = baseurl+ahref.get('data-original')
-                    obj['name'] = ahref.get("title")
+        divs = soup.findAll("div",{"class":"myui-vodlist__box"})
+        if len(divs)==0:
+            return False
+        for item in divs:
+            ahref = item.first('a')
+            if ahref != None:
+                obj = {}
+                mp4Url = self.parseDomVideo(ahref.get("href"))
+                if mp4Url == None:
+                    print '没有mp4 文件:', ahref.get("href")
+                    continue
+                obj['url'] = mp4Url
+                obj['pic'] = baseurl+ahref.get('data-original')
+                obj['name'] = ahref.get("title")
 
-                    obj['path'] = 'tanhuays'+ahref.get("href")
-                    obj['updateTime'] = datetime.datetime.now()
-                    obj['channel'] = channel
-                    obj['baseurl'] = baseurl+ahref.get("href")
-                    print obj['name'],obj['url'],obj['pic'],obj['baseurl']
-                    dataList.append(obj)
-                    nameTemp= nameTemp+obj['name']
+                obj['path'] = 'tanhuays'+ahref.get("href")
+                obj['updateTime'] = datetime.datetime.now()
+                obj['channel'] = channel
+                obj['baseurl'] = baseurl+ahref.get("href")
+                print obj['name'],obj['url'],obj['pic'],obj['baseurl']
+                dataList.append(obj)
+                nameTemp= nameTemp+obj['name']
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for i in range(1, 3):
@@ -87,7 +85,7 @@ class VideoParse(BaseParse):
                 break
             except Exception as e:
                 print common.format_exception(e)
-        print '51md video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'tanhuays video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
         if nameTemp == self.names:

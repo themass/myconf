@@ -34,6 +34,7 @@ class BaseParse(threading.Thread):
                 req = urllib2.Request(baseurl + url, headers={
                     'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13', "Referer":baseurl})
                 req.encoding = 'utf-8'
+                print 'fetchurl', baseurl + url
                 response = urllib2.urlopen(req, timeout=300)
                 gzipped = response.headers.get(
                     'Content-Encoding')  # 查看是否服务器是否支持gzip

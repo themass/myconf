@@ -97,16 +97,13 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div",{'div':'myui-player__video border-radius embed-responsive clearfix'})
+            div = soup.first("div",{'class':'myui-player__video border-radius embed-responsive clearfix'})
             if div != None:
                 texts = div.text.replace(' ','').replace('\\',"").replace('\/','/').split(',')
                 for item in texts:
                     match = regVideo.search(item)
                     if match!=None:
                         path = match.group(1)
-                        if path.count('www.formax23')!=0:
-                            print '没找到mp4'
-                            return None
                         return 'http'+path+'index.m3u8'
 
             print '没找到mp4'

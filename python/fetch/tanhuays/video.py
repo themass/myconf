@@ -28,7 +28,7 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url']
             for i in range(1, maxVideoPage):
-                con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('.html','/page/'),i,'.html'))
+                con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('-1/','-'),i,'/'))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
@@ -44,9 +44,9 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']='51md'+ahref.text
+            obj['channel']='tanhuays'+ahref.text
             obj['showType']=3
-            obj['channelType']='51md_all'
+            obj['channelType']='tanhuays_all'
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList

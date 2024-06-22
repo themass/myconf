@@ -7,6 +7,8 @@ import xx69_vip
 import profile
 import hsck_vip
 import md51_vip
+import tanhuays_vip
+import nyg6_vip
 
 if __name__ == '__main__':
     hsex_vip.parseVideo()
@@ -18,4 +20,5 @@ if __name__ == '__main__':
     xx69_vip.parseVideo2(1, profile.maxVideoPage)
 
     xcvods_vip.parseVideo()
-
+    tanhuays_vip.parseVideo()
+    nyg6_vip.parseALl()

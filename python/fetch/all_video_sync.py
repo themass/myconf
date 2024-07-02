@@ -21,4 +21,4 @@ if __name__ == '__main__':
 
     xcvods_vip.parseVideo()
     tanhuays_vip.parseVideo()
-    nyg6_vip.parseALl()
+    # nyg6_vip.parseALl()

@@ -3,12 +3,10 @@
 import json
 
 from baseparse import *
-from urlall import *
 from urlparse import urlparse
 from common import common
 from common import httputil
 from fetch.profile import *
-from urllib import unquote
 import sys,time
 reload(sys)
 # 

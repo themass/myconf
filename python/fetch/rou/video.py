@@ -53,6 +53,7 @@ class VideoParse(BaseParse):
         return  channelList
     def videoParse(self, channel, channelType, url):
         dataList = []
+        print "videoParse=", url
         soup = self.fetchUrl(url)
         divs = soup.findAll("div",{"class":"relative"})
         if len(divs)==0:

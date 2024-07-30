@@ -95,7 +95,9 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         time.sleep(1)
         try:
-            context = httputil.getText(baseurl+url)
+            print baseurl,url
+
+            context = httputil.getText(baseurl+url,header=header)
             jsonData = json.loads(context)
             m3u8url = jsonData.get("video").get("videoUrl")
             print m3u8url

@@ -56,8 +56,10 @@ class VideoParse(BaseParse):
         if len(divs)==0:
             return False
         for item in divs:
+            print item
             ahref = item.first('a')
             if ahref != None:
+                print ahref
                 obj = {}
                 mp4Url = self.parseDomVideo(ahref.get("href"))
                 if mp4Url == None:
@@ -65,12 +67,10 @@ class VideoParse(BaseParse):
                     continue
                 obj['url'] = mp4Url
                 imgdiv = ahref.first('img')
-
+                print imgdiv
                 obj['pic'] = imgdiv.get("data-src")
 #                     item.first('h3').text.replace(" ","")
-                obj['name'] = item.first("div",{"class":"my-2 text-sm text-nord4 truncate"}).text
-
-
+                obj['name'] = imgdiv.get("alt")
                 videourl = urlparse(obj['url'])
                 obj['path'] = ahref.get("href")
                 obj['updateTime'] = datetime.datetime.now()

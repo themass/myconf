@@ -7,6 +7,7 @@ from BeautifulSoup import BeautifulSoup
 import sys
 
 import common.httputil
+import re
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -73,6 +74,36 @@ def fetchUrl(url):
     print data
     # response = requests.get(url, headers=headers)
     # print response.text
+def js_to_python(p, a, c, k, e, d):
+    for i in range(c - 1, -1, -1):
+        if k[i]:
+            p = re.sub(r"\b" + int_to_base36(i) + r"\b", k[i], p)
+    return p
+
+def int_to_base36(num):
+    # Convert a number to base 36 as a string
+    chars = "0123456789abcdefghijklmnopqrstuvwxyz"
+    base36 = ""
+    while num:
+        num, i = divmod(num, 36)
+        base36 = chars[i] + base36
+    return base36 or '0'
 
 if __name__ == '__main__':
-    fetchUrl("")
+    # fetchUrl("")
+    text = """eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('e=\'8://7.6/5-4-3-2-1/d.0\';c=\'8://7.6/5-4-3-2-1/a/9.0\';b=\'8://7.6/5-4-3-2-1/a/9.0\';',15,15,'m3u8|c5b2ce89107c|a7ec|4a3b|6e36|7d7fd0d9|com|surrit|https|video|720p|source1280|source842|playlist|source'.split('|'),0,{}))"""
+
+    match = re.search(r"eval\(function\(p,a,c,k,e,d\)\{.*?\}\('(.*?)',(\d+),(\d+),'(.*?)'\.split\('\|'\),(\d+),\{\}\)\)", text)
+
+    if match:
+        p = match.group(1)
+        a = int(match.group(2))
+        c = int(match.group(3))
+        k = match.group(4).split('|')
+        e = int(match.group(5))
+        d = {}
+
+        decoded_code = js_to_python(p, a, c, k, e, d)
+        print(decoded_code)
+    else:
+        print("No match found.")

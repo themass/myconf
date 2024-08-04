@@ -78,7 +78,6 @@ class BaseParse(threading.Thread):
                 content = httputil.getText(url = url, header = header, isGzip=True)
                 pattern = r'x-cloak\s+:class="{ hidden: showPreview === \'[a-zA-Z0-9\-]+\' \|\| holdPreviews\.includes\(\'[a-zA-Z0-9\-]+\'\) }"'
                 new_text = re.sub(pattern, '', content)
-                print new_text
                 soup = BeautifulSoup(new_text)
                 return soup
             except Exception as e:
@@ -89,11 +88,11 @@ class BaseParse(threading.Thread):
 
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
-    def header(self):
+    def header(self,name):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__)) 
-        with open("missav/header.html") as f:
+        with open("%s%s"%("missav/",name)) as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         print content

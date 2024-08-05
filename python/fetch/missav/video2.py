@@ -49,7 +49,7 @@ class VideoUserParse(BaseParse):
                     obj['updateTime']=datetime.datetime.now()
                     obj['pic']= div.first("img").get("src")
                     obj['rate']=1.2
-                    obj['channel']=obj['name']
+                    obj['channel']='missav女优一览'
                     obj['userId']="missav"+obj['name']
                     obj['showType']=3
                     obj['channelType']='normal'

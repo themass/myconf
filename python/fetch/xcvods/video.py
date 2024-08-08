@@ -25,7 +25,10 @@ class VideoParse(BaseParse):
             for i in range(1, maxVideoPage):
                 url= ch['url'].replace(".html",'')
                 url= "%s-%s%s"%(url,i,'.html')
-                self.videoParse(ch['channel'], ch['channelType'], url)
+                ret = self.videoParse(ch['channel'], ch['channelType'], url)
+                if ret==False:
+                    print '解析完成 没有数据了，换下一个', ch['channel'], ' ---', i, '页'
+                    continue
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
         channelList = []
@@ -48,6 +51,8 @@ class VideoParse(BaseParse):
         dataList = []
         soup = self.fetchUrl(url)
         ahrefs = soup.findAll("a", {"class": "macplus-vodlist__thumb lazyload"})
+        if len(ahrefs) ==0:
+            return False
         for ahref in ahrefs:
             if ahref!=None:
                 mp4Url  = self.parseDomVideo(ahref.get("href"))
@@ -80,6 +85,7 @@ class VideoParse(BaseParse):
         print 'xcvods video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        return True
 
     def parseDomVideo(self, url):
         header = {"User-Agent":"Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)", "Referer": url}

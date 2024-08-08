@@ -61,7 +61,7 @@ class BaseParse(threading.Thread):
                 return soup
             except Exception as e:
                 print common.format_exception(e)
-                print '打开页面错误,重试', baseurl + url, '次数', count
+                print '打开页面错误,重试',  url, '次数', count
                 count = count + 1
                 time.sleep(1)
 

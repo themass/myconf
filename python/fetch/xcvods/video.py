@@ -21,7 +21,9 @@ class VideoParse(BaseParse):
         print ' channel ok; len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
+        chs.pop(0)
         for ch in chs:
+
             for i in range(1, maxVideoPage):
                 url= ch['url'].replace(".html",'')
                 url= "%s-%s%s"%(url,i,'.html')

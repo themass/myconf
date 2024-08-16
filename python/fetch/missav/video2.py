@@ -40,32 +40,31 @@ class VideoUserParse(BaseParse):
                 print '开始下载',url
                 soup = self.fetchUrl(url)
                 ul = soup.first("ul",{"class":"mx-auto grid grid-cols-2 gap-4 gap-y-8 sm:grid-cols-4 md:gap-6 lg:gap-8 lg:gap-y-12 xl:grid-cols-6 text-center"})
-                if ul ==None:
-                    return
-                lis =  ul.findAll("li")
-                count = 0
-                for item in lis:
-                    if i==5:
-                        if count <8 :
-                            count = count+1
-                            print '忽略',i ,count
-                            continue
-                    div = item.first("div",{"class":"space-y-4"})
-                    obj={}
-                    obj['name']=div.first("h4").text
-                    obj['url']=div.first("a").get('href')
-                    obj['baseUrl']=baseurl
-                    obj['updateTime']=datetime.datetime.now()
-                    if div.first("img")!=None:
-                        obj['pic']= div.first("img").get("src")
-                    else:
-                        obj['pic']=''
-                    obj['rate']=1.2
-                    obj['channel']='missav女优一览'
-                    obj['userId']="missav"+obj['name']
-                    obj['showType']=3
-                    obj['channelType']='normal'
-                    channelList.append(obj)
+                if ul !=None:
+                    lis =  ul.findAll("li")
+                    count = 0
+                    for item in lis:
+                        if i==5:
+                            if count <8 :
+                                count = count+1
+                                print '忽略',i ,count
+                                continue
+                        div = item.first("div",{"class":"space-y-4"})
+                        obj={}
+                        obj['name']=div.first("h4").text
+                        obj['url']=div.first("a").get('href')
+                        obj['baseUrl']=baseurl
+                        obj['updateTime']=datetime.datetime.now()
+                        if div.first("img")!=None:
+                            obj['pic']= div.first("img").get("src")
+                        else:
+                            obj['pic']=''
+                        obj['rate']=1.2
+                        obj['channel']='missav女优一览'
+                        obj['userId']="missav"+obj['name']
+                        obj['showType']=3
+                        obj['channelType']='normal'
+                        channelList.append(obj)
                 print '下载ok', url
         print len(channelList)
         return channelList

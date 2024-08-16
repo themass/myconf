@@ -22,7 +22,7 @@ class VideoUserParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            for i in range(1, 1000):
+            for i in range(150, 250):
                 url= "%s%s%s"%(item['url'],"?page=",i)
                 print url
                 con = self.videoParse(item['channel'], url,item['userId'])
@@ -35,7 +35,7 @@ class VideoUserParse(BaseParse):
 
         ahrefs = self.header(name="header2.html")
         for ahref in ahrefs:
-            for i in range(1000, 1200):
+            for i in range(200, 1300):
                 url= '%s?page=%s'%(ahref.get("href"),i)
                 print '开始下载',url
                 soup = self.fetchUrl(url)
@@ -43,7 +43,6 @@ class VideoUserParse(BaseParse):
                 lis =  ul.findAll("li")
                 count = 0
                 for item in lis:
-                    print i
                     if i==5:
                         if count <8 :
                             count = count+1
@@ -64,7 +63,6 @@ class VideoUserParse(BaseParse):
                     obj['userId']="missav"+obj['name']
                     obj['showType']=3
                     obj['channelType']='normal'
-                    print obj['name']
                     channelList.append(obj)
                 print '下载ok', url
         return channelList

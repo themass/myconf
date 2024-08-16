@@ -40,6 +40,8 @@ class VideoUserParse(BaseParse):
                 print '开始下载',url
                 soup = self.fetchUrl(url)
                 ul = soup.first("ul",{"class":"mx-auto grid grid-cols-2 gap-4 gap-y-8 sm:grid-cols-4 md:gap-6 lg:gap-8 lg:gap-y-12 xl:grid-cols-6 text-center"})
+                if ul ==None:
+                    return
                 lis =  ul.findAll("li")
                 count = 0
                 for item in lis:
@@ -65,6 +67,7 @@ class VideoUserParse(BaseParse):
                     obj['channelType']='normal'
                     channelList.append(obj)
                 print '下载ok', url
+        print len(channelList)
         return channelList
     def videoParse(self, channel, url,userId):
         dataList = []

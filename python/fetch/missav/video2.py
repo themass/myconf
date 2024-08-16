@@ -35,7 +35,7 @@ class VideoUserParse(BaseParse):
 
         ahrefs = self.header(name="header2.html")
         for ahref in ahrefs:
-            for i in range(1, 1300):
+            for i in range(1, 1283):
                 url= '%s?page=%s'%(ahref.get("href"),i)
                 print '开始下载',url
                 soup = self.fetchUrl(url)

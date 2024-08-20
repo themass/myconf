@@ -22,7 +22,7 @@ class VideoUserParse(BaseParse):
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
-            for i in range(1, 150):
+            for i in range(1, maxVideoPage):
                 url= "%s%s%s"%(item['url'],"?page=",i)
                 print url
                 con = self.videoParse(item['channel'], url,item['userId'])

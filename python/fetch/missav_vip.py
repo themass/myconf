@@ -14,4 +14,4 @@ def parseVideo2():
 if __name__ == '__main__':
 
     parseVideo()
-    # parseVideo2()
+    parseVideo2()

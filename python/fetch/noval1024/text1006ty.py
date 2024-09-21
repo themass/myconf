@@ -74,7 +74,7 @@ class TextChannelParse(BaseParse):
 
     def fetchTextData(self, url, channel,name):
         try:
-            soup = self.fetchUrl(baseurl,url)
+            soup = self.fetchUrl(baseurl3,url)
             datalist = soup.findAll("dt")
             objs = []
             sortType = dateutil.y_m_d()
@@ -88,7 +88,7 @@ class TextChannelParse(BaseParse):
                         obj['name'] = item.text
                         print obj['name'],itemUrl
                         obj['url'] = itemUrl
-                        obj['baseurl'] = baseurl
+                        obj['baseurl'] = baseurl3
                         obj['channel'] = channel
                         obj['updateTime'] = datetime.datetime.now()
 #                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
@@ -105,7 +105,7 @@ class TextChannelParse(BaseParse):
         except Exception as e:
             print common.format_exception(e)
     def fetchText(self,url):
-        soup = self.fetchUrl(baseurl,url)
+        soup = self.fetchUrl(baseurl3,url)
         data = soup.first("dl", {"id": "zi"})
         if data != None:
             try:

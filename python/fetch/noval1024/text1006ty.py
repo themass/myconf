@@ -79,6 +79,9 @@ class TextChannelParse(BaseParse):
             objs = []
             sortType = dateutil.y_m_d()
             for item in datalist:
+                h2 = item.first("h2")
+                if h2 == None:
+                    continue
                 ahref = item.first("h2").first("a")
                 if ahref!=None:
                     itemUrl = ahref.get("href")

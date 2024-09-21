@@ -44,7 +44,7 @@ class TextChannelParse(BaseParse):
                 print common.format_exception(e)
     def textChannel(self):
         objs = []
-        ahrefs = self.header("header2.html")
+        ahrefs = self.header2()
         for ahref in ahrefs:
             obj = {}
             obj['name']=ahref.text

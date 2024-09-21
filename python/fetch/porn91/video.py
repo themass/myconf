@@ -1,7 +1,6 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
 from baseparse import *
-from urlall import *
 from urlparse import urlparse
 from common import common
 from fetch.profile import *

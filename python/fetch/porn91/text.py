@@ -73,7 +73,7 @@ class TextChannelParse(BaseParse):
 
     def fetchTextData(self, url, channel,name):
         try:
-            soup = self.fetchUrl(baseurl,url)
+            soup = self.fetchUrl(url)
             div = soup.first("div",{"id":"w0"})
             datalist = div.findAll("a")
             objs = []
@@ -81,31 +81,30 @@ class TextChannelParse(BaseParse):
             for ahref in datalist:
                 if ahref!=None:
                     itemUrl = ahref.get("href")
-                    if itemUrl.startswith("html_data"):
-                        try:
-                            obj = {}
-                            obj['fileDate'] = '1111'
-                            obj['name'] = ahref.first("h4").text
-                            print obj['name'],itemUrl
-                            obj['url'] = itemUrl
-                            obj['baseurl'] = baseurl
-                            obj['channel'] = channel
-                            obj['updateTime'] = datetime.datetime.now()
-    #                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
-                            ret = self.fetchText(itemUrl)
-                            if ret==None:
-                                print '没有文章数据',itemUrl
-                                continue
-                            obj['sortType'] = sortType
-                            obj['channelName'] = name
-                            objs.append(obj)
-                        except Exception as e:
-                            print  common.format_exception(e)
+                    try:
+                        obj = {}
+                        obj['fileDate'] = '1111'
+                        obj['name'] = ahref.first("h4").text
+                        print obj['name'],itemUrl
+                        obj['url'] = itemUrl
+                        obj['baseurl'] = baseurl
+                        obj['channel'] = channel
+                        obj['updateTime'] = datetime.datetime.now()
+#                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
+                        ret = self.fetchText(itemUrl)
+                        if ret==None:
+                            print '没有文章数据',itemUrl
+                            continue
+                        obj['sortType'] = sortType
+                        obj['channelName'] = name
+                        objs.append(obj)
+                    except Exception as e:
+                        print  common.format_exception(e)
             return objs
         except Exception as e:
             print common.format_exception(e)
     def fetchText(self,url):
-        soup = self.fetchUrl(baseurl,url)
+        soup = self.fetchUrl(url)
         data = soup.first("div", {"id": "forum"})
         if data != None:
             try:

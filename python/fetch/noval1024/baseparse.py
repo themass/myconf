@@ -17,6 +17,8 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 baseurl = "https://x618p.click/pw/"
 baseurl2 = "http://38.163.30.253"
+baseurl3 = "https://www.1006ty.com"
+
 maxCount = 5
 class BaseParse(threading.Thread):
 

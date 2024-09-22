@@ -110,7 +110,7 @@ class TextChannelParse(BaseParse):
             try:
                 obj = {}
                 obj['fileUrl'] = url
-                obj['file'] = str(divList[1])
+                obj['file'] = str(divList[1]).split("==记住==")[0]
                 dbVPN = db.DbVPN()
                 ops = db_ops.DbOps(dbVPN)
                 ops.inertTextItems_item(obj)

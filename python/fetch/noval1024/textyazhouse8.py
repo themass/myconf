@@ -83,7 +83,7 @@ class TextChannelParse(BaseParse):
                     itemUrl = ahref.get("href")
                     try:
                         obj = {}
-                        obj['fileDate'] = '2222'
+                        obj['fileDate'] = '20240922'
                         obj['name'] = ahref.text
                         print obj['name'],itemUrl
                         obj['url'] = itemUrl
@@ -105,12 +105,12 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(baseurl4,url)
-        data = soup.first("div", {"class": "articleList"})
-        if data != None:
+        divList = soup.findAll("div", {"class": "articleList"})
+        if divList[1] != None:
             try:
                 obj = {}
                 obj['fileUrl'] = url
-                obj['file'] = str(data)
+                obj['file'] = str(divList[1])
                 dbVPN = db.DbVPN()
                 ops = db_ops.DbOps(dbVPN)
                 ops.inertTextItems_item(obj)

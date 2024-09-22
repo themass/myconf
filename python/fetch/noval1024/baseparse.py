@@ -15,9 +15,10 @@ import sys
 import ssl,os
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://x618p.click/pw/"
-baseurl2 = "http://38.163.30.253"
+baseurl = "https://1727003325-v922.b9b3l6/pw/"
 baseurl3 = "https://www.1006ty.com"
+baseurl4 = "https://yazhouse8.com/"
+
 
 maxCount = 5
 class BaseParse(threading.Thread):

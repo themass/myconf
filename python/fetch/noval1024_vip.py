@@ -24,7 +24,11 @@ def parseText2():
 def parseText4():
     textP = textyazhouse8.TextChannelParse()
     textP.run()
+def parseText5():
+    textP = textbook18.TextChannelParse()
+    textP.run()
 if __name__ == '__main__':
-    parseText4()
-    parseText2()
+    parseText5()
+    # parseText4()
+    # parseText2()
     # parseText()

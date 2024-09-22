@@ -85,7 +85,7 @@ class DbOps(object):
 
     def inertImgItems_item(self, obj):
         return self.conn.execute(
-            "insert  ignore  into  imgitems_item (picUrl,origUrl,itemUrl) values ('%s','%s','%s')"
+            "replace  into  imgitems_item (picUrl,origUrl,itemUrl) values ('%s','%s','%s')"
             % (obj.get("picUrl"), obj.get("origUrl"), obj.get("itemUrl")))
 
     def getImgItems_itemUnSyncById(self, ids):

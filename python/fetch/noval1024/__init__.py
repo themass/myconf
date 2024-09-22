@@ -3,4 +3,4 @@
 """
 通用包，包含数据库连接、锁和通用方法
 """
-__all__ = ["baseparse", 'textyi2212','text1006ty','textyazhouse8']
+__all__ = ["baseparse", 'textyi2212','text1006ty','textyazhouse8','textbook18']

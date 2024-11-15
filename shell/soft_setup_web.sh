@@ -122,16 +122,15 @@ setup_php()
 	
 	shelldir=`pwd`
 	cd ${TMP_HOME}
-	wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
-	tar -zxvf  bzip2-1.0.6.tar.gz
-	cd bzip2-1.0.6
+	git clone git://sourceware.org/git/bzip2.git
+	cd bzip2
 	make 
 	sudo make install
 	echo 'makefile -fPIC'
 	cd ..
-	wget http://zlib.net/zlib-1.2.11.tar.gz
-	tar -zxvf zlib-1.2.11.tar.gz
-	cd zlib-1.2.11
+	wget https://zlib.net/zlib-1.3.1.tar.gz
+	tar -zxvf zlib-1.3.1.tar.gz
+	cd zlib-1.3.1
 	./configure
 	make 
 	sudo make install

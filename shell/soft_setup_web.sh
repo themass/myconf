@@ -122,26 +122,26 @@ setup_php()
 	
 	shelldir=`pwd`
 	cd ${TMP_HOME}
-	git clone git://sourceware.org/git/bzip2.git
-	cd bzip2
-	make 
-	sudo make install
-	echo 'makefile -fPIC'
-	cd ..
-	wget https://zlib.net/zlib-1.3.1.tar.gz
-	tar -zxvf zlib-1.3.1.tar.gz
-	cd zlib-1.3.1
-	./configure
-	make 
-	sudo make install
-	echo 'makefile -fPIC'
-	sudo apt-get install libcurl4-gnutls-dev  libvpx-dev libjpeg-dev libpng-dev libXpm-dev libfreetype6-dev  libmcrypt-dev libmhash-dev
-	rm php-7.1.13.tar.bz2
-	wget http://cn.php.net/distributions/php-7.1.13.tar.bz2
-	tar -jxvf php-7.1.13.tar.bz2
-	rm -rf ${APP_HOME}/php-7.1.13
+#	git clone git://sourceware.org/git/bzip2.git
+#	cd bzip2
+#	make
+#	sudo make install
+#	echo 'makefile -fPIC'
+#	cd ..
+#	wget https://zlib.net/zlib-1.3.1.tar.gz
+#	tar -zxvf zlib-1.3.1.tar.gz
+#	cd zlib-1.3.1
+#	./configure
+#	make
+#	sudo make install
+#	echo 'makefile -fPIC'
+#	sudo apt-get install libcurl4-gnutls-dev  libvpx-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev  libmcrypt-dev libmhash-dev
+	rm php-8.3.13.tar.bz2
+	wget https://www.php.net/distributions/php-8.3.13.tar.bz2
+	tar -jxvf php-8.3.13.tar.bz2
+	rm -rf ${APP_HOME}/php-*
 	rm -rf ${APP_HOME}/php
-	cd php-7.1.13
+	cd php-8.3.13
 	
     #rm -f ${PHP_VERSION}.tar.bz2  
     #rm -rf ${PHP_VERSION}
@@ -151,7 +151,7 @@ setup_php()
     #cd ${PHP_VERSION}
     
     
-    ./configure --prefix=/home/web/local/php-7.1.13 --with-config-file-path=${APP_HOME}/php-7.1.13/etc \
+    ./configure --prefix=/home/web/local/php-8.3.13 --with-config-file-path=${APP_HOME}/php-8.3.13/etc \
     --with-curl --with-pear --with-gd --with-jpeg-dir --with-vpx-dir --with-png-dir \
     --with-zlib --with-xpm-dir --with-freetype-dir --with-mcrypt --with-mhash --with-mysql \
     --with-mysqli --enable-pdo --with-pdo-mysql --with-openssl  --enable-fpm --enable-exif --enable-wddx --enable-zip \
@@ -163,12 +163,12 @@ setup_php()
     make install
     cd ${APP_HOME}
     rm php
-    ln -s  php-7.1.13 php
+    ln -s  php-8.3.13 php
     #cp ${shelldir}/../php/php-fpm.conf ${APP_HOME}/php/etc
     #cp ${shelldir}/../php/php.ini ${APP_HOME}/php/etc
     mkdir -p ${APP_HOME}/php/lib/php/extensions
     cd ${APP_HOME}/php/lib/php/extensions
-    pear install DB
+    sudo pear install DB
     echo 'killall php-fpm '
     echo 'profile php'
    

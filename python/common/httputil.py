@@ -41,6 +41,7 @@ def postData(url, data={}, header={}):
         resp = opener.open(req, datastr, timeout=DEFULT_TIMEOUT).read()
         return resp
     except Exception as e:
+        print common.format_exception(e)
         raise HTTPException('url=%s' % (url), ex=e)
 def getData(url, data={}, header={}, isGzip=False):
     count = 0

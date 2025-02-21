@@ -81,7 +81,7 @@ class TextChannelParse(BaseParse):
                 ahref = item.first("a")
                 if ahref!=None:
                     itemUrl = ahref.get("href")
-                    if itemUrl.startswith("html_data"):
+                    if itemUrl.startswith("read.php"):
                         try:
                             obj = {}
                             obj['fileDate'] = item.first("a",{"class":"f10"}).text

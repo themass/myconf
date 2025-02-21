@@ -45,7 +45,7 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']='rou'+ahref.text
+            obj['channel']='rou_all'
             obj['showType']=3
             obj['channelType']='rou_all'
             channelList.append(obj)
@@ -55,7 +55,7 @@ class VideoParse(BaseParse):
         dataList = []
         print "videoParse=", url
         soup = self.fetchUrl(url)
-        divs = soup.findAll("div",{"class":"relative"})
+        divs = soup.findAll("div",{"class":"aspect-video relative"})
         if len(divs)==0:
             return False
         for item in divs:

@@ -57,9 +57,9 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, url,channelType):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first('div',{"class":"mod channel-list"})
+        div = soup.first('ul',{"class":"row col5 clearfix"})
         if div!=None:
-            divs = div.findAll("dl")
+            divs = div.findAll("li")
             if len(divs)==0:
                 return False
             for item in divs:

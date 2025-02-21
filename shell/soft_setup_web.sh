@@ -42,6 +42,7 @@ setup_jdk() {
 }
 
 setup_maven(){
+  mkdir -p /home/web/soft
   cd /home/web/soft
   wget https://dlcdn.apache.org/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz --no-check-certificate
   tar -zxvf apache-maven-3.8.8-bin.tar.gz

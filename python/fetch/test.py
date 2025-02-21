@@ -18,7 +18,7 @@ from common import *
 import subprocess
 
 curl_command = [
-    'curl', 'https://hsex.men/',
+    'curl', 'https://missav.ws/dm549/cn/release',
     '-H', 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
     '-H', 'accept-language: zh-CN,zh;q=0.9',
     '-H', 'cache-control: no-cache',
@@ -43,12 +43,14 @@ curl_command = [
 ]
 
 # 执行 curl 命令
-process = subprocess.Popen(curl_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-stdout, stderr = process.communicate()
-
-# 打印输出和错误信息
-print(stdout)
-soup = BeautifulSoup(stdout)
-print soup.first("div",{"class":"caption title"})
-if stderr:
-    print("Error:", stderr)
+# process = subprocess.Popen(curl_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+# stdout, stderr = process.communicate()
+#
+# # 打印输出和错误信息
+# print(stdout)
+# soup = BeautifulSoup(stdout)
+# print soup.first("div",{"class":"py-1"})
+# if stderr:
+#     print("Error:", stderr)
+response = requests.get("https://missav.ws/dm549/cn/release", timeout=30, verify=False)  # 跳过证书验证
+print response.text

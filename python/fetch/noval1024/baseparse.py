@@ -15,7 +15,7 @@ import sys
 import ssl,os
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl = "https://1727003325-v922.b9b3l6/pw/"
+baseurl = "http://172.83.153.76:8877/pw/"
 baseurl3 = "https://www.1006ty.com"
 baseurl4 = "https://yazhouse8.com/"
 baseurl5 = "https://www.book18.org"

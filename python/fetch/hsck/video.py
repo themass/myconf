@@ -5,7 +5,7 @@ from urlparse import urlparse
 from common import common
 from fetch.profile import *
 from urllib import unquote
-import sys,time
+import sys,time,json
 reload(sys)
 # 
 sys.setdefaultencoding('utf8')
@@ -96,9 +96,12 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url)
-            source = soup.first("source",{'id':'mp4m3u8'})
+            # source = soup.first("source",{'id':'mp4m3u8'})
+            source = soup.first("div",{'class':'stui-player__video clearfix'})
             if source != None:
-                return source.get('src')
+                print source.text
+                data = json.loads(source.text.replace("var player_aaaa=","").replace("\/","/"))
+                return data.get("url",None)
 
             print '没找到mp4'
             return None

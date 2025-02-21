@@ -15,13 +15,17 @@ import os
 #备用二：https://fpbcmy.com
 #备用三：https://mydfpb.com
 #备用四：https://dmydh.com
-baseurl = "https://mnysm8.com"
+baseurl = "https://mygzyz.com"
 header = {'User-Agent':
           'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36', "Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")
 shareVideo = re.compile(r"unescape\('http(.*?)/share/(.*?)'\);")
+import ssl
+import urllib2
 
+# 创建一个上下文，跳过证书验证
+context = ssl._create_unverified_context()
 class BaseParse(threading.Thread):
 
     def __init__(self):

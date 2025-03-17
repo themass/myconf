@@ -87,10 +87,12 @@ class VideoParse(BaseParse):
                 break
             except Exception as e:
                 print common.format_exception(e)
-        print 'hsex video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
+        print 'porn91 video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
         time.sleep(6)
+        if len(dataList)==0:
+            return False
         return True
     def parseDomVideo(self, url):
         try:

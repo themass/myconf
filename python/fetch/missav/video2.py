@@ -14,28 +14,35 @@ class VideoUserParse(BaseParse):
     def run(self):
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
-        chs = self.videoChannel()
-        for item in chs:
-            print item
-            ops.inertVideoUser(item)
-        print 'missav user video -- channel ok;,len=',len(chs)
-        dbVPN.commit()
-        dbVPN.close()
-        for item in chs:
-            for i in range(1, maxVideoPage):
-                url= "%s%s%s"%(item['url'],"?page=",i)
-                print url
-                con = self.videoParse(item['channel'], url,item['userId'])
-                print '解析完成 ', item['channel'], ' ---', i, '页'
-                if con==False:
-                    print '没有数据了啊-======页数',i,'---',item['name'],item['url']
-                    break
-    def videoChannel(self):
+        # 生成从1到1400的数字
+        numbers = list(range(1, 1401))
+        # 每10个数字一组
+        grouped_numbers = [numbers[i:i+10] for i in range(0, len(numbers), 10)]
+        for group in grouped_numbers:
+            first_number = group[0]  # 每组的第一个数字
+            last_number = group[-1]  # 每组的最后一个数字
+            chs = self.videoChannel(first_number, last_number)
+            for item in chs:
+                print item
+                ops.inertVideoUser(item)
+            print 'missav user video -- channel ok;,len=',len(chs)
+            dbVPN.commit()
+            dbVPN.close()
+            for item in chs:
+                for i in range(1, maxVideoPage):
+                    url= "%s%s%s"%(item['url'],"?page=",i)
+                    print url
+                    con = self.videoParse(item['channel'], url,item['userId'])
+                    print '解析完成 ', item['channel'], ' ---', i, '页'
+                    if con==False:
+                        print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                        break
+    def videoChannel(self, fromNum, toNum):
         channelList = []
 
         ahrefs = self.header(name="header2.html")
         for ahref in ahrefs:
-            for i in range(1, 1283):
+            for i in range(fromNum, toNum):
                 url= '%s?page=%s'%(ahref.get("href"),i)
                 print '开始下载',url
                 soup = self.fetchUrl(url)

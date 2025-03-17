@@ -30,7 +30,7 @@ class VideoParse(BaseParse):
                 ret = self.videoParse(ch['channel'], ch['channelType'], url)
                 if ret==False:
                     print '解析完成 没有数据了，换下一个', ch['channel'], ' ---', i, '页'
-                    continue
+                    break
                 print '解析完成 ', ch['channel'], ' ---', i, '页'
     def videoChannel(self):
         channelList = []
@@ -87,6 +87,8 @@ class VideoParse(BaseParse):
         print 'xcvods video --解析完毕 ; channel =', channel, '; len=', len(dataList), url
         dbVPN.commit()
         dbVPN.close()
+        if len(dataList)==0:
+            return False
         return True
 
     def parseDomVideo(self, url):

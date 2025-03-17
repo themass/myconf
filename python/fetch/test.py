@@ -52,5 +52,16 @@ curl_command = [
 # print soup.first("div",{"class":"py-1"})
 # if stderr:
 #     print("Error:", stderr)
-response = requests.get("https://missav.ws/dm549/cn/release", timeout=30, verify=False)  # 跳过证书验证
-print response.text
+# response = requests.get("https://missav.ws/dm549/cn/release", timeout=30, verify=False)  # 跳过证书验证
+# print response.text
+# 生成从1到1400的数字
+numbers = list(range(1, 1401))
+
+# 每10个数字一组
+grouped_numbers = [numbers[i:i+10] for i in range(0, len(numbers), 10)]
+
+# 循环打印每组的第一个和最后一个数字
+for group in grouped_numbers:
+    first_number = group[0]  # 每组的第一个数字
+    last_number = group[-1]  # 每组的最后一个数字
+    print first_number,last_number

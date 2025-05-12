@@ -47,7 +47,7 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channelType']='missav_all'
             channelList.append(obj)
-#         channelList.reverse()
+        channelList.reverse()
         return  channelList
     def videoParse(self, channel, channelType, url):
         dataList = []
@@ -64,7 +64,7 @@ class VideoParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                imgdiv = ahref.first('img')
+                imgdiv = ahref.first('video')
                 obj['pic'] = imgdiv.get("data-src")
 #                     item.first('h3').text.replace(" ","")
                 obj['name'] = imgdiv.get("alt")
@@ -90,7 +90,8 @@ class VideoParse(BaseParse):
         return True
     def parseDomVideo(self, url):
         try:
-            data = httputil.getText(url,header = header,isGzip=True)
+            data = self.fetchUrlWithBaseText(url)
+            # data = httputil.getText(url,header = header,isGzip=True)
             return parserText(data)
         except Exception as e:
             print common.format_exception(e)

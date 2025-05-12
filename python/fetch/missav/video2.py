@@ -91,7 +91,7 @@ class VideoUserParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                imgdiv = ahref.first('img')
+                imgdiv = ahref.first('video')
                 obj['pic'] = imgdiv.get("data-src")
                 obj['name'] = imgdiv.get("alt")
     
@@ -123,7 +123,7 @@ class VideoUserParse(BaseParse):
 
     def parseDomVideo(self, url):
         try:
-            data = httputil.getText(url,header = header,isGzip=True)
+            data = self.fetchUrlWithBaseText(url)
             return parserText(data)
         except Exception as e:
             print common.format_exception(e)

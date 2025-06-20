@@ -19,5 +19,5 @@ if __name__ == '__main__':
     xx69_vip.parseVideo2(1, profile.maxVideoPage)
 
     # xcvods_vip.parseVideo()
-    missav_vip.parseVideo()
-    missav_vip.parseVideo2()
+    # missav_vip.parseVideo()
+    # missav_vip.parseVideo2()

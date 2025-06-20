@@ -27,9 +27,10 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url']
             for i in range(1, maxVideoPage):
-                con = self.videoParse(item['channel'], item['channelType'],'%s?page=%s'%(url,i))
+                furl = '%s?page=%s'%(url,i)
+                con = self.videoParse(item['channel'], item['channelType'],furl)
                 if con==False:
-                    print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                    print '没有数据了啊-======页数',i,'---',item['name'],furl
                     break
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def videoChannel(self):
@@ -54,6 +55,7 @@ class VideoParse(BaseParse):
         soup = self.fetchUrlWithBase(url)
         divs = soup.findAll("div",{"class":"relative aspect-w-16 aspect-h-9 rounded overflow-hidden shadow-lg"})
         if len(divs)==0:
+            print soup
             return False
         for item in divs:
             ahref = item.first('a')

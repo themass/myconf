@@ -13,6 +13,6 @@ def parseVideo2():
     videop.run()
 if __name__ == '__main__':
 
-    # parseVideo()
-    parseVideo2()
+    parseVideo()
+    # parseVideo2()
 

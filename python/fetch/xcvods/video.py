@@ -5,12 +5,45 @@ from urlparse import urlparse
 from common import common
 from urllib import unquote
 import time
+import subprocess
+import socket
 from fetch.profile import *
 
 class VideoParse(BaseParse):
 
     def __init__(self):
         pass
+
+    def ping_domain(self, domain):
+        """
+        检测域名是否可达
+        """
+        try:
+            # 使用socket连接检测
+            socket.setdefaulttimeout(5)
+            socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((domain, 80))
+            return True
+        except:
+            return False
+
+    def is_url_accessible(self, url):
+        """
+        检测URL是否可访问
+        """
+        try:
+            parsed_url = urlparse(url)
+            domain = parsed_url.netloc
+            if not domain:
+                return False
+            
+            # 检查是否包含端口号，如果包含则直接忽略
+            if ':' in domain:
+                print 'URL包含端口号，忽略:', url
+                return False
+                
+            return self.ping_domain(domain)
+        except:
+            return False
 
     def run(self):
         dbVPN = db.DbVPN()
@@ -58,9 +91,7 @@ class VideoParse(BaseParse):
         for ahref in ahrefs:
             if ahref!=None:
                 mp4Url  = self.parseDomVideo(ahref.get("href"))
-                if mp4Url==None:
-                    continue
-                if mp4Url.count('.html')!=0 :
+                if mp4Url==None or mp4Url.count('.html')!=0:
                     print mp4Url,"爱奇艺，忽略"
                     continue
                 obj = {}
@@ -94,27 +125,34 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         header = {"User-Agent":"Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)", "Referer": url}
         try:
+                
             match = videoId.search(url)
             if match!=None:
                 Id= match.group(1)
-                url  = '/vod-play-id-%s-src-1-num-1.html'%(Id)
-                soup = self.fetchUrl(url, header)
-                div = soup.first('div',{'class':'macplus-player__video embed-responsive embed-responsive-16by9'})
-                if div!= None:
-                    scripts = div.findAll("script")
-                    for script in scripts:
-                        text = unquote(script.text.replace("\"","").replace("\/","/").replace(" ",''))
-                        lines = text.split(",")
-                        for t in lines:
+                for i in range(1, 4):
+                    url = '/vod-play-id-%s-src-%s-num-1.html'%(Id,i)
+                    soup = self.fetchUrl(url, header)
+                    div = soup.first('div',{'class':'macplus-player__video embed-responsive embed-responsive-16by9'})
+                    if div!= None:
+                        scripts = div.findAll("script")
+                        for script in scripts:
+                            text = unquote(script.text.replace("\"","").replace("\/","/").replace(" ",''))
                             match = videoApi.search(text)
                             if match!=None:
                                 videoUrl =match.group(1)
-                                return "%s%s%s"%("http",videoUrl,'.m3u8')
+                                # 检测视频URL是否可访问
+                                full_video_url = "%s%s%s"%("http",videoUrl,'.m3u8')
+                                
+                                if self.is_url_accessible(full_video_url):
+                                    print '视频OK:路径-',url
+                                    return full_video_url
+                                else:
+                                    print '视频URL不可访问:', full_video_url , '路径-',url
+                                    continue
                 print '没找到mp4',url
             return None
         except Exception as e:
             print common.format_exception(e)
             return None
-
 def videoParse(queue):
     queue.put(VideoParse())

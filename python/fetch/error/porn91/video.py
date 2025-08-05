@@ -52,7 +52,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first('div',{"class":"rd5"})
+        div = soup.first('div',{"id":"rd5"})
         if div!=None:
             divs = div.findAll("div", class_=re.compile('is-half-mobile py-1'))
             if len(divs)==0:

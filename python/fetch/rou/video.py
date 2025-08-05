@@ -67,7 +67,7 @@ class VideoParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                imgdiv = ahref.first('img')
+                imgdiv = ahref.first('img',{"class":"relative w-full h-full object-contain"})
 
                 obj['pic'] = imgdiv.get("src")
 #                     item.first('h3').text.replace(" ","")

@@ -9,7 +9,8 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from fetch.jiu667 import *
+from fetch.weav import *
+
 import re
 import sys
 reload(sys)
@@ -18,10 +19,10 @@ sys.setdefaultencoding('utf8')
 def parseVideo():
     videop = video.VideoParse()
     videop.run()
-def parseImg():
-    imgP = img.ImgParse()
-    imgP.run()
+def parseVideoUrls():
+    videop = video.VideoParse()
+    videop.runUrls()
 if __name__ == '__main__':
-   
+
     parseVideo()
-    # parseImg()
+    parseVideoUrls()

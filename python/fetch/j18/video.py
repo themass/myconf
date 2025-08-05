@@ -22,13 +22,13 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
-        print 'hsex video -- channel ok;,len=',len(chs)
+        print 'j18 video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
         for item in chs:
             url= item['url']
             for i in range(1, maxVideoPage):
-                con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('1.htm',''),i,'.htm'))
+                con = self.videoParse(item['channel'], item['channelType'],'%s-%s/'%(url,i))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
@@ -36,11 +36,10 @@ class VideoParse(BaseParse):
     def runUrls(self):
         for url in urls:
             for i in range(1, 100):
-                page = '%s%s%s'%('search-',i,'.htm')
-                print page
-                con = self.videoParse('hsex.men', 'hsex_all',url.replace('search.htm',page))
+                page = url%(i)
+                con = self.videoParse('weav', 'weav_all',page)
                 if con==False:
-                    print '没有数据了啊-======页数',i,'---',url
+                    print '没有数据了啊-======页数',i,'---',page
                     break
                 print '解析完成 ', url, ' ---', i, '页'
     def videoChannel(self):
@@ -54,37 +53,35 @@ class VideoParse(BaseParse):
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2
-            obj['channel']='hsex'+ahref.text
+            obj['channel']='j18'+ahref.text
             obj['showType']=3
-            obj['channelType']='hsex_all'
+            obj['channelType']='weav_all'
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first('div',{"class":"row body"})
+        div = soup.first('ul',{"class":"list"})
+
         if div!=None:
-            divs = div.findAll("div",{"class":"thumbnail"})
+            divs = div.findAll("li")
             if len(divs)==0:
                 return False
             for item in divs:
                 ahref = item.first('a')
                 if ahref != None:
                     obj = {}
-                    mp4Url = self.parseDomVideo(ahref.get("href"))
+                    mp4Url = self.findM3u8Url(ahref.get("href"))
                     if mp4Url == None:
                         print '没有mp4 文件:', ahref.get("href")
                         continue
                     obj['url'] = mp4Url
-                    imgdiv = ahref.first('div',{"class":"image"})
+                    imgdiv = ahref.first('img')
 
-                    obj['pic'] = imgdiv.get("style").replace("background-image: url('","").replace("')","")
+                    obj['pic'] = imgdiv.get("data-original")
 #                     item.first('h3').text.replace(" ","")
-                    obj['name'] = imgdiv.get("title")
-
-    
-                    videourl = urlparse(obj['url'])
+                    obj['name'] = imgdiv.get("alt")
                     obj['path'] = baseurl+ahref.get("href")
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
@@ -106,7 +103,6 @@ class VideoParse(BaseParse):
         time.sleep(1)
         return True
     def parseDomVideo(self, url):
-        time.sleep(1)
         try:
             if url.count("script")==0:
                 soup = self.fetchUrl(url)
@@ -120,6 +116,18 @@ class VideoParse(BaseParse):
         except Exception as e:
             print common.format_exception(e)
             return None
-
+    def findM3u8Url(self, url):
+        try:
+            text = self.fetchContent( url)
+            pattern = r"const source = '([^']+\.m3u8)'"
+            match = re.search(pattern, text)
+            if match:
+                return match.group(1)
+            else:
+                print "未找到 m3u8 链接",url
+                return None
+        except Exception as e:
+            print common.format_exception(e)
+            return None
 def videoParse(queue):
     queue.put(VideoParse())

@@ -28,7 +28,7 @@ class VideoParse(BaseParse):
         for item in chs:
             url= item['url']
             for i in range(1, maxVideoPage):
-                con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('1.htm',''),i,'.htm'))
+                con = self.videoParse(item['channel'], item['channelType'],'%s%s'%(url,i))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
@@ -36,11 +36,10 @@ class VideoParse(BaseParse):
     def runUrls(self):
         for url in urls:
             for i in range(1, 100):
-                page = '%s%s%s'%('search-',i,'.htm')
-                print page
-                con = self.videoParse('hsex.men', 'hsex_all',url.replace('search.htm',page))
+                page = '%s/%s'%(url,i)
+                con = self.videoParse('weav', 'weav_all',page)
                 if con==False:
-                    print '没有数据了啊-======页数',i,'---',url
+                    print '没有数据了啊-======页数',i,'---',page
                     break
                 print '解析完成 ', url, ' ---', i, '页'
     def videoChannel(self):
@@ -56,35 +55,33 @@ class VideoParse(BaseParse):
             obj['rate']=1.2
             obj['channel']='hsex'+ahref.text
             obj['showType']=3
-            obj['channelType']='hsex_all'
+            obj['channelType']='weav_all'
             channelList.append(obj)
 #         channelList.reverse()
         return  channelList
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first('div',{"class":"row body"})
+        div = soup.first('div',{"class":"video-av-data"})
+
         if div!=None:
-            divs = div.findAll("div",{"class":"thumbnail"})
+            divs = div.findAll("div",{"class":"avdata-outer col-3"})
             if len(divs)==0:
                 return False
             for item in divs:
                 ahref = item.first('a')
                 if ahref != None:
                     obj = {}
-                    mp4Url = self.parseDomVideo(ahref.get("href"))
+                    mp4Url = self.extract_hash_id(ahref.get("href"))
                     if mp4Url == None:
                         print '没有mp4 文件:', ahref.get("href")
                         continue
                     obj['url'] = mp4Url
-                    imgdiv = ahref.first('div',{"class":"image"})
+                    imgdiv = ahref.first('img')
 
-                    obj['pic'] = imgdiv.get("style").replace("background-image: url('","").replace("')","")
+                    obj['pic'] = imgdiv.get("data-src")
 #                     item.first('h3').text.replace(" ","")
-                    obj['name'] = imgdiv.get("title")
-
-    
-                    videourl = urlparse(obj['url'])
+                    obj['name'] = imgdiv.get("alt")
                     obj['path'] = baseurl+ahref.get("href")
                     obj['updateTime'] = datetime.datetime.now()
                     obj['channel'] = channel
@@ -120,6 +117,27 @@ class VideoParse(BaseParse):
         except Exception as e:
             print common.format_exception(e)
             return None
+    def extract_hash_id(self, url):
+        """
+        从文本中提取 hash_id 的值
 
+        参数:
+            text (str): 包含 hash_id 的原始文本
+        返回:
+            str: 匹配到的 hash_id 值，如果未找到则返回 None
+        """
+        # 正则表达式模式：匹配 "hash_id":"任意字符" 的结构
+        # 其中 .*? 表示非贪婪匹配任意字符（除换行外），确保只匹配到第一个双引号结束
+        text = self.fetchContent(url)
+        pattern = r'"hash_id":"(.*?)"'
+
+        # 使用 re.search 查找第一个匹配项
+        match = re.search(pattern, text)
+
+        # 如果找到匹配，返回捕获组中的内容（即 hash_id 的值）
+        if match:
+            return "https://b2.bttss.cc/videos/"+match.group(1)+"/g.m3u8"
+        else:
+            return None
 def videoParse(queue):
     queue.put(VideoParse())

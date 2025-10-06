@@ -50,7 +50,7 @@ class TextChannelParse(BaseParse):
             obj = {}
             obj['name']=ahref.text
             obj['url']=ahref.get('href')
-            obj['baseurl']=baseurl
+            obj['baseurl']=baseurl3
             obj['updateTime']=datetime.datetime.now()
             obj['pic']=''
             obj['rate']=1.2

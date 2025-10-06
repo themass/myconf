@@ -3,6 +3,7 @@
 import MySQLdb
 import dateutil
 import common
+import re
 
 
 class DbOps(object):
@@ -150,13 +151,52 @@ class DbOps(object):
     def renameVideo(self,obj):
         return self.conn.execute(
             "update   videoitems_1 set name='%s' where path='%s'" % ( obj.get("name"), obj.get("path")))
-    def inertVideo(self, obj,videoType="normal",baseUrl='',channelType=''):
+    def inertVideo(self, obj, videoType="normal", baseUrl='', channelType=''):
         sortType = dateutil.y_m_d()
-        return self.conn.execute(
-            "insert ignore into  videoitems_1 (name,url,channel,pic,updateTime,path,videoType,baseurl,sortType,channelType) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
-            % (
-                obj.get("name").replace("'",""), obj.get("url"), obj.get("channel").replace(".com",'-'), obj.get("pic"), obj.get("updateTime"), obj.get("path"), videoType,obj.get("baseurl"),sortType,channelType))
-
+        # 使用参数化查询避免SQL注入，同时处理单引号
+        sql = """
+            INSERT INTO videoitems_1 
+            (name, url, channel, pic, updateTime, path, videoType, baseurl, sortType, channelType) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE 
+            url = VALUES(url),
+            pic = VALUES(pic),
+            channel = VALUES(channel)
+        """
+        # 准备参数（自动处理单引号等特殊字符）
+        params = (
+            self.clean_special_chars(obj.get("name", "").replace("'", "")),
+            obj.get("url", ""),
+            obj.get("channel", "").replace(".com", '-'),
+            obj.get("pic", ""),
+            obj.get("updateTime", ""),
+            obj.get("path", ""),
+            videoType,
+            obj.get("baseurl", ""),
+            sortType,
+            channelType
+        )
+        try:
+            # 执行参数化查询
+            return self.conn.execute(sql, params)
+        except Exception as e:
+            return None
+    def clean_special_chars(self,text):
+        """
+        过滤文本中的特殊字符（如Emoji、4字节Unicode等）
+        只保留中文、英文、数字和常见标点
+        """
+        if not text:
+            return ""
+        # 正则表达式：匹配所有非常规字符（保留中文、英文、数字、基本标点）
+        pattern = re.compile(
+            u"[^a-zA-Z0-9\u4e00-\u9fa5"  # 中文、英文、数字
+            u"，。！？；：,.!?;:"  # 常见标点
+            u"()（）[]【】{}《》"  # 括号
+            u"\s"  # 空格
+            u"]"
+        )
+        return pattern.sub('', text)  # 替换为空白字符
 
     def inertVideoUser(self, obj):
         try:

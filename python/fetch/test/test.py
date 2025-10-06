@@ -1,29 +1,48 @@
-#!/usr/bin python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
-import re,sys
-reload(sys)
-sys.setdefaultencoding('utf8')
-# 两段独立的字符串
-text1 = '<script>var playUrl="//"+play+"/movie-hls/170430/ydgzy23/index.m3u8";var posterImg="https://pppp.642p.com/201704/30/ydgzy23.jpg";</script>'
-text2 = '<script>var playUrl="//"+javplay+"/videos/202407/668ec3198eb67eee93c91775/hls/index.m3u8";var posterImg="https://pppp.642p.com/images/202407/668ec3198eb67eee93c91775/cover.txt";</script>'
+import re
 
-#修正后的正则表达式：
-# 1. 使用原始字符串 (r'...')
-# 2. 明确匹配双引号和斜杠
-# 3. 使用非贪婪匹配确保只捕获到第一个 .m3u8
-pattern = r'var playUrl=(\'|\")//(\'|\")\+[^+]+\+(\'|\")(/.*?\.m3u8)(\'|\")'
+def filter_to_chinese_english_digits(text):
+    """
+    过滤字符串，仅保留：
+    - 中文（\u4e00-\u9fa5）
+    - 英文（大小写字母 a-zA-Z）
+    - 数字（0-9）
+    移除所有其他字符
+    """
+    if not text:
+        return u""  # 返回空的Unicode字符串
 
-# 分别处理每段字符串
-def extract_path(text):
-    match = re.search(pattern, text)
-    if match:
-        # 第4个捕获组包含路径部分
-        return match.group(4)
-    return None
+    # 1. 确保输入为Unicode（处理Python 2.7的str/unicode差异）
+    if isinstance(text, str):
+        # 尝试用utf-8解码，失败则忽略错误字符
+        text = text.decode('utf-8', errors='ignore')
+    elif not isinstance(text, unicode):
+        return u""  # 非字符串类型直接返回空
 
-# 提取并打印每个字符串的路径
-path1 = extract_path(text1)
-path2 = extract_path(text2)
+    # 2. 正则匹配：只保留中文、英文和数字
+    # [\u4e00-\u9fa5] 匹配所有中文字符
+    # [a-zA-Z] 匹配所有英文字母（大小写）
+    # [0-9] 匹配所有数字
+    pattern = re.compile(u'([\u4e00-\u9fa5a-zA-Z0-9])')
 
-print path1
-print path2
+    # 3. 提取所有匹配的字符并拼接
+    filtered_chars = pattern.findall(text)
+    filtered_text = u''.join(filtered_chars)
+
+    return filtered_text
+
+# 测试示例
+if __name__ == "__main__":
+    test_cases = [
+        u"测试123！Hello World@#$",
+        u"Python 2.7 转义字符串，只保留中文，英文和数字，其他字符全部去掉。",
+        u"❌❌⭕️⭕️ 🩷 wataa🔥porn(twitter.com) 测试123！",
+        "混合str类型的文本：abc123，中文测试！"  # str类型测试
+    ]
+
+    for i, case in enumerate(test_cases):
+        result = filter_to_chinese_english_digits(case)
+        print(u"测试案例 %d：" % (i+1))
+        print(u"原始文本：%s" % case)
+        print(u"过滤后：%s\n" % result)

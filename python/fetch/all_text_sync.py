@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from common.envmod import *
 from fetch import noval1024_vip
-from fetch import  porn91_vip
 
 
 def pase1():

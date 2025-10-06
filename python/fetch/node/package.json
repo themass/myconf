@@ -1,0 +1,16 @@
+{
+  "name": "video-decoder",
+  "version": "1.0.0",
+  "description": "JavaScript视频地址解密工具",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "keywords": ["video", "decoder", "javascript", "packer"],
+  "author": "Video Decoder",
+  "license": "MIT",
+  "dependencies": {
+    "vm": "^0.1.0"
+  }
+} 

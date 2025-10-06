@@ -27,7 +27,7 @@ class VideoParse(BaseParse):
         dbVPN.close()
         for item in chs:
             url= item['url']
-            for i in range(1, maxVideoPage):
+            for i in range(53, maxVideoPage):
                 con = self.videoParse(item['channel'], item['channelType'],'%s%s%s'%(url.replace('1.htm',''),i,'.htm'))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
@@ -63,13 +63,13 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first('div',{"class":"row body"})
+        div = soup.find('div',{"class":"row body"})
         if div!=None:
             divs = div.findAll("div",{"class":"thumbnail"})
             if len(divs)==0:
                 return False
             for item in divs:
-                ahref = item.first('a')
+                ahref = item.find('a')
                 if ahref != None:
                     obj = {}
                     mp4Url = self.parseDomVideo(ahref.get("href"))
@@ -77,7 +77,7 @@ class VideoParse(BaseParse):
                         print '没有mp4 文件:', ahref.get("href")
                         continue
                     obj['url'] = mp4Url
-                    imgdiv = ahref.first('div',{"class":"image"})
+                    imgdiv = ahref.find('div',{"class":"image"})
 
                     obj['pic'] = imgdiv.get("style").replace("background-image: url('","").replace("')","")
 #                     item.first('h3').text.replace(" ","")
@@ -110,7 +110,7 @@ class VideoParse(BaseParse):
         try:
             if url.count("script")==0:
                 soup = self.fetchUrl(url)
-                source = soup.first("source")
+                source = soup.find("source")
                 if source != None:
                     text = source.get("src")
                     return text

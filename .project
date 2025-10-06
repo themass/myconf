@@ -22,6 +22,15 @@
 	</natures>
 	<filteredResources>
 		<filter>
+			<id>1759769855200</id>
+			<name></name>
+			<type>30</type>
+			<matcher>
+				<id>org.eclipse.core.resources.regexFilterMatcher</id>
+				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
+			</matcher>
+		</filter>
+		<filter>
 			<id>1503034291320</id>
 			<name>python</name>
 			<type>22</type>

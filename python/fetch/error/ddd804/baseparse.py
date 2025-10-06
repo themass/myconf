@@ -15,18 +15,8 @@ import sys
 import ssl,os
 reload(sys)
 sys.setdefaultencoding('utf8')
-baseurl1 = "https://666tui.com"
-baseurl2 = "http://www.jiqingyazhou.org"
-baseurl5 = "http://www.3wuji.com"
-baseurl6 = "http://www.58589s.com"
-baseurl7 = "https://www.52cjg.com"
-baseurl8 = "https://www.jjj382.com"
-baseurl9 = "http://www.169afaf.com"
-baseurl10 = "https://www.asy3333.com"
-baseurl11 = "http://www.tlula44.com"
+baseurl11 = "https://kmm5560.top:13579"
 baseurl12 = "https://r18.clickme.net"
-baseurl13 = "http://gebi0.com"
-baseurl14 = "https://bxjiao.com"
 
 maxCount = 5
 class BaseParse(threading.Thread):

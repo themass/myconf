@@ -35,7 +35,7 @@ class VideoParse(BaseParse):
                 print '解析完成 ', item['channel'], ' ---', i, '页'
     def runUrls(self):
         for url in urls:
-            for i in range(1, 100):
+            for i in range(1, 10):
                 page = '%s/%s'%(url,i)
                 con = self.videoParse('weav', 'weav_all',page)
                 if con==False:

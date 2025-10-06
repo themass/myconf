@@ -1,0 +1,29 @@
+# 视频解析脚本依赖包
+# Python2 兼容版本
+
+# HTML解析
+beautifulsoup4==4.9.3
+
+# 网络请求
+requests==2.27.1
+
+# 正则表达式增强
+regex==2021.4.4
+
+# JSON处理
+simplejson==3.17.6
+
+# URL处理
+urllib3==1.26.8
+
+# 编码处理
+chardet==4.0.0
+
+# 日期时间处理
+python-dateutil==2.8.2
+
+# 日志处理
+colorlog==4.7.2
+
+# 进度条
+tqdm==4.62.3 

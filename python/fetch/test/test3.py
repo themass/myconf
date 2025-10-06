@@ -1,183 +1,116 @@
-#!/usr/bin python
 # -*- coding: utf-8 -*-
-import threading
-import urllib2
-import ssl
-import socket
-import zlib
+import subprocess
+import os
 import time
+import signal
 from bs4 import BeautifulSoup
+import sys
 
-class BaseParse(object):
-    """基础解析类"""
+# 解决 Python 2.7 编码问题
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+class CurlFetcher(object):
     def __init__(self):
-        self.fetcher = None
+        # 终端可执行的完整 curl 命令（直接复制你提供的有效命令）
+        self.curl_command = '''curl 'https://hsex.men/video-1132154.htm' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'cache-control: no-cache' \
+  -b '_ga=GA1.1.562282098.1743184592; __PPU_puid=7372220048289729256; hid=fqon093adrbeju7n89qe4hlh8k; cf_clearance=s2qPvxOG0Cn.CRS1DAeyHg6dZHNh1jqgvBqe2YuNCIs-1759102121-1.2.1.1-GyfAPs69SwqwrD94Dyg8Gt.IWvsS6fE9CMVbVRvdxDoMDxdUtcLg7jK6_ZtO4QsvUHQPLwO1wFwG6km2tFG6EdVMO19rDAOFNwfnhyoYCANQDnODD7hYnqQcKuYqEltLPagdGouWy3Ca8HoiEdV8wVljUoi49MMlPL.XgTJspKHTdxGPg4Ys4RQjyhSWIBAtFt33c4QdQtFxr4h3aJRE61HX1Bp1cIE0J07RxUtUrLFv1pYLb5qW9nlrNTNTuX4a; _ga_ECF2QFGQ9G=GS2.1.s1759071414$o6$g1$t1759071464$j10$l0$h0; UGVyc2lzdFN0b3JhZ2U=%7B%22CAIFRQ%22%3A%22ADXY8AAAAAAAAAABADR6ZgAAAAAAAAABADR6XAAAAAAAAAAB%22%2C%22CAIFRT%22%3A%22ADXY8AAAAABo2hJQADR6ZgAAAABo2hJQADR6XAAAAABo2hJQ%22%7D; bnState_1871751={"impressions":7,"delayStarted":0}' \
+  -H 'pragma: no-cache' \
+  -H 'priority: u=0, i' \
+  -H 'sec-ch-ua: "Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"' \
+  -H 'sec-ch-ua-arch: "arm"' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "137.0.7151.120"' \
+  -H 'sec-ch-ua-full-version-list: "Google Chrome";v="137.0.7151.120", "Chromium";v="137.0.7151.120", "Not/A)Brand";v="24.0.0.0"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-model: ""' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-ch-ua-platform-version: "14.3.0"' \
+  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-mode: navigate' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'sec-fetch-user: ?1' \
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36' '''
 
-class VideoParse(BaseParse, threading.Thread):
-    """视频解析类，继承基础解析类并实现多线程功能"""
-    def __init__(self, video_url=None):
-        BaseParse.__init__(self)
-        threading.Thread.__init__(self)
+    def _get_terminal_env(self):
+        """获取终端完整环境变量，排除 Python 相关变量"""
+        env = os.environ.copy()
+        python_vars = ['PYTHONPATH', 'PYTHONHOME', 'PYTHONSTARTUP', 'PYTHONIOENCODING']
+        for var in python_vars:
+            if var in env:
+                del env[var]
+        return env
 
-        self.video_url = video_url
-        self.result = None
-        self.is_running = False
+    def fetch(self):
+        max_retries = 3
+        retry_count = 0
 
-        # 初始化SSL上下文（修复兼容性问题）
-        self._init_ssl_context()
-
-        # 模拟浏览器请求头
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1',
-            'Referer': 'https://www.google.com/'
-        }
-
-    def _init_ssl_context(self):
-        """初始化SSL上下文，支持更多协议和选项"""
-        # 创建不验证证书的上下文
-        self.ssl_ctx = ssl.create_default_context()
-        self.ssl_ctx.check_hostname = False
-        self.ssl_ctx.verify_mode = ssl.CERT_NONE
-
-        # 启用TLSv1.0和TLSv1.1（兼容旧服务器）
-        self.ssl_ctx.options &= ~ssl.OP_NO_TLSv1
-        self.ssl_ctx.options &= ~ssl.OP_NO_TLSv1_1
-
-        # 禁用压缩（避免CRIME攻击相关问题）
-        self.ssl_ctx.options |= ssl.OP_NO_COMPRESSION
-
-        # 移除不兼容的属性设置
-        # self.ssl_ctx.session_cache_mode = ssl.SESSION_CACHE_OFF  # Python 2.7不支持
-
-    def run(self):
-        """线程执行的主函数"""
-        self.is_running = True
-        try:
-            if not self.video_url:
-                raise ValueError("未设置视频URL")
-
-            # 抓取并解析页面
-            content = self._fetch_with_retry()
-            if content:
-                self.result = self._parse_content(content)
-            else:
-                self.result = {"status": "失败", "message": "无法获取页面内容"}
-
-        except Exception as e:
-            self.result = {"status": "错误", "message": str(e)}
-        finally:
-            self.is_running = False
-
-    def _fetch_with_retry(self):
-        """带重试机制的页面抓取方法"""
-        max_retries = 5
-        for attempt in xrange(max_retries):
+        while retry_count < max_retries:
             try:
-                # 创建请求对象
-                req = urllib2.Request(self.video_url, headers=self.headers)
+                print("第%d次尝试（使用终端环境执行）..." % (retry_count + 1))
 
-                # 设置超时并打开URL
-                socket.setdefaulttimeout(30)
-                response = urllib2.urlopen(req, timeout=30, context=self.ssl_ctx)
+                # 关键：通过 bash -c 执行，完全模拟终端输入命令
+                process = subprocess.Popen(
+                    ['bash', '-c', self.curl_command],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    env=self._get_terminal_env(),  # 传递终端环境变量
+                    shell=False  # 禁用 shell 注入风险
+                )
 
-                # 获取响应内容
-                content_encoding = response.headers.getheader('Content-Encoding', '')
-                content = response.read()
+                # 设置超时（30秒）
+                def timeout_handler(signum, frame):
+                    raise Exception("请求超时（30秒）")
 
-                # 处理gzip压缩内容
-                if 'gzip' in content_encoding.lower():
-                    content = zlib.decompress(content, 16 + zlib.MAX_WBITS)
-                print content
-                return content
+                signal.signal(signal.SIGALRM, timeout_handler)
+                signal.alarm(30)
 
-            except ssl.SSLError as e:
-                print "SSL错误 ({0}/{1}): {2} - {3}".format(
-                    attempt+1, max_retries, self.video_url, str(e))
+                # 获取输出
+                stdout, stderr = process.communicate()
+                signal.alarm(0)  # 取消超时
 
-                # 针对特定错误尝试不同的SSL上下文
-                if 'KRB5_S_TKT_NYV' in str(e) or 'unexpected eof' in str(e).lower():
-                    # 尝试更宽松的上下文
-                    self.ssl_ctx = ssl._create_unverified_context()
+                # 检查执行结果
+                if process.returncode != 0:
+                    print("curl 执行失败（代码: %d）" % process.returncode)
+                    print("错误详情: %s" % stderr)
+                    retry_count += 1
+                    time.sleep(2)
+                    continue
 
-            except (urllib2.URLError, socket.timeout) as e:
-                print "网络错误 ({0}/{1}): {2} - {3}".format(
-                    attempt+1, max_retries, self.video_url, str(e))
+                # 检测是否被 Cloudflare 拦截
+                response = stdout.decode('utf-8', errors='replace')
+                if "cloudflare" in response.lower() or "just a moment" in response.lower():
+                    print("被 Cloudflare 拦截，可能原因：")
+                    print("1. Cookie 与当前 IP/环境不匹配（cf_clearance 绑定环境）")
+                    print("2. 终端与 Python 的 bash 环境存在差异")
+                    retry_count += 1
+                    time.sleep(5)
+                    continue
+
+                # 解析并返回结果
+                soup = BeautifulSoup(response, "html.parser", from_encoding="utf-8")
+                print("成功获取页面！")
+                return soup
 
             except Exception as e:
-                print "其他错误 ({0}/{1}): {2} - {3}".format(
-                    attempt+1, max_retries, self.video_url, str(e))
+                print("执行错误: %s" % str(e))
+                retry_count += 1
+                time.sleep(2)
 
-            # 指数退避重试
-            wait_time = 2 ** attempt
-            print "等待 {0} 秒后重试...".format(wait_time)
-            time.sleep(wait_time)
-
-        print "达到最大重试次数，无法获取: {0}".format(self.video_url)
+        print("达到最大重试次数，获取失败")
         return None
 
-    def _parse_content(self, content):
-        """解析HTML内容，提取视频信息"""
-        if not content:
-            return {"status": "失败", "message": "无内容可解析"}
 
-        try:
-            # 创建BeautifulSoup对象
-            soup = BeautifulSoup(content, 'html.parser')
-
-            # 这里需要根据实际页面结构编写解析逻辑
-            # 以下是示例代码，需根据目标网站调整
-
-            # 提取标题
-            title = soup.title.text if soup.title else "未找到标题"
-
-            # 提取视频URL（示例逻辑，需根据实际页面修改）
-            video_url = None
-            video_tags = soup.find_all('video')
-            if video_tags:
-                video_url = video_tags[0].get('src')
-
-            if not video_url:
-                # 尝试从script标签中提取
-                script_tags = soup.find_all('script')
-                for script in script_tags:
-                    script_text = script.get_text()
-                    if 'playUrl' in script_text:
-                        # 使用正则表达式提取playUrl
-                        import re
-                        match = re.search(r'var playUrl="([^"]+)"', script_text)
-                        if match:
-                            video_url = match.group(1)
-                            # 处理playUrl中的变量拼接
-                            if '"+iplay+"' in video_url:
-                                video_url = video_url.replace('"+iplay+"', '')
-
-            return {
-                "status": "成功",
-                "title": title,
-                "video_url": video_url,
-                "original_url": self.video_url,
-                "content_length": len(content)
-            }
-
-        except Exception as e:
-            return {"status": "解析错误", "message": str(e)}
-
-
-# 使用示例
+# 使用示例a
 if __name__ == "__main__":
-    # 创建并启动解析线程
-    parser = VideoParse(video_url="https://c4441.com/video/zipai/index.html")
-    parser.start()
+    fetcher = CurlFetcher()
+    soup = fetcher.fetch()
 
-    # 等待线程完成
-    parser.join()
-
-    # 输出结果
-    print "解析结果:"
-    for key, value in parser.result.items():
-        print "  {0}: {1}".format(key, value)
+    if soup and soup.title:
+        print("\n页面标题: %s" % soup.title.text)
+    else:
+        print("\n未获取到有效页面内容")

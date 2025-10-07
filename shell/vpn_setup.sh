@@ -244,7 +244,7 @@ strongswan_setup_6() {
 	
 	# 创建 systemd 服务文件
 	echo "创建 systemd 服务..."
-	sudo tee /etc/systemd/system/strongswan-swanctl.service > /dev/null << 'EOF'
+	sudo tee /etc/systemd/system/strongswan.service > /dev/null << 'EOF'
 [Unit]
 Description=strongSwan IPsec daemon
 After=network.target
@@ -268,28 +268,28 @@ EOF
 	
 	# 重新加载 systemd
 	sudo systemctl daemon-reload
-	sudo systemctl enable strongswan-swanctl
+	sudo systemctl enable strongswan
 	
 	# 启动服务
 	echo "启动服务..."
 	sudo ipsec stop 2>/dev/null || true
-	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
-	sudo systemctl start strongswan-swanctl
+	sudo ipsec stop 2>/dev/null || true
+	sudo ipsec start
 	
 	# 等待服务启动
 	sleep 3
 	
 	# 检查服务状态
-	if sudo systemctl is-active --quiet strongswan-swanctl; then
+	if sudo ipsec status >/dev/null 2>&1; then
 		echo "✅ strongSwan 6.0.2 部署成功！"
 		echo "服务状态："
-		sudo systemctl status strongswan-swanctl --no-pager -l
+		sudo ipsec status
 	else
 		echo "❌ 服务启动失败，请检查日志："
-		sudo journalctl -u strongswan-swanctl --no-pager -n 20
+		sudo journalctl -u strongswan --no-pager -n 20
 		echo ""
 		echo "配置文件检查："
-		sudo swanctl --load-all --dry-run 2>&1 || echo "配置验证失败"
+		sudo swanctl --load-all 2>&1 || echo "配置验证失败"
 		return 1
 	fi
 	
@@ -314,12 +314,19 @@ strongswan_config_6() {
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	
-	# 验证配置文件语法
-	echo "验证配置文件语法..."
-	if ! sudo swanctl --load-all --dry-run >/dev/null 2>&1; then
-		echo "❌ 配置文件语法错误，请检查 /etc/strongswan.conf"
+	# 启动服务以验证配置
+	echo "启动服务验证配置..."
+	sudo ipsec start
+	sleep 2
+	
+	# 检查服务状态
+	echo "检查服务状态..."
+	if ! sudo ipsec status >/dev/null 2>&1; then
+		echo "❌ 服务启动失败，请检查配置"
 		echo "配置文件内容："
 		cat /etc/strongswan.conf
+		echo "服务日志："
+		sudo ipsec status
 		return 1
 	fi
 	
@@ -335,18 +342,9 @@ strongswan_config_6() {
 	
 	# 注意：证书文件需要单独运行 caip6 生成
 	
-	# 验证配置
-	echo "验证配置..."
-	if sudo swanctl --load-all --dry-run; then
-		echo "✅ 配置验证通过"
-	else
-		echo "❌ 配置验证失败"
-		return 1
-	fi
-	
-	# 重新加载配置
-	sudo swanctl --load-all
-	sudo systemctl restart strongswan-swanctl
+	# 重启服务以应用配置
+	echo "重启服务应用配置..."
+	sudo ipsec restart
 	
 	echo "✅ strongSwan 6.0.2 配置完成！"
 	echo "检查配置：sudo swanctl --list-conns"
@@ -371,12 +369,19 @@ strongswan_config_port_6() {
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	
-	# 验证配置文件语法
-	echo "验证配置文件语法..."
-	if ! sudo swanctl --load-all --dry-run >/dev/null 2>&1; then
-		echo "❌ 配置文件语法错误，请检查 /etc/strongswan.conf"
+	# 启动服务以验证配置
+	echo "启动服务验证配置..."
+	sudo ipsec start
+	sleep 2
+	
+	# 检查服务状态
+	echo "检查服务状态..."
+	if ! sudo ipsec status >/dev/null 2>&1; then
+		echo "❌ 服务启动失败，请检查配置"
 		echo "配置文件内容："
 		cat /etc/strongswan.conf
+		echo "服务日志："
+		sudo ipsec status
 		return 1
 	fi
 	
@@ -392,18 +397,9 @@ strongswan_config_port_6() {
 	
 	# 注意：证书文件需要单独运行 caip6 生成
 	
-	# 验证配置
-	echo "验证配置..."
-	if sudo swanctl --load-all --dry-run; then
-		echo "✅ 配置验证通过"
-	else
-		echo "❌ 配置验证失败"
-		return 1
-	fi
-	
-	# 重新加载配置
-	sudo swanctl --load-all
-	sudo systemctl restart strongswan-swanctl
+	# 重启服务以应用配置
+	echo "重启服务应用配置..."
+	sudo ipsec restart
 	
 	echo "✅ strongSwan 6.0.2 端口配置完成！"
 	echo "端口配置：500, 4500, 8080, 8081"
@@ -627,10 +623,9 @@ caip6() {
 	sudo chmod 600 /etc/swanctl/private/*.pem
 	sudo chmod 644 /etc/swanctl/x509/*.p12
 	
-	# 重新加载配置
-	echo "重新加载 strongSwan 6.0.2 配置..."
-	sudo swanctl --load-all
-	sudo systemctl restart strongswan-swanctl
+	# 重启服务以应用证书
+	echo "重启服务应用证书..."
+	sudo ipsec restart
 	
 	echo "✅ strongSwan 6.0.2 证书生成完成！"
 	echo "证书位置：/etc/swanctl/x509/ 和 /etc/swanctl/private/"

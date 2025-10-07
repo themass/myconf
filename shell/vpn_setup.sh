@@ -42,51 +42,6 @@ check_vpn()
 	ps -aux| grep telegraf| grep -v 'grep'
 }
 
-# strongSwan 6.0 状态检查函数
-check_vpn_6() 
-{
-    echo "=== strongSwan 6.0 状态检查 ==="
-    
-    # 检查服务状态
-    echo "1. 服务状态："
-    sudo systemctl status strongswan-swanctl --no-pager -l
-    
-    echo ""
-    echo "2. 连接状态："
-    sudo swanctl --list-conns
-    
-    echo ""
-    echo "3. 活跃连接："
-    sudo swanctl --list-sas
-    
-    echo ""
-    echo "4. 证书状态："
-    sudo swanctl --list-certs
-    
-    echo ""
-    echo "5. 防火墙规则："
-    iptables -L -n | grep -E "(STRONGSWAN|strongswan)"
-    
-    echo ""
-    echo "6. 进程状态："
-    ps -aux | grep -E "(charon|swanctl)" | grep -v grep
-    
-    echo ""
-    echo "7. 端口监听："
-    netstat -tulpn | grep -E "(500|4500|8080|8081)"
-    
-    echo ""
-    echo "8. 最近日志："
-    sudo journalctl -u strongswan-swanctl --no-pager -n 20
-    
-    echo ""
-    echo "9. 安全日志："
-    if [ -f "/var/log/strongswan/security.log" ]; then
-        sudo tail -10 /var/log/strongswan/security.log
-    else
-        echo "安全日志文件不存在"
-    fi
-}
 checkspeed()
 {
 	cd ${TMP_HOME}
@@ -176,9 +131,8 @@ strongswan_config_port()
 	ipsec restart
 }
 
-# strongSwan 6.0 部署函数 - 重构版
-strongswan_setup_6() 
-{
+# strongSwan 6.0.2 部署函数
+strongswan_setup_6() {
 	echo "=== 开始部署 strongSwan 6.0.2 ==="
 	cd ${TMP_HOME}
 	
@@ -193,31 +147,23 @@ strongswan_setup_6()
 		fi
 	fi
 	
-	# 安装所有必要的依赖
-	echo "安装编译依赖..."
+	# 安装基础依赖
+	echo "安装基础依赖..."
 	sudo apt-get update
 	sudo apt-get install -y \
 		build-essential \
 		libssl-dev \
 		libgmp-dev \
 		libcurl4-openssl-dev \
-		libsqlite3-dev \
-		libsystemd-dev \
 		pkg-config \
-      libiptc-dev \
-      libip4tc-dev \
-      libip6tc-dev \
-      libxtables-dev \
-      libnetfilter-conntrack-dev \
-      libnetfilter-queue-dev \
-		libnfnetlink-dev \
 		autotools-dev \
 		libtool \
 		autoconf \
 		automake \
-		flex \
-		bison \
-		gperf
+		libsystemd-dev \
+		libiptc-dev \
+		libip4tc-dev \
+		libip6tc-dev
 	
 	# 下载 strongSwan 6.0.2
 	echo "下载 strongSwan 6.0.2..."
@@ -239,117 +185,73 @@ strongswan_setup_6()
 	fi
 	
 	cd strongswan-6.0.2
-
-	# 配置编译选项 - 针对 6.0 版本优化
+	
+	# 配置编译选项
 	echo "配置编译选项..."
 	./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--enable-openssl \
 		--enable-nat-transport \
-		--disable-mysql \
-		--disable-ldap \
-		--disable-static \
-		--enable-shared \
-		--enable-md4 \
-		--enable-eap-mschapv2 \
-		--enable-eap-aka \
-		--enable-eap-aka-3gpp2 \
-		--enable-eap-gtc \
+		--enable-eap-radius \
 		--enable-eap-identity \
 		--enable-eap-md5 \
-		--enable-eap-peap \
-		--enable-eap-radius \
-		--enable-eap-sim \
-		--enable-eap-sim-file \
-		--enable-eap-simaka-pseudonym \
-		--enable-eap-simaka-reauth \
-		--enable-eap-simaka-sql \
+		--enable-eap-mschapv2 \
 		--enable-eap-tls \
-		--enable-eap-tnc \
 		--enable-eap-ttls \
 		--enable-vici \
 		--enable-swanctl \
 		--enable-systemd \
-		--enable-attr \
-		--enable-resolve \
 		--enable-kernel-netlink \
-		--enable-kernel-libipsec \
-		--enable-socket-default \
-		--enable-counters \
-		--enable-forecast \
-		--enable-integrity-test \
-		--enable-firewall
+		--enable-kernel-libipsec
 	
 	if [ $? -ne 0 ]; then
 		echo "配置失败，请检查依赖是否完整安装"
 		return 1
 	fi
 	
-	# 编译
-	echo "开始编译..."
-	make -j$(nproc)
+	# 编译和安装
+	echo "编译和安装..."
+	make -j$(nproc) && sudo make install
 	if [ $? -ne 0 ]; then
-		echo "编译失败"
+		echo "编译或安装失败"
 		return 1
 	fi
 	
-	# 安装
-	echo "安装 strongSwan..."
-	sudo make install
-	if [ $? -ne 0 ]; then
-		echo "安装失败"
-		return 1
-	fi
-	
-	# 创建必要的目录和用户
-	echo "创建必要的目录..."
-	sudo mkdir -p /etc/swanctl/{private,x509,x509crl,acerts,cacerts,ocspcerts,reqs,scripts}
+	# 创建基础目录
+	echo "创建基础目录..."
+	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
 	sudo mkdir -p /var/log/strongswan
-	sudo mkdir -p /var/run/charon
 	
-	# 创建 strongswan 用户和组（如果不存在）
+	# 创建 strongswan 用户和组
 	if ! id "strongswan" &>/dev/null; then
-		sudo useradd -r -s /bin/false -d /var/lib/strongswan strongswan
-		echo "创建了 strongswan 用户"
-	else
-		echo "strongswan 用户已存在"
+		sudo groupadd -r strongswan 2>/dev/null || true
+		sudo useradd -r -g strongswan -s /bin/false strongswan 2>/dev/null || true
 	fi
 	
-	# 确保 strongswan 组存在
-	if ! getent group strongswan >/dev/null 2>&1; then
-		sudo groupadd -r strongswan
-		echo "创建了 strongswan 组"
-	fi
-	
-	# 将用户添加到组中
-	sudo usermod -a -G strongswan strongswan 2>/dev/null || true
-	
-	# 设置权限
-	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan /var/run/charon 2>/dev/null || true
-	sudo chmod 755 /etc/swanctl
-	sudo chmod 700 /etc/swanctl/private
-	sudo chmod 755 /etc/swanctl/x509
+	# 设置基础权限
+	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan 2>/dev/null || true
+	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 	
 	# 创建 systemd 服务文件
 	echo "创建 systemd 服务..."
 	sudo tee /etc/systemd/system/strongswan-swanctl.service > /dev/null << 'EOF'
 [Unit]
-Description=strongSwan IPsec IKEv1/IKEv2 daemon using swanctl
-After=network-online.target
-Wants=network-online.target
+Description=strongSwan IPsec daemon
+After=network.target
 
 [Service]
 Type=notify
-ExecStart=/usr/sbin/charon --use-syslog
-ExecReload=/bin/kill -HUP $MAINPID
-KillMode=mixed
-Restart=on-failure
-RestartSec=5s
 User=strongswan
 Group=strongswan
+ExecStart=/usr/sbin/charon --use-syslog
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5s
 RuntimeDirectory=charon
 RuntimeDirectoryMode=0755
+PrivateTmp=true
+NoNewPrivileges=true
 
 [Install]
 WantedBy=multi-user.target
@@ -357,21 +259,21 @@ EOF
 	
 	# 重新加载 systemd
 	sudo systemctl daemon-reload
-	
-	# 停止旧服务，启动新服务
-	echo "启动服务..."
-	sudo systemctl stop strongswan 2>/dev/null || true
-	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
 	sudo systemctl enable strongswan-swanctl
-	sudo systemctl start strongswan-swanctl
+	
+	# 启动服务
+	echo "启动服务..."
+	sudo ipsec stop 2>/dev/null || true
+	sudo ipsec start
 	
 	# 检查服务状态
-	if sudo systemctl is-active --quiet strongswan-swanctl; then
+	if sudo ipsec status >/dev/null 2>&1; then
 		echo "✅ strongSwan 6.0.2 部署成功！"
-		echo "服务状态：$(sudo systemctl is-active strongswan-swanctl)"
+		echo "服务状态："
+		sudo ipsec status
 	else
 		echo "❌ 服务启动失败，请检查日志："
-		sudo journalctl -u strongswan-swanctl --no-pager -n 20
+		sudo journalctl -u strongswan-swanctl --no-pager -n 10 2>/dev/null || sudo ipsec status
 		return 1
 	fi
 	
@@ -379,10 +281,9 @@ EOF
 	echo "=== strongSwan 6.0.2 部署完成 ==="
 }
 
-# strongSwan 6.0 安全配置函数 - 重构版
-strongswan_config_6() 
-{
-	echo "=== 开始配置 strongSwan 6.0 安全版本 ==="
+# strongSwan 6.0.2 配置函数 (默认端口)
+strongswan_config_6() {
+	echo "=== 开始配置 strongSwan 6.0.2 (默认端口) ==="
 	cd ${WORKDIR}/myconf/shell
 	
 	# 获取服务器IP
@@ -393,35 +294,21 @@ strongswan_config_6()
 	fi
 	echo "服务器IP: $SERVER_IP"
 	
-	# 备份现有配置
-	echo "备份现有配置..."
-	sudo cp /etc/swanctl.conf /etc/swanctl.conf.bak.$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
-	sudo cp /etc/strongswan.conf /etc/strongswan.conf.bak.$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
+	# 复制配置文件
+	echo "复制配置文件..."
+	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	
-	# 生成动态配置文件
-	echo "生成动态配置文件..."
-	generate_swanctl_config "$SERVER_IP"
-	generate_strongswan_config
+	# 复制 updown 脚本
+	sudo mkdir -p /etc/swanctl/scripts
+	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
+	sudo chmod +x /etc/swanctl/scripts/updown.sh
 	
-	# 复制脚本文件
-	echo "复制脚本文件..."
-	sudo cp ../strongswan_6.0_optimized/scripts/*.sh /etc/swanctl/scripts/
-	sudo chmod +x /etc/swanctl/scripts/*.sh
+	# 复制 swanctl.conf 并替换 IP
+	sudo sed "s/{{SERVER_IP}}/$SERVER_IP/g" ../strongswan_6.0_conf/swanctl.conf.template > /tmp/swanctl.conf
+	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
+	sudo rm /tmp/swanctl.conf
 	
-	# 复制证书文件（如果存在）
-	if [ -d "../strongswan_conf" ]; then
-		echo "复制证书文件..."
-		sudo cp ../strongswan_conf/*.pem /etc/swanctl/x509/ 2>/dev/null || true
-		sudo cp ../strongswan_conf/*.pem /etc/swanctl/private/ 2>/dev/null || true
-		
-		# 设置正确的权限
-		sudo chmod 644 /etc/swanctl/x509/*.pem 2>/dev/null || true
-		sudo chmod 600 /etc/swanctl/private/*.pem 2>/dev/null || true
-	fi
-	
-	# 创建日志目录
-	sudo mkdir -p /var/log/strongswan
-	sudo chown strongswan:strongswan /var/log/strongswan 2>/dev/null || true
+	# 注意：证书文件需要单独运行 caip6 生成
 	
 	# 验证配置
 	echo "验证配置..."
@@ -433,297 +320,18 @@ strongswan_config_6()
 	fi
 	
 	# 重新加载配置
-	echo "重新加载配置..."
 	sudo swanctl --load-all
+	sudo ipsec restart
 	
-	# 重启服务
-	sudo systemctl restart strongswan-swanctl
-	
-	echo "✅ strongSwan 6.0 安全配置完成！"
+	echo "✅ strongSwan 6.0.2 配置完成！"
 	echo "检查配置：sudo swanctl --list-conns"
 	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
 	echo "=== 配置完成 ==="
 }
 
-# 生成 swanctl.conf 配置文件
-generate_swanctl_config() {
-	local server_ip="$1"
-	echo "生成 swanctl.conf 配置文件..."
-	
-	sudo tee /etc/swanctl.conf > /dev/null << EOF
-# strongSwan 6.0 优化配置 - 安全增强版
-# 自动生成时间: $(date)
-# 服务器IP: $server_ip
-
-connections {
-    # 默认连接配置 - 使用现代安全算法
-    defaults {
-        local_addrs = %any
-        remote_addrs = %any
-        version = 2
-        # 优化的加密套件 - 移除不安全的算法
-        proposals = aes256gcm128-sha256-ecp384,aes256gcm128-sha256-modp4096,aes256-sha256-ecp384,aes256-sha256-modp4096,aes128-sha256-ecp256,aes128-sha256-modp2048
-        dpd_delay = 30s
-        dpd_timeout = 120s
-        dpd_action = restart
-        rekey_time = 4h
-        reauth_time = 8h
-        fragmentation = yes
-        unique = replace
-        # 启用 Perfect Forward Secrecy
-        rekey_margin = 10m
-        # 连接超时设置
-        over_time = 10m
-        rand_time = 120s
-    }
-
-    # 主要 RADIUS 连接配置 - 安全优化
-    radius-secure {
-        local {
-            auth = pubkey
-            certs = serverCert.pem
-            id = @$server_ip
-        }
-        remote {
-            auth = eap-radius
-            eap_id = %any
-            # 限制重试次数
-            send_certreq = no
-        }
-        children {
-            radius-secure {
-                local_ts = 0.0.0.0/0,::/0
-                remote_ts = 10.0.0.0/24,fec3::/120
-                updown = /etc/swanctl/scripts/updown-secure.sh
-                # 优化的 ESP 加密套件
-                esp_proposals = aes256gcm128-sha256-ecp384,aes256gcm128-sha256-modp4096,aes256-sha256-ecp384,aes256-sha256-modp4096
-                # 启用压缩
-                ipcomp = yes
-                # 设置生存时间
-                life_time = 1h
-                rekey_time = 30m
-                # 启用流量统计
-                mode = tunnel
-                start_action = trap
-            }
-        }
-    }
-
-    # 第二个 RADIUS 连接配置 - 安全优化
-    radius3-secure {
-        local {
-            auth = pubkey
-            certs = serverCert3.pem
-            id = $server_ip
-        }
-        remote {
-            auth = eap-radius
-            eap_id = %any
-            send_certreq = no
-        }
-        children {
-            radius3-secure {
-                local_ts = 0.0.0.0/0,::/0
-                remote_ts = 10.3.0.0/24,fec3::/120
-                updown = /etc/swanctl/scripts/updown-secure.sh
-                esp_proposals = aes256gcm128-sha256-ecp384,aes256gcm128-sha256-modp4096,aes256-sha256-ecp384,aes256-sha256-modp4096
-                ipcomp = yes
-                life_time = 1h
-                rekey_time = 30m
-                mode = tunnel
-                start_action = trap
-            }
-        }
-    }
-}
-
-authorities {
-    # CA 证书配置 - 增强安全
-    ca {
-        cacert = caCert.pem
-        crl_uris = http://$server_ip/ca.crl
-        # 启用 OCSP
-        ocsp_uris = http://$server_ip/ocsp/
-        # 证书验证设置
-        crl_strict = yes
-        crl_cache_time = 1h
-    }
-    ca3 {
-        cacert = caCert3.pem
-        crl_uris = http://$server_ip/ca3.crl
-        ocsp_uris = http://$server_ip/ocsp/
-        crl_strict = yes
-        crl_cache_time = 1h
-    }
-}
-
-pools {
-    # IP 地址池配置 - 安全增强
-    radius-pool {
-        addrs = 10.0.0.0/24
-        dns = 8.8.8.8, 1.1.1.1, 114.114.114.114
-        # 添加 NBNS 服务器
-        nbns = 8.8.8.8
-    }
-    radius3-pool {
-        addrs = 10.3.0.0/24
-        dns = 8.8.8.8, 1.1.1.1, 114.114.114.114
-        nbns = 8.8.8.8
-    }
-}
-EOF
-}
-
-# 生成 strongswan.conf 配置文件
-generate_strongswan_config() {
-	echo "生成 strongswan.conf 配置文件..."
-	
-	sudo tee /etc/strongswan.conf > /dev/null << 'EOF'
-# strongSwan 6.0 安全优化配置
-# 基于原配置进行安全增强和性能优化
-
-charon {
-    # 安全设置
-    duplicheck.enable = no
-    ignore_acquire_ts = yes
-    
-    # DNS 配置 - 使用更安全的 DNS 服务器
-    dns1 = 8.8.8.8
-    dns2 = 1.1.1.1
-    dns3 = 114.114.114.114
-    
-    # 重试和重传配置 - 优化性能
-    retry_initiate_interval = 30
-    retransmit_timeout = 4
-    retransmit_tries = 5
-    retransmit_base = 1.8
-    retransmit_timeout_tries = 0
-    
-    # 连接管理优化
-    half_open_timeout = 60
-    half_open_limit = 1000
-    
-    # 内存和性能优化
-    cache_crls = yes
-    strict_revocation = yes
-    
-    # 日志配置 - 增强安全审计
-    filelog {
-        /var/log/strongswan/charon.log {
-            time_format = %b %e %T
-            ike_name = yes
-            append = no
-            default = 1
-            flush_line = yes
-            # 安全相关日志级别
-            ike = 2
-            knl = 2
-            cfg = 2
-            net = 2
-            enc = 2
-            lib = 2
-        }
-        # 安全审计日志
-        /var/log/strongswan/security.log {
-            time_format = %b %e %T
-            ike_name = yes
-            append = yes
-            default = 0
-            flush_line = yes
-            # 只记录安全相关事件
-            ike = 1
-            knl = 1
-            cfg = 1
-        }
-        stderr {
-            ike = 2
-            knl = 3
-            cfg = 2
-        }
-    }
-    
-    syslog {
-        identifier = strongswan-secure
-        daemon {
-            default = 1
-        }
-        auth {
-            default = -1
-            ike = 0
-        }
-    }
-    
-    # 插件配置 - 安全优化
-    plugins {
-        include strongswan.d/charon/*.conf
-        
-        # EAP-RADIUS 插件配置 - 安全增强
-        eap-radius {
-            accounting = yes
-            # 启用 RADIUS 属性过滤
-            attribute_filter = yes
-            servers {
-                radiusServer {
-                    secret = FreeVPN@vpn5296
-                    address = radius.sspacee.com
-                    auth_port = 1812
-                    acct_port = 1813
-                    # 连接超时设置
-                    timeout = 5
-                    retries = 3
-                    # 启用 NAS 标识
-                    nas_identifier = strongswan-server
-                }
-            }
-        }
-        
-        # 启用安全相关插件
-        attr {
-            load = yes
-            # 启用属性过滤
-            filter = yes
-        }
-        resolve {
-            load = yes
-        }
-        kernel-netlink {
-            load = yes
-        }
-        kernel-libipsec {
-            load = yes
-        }
-        socket-default {
-            load = yes
-        }
-        vici {
-            load = yes
-        }
-        # 禁用不安全的插件
-        stroke {
-            load = no
-        }
-        # 启用安全增强插件
-        counters {
-            load = yes
-        }
-        forecast {
-            load = yes
-        }
-        # 启用完整性检查
-        integrity-test {
-            load = yes
-        }
-    }
-}
-
-include strongswan.d/*.conf
-EOF
-}
-
-# strongSwan 6.0 端口配置函数 - 重构版
-strongswan_config_port_6() 
-{
-	echo "=== 开始配置 strongSwan 6.0 端口版本 (8080/8081) ==="
+# strongSwan 6.0.2 端口配置函数 (8080/8081)
+strongswan_config_port_6() {
+	echo "=== 开始配置 strongSwan 6.0.2 (端口 8080/8081) ==="
 	cd ${WORKDIR}/myconf/shell
 	
 	# 获取服务器IP
@@ -734,31 +342,21 @@ strongswan_config_port_6()
 	fi
 	echo "服务器IP: $SERVER_IP"
 	
-	# 备份现有配置
-	echo "备份现有配置..."
-	sudo cp /etc/swanctl.conf /etc/swanctl.conf.bak.port.$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
-	sudo cp /etc/strongswan.conf /etc/strongswan.conf.bak.port.$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
+	# 复制配置文件
+	echo "复制配置文件..."
+	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	
-	# 生成带端口配置的配置文件
-	echo "生成端口配置文件..."
-	generate_swanctl_config_port "$SERVER_IP"
-	generate_strongswan_config
+	# 复制 updown 脚本
+	sudo mkdir -p /etc/swanctl/scripts
+	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
+	sudo chmod +x /etc/swanctl/scripts/updown.sh
 	
-	# 复制脚本文件
-	echo "复制脚本文件..."
-	sudo cp ../strongswan_6.0_optimized/scripts/*.sh /etc/swanctl/scripts/
-	sudo chmod +x /etc/swanctl/scripts/*.sh
+	# 复制端口配置的 swanctl.conf 并替换 IP
+	sudo sed "s/{{SERVER_IP}}/$SERVER_IP/g" ../strongswan_6.0_conf/swanctl_port.conf.template > /tmp/swanctl.conf
+	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
+	sudo rm /tmp/swanctl.conf
 	
-	# 复制证书文件
-	if [ -d "../strongswan_conf_port" ]; then
-		echo "复制端口配置的证书文件..."
-		sudo cp ../strongswan_conf_port/*.pem /etc/swanctl/x509/ 2>/dev/null || true
-		sudo cp ../strongswan_conf_port/*.pem /etc/swanctl/private/ 2>/dev/null || true
-		
-		# 设置正确的权限
-		sudo chmod 644 /etc/swanctl/x509/*.pem 2>/dev/null || true
-		sudo chmod 600 /etc/swanctl/private/*.pem 2>/dev/null || true
-	fi
+	# 注意：证书文件需要单独运行 caip6 生成
 	
 	# 验证配置
 	echo "验证配置..."
@@ -770,229 +368,21 @@ strongswan_config_port_6()
 	fi
 	
 	# 重新加载配置
-	echo "重新加载配置..."
 	sudo swanctl --load-all
+	sudo ipsec restart
 	
-	# 重启服务
-	sudo systemctl restart strongswan-swanctl
-	
-	echo "✅ strongSwan 6.0 端口配置完成！"
+	echo "✅ strongSwan 6.0.2 端口配置完成！"
 	echo "端口配置：500, 4500, 8080, 8081"
 	echo "检查配置：sudo swanctl --list-conns"
 	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
 	echo "=== 端口配置完成 ==="
 }
 
-# 生成带端口配置的 swanctl.conf
-generate_swanctl_config_port() {
-	local server_ip="$1"
-	echo "生成带端口配置的 swanctl.conf 配置文件..."
-	
-	sudo tee /etc/swanctl.conf > /dev/null << EOF
-# strongSwan 6.0 优化配置 - 端口版本 (8080/8081)
-# 自动生成时间: $(date)
-# 服务器IP: $server_ip
 
-connections {
-    # 默认连接配置 - 使用现代安全算法
-    defaults {
-        local_addrs = %any
-        remote_addrs = %any
-        version = 2
-        # 优化的加密套件 - 移除不安全的算法
-        proposals = aes256gcm128-sha256-ecp384,aes256gcm128-sha256-modp4096,aes256-sha256-ecp384,aes256-sha256-modp4096,aes128-sha256-ecp256,aes128-sha256-modp2048
-        dpd_delay = 30s
-        dpd_timeout = 120s
-        dpd_action = restart
-        rekey_time = 4h
-        reauth_time = 8h
-        fragmentation = yes
-        unique = replace
-        # 启用 Perfect Forward Secrecy
-        rekey_margin = 10m
-        # 连接超时设置
-        over_time = 10m
-        rand_time = 120s
-    }
 
-    # 主要 RADIUS 连接配置 - 端口 8080
-    radius-secure {
-        local {
-            auth = pubkey
-            certs = serverCert.pem
-            id = @$server_ip
-        }
-        remote {
-            auth = eap-radius
-            eap_id = %any
-            send_certreq = no
-        }
-        children {
-            radius-secure {
-                local_ts = 0.0.0.0/0,::/0
-                remote_ts = 10.0.0.0/24,fec3::/120
-                updown = /etc/swanctl/scripts/updown-secure.sh
-                esp_proposals = aes256gcm128-sha256-ecp384,aes256gcm128-sha256-modp4096,aes256-sha256-ecp384,aes256-sha256-modp4096
-                ipcomp = yes
-                life_time = 1h
-                rekey_time = 30m
-                mode = tunnel
-                start_action = trap
-            }
-        }
-    }
 
-    # 第二个 RADIUS 连接配置 - 端口 8081
-    radius3-secure {
-        local {
-            auth = pubkey
-            certs = serverCert3.pem
-            id = $server_ip
-        }
-        remote {
-            auth = eap-radius
-            eap_id = %any
-            send_certreq = no
-        }
-        children {
-            radius3-secure {
-                local_ts = 0.0.0.0/0,::/0
-                remote_ts = 10.3.0.0/24,fec3::/120
-                updown = /etc/swanctl/scripts/updown-secure.sh
-                esp_proposals = aes256gcm128-sha256-ecp384,aes256gcm128-sha256-modp4096,aes256-sha256-ecp384,aes256-sha256-modp4096
-                ipcomp = yes
-                life_time = 1h
-                rekey_time = 30m
-                mode = tunnel
-                start_action = trap
-            }
-        }
-    }
-}
 
-authorities {
-    # CA 证书配置 - 增强安全
-    ca {
-        cacert = caCert.pem
-        crl_uris = http://$server_ip/ca.crl
-        ocsp_uris = http://$server_ip/ocsp/
-        crl_strict = yes
-        crl_cache_time = 1h
-    }
-    ca3 {
-        cacert = caCert3.pem
-        crl_uris = http://$server_ip/ca3.crl
-        ocsp_uris = http://$server_ip/ocsp/
-        crl_strict = yes
-        crl_cache_time = 1h
-    }
-}
 
-pools {
-    # IP 地址池配置 - 安全增强
-    radius-pool {
-        addrs = 10.0.0.0/24
-        dns = 8.8.8.8, 1.1.1.1, 114.114.114.114
-        nbns = 8.8.8.8
-    }
-    radius3-pool {
-        addrs = 10.3.0.0/24
-        dns = 8.8.8.8, 1.1.1.1, 114.114.114.114
-        nbns = 8.8.8.8
-    }
-}
-EOF
-}
-
-# 更新防火墙规则以支持端口 8080/8081
-setup_iptables_6() {
-	local dev="$1"
-	echo "设置 strongSwan 6.0 防火墙规则 (包含端口 8080/8081)..."
-	
-	# 基础端口
-	iptables -A INPUT -p udp --dport 500 -j ACCEPT 
-	iptables -A INPUT -p udp --dport 4500 -j ACCEPT
-	
-	# 新增端口 8080/8081
-	iptables -A INPUT -p udp --dport 8080 -j ACCEPT
-	iptables -A INPUT -p udp --dport 8081 -j ACCEPT
-	
-	# NAT 规则
-	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o $dev -j MASQUERADE 
-	iptables -t nat -A POSTROUTING -s 10.3.0.0/24 -o $dev -j MASQUERADE
-	
-	# 转发规则
-	iptables -A FORWARD -s 10.0.0.0/24 -j ACCEPT 
-	iptables -A FORWARD -d 10.0.0.0/24 -j ACCEPT
-	iptables -A FORWARD -s 10.3.0.0/24 -j ACCEPT 
-	iptables -A FORWARD -d 10.3.0.0/24 -j ACCEPT
-	
-	# IPv6 规则
-	ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
-	ip6tables -A INPUT -p udp --dport 4500 -j ACCEPT
-	ip6tables -A INPUT -m frag -m connmark --mark 0x42 -j ACCEPT
-	
-	# 保存规则
-	iptables-save > /etc/iptables/rules.v4 2>/dev/null || iptables-save
-	ip6tables-save > /etc/iptables/rules.v6 2>/dev/null || true
-	
-	echo "✅ 防火墙规则设置完成 (端口: 500, 4500, 8080, 8081)"
-}
-
-# strongSwan 6.0 完整部署函数 - 重构版
-strongswan_setup_all_6() 
-{
-	echo "=== 开始完整部署 strongSwan 6.0 安全版本 ==="
-	
-	# 1. 部署 strongSwan 6.0
-	echo "步骤 1/5: 部署 strongSwan 6.0.2..."
-	strongswan_setup_6
-	if [ $? -ne 0 ]; then
-		echo "❌ strongSwan 6.0 部署失败"
-		return 1
-	fi
-	
-	# 2. 配置安全版本
-	echo "步骤 2/5: 配置安全版本..."
-	strongswan_config_6
-	if [ $? -ne 0 ]; then
-		echo "❌ 安全配置失败"
-		return 1
-	fi
-	
-	# 3. 设置防火墙规则
-	echo "步骤 3/5: 设置防火墙规则..."
-	dev=$(get_netdev)
-	setup_iptables_6 $dev
-	
-	# 4. 配置网络参数
-	echo "步骤 4/5: 配置网络参数..."
-	net
-	
-	# 5. 初始化 CA 证书
-	echo "步骤 5/5: 初始化 CA 证书..."
-	ip=$(get_ip)
-	init_ca $ip
-	
-	echo "=== strongSwan 6.0 完整部署完成 ==="
-	echo "✅ 部署成功！"
-	echo ""
-	echo "📋 服务信息："
-	echo "  服务状态：sudo systemctl status strongswan-swanctl"
-	echo "  查看连接：sudo swanctl --list-conns"
-	echo "  查看日志：sudo journalctl -u strongswan-swanctl -f"
-	echo "  检查状态：sudo swanctl --list-sas"
-	echo ""
-	echo "🔧 管理命令："
-	echo "  启动连接：sudo swanctl --initiate --child radius-secure"
-	echo "  停止连接：sudo swanctl --terminate --child radius-secure"
-	echo "  重新加载：sudo swanctl --load-all"
-	echo ""
-	echo "🌐 端口信息："
-	echo "  IKE: 500/udp"
-	echo "  NAT-T: 4500/udp"
-	echo "  自定义: 8080/udp, 8081/udp"
-}
 
 #ca setup
 init_ca() 
@@ -1122,6 +512,96 @@ setup_caip()
 	ip=$(get_ip)
     init_ca	$ip
 }
+
+# strongSwan 6.0.2 证书生成函数
+caip6() {
+	echo "=== 开始生成 strongSwan 6.0.2 证书 ==="
+	cd ${TMP_HOME}
+	mkdir -p ca6
+	cd ca6
+	
+	# 获取服务器IP
+	SERVER_IP=$(get_ip)
+	if [ -z "$SERVER_IP" ]; then
+		echo "❌ 无法获取服务器IP地址"
+		return 1
+	fi
+	echo "服务器IP: $SERVER_IP"
+	
+	# 生成 CA 证书
+	echo "生成 CA 证书..."
+	ipsec pki --gen --outform pem > caKey.pem
+	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --ca --outform pem > caCert.pem
+	
+	# 生成服务器证书
+	echo "生成服务器证书..."
+	ipsec pki --gen --outform pem > serverKey.pem
+	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --san="$SERVER_IP" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert.pem
+	
+	# 生成客户端证书
+	echo "生成客户端证书..."
+	ipsec pki --gen --outform pem > clientKey.pem
+	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert.pem
+	
+	# 生成 PKCS12 格式客户端证书
+	echo "生成 PKCS12 客户端证书..."
+	openssl pkcs12 -export -inkey clientKey.pem -in clientCert.pem -name "client" -certfile caCert.pem -caname "$SERVER_IP" -out clientCert.p12 -passout pass:
+	
+	# 生成第二个 CA 证书 (用于端口配置)
+	echo "生成第二个 CA 证书 (端口配置)..."
+	ipsec pki --gen --outform pem > caKey3.pem
+	ipsec pki --self --in caKey3.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --ca --outform pem > caCert3.pem
+	
+	# 生成第二个服务器证书
+	echo "生成第二个服务器证书..."
+	ipsec pki --gen --outform pem > serverKey3.pem
+	ipsec pki --pub --in serverKey3.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey3.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --san="$SERVER_IP" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert3.pem
+	
+	# 生成第二个客户端证书
+	echo "生成第二个客户端证书..."
+	ipsec pki --gen --outform pem > clientKey3.pem
+	ipsec pki --pub --in clientKey3.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey3.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert3.pem
+	
+	# 生成第二个 PKCS12 格式客户端证书
+	echo "生成第二个 PKCS12 客户端证书..."
+	openssl pkcs12 -export -inkey clientKey3.pem -in clientCert3.pem -name "client3" -certfile caCert3.pem -caname "$SERVER_IP" -out clientCert3.p12 -passout pass:
+	
+	# 复制到 strongSwan 6.0.2 目录
+	echo "复制证书到 strongSwan 6.0.2 目录..."
+	sudo mkdir -p /etc/swanctl/{x509,private}
+	
+	# 复制基础证书
+	sudo cp caCert.pem /etc/swanctl/x509/
+	sudo cp serverCert.pem /etc/swanctl/x509/
+	sudo cp serverKey.pem /etc/swanctl/private/
+	sudo cp clientCert.pem /etc/swanctl/x509/
+	sudo cp clientKey.pem /etc/swanctl/private/
+	sudo cp clientCert.p12 /etc/swanctl/x509/
+	
+	# 复制端口配置证书
+	sudo cp caCert3.pem /etc/swanctl/x509/
+	sudo cp serverCert3.pem /etc/swanctl/x509/
+	sudo cp serverKey3.pem /etc/swanctl/private/
+	sudo cp clientCert3.pem /etc/swanctl/x509/
+	sudo cp clientKey3.pem /etc/swanctl/private/
+	sudo cp clientCert3.p12 /etc/swanctl/x509/
+	
+	# 设置权限
+	echo "设置证书权限..."
+	sudo chown -R strongswan:strongswan /etc/swanctl
+	sudo chmod 644 /etc/swanctl/x509/*.pem
+	sudo chmod 600 /etc/swanctl/private/*.pem
+	sudo chmod 644 /etc/swanctl/x509/*.p12
+	
+	# 重新加载配置
+	echo "重新加载 strongSwan 6.0.2 配置..."
+	sudo swanctl --load-all
+	
+	echo "✅ strongSwan 6.0.2 证书生成完成！"
+	echo "证书位置：/etc/swanctl/x509/ 和 /etc/swanctl/private/"
+	echo "查看证书：sudo swanctl --list-certs"
+	echo "=== 证书生成完成 ==="
+}
 ## -----------------------
 ## Setup all aboves
 ## -----------------------
@@ -1230,36 +710,47 @@ usage()
     echo "strongswanconf Setup strongswan 5.6.3 config"
     echo "strongswanconf_port Setup strongswan 5.6.3 port config"
     echo ""
-    echo "=== strongSwan 6.0 (新版本，安全优化) ==="
-    echo "strongswan6    Setup strongswan 6.0"
-    echo "strongswanconf6 Setup strongswan 6.0 secure config"
-    echo "strongswanconf_port6 Setup strongswan 6.0 port config"
-    echo "strongswanall6 Setup strongswan 6.0 complete deployment"
+    echo "=== strongSwan 6.0.2 (新版本，安全优化) ==="
+    echo "strongswan6    Setup strongswan 6.0.2"
+    echo "strongswanconf6 Setup strongswan 6.0.2 config"
+    echo "strongswanconf_port6 Setup strongswan 6.0.2 port config"
+    echo ""
     echo ""
     echo "=== 证书和网络 ==="
     echo "ca             Setup ca"
-    echo "caip           Setup caip"
+    echo "caip           Setup caip (5.6.3)"
+    echo "caip6          Setup caip6 (6.0.2)"
     echo "iptables       Setup iptables"
     echo "net            Setup net"
     echo ""
     echo "=== 检查和测试 ==="
     echo "check          checkspeed"
     echo "check_vpn      check vpn (5.6.3)"
-    echo "check_vpn6     check vpn (6.0)"
     echo "check_mtr      Setup check_mtr"
     echo ""
     echo "=== 完整部署 ==="
     echo "all            Setup all aboves (5.6.3 version)"
     echo ""
     echo "=== 使用示例 ==="
-    echo "部署 strongSwan 6.0 安全版本："
-    echo "  ./vpn_setup.sh strongswanall6"
-    echo ""
-    echo "仅部署 strongSwan 6.0 软件："
+    echo "部署 strongSwan 6.0.2 默认配置："
     echo "  ./vpn_setup.sh strongswan6"
-    echo ""
-    echo "配置 strongSwan 6.0 安全版本："
     echo "  ./vpn_setup.sh strongswanconf6"
+    echo "  ./vpn_setup.sh caip6"
+    echo ""
+    echo "部署 strongSwan 6.0.2 端口配置："
+    echo "  ./vpn_setup.sh strongswan6"
+    echo "  ./vpn_setup.sh strongswanconf_port6"
+    echo "  ./vpn_setup.sh caip6"
+    echo ""
+    echo "部署 strongSwan 5.6.3 默认配置："
+    echo "  ./vpn_setup.sh strongswan"
+    echo "  ./vpn_setup.sh strongswanconf"
+    echo "  ./vpn_setup.sh caip"
+    echo ""
+    echo "部署 strongSwan 5.6.3 端口配置："
+    echo "  ./vpn_setup.sh strongswan"
+    echo "  ./vpn_setup.sh strongswanconf_port"
+    echo "  ./vpn_setup.sh caip"
 
 }
 
@@ -1280,15 +771,16 @@ if [ $# != 0 ]; then
             strongswanconf)  strongswan_config;;
             strongswanconf_port) strongswan_config_port;;
             
-            # strongSwan 6.0 (新版本，安全优化)
+            # strongSwan 6.0.2 (新版本，安全优化)
             strongswan6)     strongswan_setup_6;;
             strongswanconf6) strongswan_config_6;;
             strongswanconf_port6) strongswan_config_port_6;;
-            strongswanall6)  strongswan_setup_all_6;;
+            
             
             # 证书和网络
             ca)              init_ca $2;;
             caip)            setup_caip;;
+            caip6)           caip6;;
             iptables)        setup_iptables;;
             net)             net;;
             

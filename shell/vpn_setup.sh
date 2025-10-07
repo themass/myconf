@@ -299,7 +299,7 @@ EOF
 
 # strongSwan 6.0.2 配置函数 (默认端口)
 strongswan_config_6() {
-	echo "=== 开始配置 strongSwan 6.0.2 (默认端口) ==="
+	echo "=== 开始配置 strongSwan 6.0.2 (包含所有端口) ==="
 	cd ${WORKDIR}/myconf/shell
 	
 	# 获取服务器IP
@@ -339,7 +339,7 @@ strongswan_config_6() {
 	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
 	sudo chmod +x /etc/swanctl/scripts/updown.sh
 	
-	# 复制 swanctl.conf 并替换 IP
+	# 复制 swanctl.conf 并替换 IP (包含端口配置)
 	sudo sed "s/{{SERVER_IP}}/$SERVER_IP/g" ../strongswan_6.0_conf/swanctl.conf.template > /tmp/swanctl.conf
 	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
 	sudo rm /tmp/swanctl.conf
@@ -398,8 +398,8 @@ strongswan_config_port_6() {
 	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
 	sudo chmod +x /etc/swanctl/scripts/updown.sh
 	
-	# 复制端口配置的 swanctl.conf 并替换 IP
-	sudo sed "s/{{SERVER_IP}}/$SERVER_IP/g" ../strongswan_6.0_conf/swanctl_port.conf.template > /tmp/swanctl.conf
+	# 复制 swanctl.conf 并替换 IP (包含端口配置)
+	sudo sed "s/{{SERVER_IP}}/$SERVER_IP/g" ../strongswan_6.0_conf/swanctl.conf.template > /tmp/swanctl.conf
 	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
 	sudo rm /tmp/swanctl.conf
 	
@@ -588,24 +588,7 @@ caip6() {
 	echo "生成 PKCS12 客户端证书..."
 	openssl pkcs12 -export -inkey clientKey.pem -in clientCert.pem -name "client" -certfile caCert.pem -caname "$SERVER_IP" -out clientCert.p12 -passout pass:
 	
-	# 生成第二个 CA 证书 (用于端口配置)
-	echo "生成第二个 CA 证书 (端口配置)..."
-	ipsec pki --gen --outform pem > caKey3.pem
-	ipsec pki --self --in caKey3.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --ca --outform pem > caCert3.pem
-	
-	# 生成第二个服务器证书
-	echo "生成第二个服务器证书..."
-	ipsec pki --gen --outform pem > serverKey3.pem
-	ipsec pki --pub --in serverKey3.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey3.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --san="$SERVER_IP" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert3.pem
-	
-	# 生成第二个客户端证书
-	echo "生成第二个客户端证书..."
-	ipsec pki --gen --outform pem > clientKey3.pem
-	ipsec pki --pub --in clientKey3.pem | ipsec pki --issue --cacert caCert3.pem --cakey caKey3.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert3.pem
-	
-	# 生成第二个 PKCS12 格式客户端证书
-	echo "生成第二个 PKCS12 客户端证书..."
-	openssl pkcs12 -export -inkey clientKey3.pem -in clientCert3.pem -name "client3" -certfile caCert3.pem -caname "$SERVER_IP" -out clientCert3.p12 -passout pass:
+	# 注意：证书和端口无关，只需要一套证书即可
 	
 	# 复制到 strongSwan 6.0.2 目录
 	echo "复制证书到 strongSwan 6.0.2 目录..."
@@ -619,13 +602,7 @@ caip6() {
 	sudo cp clientKey.pem /etc/swanctl/private/
 	sudo cp clientCert.p12 /etc/swanctl/x509/
 	
-	# 复制端口配置证书
-	sudo cp caCert3.pem /etc/swanctl/x509/
-	sudo cp serverCert3.pem /etc/swanctl/x509/
-	sudo cp serverKey3.pem /etc/swanctl/private/
-	sudo cp clientCert3.pem /etc/swanctl/x509/
-	sudo cp clientKey3.pem /etc/swanctl/private/
-	sudo cp clientCert3.p12 /etc/swanctl/x509/
+	# 注意：端口配置不需要额外的证书，使用同一套证书即可
 	
 	# 设置权限
 	echo "设置证书权限..."

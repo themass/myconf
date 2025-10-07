@@ -81,7 +81,7 @@ strongswan_setup()
 	tar -jxvf strongswan-5.6.3.tar.bz2 && cd strongswan-5.6.3
 	./configure --prefix=/usr --sysconfdir=/etc  --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap  --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2  --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls
 	sudo make && sudo make install
-	sudo ipsec start
+	sudo systemctl start strongswan
 	cd ..
 }
 strongswan_config() 
@@ -272,9 +272,9 @@ EOF
 	
 	# 启动服务
 	echo "启动服务..."
-	sudo ipsec stop 2>/dev/null || true
-	sudo ipsec stop 2>/dev/null || true
-	sudo ipsec start
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl start strongswan
 	
 	# 等待服务启动
 	sleep 3
@@ -283,7 +283,7 @@ EOF
 	if sudo ipsec status >/dev/null 2>&1; then
 		echo "✅ strongSwan 6.0.2 部署成功！"
 		echo "服务状态："
-		sudo ipsec status
+		sudo systemctl status strongswan --no-pager -l
 	else
 		echo "❌ 服务启动失败，请检查日志："
 		sudo journalctl -u strongswan --no-pager -n 20
@@ -316,17 +316,17 @@ strongswan_config_6() {
 	
 	# 启动服务以验证配置
 	echo "启动服务验证配置..."
-	sudo ipsec start
+	sudo systemctl start strongswan
 	sleep 2
 	
 	# 检查服务状态
 	echo "检查服务状态..."
-	if ! sudo ipsec status >/dev/null 2>&1; then
+	if ! sudo systemctl is-active --quiet strongswan; then
 		echo "❌ 服务启动失败，请检查配置"
 		echo "配置文件内容："
 		cat /etc/strongswan.conf
 		echo "服务日志："
-		sudo ipsec status
+		sudo systemctl status strongswan --no-pager -l
 		return 1
 	fi
 	
@@ -344,7 +344,7 @@ strongswan_config_6() {
 	
 	# 重启服务以应用配置
 	echo "重启服务应用配置..."
-	sudo ipsec restart
+	sudo systemctl restart strongswan
 	
 	echo "✅ strongSwan 6.0.2 配置完成！"
 	echo "检查配置：sudo swanctl --list-conns"
@@ -371,17 +371,17 @@ strongswan_config_port_6() {
 	
 	# 启动服务以验证配置
 	echo "启动服务验证配置..."
-	sudo ipsec start
+	sudo systemctl start strongswan
 	sleep 2
 	
 	# 检查服务状态
 	echo "检查服务状态..."
-	if ! sudo ipsec status >/dev/null 2>&1; then
+	if ! sudo systemctl is-active --quiet strongswan; then
 		echo "❌ 服务启动失败，请检查配置"
 		echo "配置文件内容："
 		cat /etc/strongswan.conf
 		echo "服务日志："
-		sudo ipsec status
+		sudo systemctl status strongswan --no-pager -l
 		return 1
 	fi
 	
@@ -399,7 +399,7 @@ strongswan_config_port_6() {
 	
 	# 重启服务以应用配置
 	echo "重启服务应用配置..."
-	sudo ipsec restart
+	sudo systemctl restart strongswan
 	
 	echo "✅ strongSwan 6.0.2 端口配置完成！"
 	echo "端口配置：500, 4500, 8080, 8081"
@@ -625,7 +625,7 @@ caip6() {
 	
 	# 重启服务以应用证书
 	echo "重启服务应用证书..."
-	sudo ipsec restart
+	sudo systemctl restart strongswan
 	
 	echo "✅ strongSwan 6.0.2 证书生成完成！"
 	echo "证书位置：/etc/swanctl/x509/ 和 /etc/swanctl/private/"

@@ -5,7 +5,7 @@
 ## 文件说明
 
 ### 配置文件
-- `strongswan.conf` - strongSwan 主配置文件
+- `strongswan.conf` - strongSwan 主配置文件（包含 EAP-RADIUS 插件配置）
 - `swanctl.conf.template` - swanctl 默认端口配置模板 (500/4500)
 - `swanctl_port.conf.template` - swanctl 端口配置模板 (500/4500/8080/8081)
 - `updown.sh` - 连接生命周期脚本
@@ -34,6 +34,12 @@ bash vpn_setup.sh caip6
 ```
 
 ## 配置特点
+
+### strongswan.conf 配置
+- 启用模块化加载 (`load_modular = yes`)
+- 配置 EAP-RADIUS 插件，默认连接到本地 RADIUS 服务器 (127.0.0.1:1812)
+- 共享密钥: `testing123` (请根据实际情况修改)
+- 包含日志配置和基本参数设置
 
 ### 默认端口配置
 - IKE: 500/udp

@@ -342,9 +342,13 @@ strongswan_config_6() {
 	# 复制 swanctl.conf 并替换 IP (包含端口配置)
 	# 使用更安全的方式替换 IP 地址
 	sudo cp ../strongswan_6.0_conf/swanctl.conf.template /tmp/swanctl.conf
-	# 使用 perl 替换 IP 地址，避免特殊字符问题
+	# 使用 envsubst 替换 IP 地址
 	echo "原始 IP: $SERVER_IP"
-	sudo perl -pi -e "s/\{\{SERVER_IP\}\}/$SERVER_IP/g" /tmp/swanctl.conf
+	# 将占位符改为环境变量格式
+	sudo sed -i 's/{{SERVER_IP}}/${SERVER_IP}/g' /tmp/swanctl.conf
+	# 使用 envsubst 替换环境变量
+	SERVER_IP="$SERVER_IP" envsubst < /tmp/swanctl.conf > /tmp/swanctl_new.conf
+	sudo mv /tmp/swanctl_new.conf /tmp/swanctl.conf
 	# 验证替换结果
 	echo "验证替换结果："
 	sudo grep -n "{{SERVER_IP}}" /tmp/swanctl.conf || echo "IP 替换成功"
@@ -686,7 +690,7 @@ usage()
     echo ""
     echo "=== strongSwan 6.0.2 (新版本，安全优化) ==="
     echo "strongswan6    Setup strongswan 6.0.2"
-    echo "strongswanconf6 Setup strongswan 6.0.2 config (包含所有端口: 500/4500/8080/8081)"
+    echo "strongswanconf6 Setup strongswan 6.0.2 config (默认端口: 500/4500)"
     echo ""
     echo ""
     echo "=== 证书和网络 ==="
@@ -705,7 +709,7 @@ usage()
     echo "all            Setup all aboves (5.6.3 version)"
     echo ""
     echo "=== 使用示例 ==="
-    echo "部署 strongSwan 6.0.2 配置 (包含所有端口):"
+    echo "部署 strongSwan 6.0.2 配置 (默认端口):"
     echo "  bash vpn_setup.sh strongswan6"
     echo "  bash vpn_setup.sh strongswanconf6"
     echo "  bash vpn_setup.sh caip6"

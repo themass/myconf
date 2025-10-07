@@ -139,9 +139,9 @@ strongswan_setup_6() {
 	# 检查是否已安装
 	if command -v swanctl >/dev/null 2>&1; then
 		echo "strongSwan 已安装，版本：$(swanctl --version 2>/dev/null | head -1 || echo 'unknown')"
-		read -p "是否重新安装？(y/N): " -n 1 -r
-		echo
-		if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+		printf "是否重新安装？(y/N): "
+		read REPLY
+		if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]; then
 			echo "跳过安装，继续配置..."
 			return 0
 		fi

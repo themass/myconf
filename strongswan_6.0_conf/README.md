@@ -64,16 +64,16 @@ bash vpn_setup.sh caip6
 ### 服务管理
 ```bash
 # 启动服务
-sudo ipsec start
+sudo systemctl start strongswan
 
 # 停止服务
-sudo ipsec stop
+sudo systemctl stop strongswan
 
 # 重启服务
-sudo ipsec restart
+sudo systemctl restart strongswan
 
 # 查看状态
-sudo ipsec status
+sudo systemctl status strongswan
 
 # 查看详细状态
 sudo ipsec statusall

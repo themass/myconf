@@ -340,8 +340,16 @@ strongswan_config_6() {
 	sudo chmod +x /etc/swanctl/scripts/updown.sh
 	
 	# 复制 swanctl.conf 并替换 IP (包含端口配置)
-	# 使用 awk 替换 IP 地址，避免 sed 特殊字符问题
-	sudo awk -v ip="$SERVER_IP" '{gsub(/{{SERVER_IP}}/, ip); print}' ../strongswan_6.0_conf/swanctl.conf.template > /tmp/swanctl.conf
+	# 使用更安全的方式替换 IP 地址
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.template /tmp/swanctl.conf
+	# 使用 envsubst 替换环境变量（如果可用），否则使用 awk
+	if command -v envsubst >/dev/null 2>&1; then
+		SERVER_IP="$SERVER_IP" envsubst < /tmp/swanctl.conf > /tmp/swanctl_new.conf
+		sudo mv /tmp/swanctl_new.conf /tmp/swanctl.conf
+	else
+		sudo awk -v ip="$SERVER_IP" '{gsub(/\{\{SERVER_IP\}\}/, ip); print}' /tmp/swanctl.conf > /tmp/swanctl_new.conf
+		sudo mv /tmp/swanctl_new.conf /tmp/swanctl.conf
+	fi
 	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
 	sudo rm /tmp/swanctl.conf
 	

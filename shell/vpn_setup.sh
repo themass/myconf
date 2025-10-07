@@ -308,10 +308,22 @@ strongswan_setup_6()
 	sudo mkdir -p /var/log/strongswan
 	sudo mkdir -p /var/run/charon
 	
-	# 创建 strongswan 用户（如果不存在）
+	# 创建 strongswan 用户和组（如果不存在）
 	if ! id "strongswan" &>/dev/null; then
-		sudo useradd -r -s /bin/false strongswan
+		sudo useradd -r -s /bin/false -d /var/lib/strongswan strongswan
+		echo "创建了 strongswan 用户"
+	else
+		echo "strongswan 用户已存在"
 	fi
+	
+	# 确保 strongswan 组存在
+	if ! getent group strongswan >/dev/null 2>&1; then
+		sudo groupadd -r strongswan
+		echo "创建了 strongswan 组"
+	fi
+	
+	# 将用户添加到组中
+	sudo usermod -a -G strongswan strongswan 2>/dev/null || true
 	
 	# 设置权限
 	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan /var/run/charon 2>/dev/null || true
@@ -336,6 +348,8 @@ Restart=on-failure
 RestartSec=5s
 User=strongswan
 Group=strongswan
+RuntimeDirectory=charon
+RuntimeDirectoryMode=0755
 
 [Install]
 WantedBy=multi-user.target

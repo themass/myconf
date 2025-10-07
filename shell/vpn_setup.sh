@@ -405,7 +405,10 @@ strongswan_config_port_6() {
 	
 	# 注意：证书文件需要单独运行 caip6 生成
 	
-	# 重启服务以应用配置
+	# 加载配置并重启服务
+	echo "加载配置..."
+	sudo swanctl --load-all
+	
 	echo "重启服务应用配置..."
 	sudo systemctl restart strongswan
 	

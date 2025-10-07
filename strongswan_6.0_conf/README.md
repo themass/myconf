@@ -36,10 +36,16 @@ bash vpn_setup.sh caip6
 ## 配置特点
 
 ### strongswan.conf 配置
+基于 [strongSwan 官方文档](https://docs.strongswan.org/docs/latest/config/quickstart.html) 和 5.6 版本配置：
 - 启用模块化加载 (`load_modular = yes`)
-- 配置 EAP-RADIUS 插件，默认连接到本地 RADIUS 服务器 (127.0.0.1:1812)
-- 共享密钥: `testing123` (请根据实际情况修改)
+- 配置 EAP-RADIUS 插件，连接到 RADIUS 服务器：
+  - 服务器地址: `radius.sspacee.com`
+  - 认证端口: `1812` (默认)
+  - 计费端口: `1813` (默认)
+  - 共享密钥: `FreeVPN@vpn5296`
+  - 启用计费功能 (`accounting = yes`)
 - 包含日志配置和基本参数设置
+- 支持标准 IKE 端口 (500/udp) 和 NAT-T 端口 (4500/udp)
 
 ### 默认端口配置
 - IKE: 500/udp
@@ -58,19 +64,19 @@ bash vpn_setup.sh caip6
 ### 服务管理
 ```bash
 # 启动服务
-sudo systemctl start strongswan-swanctl
+sudo ipsec start
 
 # 停止服务
-sudo systemctl stop strongswan-swanctl
+sudo ipsec stop
 
 # 重启服务
-sudo systemctl restart strongswan-swanctl
+sudo ipsec restart
 
 # 查看状态
-sudo systemctl status strongswan-swanctl
-
-# 查看服务状态（兼容命令）
 sudo ipsec status
+
+# 查看详细状态
+sudo ipsec statusall
 ```
 
 ### 连接管理
@@ -84,20 +90,28 @@ sudo swanctl --list-sas
 # 查看证书
 sudo swanctl --list-certs
 
-# 重新加载配置
+# 手动重新加载配置（仅在需要时使用）
 sudo swanctl --load-all
 ```
 
+**注意**：通常不需要手动执行 `swanctl --load-all`，因为：
+- 服务重启时会自动加载配置
+- 脚本会自动处理配置加载
+- 只有在特殊情况下（如热重载配置）才需要手动执行
+
 ### 日志查看
 ```bash
-# 查看系统日志
-sudo journalctl -u strongswan-swanctl -f
-
 # 查看 strongSwan 日志
 sudo tail -f /var/log/strongswan.log
 
+# 查看系统日志
+sudo journalctl -u strongswan -f
+
 # 查看 updown 脚本日志
 sudo tail -f /var/log/strongswan-updown.log
+
+# 查看实时状态
+sudo ipsec statusall
 ```
 
 ## 证书管理
@@ -118,5 +132,7 @@ updown.sh 脚本会自动配置防火墙规则：
 ## 参考文档
 
 - [strongSwan 官方文档](https://docs.strongswan.org/docs/latest/)
-- [strongSwan 安装文档](https://github.com/strongswan/strongswan/blob/master/INSTALL)
+- [Configuration Quickstart](https://docs.strongswan.org/docs/latest/config/quickstart.html)
+- [strongswan.conf 配置文档](https://docs.strongswan.org/docs/latest/config/strongswanConf.html)
 - [swanctl 配置文档](https://docs.strongswan.org/docs/latest/swanctl/swanctlConf.html)
+- [strongSwan 安装文档](https://github.com/strongswan/strongswan/blob/master/INSTALL)

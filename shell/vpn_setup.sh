@@ -314,6 +314,10 @@ strongswan_config_6() {
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	
+	# 重新加载 systemd 配置
+	echo "重新加载 systemd 配置..."
+	sudo systemctl daemon-reload
+	
 	# 启动服务以验证配置
 	echo "启动服务验证配置..."
 	sudo systemctl start strongswan
@@ -368,6 +372,10 @@ strongswan_config_port_6() {
 	# 复制配置文件
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+	
+	# 重新加载 systemd 配置
+	echo "重新加载 systemd 配置..."
+	sudo systemctl daemon-reload
 	
 	# 启动服务以验证配置
 	echo "启动服务验证配置..."

@@ -58,6 +58,7 @@ pip install BeautifulSoup
 pip install requests
 pip install pycrypto
 pip install selenium
+pip install bs4
 #pip install MySQL-python
 # MySQLdb
 cd /home/web/install

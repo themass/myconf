@@ -342,14 +342,14 @@ strongswan_config_6() {
 	# 复制 swanctl.conf 并替换 IP (包含端口配置)
 	# 使用更安全的方式替换 IP 地址
 	sudo cp ../strongswan_6.0_conf/swanctl.conf.template /tmp/swanctl.conf
-	# 使用 envsubst 替换环境变量（如果可用），否则使用 awk
-	if command -v envsubst >/dev/null 2>&1; then
-		SERVER_IP="$SERVER_IP" envsubst < /tmp/swanctl.conf > /tmp/swanctl_new.conf
-		sudo mv /tmp/swanctl_new.conf /tmp/swanctl.conf
-	else
-		sudo awk -v ip="$SERVER_IP" '{gsub(/\{\{SERVER_IP\}\}/, ip); print}' /tmp/swanctl.conf > /tmp/swanctl_new.conf
-		sudo mv /tmp/swanctl_new.conf /tmp/swanctl.conf
-	fi
+	# 使用简单的 sed 替换，转义特殊字符
+	ESCAPED_IP=$(echo "$SERVER_IP" | sed 's/\./\\./g')
+	echo "原始 IP: $SERVER_IP"
+	echo "转义后 IP: $ESCAPED_IP"
+	sudo sed -i "s/{{SERVER_IP}}/$ESCAPED_IP/g" /tmp/swanctl.conf
+	# 验证替换结果
+	echo "验证替换结果："
+	sudo grep -n "{{SERVER_IP}}" /tmp/swanctl.conf || echo "IP 替换成功"
 	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
 	sudo rm /tmp/swanctl.conf
 	

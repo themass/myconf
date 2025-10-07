@@ -748,6 +748,7 @@ if [ $# != 0 ]; then
             
             # 证书和网络
             ca)              init_ca $2;;
+            get_ip)              get_ip ;;
             caip)            setup_caip;;
             caip6)           caip6;;
             iptables)        setup_iptables;;

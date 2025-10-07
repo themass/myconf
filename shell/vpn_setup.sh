@@ -136,87 +136,87 @@ strongswan_setup_6() {
 	echo "=== 开始部署 strongSwan 6.0.2 ==="
 	cd ${TMP_HOME}
 	
-	# 检查是否已安装
-	if command -v swanctl >/dev/null 2>&1; then
-		echo "strongSwan 已安装，版本：$(swanctl --version 2>/dev/null | head -1 || echo 'unknown')"
-		printf "是否重新安装？(y/N): "
-		read REPLY
-		if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]; then
-			echo "跳过安装，继续配置..."
-			return 0
-		fi
-	fi
-	
-	# 安装基础依赖
-	echo "安装基础依赖..."
-	sudo apt-get update
-	sudo apt-get install -y \
-		build-essential \
-		libssl-dev \
-		libgmp-dev \
-		libcurl4-openssl-dev \
-		pkg-config \
-		autotools-dev \
-		libtool \
-		autoconf \
-		automake \
-		libsystemd-dev \
-		libiptc-dev \
-		libip4tc-dev \
-		libip6tc-dev
-	
-	# 下载 strongSwan 6.0.2
-	echo "下载 strongSwan 6.0.2..."
-	if [ ! -f "strongswan-6.0.2.tar.bz2" ]; then
-		wget https://download.strongswan.org/strongswan-6.0.2.tar.bz2 --no-check-certificate
-		if [ $? -ne 0 ]; then
-			echo "官方源下载失败，尝试备用源..."
-			wget https://github.com/strongswan/strongswan/archive/refs/tags/6.0.2.tar.gz --no-check-certificate
-			if [ $? -eq 0 ]; then
-				tar -xzf 6.0.2.tar.gz
-				mv strongswan-6.0.2 strongswan-6.0.2
-			else
-				echo "下载失败，请检查网络连接"
-				return 1
-			fi
-		else
-			tar -jxvf strongswan-6.0.2.tar.bz2
-		fi
-	fi
-	
-	cd strongswan-6.0.2
-	
-	# 配置编译选项
-	echo "配置编译选项..."
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--enable-openssl \
-		--enable-nat-transport \
-		--enable-eap-radius \
-		--enable-eap-identity \
-		--enable-eap-md5 \
-		--enable-eap-mschapv2 \
-		--enable-eap-tls \
-		--enable-eap-ttls \
-		--enable-vici \
-		--enable-swanctl \
-		--enable-systemd \
-		--enable-kernel-netlink \
-		--enable-kernel-libipsec
-	
-	if [ $? -ne 0 ]; then
-		echo "配置失败，请检查依赖是否完整安装"
-		return 1
-	fi
-	
-	# 编译和安装
-	echo "编译和安装..."
-	make -j$(nproc) && sudo make install
-	if [ $? -ne 0 ]; then
-		echo "编译或安装失败"
-		return 1
-	fi
+#	# 检查是否已安装
+#	if command -v swanctl >/dev/null 2>&1; then
+#		echo "strongSwan 已安装，版本：$(swanctl --version 2>/dev/null | head -1 || echo 'unknown')"
+#		printf "是否重新安装？(y/N): "
+#		read REPLY
+#		if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]; then
+#			echo "跳过安装，继续配置..."
+#			return 0
+#		fi
+#	fi
+#
+#	# 安装基础依赖
+#	echo "安装基础依赖..."
+#	sudo apt-get update
+#	sudo apt-get install -y \
+#		build-essential \
+#		libssl-dev \
+#		libgmp-dev \
+#		libcurl4-openssl-dev \
+#		pkg-config \
+#		autotools-dev \
+#		libtool \
+#		autoconf \
+#		automake \
+#		libsystemd-dev \
+#		libiptc-dev \
+#		libip4tc-dev \
+#		libip6tc-dev
+#
+#	# 下载 strongSwan 6.0.2
+#	echo "下载 strongSwan 6.0.2..."
+#	if [ ! -f "strongswan-6.0.2.tar.bz2" ]; then
+#		wget https://download.strongswan.org/strongswan-6.0.2.tar.bz2 --no-check-certificate
+#		if [ $? -ne 0 ]; then
+#			echo "官方源下载失败，尝试备用源..."
+#			wget https://github.com/strongswan/strongswan/archive/refs/tags/6.0.2.tar.gz --no-check-certificate
+#			if [ $? -eq 0 ]; then
+#				tar -xzf 6.0.2.tar.gz
+#				mv strongswan-6.0.2 strongswan-6.0.2
+#			else
+#				echo "下载失败，请检查网络连接"
+#				return 1
+#			fi
+#		else
+#			tar -jxvf strongswan-6.0.2.tar.bz2
+#		fi
+#	fi
+#
+#	cd strongswan-6.0.2
+#
+#	# 配置编译选项
+#	echo "配置编译选项..."
+#	./configure \
+#		--prefix=/usr \
+#		--sysconfdir=/etc \
+#		--enable-openssl \
+#		--enable-nat-transport \
+#		--enable-eap-radius \
+#		--enable-eap-identity \
+#		--enable-eap-md5 \
+#		--enable-eap-mschapv2 \
+#		--enable-eap-tls \
+#		--enable-eap-ttls \
+#		--enable-vici \
+#		--enable-swanctl \
+#		--enable-systemd \
+#		--enable-kernel-netlink \
+#		--enable-kernel-libipsec
+#
+#	if [ $? -ne 0 ]; then
+#		echo "配置失败，请检查依赖是否完整安装"
+#		return 1
+#	fi
+#
+#	# 编译和安装
+#	echo "编译和安装..."
+#	make -j$(nproc) && sudo make install
+#	if [ $? -ne 0 ]; then
+#		echo "编译或安装失败"
+#		return 1
+#	fi
 	
 	# 创建基础目录
 	echo "创建基础目录..."
@@ -224,14 +224,23 @@ strongswan_setup_6() {
 	sudo mkdir -p /var/log/strongswan
 	
 	# 创建 strongswan 用户和组
+	echo "创建 strongswan 用户和组..."
 	if ! id "strongswan" &>/dev/null; then
 		sudo groupadd -r strongswan 2>/dev/null || true
-		sudo useradd -r -g strongswan -s /bin/false strongswan 2>/dev/null || true
+		sudo useradd -r -g strongswan -s /bin/false -d /var/lib/strongswan strongswan 2>/dev/null || true
+		echo "✅ strongswan 用户创建完成"
+	else
+		echo "✅ strongswan 用户已存在"
 	fi
 	
+	# 创建必要目录
+	sudo mkdir -p /var/lib/strongswan
+	sudo mkdir -p /var/log/strongswan
+	
 	# 设置基础权限
-	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan 2>/dev/null || true
+	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan /var/lib/strongswan 2>/dev/null || true
 	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
+	sudo chmod 755 /var/lib/strongswan 2>/dev/null || true
 	
 	# 创建 systemd 服务文件
 	echo "创建 systemd 服务..."
@@ -264,16 +273,23 @@ EOF
 	# 启动服务
 	echo "启动服务..."
 	sudo ipsec stop 2>/dev/null || true
-	sudo ipsec start
+	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
+	sudo systemctl start strongswan-swanctl
+	
+	# 等待服务启动
+	sleep 3
 	
 	# 检查服务状态
-	if sudo ipsec status >/dev/null 2>&1; then
+	if sudo systemctl is-active --quiet strongswan-swanctl; then
 		echo "✅ strongSwan 6.0.2 部署成功！"
 		echo "服务状态："
-		sudo ipsec status
+		sudo systemctl status strongswan-swanctl --no-pager -l
 	else
 		echo "❌ 服务启动失败，请检查日志："
-		sudo journalctl -u strongswan-swanctl --no-pager -n 10 2>/dev/null || sudo ipsec status
+		sudo journalctl -u strongswan-swanctl --no-pager -n 20
+		echo ""
+		echo "配置文件检查："
+		sudo swanctl --load-all --dry-run 2>&1 || echo "配置验证失败"
 		return 1
 	fi
 	
@@ -298,6 +314,15 @@ strongswan_config_6() {
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	
+	# 验证配置文件语法
+	echo "验证配置文件语法..."
+	if ! sudo swanctl --load-all --dry-run >/dev/null 2>&1; then
+		echo "❌ 配置文件语法错误，请检查 /etc/strongswan.conf"
+		echo "配置文件内容："
+		cat /etc/strongswan.conf
+		return 1
+	fi
+	
 	# 复制 updown 脚本
 	sudo mkdir -p /etc/swanctl/scripts
 	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
@@ -321,7 +346,7 @@ strongswan_config_6() {
 	
 	# 重新加载配置
 	sudo swanctl --load-all
-	sudo ipsec restart
+	sudo systemctl restart strongswan-swanctl
 	
 	echo "✅ strongSwan 6.0.2 配置完成！"
 	echo "检查配置：sudo swanctl --list-conns"
@@ -346,6 +371,15 @@ strongswan_config_port_6() {
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	
+	# 验证配置文件语法
+	echo "验证配置文件语法..."
+	if ! sudo swanctl --load-all --dry-run >/dev/null 2>&1; then
+		echo "❌ 配置文件语法错误，请检查 /etc/strongswan.conf"
+		echo "配置文件内容："
+		cat /etc/strongswan.conf
+		return 1
+	fi
+	
 	# 复制 updown 脚本
 	sudo mkdir -p /etc/swanctl/scripts
 	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
@@ -369,7 +403,7 @@ strongswan_config_port_6() {
 	
 	# 重新加载配置
 	sudo swanctl --load-all
-	sudo ipsec restart
+	sudo systemctl restart strongswan-swanctl
 	
 	echo "✅ strongSwan 6.0.2 端口配置完成！"
 	echo "端口配置：500, 4500, 8080, 8081"
@@ -596,6 +630,7 @@ caip6() {
 	# 重新加载配置
 	echo "重新加载 strongSwan 6.0.2 配置..."
 	sudo swanctl --load-all
+	sudo systemctl restart strongswan-swanctl
 	
 	echo "✅ strongSwan 6.0.2 证书生成完成！"
 	echo "证书位置：/etc/swanctl/x509/ 和 /etc/swanctl/private/"
@@ -733,24 +768,24 @@ usage()
     echo ""
     echo "=== 使用示例 ==="
     echo "部署 strongSwan 6.0.2 默认配置："
-    echo "  ./vpn_setup.sh strongswan6"
-    echo "  ./vpn_setup.sh strongswanconf6"
-    echo "  ./vpn_setup.sh caip6"
+    echo "  bash vpn_setup.sh strongswan6"
+    echo "  bash vpn_setup.sh strongswanconf6"
+    echo "  bash vpn_setup.sh caip6"
     echo ""
     echo "部署 strongSwan 6.0.2 端口配置："
-    echo "  ./vpn_setup.sh strongswan6"
-    echo "  ./vpn_setup.sh strongswanconf_port6"
-    echo "  ./vpn_setup.sh caip6"
+    echo "  bash vpn_setup.sh strongswan6"
+    echo "  bash vpn_setup.sh strongswanconf_port6"
+    echo "  bash vpn_setup.sh caip6"
     echo ""
     echo "部署 strongSwan 5.6.3 默认配置："
-    echo "  ./vpn_setup.sh strongswan"
-    echo "  ./vpn_setup.sh strongswanconf"
-    echo "  ./vpn_setup.sh caip"
+    echo "  bash vpn_setup.sh strongswan"
+    echo "  bash vpn_setup.sh strongswanconf"
+    echo "  bash vpn_setup.sh caip"
     echo ""
     echo "部署 strongSwan 5.6.3 端口配置："
-    echo "  ./vpn_setup.sh strongswan"
-    echo "  ./vpn_setup.sh strongswanconf_port"
-    echo "  ./vpn_setup.sh caip"
+    echo "  bash vpn_setup.sh strongswan"
+    echo "  bash vpn_setup.sh strongswanconf_port"
+    echo "  bash vpn_setup.sh caip"
 
 }
 

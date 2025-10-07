@@ -41,6 +41,52 @@ check_vpn()
 	ps -aux| grep fail | grep -v 'grep'
 	ps -aux| grep telegraf| grep -v 'grep'
 }
+
+# strongSwan 6.0 状态检查函数
+check_vpn_6() 
+{
+    echo "=== strongSwan 6.0 状态检查 ==="
+    
+    # 检查服务状态
+    echo "1. 服务状态："
+    sudo systemctl status strongswan-swanctl --no-pager -l
+    
+    echo ""
+    echo "2. 连接状态："
+    sudo swanctl --list-conns
+    
+    echo ""
+    echo "3. 活跃连接："
+    sudo swanctl --list-sas
+    
+    echo ""
+    echo "4. 证书状态："
+    sudo swanctl --list-certs
+    
+    echo ""
+    echo "5. 防火墙规则："
+    iptables -L -n | grep -E "(STRONGSWAN|strongswan)"
+    
+    echo ""
+    echo "6. 进程状态："
+    ps -aux | grep -E "(charon|swanctl)" | grep -v grep
+    
+    echo ""
+    echo "7. 端口监听："
+    netstat -tulpn | grep -E "(500|4500|8080|8081)"
+    
+    echo ""
+    echo "8. 最近日志："
+    sudo journalctl -u strongswan-swanctl --no-pager -n 20
+    
+    echo ""
+    echo "9. 安全日志："
+    if [ -f "/var/log/strongswan/security.log" ]; then
+        sudo tail -10 /var/log/strongswan/security.log
+    else
+        echo "安全日志文件不存在"
+    fi
+}
 checkspeed()
 {
 	cd ${TMP_HOME}
@@ -129,6 +175,167 @@ strongswan_config_port()
 	
 	ipsec restart
 }
+
+# strongSwan 6.0 部署函数
+strongswan_setup_6() 
+{
+	echo "开始部署 strongSwan 6.0..."
+	cd ${TMP_HOME}
+	
+	# 下载 strongSwan 6.0
+	wget https://download.strongswan.org/strongswan-6.0.10.tar.bz2 --no-check-certificate
+	if [ $? -ne 0 ]; then
+		echo "下载 strongSwan 6.0 失败，尝试备用源..."
+		wget https://github.com/strongswan/strongswan/archive/refs/tags/6.0.10.tar.gz --no-check-certificate
+		tar -xzf 6.0.10.tar.gz && cd strongswan-6.0.10
+	else
+		tar -jxvf strongswan-6.0.10.tar.bz2 && cd strongswan-6.0.10
+	fi
+	
+	# 安装依赖
+	sudo apt-get install -y libssl-dev libgmp-dev libcurl4-openssl-dev libsqlite3-dev
+	
+	# 配置编译选项 - 针对 6.0 版本优化
+	./configure --prefix=/usr --sysconfdir=/etc \
+		--enable-openssl --enable-nat-transport \
+		--disable-mysql --disable-ldap --disable-static --enable-shared \
+		--enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2 \
+		--enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap \
+		--enable-eap-radius --enable-eap-sim --enable-eap-sim-file \
+		--enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql \
+		--enable-eap-tls --enable-eap-tnc --enable-eap-ttls \
+		--enable-vici --enable-swanctl --enable-systemd \
+		--enable-attr --enable-resolve --enable-kernel-netlink --enable-kernel-libipsec \
+		--enable-socket-default --enable-counters --enable-forecast --enable-integrity-test
+	
+	# 编译和安装
+	sudo make && sudo make install
+	
+	# 创建必要的目录
+	sudo mkdir -p /etc/swanctl/{private,x509,x509crl,acerts,cacerts,ocspcerts,reqs,scripts}
+	sudo mkdir -p /var/log/strongswan
+	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan 2>/dev/null || true
+	
+	# 停止旧服务，启动新服务
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl enable strongswan-swanctl
+	sudo systemctl start strongswan-swanctl
+	
+	echo "strongSwan 6.0 部署完成！"
+	cd ..
+}
+
+# strongSwan 6.0 安全配置函数
+strongswan_config_6() 
+{
+	echo "开始配置 strongSwan 6.0 安全版本..."
+	cd ${WORKDIR}/myconf/shell
+	
+	# 备份现有配置
+	sudo cp /etc/swanctl.conf /etc/swanctl.conf.bak 2>/dev/null || true
+	sudo cp /etc/strongswan.conf /etc/strongswan.conf.bak 2>/dev/null || true
+	
+	# 复制新的配置文件
+	sudo cp ../strongswan_6.0_optimized/swanctl.conf /etc/swanctl.conf
+	sudo cp ../strongswan_6.0_optimized/strongswan.conf /etc/strongswan.conf
+	
+	# 复制脚本文件
+	sudo cp ../strongswan_6.0_optimized/scripts/*.sh /etc/swanctl/scripts/
+	sudo chmod +x /etc/swanctl/scripts/*.sh
+	
+	# 复制证书文件（如果存在）
+	if [ -d "../strongswan_conf" ]; then
+		echo "复制证书文件..."
+		sudo cp ../strongswan_conf/*.pem /etc/swanctl/x509/ 2>/dev/null || true
+		sudo cp ../strongswan_conf/*.pem /etc/swanctl/private/ 2>/dev/null || true
+		
+		# 设置正确的权限
+		sudo chmod 644 /etc/swanctl/x509/*.pem 2>/dev/null || true
+		sudo chmod 600 /etc/swanctl/private/*.pem 2>/dev/null || true
+	fi
+	
+	# 创建日志目录
+	sudo mkdir -p /var/log/strongswan
+	sudo chown strongswan:strongswan /var/log/strongswan 2>/dev/null || true
+	
+	# 重新加载配置
+	sudo swanctl --load-all
+	
+	echo "strongSwan 6.0 安全配置完成！"
+	echo "请检查配置：sudo swanctl --list-conns"
+	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
+}
+
+# strongSwan 6.0 端口配置函数
+strongswan_config_port_6() 
+{
+	echo "开始配置 strongSwan 6.0 端口版本..."
+	cd ${WORKDIR}/myconf/shell
+	
+	# 备份现有配置
+	sudo cp /etc/swanctl.conf /etc/swanctl.conf.bak 2>/dev/null || true
+	sudo cp /etc/strongswan.conf /etc/strongswan.conf.bak 2>/dev/null || true
+	
+	# 复制配置文件
+	sudo cp ../strongswan_6.0_optimized/swanctl.conf /etc/swanctl.conf
+	sudo cp ../strongswan_6.0_optimized/strongswan.conf /etc/strongswan.conf
+	
+	# 修改端口配置（如果需要）
+	if [ -f "../strongswan_conf_port/ipsec.conf" ]; then
+		echo "检测到端口配置，进行适配..."
+		# 这里可以添加端口配置的适配逻辑
+		# 例如修改 swanctl.conf 中的端口设置
+	fi
+	
+	# 复制脚本文件
+	sudo cp ../strongswan_6.0_optimized/scripts/*.sh /etc/swanctl/scripts/
+	sudo chmod +x /etc/swanctl/scripts/*.sh
+	
+	# 复制证书文件
+	if [ -d "../strongswan_conf_port" ]; then
+		echo "复制端口配置的证书文件..."
+		sudo cp ../strongswan_conf_port/*.pem /etc/swanctl/x509/ 2>/dev/null || true
+		sudo cp ../strongswan_conf_port/*.pem /etc/swanctl/private/ 2>/dev/null || true
+		
+		# 设置正确的权限
+		sudo chmod 644 /etc/swanctl/x509/*.pem 2>/dev/null || true
+		sudo chmod 600 /etc/swanctl/private/*.pem 2>/dev/null || true
+	fi
+	
+	# 重新加载配置
+	sudo swanctl --load-all
+	
+	echo "strongSwan 6.0 端口配置完成！"
+}
+
+# strongSwan 6.0 完整部署函数
+strongswan_setup_all_6() 
+{
+	echo "开始完整部署 strongSwan 6.0 安全版本..."
+	
+	# 1. 部署 strongSwan 6.0
+	strongswan_setup_6
+	
+	# 2. 配置安全版本
+	strongswan_config_6
+	
+	# 3. 设置防火墙规则
+	dev=$(get_netdev)
+	setup_iptables $dev
+	
+	# 4. 配置网络参数
+	net
+	
+	# 5. 初始化 CA 证书
+	ip=$(get_ip)
+	init_ca $ip
+	
+	echo "strongSwan 6.0 完整部署完成！"
+	echo "请检查服务状态：sudo systemctl status strongswan-swanctl"
+	echo "查看连接：sudo swanctl --list-conns"
+	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
+}
+
 #ca setup
 init_ca() 
 {
@@ -353,22 +560,48 @@ get_netdev(){
 usage() 
 {
     echo "Available arguments as below:"
+    echo ""
+    echo "=== 基础软件安装 ==="
     echo "soft           Setup init soft"
-    echo "strongswan          Setup strongswan"
-    echo "strongswanconf          Setup strongswan config"
-    echo "ca           Setup ca"
+    echo "telegraf       Setup telegraf"
+    echo "fail2ban       Setup fail2ban"
+    echo "kernel         Setup kernel"
+    echo ""
+    echo "=== strongSwan 5.6.3 (旧版本) ==="
+    echo "strongswan     Setup strongswan 5.6.3"
+    echo "strongswanconf Setup strongswan 5.6.3 config"
+    echo "strongswanconf_port Setup strongswan 5.6.3 port config"
+    echo ""
+    echo "=== strongSwan 6.0 (新版本，安全优化) ==="
+    echo "strongswan6    Setup strongswan 6.0"
+    echo "strongswanconf6 Setup strongswan 6.0 secure config"
+    echo "strongswanconf_port6 Setup strongswan 6.0 port config"
+    echo "strongswanall6 Setup strongswan 6.0 complete deployment"
+    echo ""
+    echo "=== 证书和网络 ==="
+    echo "ca             Setup ca"
     echo "caip           Setup caip"
-    echo "iptables         Setup iptables"
-    echo "net    Setup net"
-    echo "fail2ban    Setup fail2ban"
-    echo "check    checkspeed"
-     echo "check_vpn    check vpn"
-     echo "net    Setup net"
-      echo "strongswanconf_port    Setup strongswanconf_port"
-    echo "all           Setup all aboves"
-    echo "telegraf          Setup telegraf"
-    echo "check_mtr          Setup check_mtr"
-    echo "kernel          Setup kernel"
+    echo "iptables       Setup iptables"
+    echo "net            Setup net"
+    echo ""
+    echo "=== 检查和测试 ==="
+    echo "check          checkspeed"
+    echo "check_vpn      check vpn (5.6.3)"
+    echo "check_vpn6     check vpn (6.0)"
+    echo "check_mtr      Setup check_mtr"
+    echo ""
+    echo "=== 完整部署 ==="
+    echo "all            Setup all aboves (5.6.3 version)"
+    echo ""
+    echo "=== 使用示例 ==="
+    echo "部署 strongSwan 6.0 安全版本："
+    echo "  ./vpn_setup.sh strongswanall6"
+    echo ""
+    echo "仅部署 strongSwan 6.0 软件："
+    echo "  ./vpn_setup.sh strongswan6"
+    echo ""
+    echo "配置 strongSwan 6.0 安全版本："
+    echo "  ./vpn_setup.sh strongswanconf6"
 
 }
 
@@ -378,21 +611,40 @@ usage()
 if [ $# != 0 ]; then
     for arg in $*; do
         case "$arg" in
+            # 基础软件安装
             soft)            init_soft;;
-            strongswan)          strongswan_setup;;
-	      ca)          init_ca $2;;
-	     caip)          setup_caip;;
-	    iptables)          setup_iptables;;
-	    strongswanconf)          strongswan_config;;
-	    strongswanconf_port)          strongswan_config_port;;
-	    net)          net;;
-	     fail2ban)          setup_fail2ban;;
-	    check)          checkspeed;;
-	    check_vpn)          check_vpn;;
-	    telegraf)         setup_telegraf;;
-	    check_mtr)         checkmtr;;
-	   kernel)         setup_kernel;;
-	    all)          setup_all;;
+            telegraf)        setup_telegraf;;
+            fail2ban)        setup_fail2ban;;
+            kernel)          setup_kernel;;
+            
+            # strongSwan 5.6.3 (旧版本)
+            strongswan)      strongswan_setup;;
+            strongswanconf)  strongswan_config;;
+            strongswanconf_port) strongswan_config_port;;
+            
+            # strongSwan 6.0 (新版本，安全优化)
+            strongswan6)     strongswan_setup_6;;
+            strongswanconf6) strongswan_config_6;;
+            strongswanconf_port6) strongswan_config_port_6;;
+            strongswanall6)  strongswan_setup_all_6;;
+            
+            # 证书和网络
+            ca)              init_ca $2;;
+            caip)            setup_caip;;
+            iptables)        setup_iptables;;
+            net)             net;;
+            
+            # 检查和测试
+            check)           checkspeed;;
+            check_vpn)       check_vpn;;
+            check_vpn6)      check_vpn_6;;
+            check_mtr)       checkmtr;;
+            
+            # 完整部署
+            all)             setup_all;;
+            
+            # 未知参数
+            *)               echo "未知参数: $arg"; usage;;
         esac
     done
 else

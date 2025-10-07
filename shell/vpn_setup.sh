@@ -356,68 +356,7 @@ strongswan_config_6() {
 	echo "=== 配置完成 ==="
 }
 
-# strongSwan 6.0.2 端口配置函数 (8080/8081)
-strongswan_config_port_6() {
-	echo "=== 开始配置 strongSwan 6.0.2 (端口 8080/8081) ==="
-	cd ${WORKDIR}/myconf/shell
-	
-	# 获取服务器IP
-	SERVER_IP=$(get_ip)
-	if [ -z "$SERVER_IP" ]; then
-		echo "❌ 无法获取服务器IP地址"
-		return 1
-	fi
-	echo "服务器IP: $SERVER_IP"
-	
-	# 复制配置文件
-	echo "复制配置文件..."
-	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
-	
-	# 重新加载 systemd 配置
-	echo "重新加载 systemd 配置..."
-	sudo systemctl daemon-reload
-	
-	# 启动服务以验证配置
-	echo "启动服务验证配置..."
-	sudo systemctl start strongswan
-	sleep 2
-	
-	# 检查服务状态
-	echo "检查服务状态..."
-	if ! sudo systemctl is-active --quiet strongswan; then
-		echo "❌ 服务启动失败，请检查配置"
-		echo "配置文件内容："
-		cat /etc/strongswan.conf
-		echo "服务日志："
-		sudo systemctl status strongswan --no-pager -l
-		return 1
-	fi
-	
-	# 复制 updown 脚本
-	sudo mkdir -p /etc/swanctl/scripts
-	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
-	sudo chmod +x /etc/swanctl/scripts/updown.sh
-	
-	# 复制 swanctl.conf 并替换 IP (包含端口配置)
-	sudo sed "s/{{SERVER_IP}}/$SERVER_IP/g" ../strongswan_6.0_conf/swanctl.conf.template > /tmp/swanctl.conf
-	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
-	sudo rm /tmp/swanctl.conf
-	
-	# 注意：证书文件需要单独运行 caip6 生成
-	
-	# 加载配置并重启服务
-	echo "加载配置..."
-	sudo swanctl --load-all
-	
-	echo "重启服务应用配置..."
-	sudo systemctl restart strongswan
-	
-	echo "✅ strongSwan 6.0.2 端口配置完成！"
-	echo "端口配置：500, 4500, 8080, 8081"
-	echo "检查配置：sudo swanctl --list-conns"
-	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
-	echo "=== 端口配置完成 ==="
-}
+# 注意：strongswan_config_port_6 函数已删除，因为与 strongswan_config_6 功能完全相同
 
 
 
@@ -737,8 +676,7 @@ usage()
     echo ""
     echo "=== strongSwan 6.0.2 (新版本，安全优化) ==="
     echo "strongswan6    Setup strongswan 6.0.2"
-    echo "strongswanconf6 Setup strongswan 6.0.2 config"
-    echo "strongswanconf_port6 Setup strongswan 6.0.2 port config"
+    echo "strongswanconf6 Setup strongswan 6.0.2 config (包含所有端口: 500/4500/8080/8081)"
     echo ""
     echo ""
     echo "=== 证书和网络 ==="
@@ -757,15 +695,11 @@ usage()
     echo "all            Setup all aboves (5.6.3 version)"
     echo ""
     echo "=== 使用示例 ==="
-    echo "部署 strongSwan 6.0.2 默认配置："
+    echo "部署 strongSwan 6.0.2 配置 (包含所有端口):"
     echo "  bash vpn_setup.sh strongswan6"
     echo "  bash vpn_setup.sh strongswanconf6"
     echo "  bash vpn_setup.sh caip6"
     echo ""
-    echo "部署 strongSwan 6.0.2 端口配置："
-    echo "  bash vpn_setup.sh strongswan6"
-    echo "  bash vpn_setup.sh strongswanconf_port6"
-    echo "  bash vpn_setup.sh caip6"
     echo ""
     echo "部署 strongSwan 5.6.3 默认配置："
     echo "  bash vpn_setup.sh strongswan"
@@ -799,7 +733,6 @@ if [ $# != 0 ]; then
             # strongSwan 6.0.2 (新版本，安全优化)
             strongswan6)     strongswan_setup_6;;
             strongswanconf6) strongswan_config_6;;
-            strongswanconf_port6) strongswan_config_port_6;;
             
             
             # 证书和网络

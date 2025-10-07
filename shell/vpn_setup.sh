@@ -350,6 +350,7 @@ strongswan_config_6() {
 	echo "验证替换结果："
 	sudo grep -n "{{SERVER_IP}}" /tmp/swanctl.conf || echo "IP 替换成功"
 	sudo cp /tmp/swanctl.conf /etc/swanctl/swanctl.conf
+	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
 	sudo rm /tmp/swanctl.conf
 	
 	# 注意：证书文件需要单独运行 caip6 生成

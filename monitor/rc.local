@@ -21,5 +21,4 @@ iptables -A FORWARD -d 10.0.0.0/24 -j ACCEPT
 ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
 ip6tables -A INPUT -p udp --dport 4500 -j ACCEPT
 ip6tables -A INPUT -m frag -m connmark --mark 0x42 -j ACCEPT
-ipsec start
 exit 0

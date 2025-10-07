@@ -569,6 +569,13 @@ caip6() {
 	fi
 	echo "服务器IP: $SERVER_IP"
 	
+	# 确保 strongswan.conf 存在
+	if [ ! -f "/etc/strongswan.conf" ]; then
+		echo "创建基础 strongswan.conf..."
+		sudo mkdir -p /etc/swanctl/{x509,private}
+		sudo cp ${WORKDIR}/myconf/strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+	fi
+	
 	# 生成 CA 证书
 	echo "生成 CA 证书..."
 	ipsec pki --gen --outform pem > caKey.pem

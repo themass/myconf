@@ -549,15 +549,18 @@ caip6() {
 	
 	# 复制到 strongSwan 6.0.2 目录
 	echo "复制证书到 strongSwan 6.0.2 目录..."
-	sudo mkdir -p /etc/swanctl/{x509,private}
+	sudo mkdir -p /etc/swanctl/{x509,private,x509ca}
 	
-	# 复制基础证书
+	# 复制基础证书到 x509 目录
 	sudo cp caCert.pem /etc/swanctl/x509/
 	sudo cp serverCert.pem /etc/swanctl/x509/
 	sudo cp serverKey.pem /etc/swanctl/private/
 	sudo cp clientCert.pem /etc/swanctl/x509/
 	sudo cp clientKey.pem /etc/swanctl/private/
 	sudo cp clientCert.p12 /etc/swanctl/x509/
+	
+	# 复制 CA 证书到 x509ca 目录（strongSwan 6.0.2 期望的位置）
+	sudo cp caCert.pem /etc/swanctl/x509ca/
 	
 	# 注意：端口配置不需要额外的证书，使用同一套证书即可
 	
@@ -567,6 +570,7 @@ caip6() {
 	sudo chmod 644 /etc/swanctl/x509/*.pem
 	sudo chmod 600 /etc/swanctl/private/*.pem
 	sudo chmod 644 /etc/swanctl/x509/*.p12
+	sudo chmod 644 /etc/swanctl/x509ca/*.pem
 	
 	# 重启服务以应用证书
 	echo "重启服务应用证书..."

@@ -14,17 +14,23 @@
 
 #### 1. 部署 strongSwan 6.0.2
 ```bash
-./vpn_setup.sh strongswan6
+# 使用 bash 运行（推荐）
+bash vpn_setup.sh strongswan6
+
+# 或使用 sh 运行
+sh vpn_setup.sh strongswan6
 ```
 
 #### 2. 配置默认端口 (500/4500)
 ```bash
-./vpn_setup.sh strongswanconf6
+bash vpn_setup.sh strongswanconf6
+bash vpn_setup.sh caip6
 ```
 
 #### 3. 配置端口版本 (500/4500/8080/8081)
 ```bash
-./vpn_setup.sh strongswanconf_port6
+bash vpn_setup.sh strongswanconf_port6
+bash vpn_setup.sh caip6
 ```
 
 ## 配置特点
@@ -46,15 +52,18 @@
 ### 服务管理
 ```bash
 # 启动服务
-sudo ipsec start
+sudo systemctl start strongswan-swanctl
 
 # 停止服务
-sudo ipsec stop
+sudo systemctl stop strongswan-swanctl
 
 # 重启服务
-sudo ipsec restart
+sudo systemctl restart strongswan-swanctl
 
 # 查看状态
+sudo systemctl status strongswan-swanctl
+
+# 查看服务状态（兼容命令）
 sudo ipsec status
 ```
 

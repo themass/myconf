@@ -6,6 +6,7 @@ connections {
     ikev2-eap {
         local_addrs = %any
         remote_addrs = %any
+        pools = ikev2
         
         local {
             auth = eap-radius
@@ -20,7 +21,6 @@ connections {
                 local_ts = 10.0.0.0/24
                 remote_ts = 0.0.0.0/0
                 esp_proposals = aes256-sha256-modp2048
-                pools = ikev2
             }
         }
         version = 2
@@ -31,6 +31,7 @@ connections {
     ikev2-cert {
         local_addrs = %any
         remote_addrs = %any
+        pools = ikev2
         
         local {
             auth = pubkey
@@ -46,7 +47,6 @@ connections {
                 local_ts = 10.0.1.0/24
                 remote_ts = 0.0.0.0/0
                 esp_proposals = aes256-sha256-modp2048
-                pools = ikev2
             }
         }
         version = 2

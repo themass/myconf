@@ -1,5 +1,5 @@
 # strongSwan 6.0.2 swanctl 配置文件
-# 包含默认端口 (500/4500) 和自定义端口 (8080/8081)
+# 简化配置，只使用默认端口 (500/4500)
 
 connections {
     # IKEv2 EAP 连接
@@ -19,19 +19,11 @@ connections {
             ikev2-eap {
                 local_ts = 10.0.0.0/24
                 remote_ts = 0.0.0.0/0
-                esp_proposals = aes256-sha256-modp2048,aes128-sha256-modp2048
+                esp_proposals = aes256-sha256-modp2048
             }
         }
         version = 2
-        proposals = aes256-sha256-modp2048,aes128-sha256-modp2048
-        dpd_action = restart
-        close_action = restart
-        rekey_time = 4h
-        rekey_bytes = 100m
-        rekey_packets = 1000000
-        fragmentation = yes
-        dpd_delay = 30s
-        dpd_timeout = 150s
+        proposals = aes256-sha256-modp2048
     }
     
     # IKEv2 证书连接
@@ -52,84 +44,11 @@ connections {
             ikev2-cert {
                 local_ts = 10.0.1.0/24
                 remote_ts = 0.0.0.0/0
-                esp_proposals = aes256-sha256-modp2048,aes128-sha256-modp2048
+                esp_proposals = aes256-sha256-modp2048
             }
         }
         version = 2
-        proposals = aes256-sha256-modp2048,aes128-sha256-modp2048
-        dpd_action = restart
-        close_action = restart
-        rekey_time = 4h
-        rekey_bytes = 100m
-        rekey_packets = 1000000
-        fragmentation = yes
-        dpd_delay = 30s
-        dpd_timeout = 150s
-    }
-    
-    # IKEv2 EAP 连接 (端口 8080)
-    ikev2-eap-8080 {
-        local_addrs = %any:8080
-        remote_addrs = %any
-        
-        local {
-            auth = eap-radius
-            id = {{SERVER_IP}}
-        }
-        remote {
-            auth = eap-radius
-            eap_id = %any
-        }
-        children {
-            ikev2-eap-8080 {
-                local_ts = 10.0.2.0/24
-                remote_ts = 0.0.0.0/0
-                esp_proposals = aes256-sha256-modp2048,aes128-sha256-modp2048
-            }
-        }
-        version = 2
-        proposals = aes256-sha256-modp2048,aes128-sha256-modp2048
-        dpd_action = restart
-        close_action = restart
-        rekey_time = 4h
-        rekey_bytes = 100m
-        rekey_packets = 1000000
-        fragmentation = yes
-        dpd_delay = 30s
-        dpd_timeout = 150s
-    }
-    
-    # IKEv2 证书连接 (端口 8081)
-    ikev2-cert-8081 {
-        local_addrs = %any:8081
-        remote_addrs = %any
-        
-        local {
-            auth = pubkey
-            certs = serverCert.pem
-            id = {{SERVER_IP}}
-        }
-        remote {
-            auth = pubkey
-            id = %any
-        }
-        children {
-            ikev2-cert-8081 {
-                local_ts = 10.0.3.0/24
-                remote_ts = 0.0.0.0/0
-                esp_proposals = aes256-sha256-modp2048,aes128-sha256-modp2048
-            }
-        }
-        version = 2
-        proposals = aes256-sha256-modp2048,aes128-sha256-modp2048
-        dpd_action = restart
-        close_action = restart
-        rekey_time = 4h
-        rekey_bytes = 100m
-        rekey_packets = 1000000
-        fragmentation = yes
-        dpd_delay = 30s
-        dpd_timeout = 150s
+        proposals = aes256-sha256-modp2048
     }
 }
 
@@ -145,14 +64,6 @@ pools {
     # IP 地址池
     ikev2 {
         addrs = 10.0.0.0/24
-        dns = 8.8.8.8, 8.8.4.4
-    }
-    ikev2-8080 {
-        addrs = 10.0.2.0/24
-        dns = 8.8.8.8, 8.8.4.4
-    }
-    ikev2-8081 {
-        addrs = 10.0.3.0/24
         dns = 8.8.8.8, 8.8.4.4
     }
 }

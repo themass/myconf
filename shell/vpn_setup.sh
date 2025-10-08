@@ -428,9 +428,9 @@ strongswan_config_complete() {
 	
 	# 3. 复制配置文件
 	echo "3. 复制配置文件..."
-	sudo cp ../strongswan_6.0_conf/strongswan.conf.official /etc/strongswan.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf.correct /etc/swanctl/swanctl.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf.correct /etc/swanctl.conf
+	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl/swanctl.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl.conf
 	
 	# 4. 替换服务器IP
 	echo "4. 替换服务器IP..."

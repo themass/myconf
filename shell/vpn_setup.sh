@@ -172,8 +172,8 @@ strongswan_setup_6() {
 	fi
 	cd strongswan-6.0.2
 	# 配置编译
-	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-nat-transport --enable-eap-radius --enable-eap-identity --enable-eap-md5 --enable-eap-mschapv2 --enable-eap-tls --enable-eap-ttls --enable-vici --enable-swanctl --enable-systemd --enable-kernel-netlink --enable-kernel-libipsec
-	# 编译安装
+	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-eap-radius --enable-eap-identity --enable-eap-md5 --enable-eap-mschapv2 --enable-eap-tls --enable-eap-ttls --enable-vici --enable-swanctl --enable-systemd --enable-kernel-netlink --enable-kernel-libipsec
+		# 编译安装
 	make -j$(nproc) && sudo make install
 	
 	# 创建用户
@@ -199,6 +199,12 @@ strongswan_setup_6() {
   sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
   sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
   sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
+
+  sudo ln -sf /usr/lib/ipsec/libstrongswan.so.0 /usr/lib/libstrongswan.so.0
+  sudo ln -sf /usr/lib/ipsec/libcharon.so.0 /usr/lib/libcharon.so.0
+  # 更新库缓存
+  sudo ldconfig
+
 	# 启动服务
 	sudo systemctl daemon-reload
 	sudo systemctl enable strongswan
@@ -250,6 +256,7 @@ strongswan_config_6() {
 		echo "❌ 服务启动失败，请检查配置"
 		echo "服务日志："
 		sudo systemctl status strongswan --no-pager -l
+		sudo journalctl -u strongswan --no-pager -n 40
 		return 1
 	fi
 	echo "✅ strongSwan 6.0.2 配置完成！"

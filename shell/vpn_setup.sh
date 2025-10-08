@@ -402,13 +402,13 @@ caip6() {
 	mkdir -p ca6
 	cd ca6
 
-	# 获取服务器IP
+	# 获取服务器外网IP（用于证书生成）
 	SERVER_IP=$(get_ip)
 	if [ -z "$SERVER_IP" ]; then
-		echo "❌ 无法获取服务器IP地址"
+		echo "❌ 无法获取服务器外网IP地址"
 		return 1
 	fi
-	echo "服务器IP: $SERVER_IP"
+	echo "服务器外网IP: $SERVER_IP"
 
 	# 确保 strongswan.conf 存在
 	if [ ! -f "/etc/strongswan.conf" ]; then
@@ -555,6 +555,10 @@ get_ip(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
     [ -z ${IP} ] && IP=$( wget -qO- -t1 -T2 ipv4.icanhazip.com )
     [ -z ${IP} ] && IP=$( wget -qO- -t1 -T2 ipinfo.io/ip )
+    echo ${IP}
+}
+get_internal_ip(){
+    local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\." | head -n 1 )
     echo ${IP}
 }
 get_netdev(){

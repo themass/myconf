@@ -244,7 +244,7 @@ strongswan_setup_6() {
 	
 	# 创建 systemd 服务文件
 	echo "创建 systemd 服务..."
-	sudo tee /etc/systemd/system/strongswan.service > /dev/null << 'EOF'
+    sudo tee /etc/systemd/system/strongswan.service > /dev/null << 'EOF'
 [Unit]
 Description=strongSwan IPsec daemon
 After=network.target

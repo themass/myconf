@@ -1,0 +1,70 @@
+# strongSwan 6.0.2 低内存配置 - 适用于512M内存
+charon {
+    load_modular = yes
+    threads = 2
+    
+    # 端口设置
+    port = 8081
+    port_nat_t = 8080
+    
+    # 内存优化设置
+    retransmit_tries = 2
+    retransmit_timeout = 3.0
+    rekey_time = 2h
+    rekey_bytes = 50m
+    rekey_packets = 500000
+    
+    # 插件配置 - 最小化
+    plugins {
+        include strongswan.d/charon/*.conf
+        
+        # 只启用必要插件
+        attr {
+            load = yes
+        }
+        resolve {
+            load = yes
+        }
+        kernel-netlink {
+            load = yes
+        }
+        socket-default {
+            load = yes
+        }
+        vici {
+            load = yes
+        }
+        updown {
+            load = yes
+        }
+        eap-identity {
+            load = yes
+        }
+        eap-radius {
+            load = yes
+            accounting = yes
+            servers {
+                radiusServer {
+                    secret = FreeVPN@vpn5296
+                    address = radius.sspacee.com
+                    auth_port = 1812
+                    acct_port = 1813
+                }
+            }
+        }
+    }
+    
+    # 日志配置 - 减少日志缓冲
+    filelog {
+        charon {
+            path = /var/log/charon.log
+            time_format = %b %e %T
+            ike_name = yes
+            append = no
+            default = 1
+            flush_line = yes
+        }
+    }
+}
+
+include strongswan.d/*.conf

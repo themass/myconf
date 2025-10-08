@@ -1,0 +1,46 @@
+# strongSwan 6.0.2 最小化连接配置 - 用于调试
+connections {
+    radius {
+        version = 2
+        local_addrs = %any
+        remote_addrs = %any
+        
+        local {
+            auth = pubkey
+            certs = serverCert.pem
+            id = {{SERVER_IP}}
+        }
+        remote {
+            auth = eap-radius
+        }
+        children {
+            radius {
+                local_ts = 0.0.0.0/0,::/0
+                remote_ts = 0.0.0.0/0,::/0
+                start_action = trap
+                rekey_time = 8h
+            }
+        }
+        proposals = aes256-sha384-ecp384,aes128-sha1-modp2048
+        rekey_time = 8h
+        remote_port = 8080
+    }
+}
+
+authorities {
+    caCert {
+        cacert = caCert.pem
+    }
+}
+
+pools {
+    radius {
+        addrs = 10.0.0.0/24
+    }
+}
+
+secrets {
+    private-server {
+        file = serverCert.pem
+    }
+}

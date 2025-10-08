@@ -417,18 +417,18 @@ caip6() {
 
 	# 生成 CA 证书
 	echo "生成 CA 证书..."
-	ipsec pki --gen --outform pem > caKey.pem
-	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --ca --outform pem > caCert.pem
+	pki --gen --outform pem > caKey.pem
+	pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --ca --outform pem > caCert.pem
 
 	# 生成服务器证书
 	echo "生成服务器证书..."
-	ipsec pki --gen --outform pem > serverKey.pem
-	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --san="$SERVER_IP" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert.pem
+	pki --gen --outform pem > serverKey.pem
+	pki --pub --in serverKey.pem | pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --san="$SERVER_IP" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert.pem
 
 	# 生成客户端证书
 	echo "生成客户端证书..."
-	ipsec pki --gen --outform pem > clientKey.pem
-	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert.pem
+	pki --gen --outform pem > clientKey.pem
+	pki --pub --in clientKey.pem | pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert.pem
 
 	# 生成 PKCS12 格式客户端证书
 	echo "生成 PKCS12 客户端证书..."

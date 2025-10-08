@@ -297,12 +297,11 @@ EOF
 	echo "=== strongSwan 6.0.2 部署完成 ==="
 }
 
-
-# strongSwan 6.0.2 配置函数 - 修复权限问题
+# strongSwan 6.0.2 配置函数 (默认端口)
 strongswan_config_6() {
-	echo "=== 开始配置 strongSwan 6.0.2 (修复权限问题) ==="
+	echo "=== 开始配置 strongSwan 6.0.2 (包含所有端口) ==="
 	cd ${WORKDIR}/myconf/shell
-	
+
 	# 获取服务器IP
 	SERVER_IP=$(get_ip)
 	if [ -z "$SERVER_IP" ]; then
@@ -310,72 +309,64 @@ strongswan_config_6() {
 		return 1
 	fi
 	echo "服务器IP: $SERVER_IP"
-	
+
 	# 复制配置文件
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf.minimal /etc/swanctl/swanctl.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf.minimal /etc/swanctl.conf
-	
-	# 替换服务器IP
-	echo "替换服务器IP..."
-	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl/swanctl.conf
-	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl.conf
-	
-	# 创建必要的目录 - 使用 root 权限
-	echo "创建必要的目录..."
-	sudo mkdir -p /var/log/strongswan
-	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
-	sudo mkdir -p /var/run/charon
-	
-	# 设置权限
-	echo "设置权限..."
-	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
-	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
-	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
-	
+
 	# 重新加载 systemd 配置
 	echo "重新加载 systemd 配置..."
 	sudo systemctl daemon-reload
-	
-	# 停止可能存在的旧服务
-	echo "停止旧服务..."
-	sudo systemctl stop strongswan 2>/dev/null || true
-	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
-	
+
 	# 启动服务以验证配置
 	echo "启动服务验证配置..."
 	sudo systemctl start strongswan
-	sleep 3
-	
+	sleep 2
+
 	# 检查服务状态
 	echo "检查服务状态..."
-	if sudo systemctl is-active --quiet strongswan; then
-		echo "✅ strongSwan 6.0.2 配置部署成功！"
-		echo "服务状态："
-		sudo systemctl status strongswan --no-pager -l
-		echo ""
-		echo "配置信息："
-		echo "- 使用与 5.6.3 相同的多种加密算法"
-		echo "- 支持 aes256-sha384-ecp384, aes128-sha1-modp2048 等多种算法"
-		echo "- 使用 root 权限运行，解决权限问题"
-		echo ""
-		echo "检查配置：sudo swanctl --list-conns"
-		echo "查看日志：sudo journalctl -u strongswan -f"
-	else
+	if ! sudo systemctl is-active --quiet strongswan; then
 		echo "❌ 服务启动失败，请检查配置"
 		echo "配置文件内容："
 		cat /etc/strongswan.conf
 		echo "服务日志："
 		sudo systemctl status strongswan --no-pager -l
-		echo "详细日志："
-		sudo journalctl -u strongswan --no-pager -n 20
 		return 1
 	fi
-	
+
+	# 复制 updown 脚本
+	sudo mkdir -p /etc/swanctl/scripts
+	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
+	sudo chmod +x /etc/swanctl/scripts/updown.sh
+
+	# 复制 swanctl.conf 并替换 IP (包含端口配置)
+	# 使用更安全的方式替换 IP 地址
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.template /tmp/swanctl.conf
+	# 使用 perl 进行字符串替换，避免特殊字符问题
+	echo "原始 IP: $SERVER_IP"
+	# 使用 perl 的字符串替换，转义特殊字符
+	sudo perl -pi -e "s/\{\{SERVER_IP\}\}/$SERVER_IP/g" /tmp/swanctl.conf
+	# 验证替换结果
+	echo "验证替换结果："
+	sudo grep -n "{{SERVER_IP}}" /tmp/swanctl.conf || echo "IP 替换成功"
+	sudo cp /tmp/swanctl.conf /etc/swanctl/swanctl.conf
+	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
+	sudo rm /tmp/swanctl.conf
+
+	# 注意：证书文件需要单独运行 caip6 生成
+
+	# 加载配置并重启服务
+	echo "加载配置..."
+	sudo swanctl --load-all
+
+	echo "重启服务应用配置..."
+	sudo systemctl restart strongswan
+
+	echo "✅ strongSwan 6.0.2 配置完成！"
+	echo "检查配置：sudo swanctl --list-conns"
+	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
 	echo "=== 配置完成 ==="
 }
-
 
 # 注意：strongswan_config_port_6 函数已删除，因为与 strongswan_config_6 功能完全相同
 
@@ -386,7 +377,7 @@ strongswan_config_6() {
 
 
 #ca setup
-init_ca() 
+init_ca()
 {
 	cd ${TMP_HOME}
 	mkdir -p ca
@@ -436,14 +427,14 @@ init_ca()
 
 
 # iptables
-setup_iptables() 
+setup_iptables()
 {
-	iptables -A INPUT -p udp --dport 500 -j ACCEPT 
+	iptables -A INPUT -p udp --dport 500 -j ACCEPT
 	iptables -A INPUT -p udp --dport 4500 -j ACCEPT
 	iptables -A INPUT -p udp --dport 8080 -j ACCEPT
 	iptables -A INPUT -p udp --dport 8081 -j ACCEPT
-	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o $1 -j MASQUERADE 
-	iptables -A FORWARD -s 10.0.0.0/24 -j ACCEPT 
+	iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o $1 -j MASQUERADE
+	iptables -A FORWARD -s 10.0.0.0/24 -j ACCEPT
 	iptables -A FORWARD -d 10.0.0.0/24 -j ACCEPT
 	ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
 	ip6tables -A INPUT -p udp --dport 4500 -j ACCEPT
@@ -459,7 +450,7 @@ setup_iptables()
 }
 #net
 # vi /etc/sysctl.conf
-net() 
+net()
 {
 
 	echo "net.ipv4.tcp_syncookies = 1"  >>  /etc/sysctl.conf
@@ -488,13 +479,13 @@ net()
 	echo "net.ipv4.ip_forward = 1"  >>  /etc/sysctl.conf
 	echo "net.ipv6.conf.all.forwarding=1"  >>  /etc/sysctl.conf
 	echo "net.ipv6.conf.all.proxy_ndp=1"  >>  /etc/sysctl.conf
-	
+
 	# max open files
 	echo "fs.file-max = 1024000"  >>  /etc/sysctl.conf
-	
+
 	cat /etc/sysctl.conf
 	sysctl -p
-	
+
 	#其中最后的hybla是为高延迟网络（如美国，欧洲）准备的算法，需要内核支持，测试内核是否支持，在终端输入：
 	#sysctl net.ipv4.tcp_available_congestion_control
 	#如果结果中有hybla，则证明你的内核已开启hybla，如果没有hybla，可以用命令modprobe tcp_hybla开启。
@@ -520,7 +511,7 @@ caip6() {
 	cd ${TMP_HOME}
 	mkdir -p ca6
 	cd ca6
-	
+
 	# 获取服务器IP
 	SERVER_IP=$(get_ip)
 	if [ -z "$SERVER_IP" ]; then
@@ -528,39 +519,39 @@ caip6() {
 		return 1
 	fi
 	echo "服务器IP: $SERVER_IP"
-	
+
 	# 确保 strongswan.conf 存在
 	if [ ! -f "/etc/strongswan.conf" ]; then
 		echo "创建基础 strongswan.conf..."
 		sudo mkdir -p /etc/swanctl/{x509,private}
 		sudo cp ${WORKDIR}/myconf/strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	fi
-	
+
 	# 生成 CA 证书
 	echo "生成 CA 证书..."
 	ipsec pki --gen --outform pem > caKey.pem
 	ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --ca --outform pem > caCert.pem
-	
+
 	# 生成服务器证书
 	echo "生成服务器证书..."
 	ipsec pki --gen --outform pem > serverKey.pem
 	ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=$SERVER_IP" --san="$SERVER_IP" --flag serverAuth --flag ikeIntermediate --outform pem > serverCert.pem
-	
+
 	# 生成客户端证书
 	echo "生成客户端证书..."
 	ipsec pki --gen --outform pem > clientKey.pem
 	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert.pem
-	
+
 	# 生成 PKCS12 格式客户端证书
 	echo "生成 PKCS12 客户端证书..."
 	openssl pkcs12 -export -inkey clientKey.pem -in clientCert.pem -name "client" -certfile caCert.pem -caname "$SERVER_IP" -out clientCert.p12 -passout pass:
-	
+
 	# 注意：证书和端口无关，只需要一套证书即可
-	
+
 	# 复制到 strongSwan 6.0.2 目录
 	echo "复制证书到 strongSwan 6.0.2 目录..."
 	sudo mkdir -p /etc/swanctl/{x509,private,x509ca}
-	
+
 	# 复制基础证书到 x509 目录
 	sudo cp caCert.pem /etc/swanctl/x509/
 	sudo cp serverCert.pem /etc/swanctl/x509/
@@ -568,12 +559,12 @@ caip6() {
 	sudo cp clientCert.pem /etc/swanctl/x509/
 	sudo cp clientKey.pem /etc/swanctl/private/
 	sudo cp clientCert.p12 /etc/swanctl/x509/
-	
+
 	# 复制 CA 证书到 x509ca 目录（strongSwan 6.0.2 期望的位置）
 	sudo cp caCert.pem /etc/swanctl/x509ca/
-	
+
 	# 注意：端口配置不需要额外的证书，使用同一套证书即可
-	
+
 	# 设置权限
 	echo "设置证书权限..."
 	sudo chown -R strongswan:strongswan /etc/swanctl
@@ -581,11 +572,11 @@ caip6() {
 	sudo chmod 600 /etc/swanctl/private/*.pem
 	sudo chmod 644 /etc/swanctl/x509/*.p12
 	sudo chmod 644 /etc/swanctl/x509ca/*.pem
-	
+
 	# 重启服务以应用证书
 	echo "重启服务应用证书..."
 	sudo systemctl restart strongswan
-	
+
 	echo "✅ strongSwan 6.0.2 证书生成完成！"
 	echo "证书位置：/etc/swanctl/x509/ 和 /etc/swanctl/private/"
 	echo "查看证书：sudo swanctl --list-certs"
@@ -594,7 +585,7 @@ caip6() {
 ## -----------------------
 ## Setup all aboves
 ## -----------------------
-setup_fail2ban() 
+setup_fail2ban()
 {
     apt-get install -y fail2ban sendmail
     cp ../monitor/jail.conf /etc/fail2ban/
@@ -643,7 +634,7 @@ setup_rclocal() {
 ## -----------------------
 ## Setup all aboves
 ## -----------------------
-setup_all() 
+setup_all()
 {
     init_soft
     strongswan_setup
@@ -667,7 +658,7 @@ setup_all()
     echo "crotab-----------------------------"
     echo "crotab-----------------------------"
     echo "crotab-----------------------------"
-    
+
 }
 get_ip(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
@@ -683,7 +674,7 @@ get_netdev(){
 ## -----------------------
 ## Show help message
 ## -----------------------
-usage() 
+usage()
 {
     echo "Available arguments as below:"
     echo ""
@@ -698,9 +689,9 @@ usage()
     echo "strongswanconf Setup strongswan 5.6.3 config"
     echo "strongswanconf_port Setup strongswan 5.6.3 port config"
     echo ""
-    echo "=== strongSwan 6.0.2 (新版本) ==="
+    echo "=== strongSwan 6.0.2 (新版本，安全优化) ==="
     echo "strongswan6    Setup strongswan 6.0.2"
-    echo "strongswanconf6 Setup strongswan 6.0.2 config (基于 5.6.3 配置)"
+    echo "strongswanconf6 Setup strongswan 6.0.2 config (默认端口: 500/4500)"
     echo ""
     echo ""
     echo "=== 证书和网络 ==="
@@ -719,14 +710,20 @@ usage()
     echo "all            Setup all aboves (5.6.3 version)"
     echo ""
     echo "=== 使用示例 ==="
-    echo "部署 strongSwan 6.0.2 (基于 5.6.3 配置)："
+    echo "部署 strongSwan 6.0.2 配置 (默认端口):"
     echo "  bash vpn_setup.sh strongswan6"
     echo "  bash vpn_setup.sh strongswanconf6"
     echo "  bash vpn_setup.sh caip6"
     echo ""
+    echo ""
     echo "部署 strongSwan 5.6.3 默认配置："
     echo "  bash vpn_setup.sh strongswan"
     echo "  bash vpn_setup.sh strongswanconf"
+    echo "  bash vpn_setup.sh caip"
+    echo ""
+    echo "部署 strongSwan 5.6.3 端口配置："
+    echo "  bash vpn_setup.sh strongswan"
+    echo "  bash vpn_setup.sh strongswanconf_port"
     echo "  bash vpn_setup.sh caip"
 
 }
@@ -742,13 +739,13 @@ if [ $# != 0 ]; then
             telegraf)        setup_telegraf;;
             fail2ban)        setup_fail2ban;;
             kernel)          setup_kernel;;
-            
+
             # strongSwan 5.6.3 (旧版本)
             strongswan)      strongswan_setup;;
             strongswanconf)  strongswan_config;;
             strongswanconf_port) strongswan_config_port;;
-            
-            # strongSwan 6.0.2 (新版本)
+
+            # strongSwan 6.0.2 (新版本，安全优化)
             strongswan6)     strongswan_setup_6;;
             strongswanconf6) strongswan_config_6;;
             

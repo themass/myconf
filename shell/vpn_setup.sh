@@ -339,12 +339,10 @@ strongswan_config_6() {
 	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
 	sudo chmod +x /etc/swanctl/scripts/updown.sh
 	
-	# 复制 swanctl.conf 并替换 IP (包含端口配置)
-	# 使用更安全的方式替换 IP 地址
-	sudo cp ../strongswan_6.0_conf/swanctl.conf.template /tmp/swanctl.conf
-	# 使用 perl 进行字符串替换，避免特殊字符问题
-	echo "原始 IP: $SERVER_IP"
-	# 使用 perl 的字符串替换，转义特殊字符
+	# 复制简单配置并替换 IP
+	echo "使用基于 5.6.3 的简单配置..."
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /tmp/swanctl.conf
+	# 使用 perl 进行字符串替换
 	sudo perl -pi -e "s/\{\{SERVER_IP\}\}/$SERVER_IP/g" /tmp/swanctl.conf
 	# 验证替换结果
 	echo "验证替换结果："
@@ -367,6 +365,7 @@ strongswan_config_6() {
 	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
 	echo "=== 配置完成 ==="
 }
+
 
 # 注意：strongswan_config_port_6 函数已删除，因为与 strongswan_config_6 功能完全相同
 
@@ -689,9 +688,9 @@ usage()
     echo "strongswanconf Setup strongswan 5.6.3 config"
     echo "strongswanconf_port Setup strongswan 5.6.3 port config"
     echo ""
-    echo "=== strongSwan 6.0.2 (新版本，安全优化) ==="
+    echo "=== strongSwan 6.0.2 (新版本) ==="
     echo "strongswan6    Setup strongswan 6.0.2"
-    echo "strongswanconf6 Setup strongswan 6.0.2 config (默认端口: 500/4500)"
+    echo "strongswanconf6 Setup strongswan 6.0.2 config (基于 5.6.3 配置)"
     echo ""
     echo ""
     echo "=== 证书和网络 ==="
@@ -710,20 +709,14 @@ usage()
     echo "all            Setup all aboves (5.6.3 version)"
     echo ""
     echo "=== 使用示例 ==="
-    echo "部署 strongSwan 6.0.2 配置 (默认端口):"
+    echo "部署 strongSwan 6.0.2 (基于 5.6.3 配置)："
     echo "  bash vpn_setup.sh strongswan6"
     echo "  bash vpn_setup.sh strongswanconf6"
     echo "  bash vpn_setup.sh caip6"
     echo ""
-    echo ""
     echo "部署 strongSwan 5.6.3 默认配置："
     echo "  bash vpn_setup.sh strongswan"
     echo "  bash vpn_setup.sh strongswanconf"
-    echo "  bash vpn_setup.sh caip"
-    echo ""
-    echo "部署 strongSwan 5.6.3 端口配置："
-    echo "  bash vpn_setup.sh strongswan"
-    echo "  bash vpn_setup.sh strongswanconf_port"
     echo "  bash vpn_setup.sh caip"
 
 }
@@ -745,7 +738,7 @@ if [ $# != 0 ]; then
             strongswanconf)  strongswan_config;;
             strongswanconf_port) strongswan_config_port;;
             
-            # strongSwan 6.0.2 (新版本，安全优化)
+            # strongSwan 6.0.2 (新版本)
             strongswan6)     strongswan_setup_6;;
             strongswanconf6) strongswan_config_6;;
             

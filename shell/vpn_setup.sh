@@ -17,6 +17,8 @@ init_soft()
 	
 	sudo aptitude install libgmp10 libgmp3-dev libssl-dev pkg-config libpcsclite-dev libpam0g-dev  curl   libmysqlclient-dev
 	sudo apt-get -y install libcurl4-gnutls-dev
+  sudo apt-get install -y build-essential libssl-dev libgmp-dev libcurl4-openssl-dev pkg-config autotools-dev libtool autoconf automake libsystemd-dev libiptc-dev libip4tc-dev libip6tc-dev
+
 }
 setup_telegraf()
 {
@@ -131,234 +133,52 @@ strongswan_config_port()
 	ipsec restart
 }
 
-# strongSwan 6.0.2 部署函数
+# strongSwan 6.0.2 部署函数 - 简单版本
 strongswan_setup_6() {
-	echo "=== 开始部署 strongSwan 6.0.2 ==="
+	echo "=== 部署 strongSwan 6.0.2 ==="
 	cd ${TMP_HOME}
 	
-	# 检查是否已安装
-	if command -v swanctl >/dev/null 2>&1; then
-		echo "strongSwan 已安装，版本：$(swanctl --version 2>/dev/null | head -1 || echo 'unknown')"
-		# 检查 charon 是否存在
-		if [ ! -f "/usr/lib/ipsec/charon" ] && [ ! -f "/usr/sbin/charon" ]; then
-			echo "⚠️  charon 可执行文件不存在，强制重新安装..."
-		else
-			printf "是否重新安装？(y/N): "
-			read REPLY
-			if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]; then
-				echo "跳过安装，继续配置..."
-				return 0
-			fi
-		fi
-	fi
+	# 安装依赖
 
-	# 安装基础依赖
-	echo "安装基础依赖..."
-	sudo apt-get update
-	sudo apt-get install -y \
-		build-essential \
-		libssl-dev \
-		libgmp-dev \
-		libcurl4-openssl-dev \
-		pkg-config \
-		autotools-dev \
-		libtool \
-		autoconf \
-		automake \
-		libsystemd-dev \
-		libiptc-dev \
-		libip4tc-dev \
-		libip6tc-dev \
-		libpam0g-dev \
-		libmysqlclient-dev \
-		libsqlite3-dev \
-		libldap2-dev \
-		libsoup2.4-dev \
-		libunbound-dev \
-		libcharon-extra-plugins \
-		libstrongswan-extra-plugins
-
-	# 下载 strongSwan 6.0.2
-	echo "下载 strongSwan 6.0.2..."
+	# 下载源码
 	if [ ! -d "strongswan-6.0.2" ]; then
-		if [ ! -f "strongswan-6.0.2.tar.bz2" ]; then
-			wget https://download.strongswan.org/strongswan-6.0.2.tar.bz2 --no-check-certificate
-		fi
-		
-		if [ -f "strongswan-6.0.2.tar.bz2" ]; then
-			tar -jxvf strongswan-6.0.2.tar.bz2
-		else
-			echo "官方源下载失败，尝试备用源..."
-			wget https://github.com/strongswan/strongswan/archive/refs/tags/6.0.2.tar.gz --no-check-certificate
-			if [ $? -eq 0 ]; then
-				tar -xzf 6.0.2.tar.gz
-				mv strongswan-strongswan-6.0.2 strongswan-6.0.2
-			else
-				echo "下载失败，请检查网络连接"
-				return 1
-			fi
-		fi
+		wget https://download.strongswan.org/strongswan-6.0.2.tar.bz2 --no-check-certificate
+		tar -jxvf strongswan-6.0.2.tar.bz2
 	fi
-
 	cd strongswan-6.0.2
-
-	# 配置编译选项
-	echo "配置编译选项..."
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--enable-openssl \
-		--enable-nat-transport \
-		--enable-eap-radius \
-		--enable-eap-identity \
-		--enable-eap-md5 \
-		--enable-eap-mschapv2 \
-		--enable-eap-tls \
-		--enable-eap-ttls \
-		--enable-eap-peap \
-		--enable-eap-aka \
-		--enable-eap-aka-3gpp2 \
-		--enable-eap-gtc \
-		--enable-eap-sim \
-		--enable-eap-simaka-pseudonym \
-		--enable-eap-simaka-reauth \
-		--enable-eap-tnc \
-		--enable-vici \
-		--enable-swanctl \
-		--enable-systemd \
-		--enable-kernel-netlink \
-		--enable-kernel-libipsec \
-		--enable-forecast \
-		--enable-fips-prf \
-		--enable-gmp \
-		--enable-md4 \
-		--enable-md5 \
-		--enable-mgf1 \
-		--enable-pkcs12 \
-		--enable-random \
-		--enable-rc2 \
-		--enable-sha1 \
-		--enable-sha2 \
-		--enable-tnc-tnccs \
-		--enable-nonce \
-		--enable-x509 \
-		--enable-revocation \
-		--enable-constraints \
-		--enable-pubkey \
-		--enable-pkcs1 \
-		--enable-pkcs7 \
-		--enable-pgp \
-		--enable-dnskey \
-		--enable-sshkey \
-		--enable-pem \
-		--enable-openssl \
-		--enable-pkcs8 \
-		--enable-xcbc \
-		--enable-cmac \
-		--enable-kdf \
-		--enable-drbg \
-		--enable-attr \
-		--enable-resolve \
-		--enable-socket-default \
-		--enable-updown \
-		--enable-xauth-generic \
-		--enable-counters
-
-	if [ $? -ne 0 ]; then
-		echo "配置失败，请检查依赖是否完整安装"
-		return 1
-	fi
-
-	# 编译和安装
-	echo "编译和安装..."
+	# 配置编译
+	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-nat-transport --enable-eap-radius --enable-eap-identity --enable-eap-md5 --enable-eap-mschapv2 --enable-eap-tls --enable-eap-ttls --enable-vici --enable-swanctl --enable-systemd --enable-kernel-netlink --enable-kernel-libipsec
+	# 编译安装
 	make -j$(nproc) && sudo make install
-	if [ $? -ne 0 ]; then
-		echo "编译或安装失败"
-		return 1
-	fi
 	
-	# 创建基础目录
-	echo "创建基础目录..."
-	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
-	sudo mkdir -p /var/log/strongswan
+	# 创建用户
+	sudo groupadd -r strongswan 2>/dev/null || true
+	sudo useradd -r -g strongswan -s /bin/false -d /var/lib/strongswan strongswan 2>/dev/null || true
 	
-	# 创建 strongswan 用户和组
-	echo "创建 strongswan 用户和组..."
-	if ! id "strongswan" &>/dev/null; then
-		sudo groupadd -r strongswan 2>/dev/null || true
-		sudo useradd -r -g strongswan -s /bin/false -d /var/lib/strongswan strongswan 2>/dev/null || true
-		echo "✅ strongswan 用户创建完成"
-	else
-		echo "✅ strongswan 用户已存在"
-	fi
-	
-	# 创建必要目录
-	sudo mkdir -p /var/lib/strongswan
-	sudo mkdir -p /var/log/strongswan
-	
-	# 设置基础权限
-	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan /var/lib/strongswan 2>/dev/null || true
-	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
-	sudo chmod 755 /var/lib/strongswan 2>/dev/null || true
-	
-	# 创建 systemd 服务文件
-	echo "创建 systemd 服务..."
-    sudo tee /etc/systemd/system/strongswan.service > /dev/null << 'EOF'
-[Unit]
-Description=strongSwan IPsec daemon
-After=network.target
+	# 创建目录
+	sudo mkdir -p /etc/swanctl/{private,x509,scripts} /var/log/strongswan /var/lib/strongswan
+	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan /var/lib/strongswan
 
-[Service]
-Type=notify
-User=strongswan
-Group=strongswan
-ExecStart=/usr/lib/ipsec/charon --use-syslog
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-RestartSec=5s
-RuntimeDirectory=charon
-RuntimeDirectoryMode=0755
-PrivateTmp=true
-NoNewPrivileges=true
+	# 创建服务文件
+	cd ${WORKDIR}/myconf/shell
+	cp ../strongswan_6.0_conf/strongswan.service /etc/systemd/system/strongswan.service
 
-[Install]
-WantedBy=multi-user.target
-EOF
-	
-	# 重新加载 systemd
+# 创建必要的目录
+  echo "创建必要的目录..."
+  sudo mkdir -p /var/log/strongswan
+  sudo mkdir -p /etc/swanctl/{private,x509,scripts}
+  sudo mkdir -p /var/run/charon
+
+  # 设置权限
+  echo "设置权限..."
+  sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
+  sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
+  sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
+	# 启动服务
 	sudo systemctl daemon-reload
 	sudo systemctl enable strongswan
-	
-	# 启动服务
-	echo "启动服务..."
-	sudo systemctl stop strongswan 2>/dev/null || true
-	sudo systemctl stop strongswan 2>/dev/null || true
 	sudo systemctl start strongswan
-	
-	# 等待服务启动
-	sleep 3
-	
-	# 检查服务状态
-	if sudo systemctl is-active --quiet strongswan; then
-		echo "✅ strongSwan 6.0.2 部署成功！"
-		echo "服务状态："
-		sudo systemctl status strongswan --no-pager -l
-		echo ""
-		echo "验证安装："
-		echo "swanctl 版本：$(swanctl --version 2>/dev/null | head -1 || echo 'unknown')"
-		echo "charon 位置：$(which charon 2>/dev/null || echo '/usr/lib/ipsec/charon')"
-	else
-		echo "❌ 服务启动失败，请检查日志："
-		sudo journalctl -u strongswan --no-pager -n 20
-		echo ""
-		echo "检查 charon 可执行文件："
-		ls -la /usr/lib/ipsec/charon 2>/dev/null || echo "❌ /usr/lib/ipsec/charon 不存在"
-		ls -la /usr/sbin/charon 2>/dev/null || echo "❌ /usr/sbin/charon 不存在"
-		return 1
-	fi
-	
-	cd ..
-	echo "=== strongSwan 6.0.2 部署完成 ==="
+	echo "✅ strongSwan 6.0.2 部署完成"
 }
 
 # strongSwan 6.0.2 配置函数 (默认端口)
@@ -376,6 +196,10 @@ strongswan_config_6() {
 
 	# 复制配置文件
 	echo "复制配置文件..."
+	mv /etc/strongswan.conf /etc/strongswan.conf.bak
+	mv /etc/swanctl/swanctl.conf /etc/swanctl/swanctl.conf.bak
+	rm /etc/strongswan.conf
+	rm /etc/swanctl/swanctl.conf
 	sudo cp ../strongswan_6.0_conf/strongswan.conf.simple /etc/strongswan.conf
 	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl/swanctl.conf
 	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl.conf
@@ -384,37 +208,16 @@ strongswan_config_6() {
 	echo "替换服务器IP..."
 	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl/swanctl.conf
 	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl.conf
-	
-	# 创建必要的目录
-	echo "创建必要的目录..."
-	sudo mkdir -p /var/log/strongswan
-	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
-	sudo mkdir -p /var/run/charon
-	
-	# 设置权限
-	echo "设置权限..."
-	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
-	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
-	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 
-	# 重新加载 systemd 配置
-	echo "重新加载 systemd 配置..."
-	sudo systemctl daemon-reload
 
-	# 停止旧服务并清理
-	echo "停止旧服务并清理..."
-	sudo systemctl stop strongswan 2>/dev/null || true
-	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
-	sudo pkill -f charon 2>/dev/null || true
-	sudo rm -f /var/run/charon.vici 2>/dev/null || true
-	sudo rm -f /var/run/charon/* 2>/dev/null || true
-	sleep 2
 
-	# 启动服务以验证配置
-	echo "启动服务验证配置..."
-	sudo systemctl start strongswan
-	sleep 2
-
+	echo "注意：证书文件需要单独运行 caip6 生成"
+	# 加载配置并重启服务
+	echo "加载配置..."
+	sudo swanctl --load-all
+	echo "重启服务应用配置..."
+	sudo systemctl restart strongswan
+	sudo swanctl --list-conns
 	# 检查服务状态
 	echo "检查服务状态..."
 	if ! sudo systemctl is-active --quiet strongswan; then
@@ -425,173 +228,11 @@ strongswan_config_6() {
 		sudo systemctl status strongswan --no-pager -l
 		return 1
 	fi
-
-	# 创建 updown 脚本
-	sudo mkdir -p /etc/swanctl/scripts
-	sudo tee /etc/swanctl/scripts/updown.sh > /dev/null << 'EOF'
-#!/bin/bash
-# strongSwan updown script for 6.0.2
-case "$PLUTO_VERB" in
-    up-client)
-        # 客户端连接建立
-        ;;
-    down-client)
-        # 客户端连接断开
-        ;;
-esac
-EOF
-	sudo chmod +x /etc/swanctl/scripts/updown.sh
-
-	# 复制 swanctl.conf 并替换 IP
-	echo "复制 swanctl.conf 并替换 IP..."
-	sudo cp ../strongswan_6.0_conf/swanctl.conf /tmp/swanctl.conf
-	# 使用 sed 进行字符串替换
-	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /tmp/swanctl.conf
-	# 验证替换结果
-	echo "验证替换结果："
-	sudo grep -n "{{SERVER_IP}}" /tmp/swanctl.conf || echo "IP 替换成功"
-	sudo cp /tmp/swanctl.conf /etc/swanctl/swanctl.conf
-	sudo cp /tmp/swanctl.conf /etc/swanctl.conf
-	sudo rm /tmp/swanctl.conf
-
-	# 注意：证书文件需要单独运行 caip6 生成
-
-	# 加载配置并重启服务
-	echo "加载配置..."
-	sudo swanctl --load-all
-
-	echo "重启服务应用配置..."
-	sudo systemctl restart strongswan
-
 	echo "✅ strongSwan 6.0.2 配置完成！"
 	echo "检查配置：sudo swanctl --list-conns"
 	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
 	echo "=== 配置完成 ==="
 }
-
-
-# strongSwan 6.0.2 完整配置函数 - 一键完成所有配置
-strongswan_config_complete() {
-	echo "=== 开始配置 strongSwan 6.0.2 完整配置 ==="
-	cd ${WORKDIR}/myconf/shell
-	
-	# 获取服务器IP
-	SERVER_IP=$(get_ip)
-	if [ -z "$SERVER_IP" ]; then
-		echo "❌ 无法获取服务器IP地址"
-		return 1
-	fi
-	echo "服务器IP: $SERVER_IP"
-	
-	# 1. 停止服务并清理
-	echo "1. 停止服务并清理..."
-	# 使用更安全的方式停止服务
-	sudo systemctl stop strongswan 2>/dev/null || true
-	# 使用 pgrep 检查进程是否存在，然后使用 pkill
-	if pgrep -f charon >/dev/null 2>&1; then
-		sudo pkill -f charon 2>/dev/null || true
-		sleep 1
-		# 如果还有进程，强制杀死
-		if pgrep -f charon >/dev/null 2>&1; then
-			sudo pkill -9 -f charon 2>/dev/null || true
-		fi
-	fi
-	if pgrep -f strongswan >/dev/null 2>&1; then
-		sudo pkill -f strongswan 2>/dev/null || true
-		sleep 1
-		if pgrep -f strongswan >/dev/null 2>&1; then
-			sudo pkill -9 -f strongswan 2>/dev/null || true
-		fi
-	fi
-	sudo rm -f /var/run/charon.vici
-	sudo rm -f /var/run/charon/*
-	sudo rm -f /var/lock/charon.lock
-	sudo rm -f /var/run/charon.pid
-	sudo systemctl reset-failed strongswan 2>/dev/null || true
-	sleep 2
-	
-	# 2. 修复服务配置权限问题
-	echo "2. 修复服务配置权限问题..."
-	sudo cp /etc/systemd/system/strongswan.service /etc/systemd/system/strongswan.service.bak 2>/dev/null || true
-	sudo sed -i 's/NoNewPrivileges=true/#NoNewPrivileges=true/' /etc/systemd/system/strongswan.service 2>/dev/null || true
-	sudo sed -i 's/PrivateTmp=true/#PrivateTmp=true/' /etc/systemd/system/strongswan.service 2>/dev/null || true
-	sudo sed -i 's/User=strongswan/#User=strongswan/' /etc/systemd/system/strongswan.service 2>/dev/null || true
-	sudo sed -i 's/Group=strongswan/#Group=strongswan/' /etc/systemd/system/strongswan.service 2>/dev/null || true
-	sudo systemctl daemon-reload
-	
-	# 3. 复制配置文件
-	echo "3. 复制配置文件..."
-	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl/swanctl.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl.conf
-	
-	# 4. 替换服务器IP
-	echo "4. 替换服务器IP..."
-	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl/swanctl.conf
-	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl.conf
-	
-	# 5. 创建必要的目录
-	echo "5. 创建必要的目录..."
-	sudo mkdir -p /var/log/strongswan
-	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
-	sudo mkdir -p /var/run/charon
-	
-	# 6. 设置权限
-	echo "6. 设置权限..."
-	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
-	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
-	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
-	
-	# 7. 启动服务
-	echo "7. 启动服务..."
-	sudo systemctl start strongswan
-	sleep 5
-	
-	# 8. 检查服务状态
-	echo "8. 检查服务状态..."
-	if sudo systemctl is-active --quiet strongswan; then
-		echo "✅ strongSwan 6.0.2 服务启动成功！"
-		
-		# 9. 加载连接配置
-		echo "9. 加载连接配置..."
-		sudo swanctl --load-all
-		
-		# 10. 检查连接配置
-		echo "10. 检查连接配置..."
-		sudo swanctl --list-conns
-		
-		echo ""
-		echo "✅ strongSwan 6.0.2 完整配置成功！"
-		echo "配置信息："
-		echo "- 服务状态：运行中"
-		echo "- 包含 radius 和 radius-3 两个连接"
-		echo "- 使用 EAP-RADIUS 认证"
-		echo "- 服务器IP: $SERVER_IP"
-		echo ""
-		echo "管理命令："
-		echo "查看连接：sudo swanctl --list-conns"
-		echo "查看日志：sudo journalctl -u strongswan -f"
-		echo "重新加载：sudo swanctl --load-all"
-	else
-		echo "❌ 服务启动失败，请检查配置"
-		echo "服务日志："
-		sudo systemctl status strongswan --no-pager -l
-		echo "详细日志："
-		sudo journalctl -u strongswan --no-pager -n 20
-		return 1
-	fi
-	
-	echo "=== 完整配置完成 ==="
-}
-
-# 注意：strongswan_config_port_6 函数已删除，因为与 strongswan_config_6 功能完全相同
-
-
-
-
-
-
-
 #ca setup
 init_ca()
 {
@@ -963,7 +604,7 @@ if [ $# != 0 ]; then
 
             # strongSwan 6.0.2 (新版本，安全优化)
             strongswan6)     strongswan_setup_6;;
-            strongswanconf6) strongswan_config_complete;;
+            strongswanconf6) strongswan_config_6;;
             
             
             # 证书和网络

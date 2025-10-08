@@ -163,7 +163,15 @@ strongswan_setup_6() {
 		libsystemd-dev \
 		libiptc-dev \
 		libip4tc-dev \
-		libip6tc-dev
+		libip6tc-dev \
+		libpam0g-dev \
+		libmysqlclient-dev \
+		libsqlite3-dev \
+		libldap2-dev \
+		libsoup2.4-dev \
+		libunbound-dev \
+		libcharon-extra-plugins \
+		libstrongswan-extra-plugins
 
 	# 下载 strongSwan 6.0.2
 	echo "下载 strongSwan 6.0.2..."
@@ -199,11 +207,54 @@ strongswan_setup_6() {
 		--enable-eap-mschapv2 \
 		--enable-eap-tls \
 		--enable-eap-ttls \
+		--enable-eap-peap \
+		--enable-eap-aka \
+		--enable-eap-aka-3gpp2 \
+		--enable-eap-gtc \
+		--enable-eap-sim \
+		--enable-eap-simaka-pseudonym \
+		--enable-eap-simaka-reauth \
+		--enable-eap-tnc \
 		--enable-vici \
 		--enable-swanctl \
 		--enable-systemd \
 		--enable-kernel-netlink \
-		--enable-kernel-libipsec
+		--enable-kernel-libipsec \
+		--enable-forecast \
+		--enable-fips-prf \
+		--enable-gmp \
+		--enable-md4 \
+		--enable-md5 \
+		--enable-mgf1 \
+		--enable-pkcs12 \
+		--enable-random \
+		--enable-rc2 \
+		--enable-sha1 \
+		--enable-sha2 \
+		--enable-tnc-tnccs \
+		--enable-nonce \
+		--enable-x509 \
+		--enable-revocation \
+		--enable-constraints \
+		--enable-pubkey \
+		--enable-pkcs1 \
+		--enable-pkcs7 \
+		--enable-pgp \
+		--enable-dnskey \
+		--enable-sshkey \
+		--enable-pem \
+		--enable-openssl \
+		--enable-pkcs8 \
+		--enable-xcbc \
+		--enable-cmac \
+		--enable-kdf \
+		--enable-drbg \
+		--enable-attr \
+		--enable-resolve \
+		--enable-socket-default \
+		--enable-updown \
+		--enable-xauth-generic \
+		--enable-counters
 
 	if [ $? -ne 0 ]; then
 		echo "配置失败，请检查依赖是否完整安装"
@@ -253,7 +304,7 @@ After=network.target
 Type=notify
 User=strongswan
 Group=strongswan
-ExecStart=/usr/sbin/charon --use-syslog
+ExecStart=/usr/lib/ipsec/charon --use-syslog
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=5s
@@ -280,16 +331,21 @@ EOF
 	sleep 3
 	
 	# 检查服务状态
-	if sudo ipsec status >/dev/null 2>&1; then
+	if sudo systemctl is-active --quiet strongswan; then
 		echo "✅ strongSwan 6.0.2 部署成功！"
 		echo "服务状态："
 		sudo systemctl status strongswan --no-pager -l
+		echo ""
+		echo "验证安装："
+		echo "swanctl 版本：$(swanctl --version 2>/dev/null | head -1 || echo 'unknown')"
+		echo "charon 位置：$(which charon 2>/dev/null || echo '/usr/lib/ipsec/charon')"
 	else
 		echo "❌ 服务启动失败，请检查日志："
 		sudo journalctl -u strongswan --no-pager -n 20
 		echo ""
-		echo "配置文件检查："
-		sudo swanctl --load-all 2>&1 || echo "配置验证失败"
+		echo "检查 charon 可执行文件："
+		ls -la /usr/lib/ipsec/charon 2>/dev/null || echo "❌ /usr/lib/ipsec/charon 不存在"
+		ls -la /usr/sbin/charon 2>/dev/null || echo "❌ /usr/sbin/charon 不存在"
 		return 1
 	fi
 	
@@ -415,6 +471,7 @@ strongswan_config_complete() {
 	sudo systemctl stop strongswan 2>/dev/null || true
 	sudo pkill -f charon 2>/dev/null || true
 	sudo pkill -f strongswan 2>/dev/null || true
+	echo "1. 停止服务并清理..."
 	sudo rm -f /var/run/charon.vici
 	sudo rm -f /var/run/charon/*
 	sudo rm -f /var/lock/charon.lock

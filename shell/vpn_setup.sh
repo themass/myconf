@@ -314,14 +314,25 @@ strongswan_config_6() {
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	
+	# 创建必要的目录
+	echo "创建必要的目录..."
+	sudo mkdir -p /var/log/strongswan
+	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl 2>/dev/null || true
+	
 	# 重新加载 systemd 配置
 	echo "重新加载 systemd 配置..."
 	sudo systemctl daemon-reload
 	
+	# 停止可能存在的旧服务
+	echo "停止旧服务..."
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
+	
 	# 启动服务以验证配置
 	echo "启动服务验证配置..."
 	sudo systemctl start strongswan
-	sleep 2
+	sleep 3
 	
 	# 检查服务状态
 	echo "检查服务状态..."
@@ -331,6 +342,8 @@ strongswan_config_6() {
 		cat /etc/strongswan.conf
 		echo "服务日志："
 		sudo systemctl status strongswan --no-pager -l
+		echo "详细日志："
+		sudo journalctl -u strongswan --no-pager -n 20
 		return 1
 	fi
 	
@@ -364,6 +377,79 @@ strongswan_config_6() {
 	echo "检查配置：sudo swanctl --list-conns"
 	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
 	echo "=== 配置完成 ==="
+}
+
+# strongSwan 6.0.2 最小配置函数
+strongswan_config_minimal() {
+	echo "=== 开始配置 strongSwan 6.0.2 最小配置 ==="
+	cd ${WORKDIR}/myconf/shell
+	
+	# 获取服务器IP
+	SERVER_IP=$(get_ip)
+	if [ -z "$SERVER_IP" ]; then
+		echo "❌ 无法获取服务器IP地址"
+		return 1
+	fi
+	echo "服务器IP: $SERVER_IP"
+	
+	# 复制配置文件
+	echo "复制配置文件..."
+	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.minimal /etc/swanctl/swanctl.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.minimal /etc/swanctl.conf
+	
+	# 替换服务器IP
+	echo "替换服务器IP..."
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl/swanctl.conf
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl.conf
+	
+	# 创建必要的目录
+	echo "创建必要的目录..."
+	sudo mkdir -p /var/log/strongswan
+	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl 2>/dev/null || true
+	
+	# 重新加载 systemd 配置
+	echo "重新加载 systemd 配置..."
+	sudo systemctl daemon-reload
+	
+	# 停止可能存在的旧服务
+	echo "停止旧服务..."
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
+	
+	# 启动服务以验证配置
+	echo "启动服务验证配置..."
+	sudo systemctl start strongswan
+	sleep 3
+	
+	# 检查服务状态
+	echo "检查服务状态..."
+	if sudo systemctl is-active --quiet strongswan; then
+		echo "✅ strongSwan 6.0.2 最小配置部署成功！"
+		echo "服务状态："
+		sudo systemctl status strongswan --no-pager -l
+		echo ""
+		echo "配置信息："
+		echo "- 使用与 5.6.3 相同的多种加密算法"
+		echo "- 支持 aes256-sha384-ecp384, aes128-sha1-modp2048 等多种算法"
+		echo "- 兼容性最好，适合测试和调试"
+		echo "- 仍然需要完整的证书和RADIUS认证"
+		echo ""
+		echo "检查配置：sudo swanctl --list-conns"
+		echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
+	else
+		echo "❌ 服务启动失败，请检查配置"
+		echo "配置文件内容："
+		cat /etc/strongswan.conf
+		echo "服务日志："
+		sudo systemctl status strongswan --no-pager -l
+		echo "详细日志："
+		sudo journalctl -u strongswan --no-pager -n 20
+		return 1
+	fi
+	
+	echo "=== 最小配置完成 ==="
 }
 
 
@@ -691,6 +777,7 @@ usage()
     echo "=== strongSwan 6.0.2 (新版本) ==="
     echo "strongswan6    Setup strongswan 6.0.2"
     echo "strongswanconf6 Setup strongswan 6.0.2 config (基于 5.6.3 配置)"
+    echo "strongswanconf_minimal Setup strongswan 6.0.2 最小配置 (测试用)"
     echo ""
     echo ""
     echo "=== 证书和网络 ==="
@@ -712,6 +799,11 @@ usage()
     echo "部署 strongSwan 6.0.2 (基于 5.6.3 配置)："
     echo "  bash vpn_setup.sh strongswan6"
     echo "  bash vpn_setup.sh strongswanconf6"
+    echo "  bash vpn_setup.sh caip6"
+    echo ""
+    echo "部署 strongSwan 6.0.2 最小配置 (测试用)："
+    echo "  bash vpn_setup.sh strongswan6"
+    echo "  bash vpn_setup.sh strongswanconf_minimal"
     echo "  bash vpn_setup.sh caip6"
     echo ""
     echo "部署 strongSwan 5.6.3 默认配置："
@@ -741,6 +833,7 @@ if [ $# != 0 ]; then
             # strongSwan 6.0.2 (新版本)
             strongswan6)     strongswan_setup_6;;
             strongswanconf6) strongswan_config_6;;
+            strongswanconf_minimal) strongswan_config_minimal;;
             
             
             # 证书和网络

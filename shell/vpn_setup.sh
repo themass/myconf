@@ -200,9 +200,9 @@ strongswan_config_6() {
 	mv /etc/swanctl/swanctl.conf /etc/swanctl/swanctl.conf.bak
 	rm /etc/strongswan.conf
 	rm /etc/swanctl/swanctl.conf
-	sudo cp ../strongswan_6.0_conf/strongswan.conf.simple /etc/strongswan.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl/swanctl.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl.conf
+	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl/swanctl.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl.conf
 	
 	# 替换服务器IP
 	echo "替换服务器IP..."

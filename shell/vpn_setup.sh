@@ -327,11 +327,13 @@ strongswan_config_6() {
 	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
 	sudo mkdir -p /var/run/strongswan
 	sudo mkdir -p /var/lib/strongswan
+	sudo mkdir -p /var/run/charon
 	
 	# 设置权限
 	echo "设置权限..."
-	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan 2>/dev/null || true
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan /var/run/charon 2>/dev/null || true
 	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan
+	sudo chmod 750 /var/run/charon
 	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 	
 	# 重新加载 systemd 配置
@@ -423,11 +425,13 @@ strongswan_config_minimal() {
 	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
 	sudo mkdir -p /var/run/strongswan
 	sudo mkdir -p /var/lib/strongswan
+	sudo mkdir -p /var/run/charon
 	
 	# 设置权限
 	echo "设置权限..."
-	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan 2>/dev/null || true
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan /var/run/charon 2>/dev/null || true
 	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan
+	sudo chmod 750 /var/run/charon
 	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 	
 	# 重新加载 systemd 配置
@@ -471,6 +475,80 @@ strongswan_config_minimal() {
 	fi
 	
 	echo "=== 最小配置完成 ==="
+}
+
+# strongSwan 6.0.2 调试配置函数
+strongswan_config_debug() {
+	echo "=== 开始配置 strongSwan 6.0.2 调试配置 ==="
+	cd ${WORKDIR}/myconf/shell
+	
+	# 获取服务器IP
+	SERVER_IP=$(get_ip)
+	if [ -z "$SERVER_IP" ]; then
+		echo "❌ 无法获取服务器IP地址"
+		return 1
+	fi
+	echo "服务器IP: $SERVER_IP"
+	
+	# 复制调试配置文件
+	echo "复制调试配置文件..."
+	sudo cp ../strongswan_6.0_conf/strongswan.conf.debug /etc/strongswan.conf
+	
+	# 创建必要的目录
+	echo "创建必要的目录..."
+	sudo mkdir -p /var/log/strongswan
+	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
+	sudo mkdir -p /var/run/strongswan
+	sudo mkdir -p /var/lib/strongswan
+	sudo mkdir -p /var/run/charon
+	
+	# 设置权限
+	echo "设置权限..."
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan /var/run/charon 2>/dev/null || true
+	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan
+	sudo chmod 750 /var/run/charon
+	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
+	
+	# 重新加载 systemd 配置
+	echo "重新加载 systemd 配置..."
+	sudo systemctl daemon-reload
+	
+	# 停止可能存在的旧服务
+	echo "停止旧服务..."
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
+	
+	# 启动服务以验证配置
+	echo "启动服务验证配置..."
+	sudo systemctl start strongswan
+	sleep 3
+	
+	# 检查服务状态
+	echo "检查服务状态..."
+	if sudo systemctl is-active --quiet strongswan; then
+		echo "✅ strongSwan 6.0.2 调试配置部署成功！"
+		echo "服务状态："
+		sudo systemctl status strongswan --no-pager -l
+		echo ""
+		echo "配置信息："
+		echo "- 使用最小化插件配置"
+		echo "- 暂时禁用 EAP-RADIUS 插件"
+		echo "- 启用详细日志记录"
+		echo ""
+		echo "查看详细日志：sudo journalctl -u strongswan -f"
+		echo "查看配置文件：cat /etc/strongswan.conf"
+	else
+		echo "❌ 服务启动失败，请检查配置"
+		echo "配置文件内容："
+		cat /etc/strongswan.conf
+		echo "服务日志："
+		sudo systemctl status strongswan --no-pager -l
+		echo "详细日志："
+		sudo journalctl -u strongswan --no-pager -n 20
+		return 1
+	fi
+	
+	echo "=== 调试配置完成 ==="
 }
 
 
@@ -799,6 +877,7 @@ usage()
     echo "strongswan6    Setup strongswan 6.0.2"
     echo "strongswanconf6 Setup strongswan 6.0.2 config (基于 5.6.3 配置)"
     echo "strongswanconf_minimal Setup strongswan 6.0.2 最小配置 (测试用)"
+    echo "strongswanconf_debug Setup strongswan 6.0.2 调试配置 (排查问题用)"
     echo ""
     echo ""
     echo "=== 证书和网络 ==="
@@ -826,6 +905,9 @@ usage()
     echo "  bash vpn_setup.sh strongswan6"
     echo "  bash vpn_setup.sh strongswanconf_minimal"
     echo "  bash vpn_setup.sh caip6"
+    echo ""
+    echo "如果启动失败，使用调试配置："
+    echo "  bash vpn_setup.sh strongswanconf_debug"
     echo ""
     echo "部署 strongSwan 5.6.3 默认配置："
     echo "  bash vpn_setup.sh strongswan"
@@ -855,6 +937,7 @@ if [ $# != 0 ]; then
             strongswan6)     strongswan_setup_6;;
             strongswanconf6) strongswan_config_6;;
             strongswanconf_minimal) strongswan_config_minimal;;
+            strongswanconf_debug) strongswan_config_debug;;
             
             
             # 证书和网络

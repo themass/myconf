@@ -1,9 +1,10 @@
-# strongSwan 6.0.2 配置文件 - 基于官方文档
+# strongSwan 6.0.2 调试配置 - 最小化配置
+# 用于排查启动问题
 
 charon {
     # 基础设置
     load_modular = yes
-    threads = 16
+    threads = 4
     
     # 端口设置
     port = 500
@@ -13,21 +14,11 @@ charon {
     retransmit_tries = 3
     retransmit_timeout = 4.0
     
-    # 重密钥设置
-    rekey_time = 4h
-    rekey_bytes = 100m
-    rekey_packets = 1000000
-    reauth_time = 0
-    
-    # 其他设置
-    close_action = none
-    send_vendor_id = yes
-    
-    # 插件配置
+    # 插件配置 - 最小化
     plugins {
         include strongswan.d/charon/*.conf
         
-        # 启用必要的插件
+        # 只启用必要的插件
         attr {
             load = yes
         }
@@ -35,9 +26,6 @@ charon {
             load = yes
         }
         kernel-netlink {
-            load = yes
-        }
-        kernel-libipsec {
             load = yes
         }
         socket-default {
@@ -51,28 +39,28 @@ charon {
             load = no
         }
         
-        # EAP-RADIUS 插件
-        eap-radius {
-            accounting = yes
-            servers {
-                radiusServer {
-                    secret = FreeVPN@vpn5296
-                    address = radius.sspacee.com
-                    auth_port = 1812
-                    acct_port = 1813
-                }
-            }
-        }
+        # 暂时禁用 EAP-RADIUS 插件进行测试
+        # eap-radius {
+        #     accounting = yes
+        #     servers {
+        #         radiusServer {
+        #             secret = FreeVPN@vpn5296
+        #             address = radius.sspacee.com
+        #             auth_port = 1812
+        #             acct_port = 1813
+        #         }
+        #     }
+        # }
     }
     
-    # 日志配置
+    # 日志配置 - 详细日志
     filelog {
         charon {
             path = /var/log/strongswan.log
             time_format = %b %e %T
             ike_name = yes
             append = no
-            default = 1
+            default = 2
             flush_line = yes
         }
     }

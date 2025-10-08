@@ -485,15 +485,29 @@ strongswan_config_complete() {
 	
 	# 1. 停止服务并清理
 	echo "1. 停止服务并清理..."
-	# 使用超时避免卡死
-	timeout 10 sudo systemctl stop strongswan 2>/dev/null || true
-	timeout 5 sudo pkill -f charon 2>/dev/null || true
-	timeout 5 sudo pkill -f strongswan 2>/dev/null || true
+	# 使用更安全的方式停止服务
+	sudo systemctl stop strongswan 2>/dev/null || true
+	# 使用 pgrep 检查进程是否存在，然后使用 pkill
+	if pgrep -f charon >/dev/null 2>&1; then
+		sudo pkill -f charon 2>/dev/null || true
+		sleep 1
+		# 如果还有进程，强制杀死
+		if pgrep -f charon >/dev/null 2>&1; then
+			sudo pkill -9 -f charon 2>/dev/null || true
+		fi
+	fi
+	if pgrep -f strongswan >/dev/null 2>&1; then
+		sudo pkill -f strongswan 2>/dev/null || true
+		sleep 1
+		if pgrep -f strongswan >/dev/null 2>&1; then
+			sudo pkill -9 -f strongswan 2>/dev/null || true
+		fi
+	fi
 	sudo rm -f /var/run/charon.vici
 	sudo rm -f /var/run/charon/*
 	sudo rm -f /var/lock/charon.lock
 	sudo rm -f /var/run/charon.pid
-	timeout 5 sudo systemctl reset-failed strongswan 2>/dev/null || true
+	sudo systemctl reset-failed strongswan 2>/dev/null || true
 	sleep 2
 	
 	# 2. 修复服务配置权限问题

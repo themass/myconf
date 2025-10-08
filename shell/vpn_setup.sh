@@ -242,13 +242,17 @@ strongswan_config_6() {
 
 
 	echo "注意：证书文件需要单独运行 caip6 生成"
-	# 加载配置并重启服务
-	echo "加载配置..."
-	sudo swanctl --load-all
+	# 重启服务应用配置
 	echo "重启服务应用配置..."
 	sudo systemctl daemon-reload
 	sudo systemctl restart strongswan &
+	sleep 3
+	# 加载配置
+	echo "加载配置..."
+	sudo swanctl --load-all
 	sleep 2
+	# 验证配置
+	echo "验证配置..."
 	sudo swanctl --list-conns
 	netstat -ulpn
 
@@ -466,7 +470,14 @@ caip6() {
 	# 重启服务以应用证书
 	echo "重启服务应用证书..."
 	sudo systemctl restart strongswan &
+	sleep 3
+	# 加载配置
+	echo "加载配置..."
+	sudo swanctl --load-all
 	sleep 2
+	# 验证证书
+	echo "验证证书..."
+	sudo swanctl --list-certs
 
 	echo "✅ strongSwan 6.0.2 证书生成完成！"
 	echo "证书位置：/etc/swanctl/x509/ 和 /etc/swanctl/private/"

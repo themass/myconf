@@ -3,7 +3,7 @@
 #http://it.zhaozhao.info/archives/41127
 #https://segmentfault.com/a/1190000002540601
 #http://www.cnblogs.com/hyzhou/category/336618.html
-WORKDIR=/root/work
+WORKDIR=/Users/liguoqing/work
 TMP_HOME=/root/soft
 PWD=`pwd`
 #ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $1}'|tr -d "addr:"`
@@ -313,12 +313,26 @@ strongswan_config_6() {
 	# 复制配置文件
 	echo "复制配置文件..."
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl/swanctl.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl.conf
+	
+	# 替换服务器IP
+	echo "替换服务器IP..."
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl/swanctl.conf
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl.conf
 	
 	# 创建必要的目录
 	echo "创建必要的目录..."
 	sudo mkdir -p /var/log/strongswan
 	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
-	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl 2>/dev/null || true
+	sudo mkdir -p /var/run/strongswan
+	sudo mkdir -p /var/lib/strongswan
+	
+	# 设置权限
+	echo "设置权限..."
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan 2>/dev/null || true
+	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan
+	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 	
 	# 重新加载 systemd 配置
 	echo "重新加载 systemd 配置..."
@@ -407,7 +421,14 @@ strongswan_config_minimal() {
 	echo "创建必要的目录..."
 	sudo mkdir -p /var/log/strongswan
 	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
-	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl 2>/dev/null || true
+	sudo mkdir -p /var/run/strongswan
+	sudo mkdir -p /var/lib/strongswan
+	
+	# 设置权限
+	echo "设置权限..."
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan 2>/dev/null || true
+	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/strongswan /var/lib/strongswan
+	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 	
 	# 重新加载 systemd 配置
 	echo "重新加载 systemd 配置..."

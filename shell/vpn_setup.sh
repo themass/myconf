@@ -138,7 +138,32 @@ strongswan_setup_6() {
 	echo "=== 部署 strongSwan 6.0.2 ==="
 	cd ${TMP_HOME}
 	
-	# 安装依赖
+	# 安装依赖 - Ubuntu 18.04 完整版本
+	sudo apt-get update
+	sudo apt-get install -y \
+		build-essential \
+		libssl-dev \
+		libgmp-dev \
+		libcurl4-openssl-dev \
+		pkg-config \
+		autotools-dev \
+		libtool \
+		autoconf \
+		automake \
+		libsystemd-dev \
+		libiptc-dev \
+		libip4tc-dev \
+		libip6tc-dev \
+		libpam0g-dev \
+		libmysqlclient-dev \
+		libsqlite3-dev \
+		libldap2-dev \
+		libsoup2.4-dev \
+		libunbound-dev \
+		libcharon-extra-plugins \
+		libstrongswan-extra-plugins \
+		libstrongswan-standard-plugins \
+		strongswan-dev
 
 	# 下载源码
 	if [ ! -d "strongswan-6.0.2" ]; then
@@ -217,6 +242,8 @@ strongswan_config_6() {
 	sudo systemctl daemon-reload
 	sudo systemctl restart strongswan
 	sudo swanctl --list-conns
+	netstat -ulpn
+
 	# 检查服务状态
 	echo "检查服务状态..."
 	if ! sudo systemctl is-active --quiet strongswan; then

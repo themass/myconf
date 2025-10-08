@@ -248,8 +248,6 @@ strongswan_config_6() {
 	echo "检查服务状态..."
 	if ! sudo systemctl is-active --quiet strongswan; then
 		echo "❌ 服务启动失败，请检查配置"
-		echo "配置文件内容："
-		cat /etc/strongswan.conf
 		echo "服务日志："
 		sudo systemctl status strongswan --no-pager -l
 		return 1

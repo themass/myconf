@@ -312,11 +312,39 @@ strongswan_config_6() {
 
 	# 复制配置文件
 	echo "复制配置文件..."
-	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+	sudo cp ../strongswan_6.0_conf/strongswan.conf.simple /etc/strongswan.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl/swanctl.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl.conf
+	
+	# 替换服务器IP
+	echo "替换服务器IP..."
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl/swanctl.conf
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl.conf
+	
+	# 创建必要的目录
+	echo "创建必要的目录..."
+	sudo mkdir -p /var/log/strongswan
+	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
+	sudo mkdir -p /var/run/charon
+	
+	# 设置权限
+	echo "设置权限..."
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
+	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
+	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 
 	# 重新加载 systemd 配置
 	echo "重新加载 systemd 配置..."
 	sudo systemctl daemon-reload
+
+	# 停止旧服务并清理
+	echo "停止旧服务并清理..."
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
+	sudo pkill -f charon 2>/dev/null || true
+	sudo rm -f /var/run/charon.vici 2>/dev/null || true
+	sudo rm -f /var/run/charon/* 2>/dev/null || true
+	sleep 2
 
 	# 启动服务以验证配置
 	echo "启动服务验证配置..."

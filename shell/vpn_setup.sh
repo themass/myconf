@@ -313,7 +313,7 @@ strongswan_config_6() {
 	
 	# 复制配置文件
 	echo "复制配置文件..."
-	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+	sudo cp ../strongswan_6.0_conf/strongswan.conf.simple /etc/strongswan.conf
 	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl/swanctl.conf
 	sudo cp ../strongswan_6.0_conf/swanctl.conf.simple /etc/swanctl.conf
 	

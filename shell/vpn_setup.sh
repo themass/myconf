@@ -468,16 +468,16 @@ strongswan_config_complete() {
 	
 	# 1. 停止服务并清理
 	echo "1. 停止服务并清理..."
-	sudo systemctl stop strongswan 2>/dev/null || true
-	sudo pkill -f charon 2>/dev/null || true
-	sudo pkill -f strongswan 2>/dev/null || true
-	echo "1. 停止服务并清理..."
-	sudo rm -f /var/run/charon.vici
-	sudo rm -f /var/run/charon/*
-	sudo rm -f /var/lock/charon.lock
-	sudo rm -f /var/run/charon.pid
-	sudo systemctl reset-failed strongswan 2>/dev/null || true
-	sleep 3
+#	sudo systemctl stop strongswan 2>/dev/null || true
+#	sudo pkill -f charon 2>/dev/null || true
+#	sudo pkill -f strongswan 2>/dev/null || true
+#	echo "1. 停止服务并清理..."
+#	sudo rm -f /var/run/charon.vici
+#	sudo rm -f /var/run/charon/*
+#	sudo rm -f /var/lock/charon.lock
+#	sudo rm -f /var/run/charon.pid
+#	sudo systemctl reset-failed strongswan 2>/dev/null || true
+#	sleep 3
 	
 	# 2. 修复服务配置权限问题
 	echo "2. 修复服务配置权限问题..."

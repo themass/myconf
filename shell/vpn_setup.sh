@@ -175,20 +175,23 @@ strongswan_setup_6() {
 
 	# 下载 strongSwan 6.0.2
 	echo "下载 strongSwan 6.0.2..."
-	if [ ! -f "strongswan-6.0.2.tar.bz2" ]; then
-		wget https://download.strongswan.org/strongswan-6.0.2.tar.bz2 --no-check-certificate
-		if [ $? -ne 0 ]; then
+	if [ ! -d "strongswan-6.0.2" ]; then
+		if [ ! -f "strongswan-6.0.2.tar.bz2" ]; then
+			wget https://download.strongswan.org/strongswan-6.0.2.tar.bz2 --no-check-certificate
+		fi
+		
+		if [ -f "strongswan-6.0.2.tar.bz2" ]; then
+			tar -jxvf strongswan-6.0.2.tar.bz2
+		else
 			echo "官方源下载失败，尝试备用源..."
 			wget https://github.com/strongswan/strongswan/archive/refs/tags/6.0.2.tar.gz --no-check-certificate
 			if [ $? -eq 0 ]; then
 				tar -xzf 6.0.2.tar.gz
-				mv strongswan-6.0.2 strongswan-6.0.2
+				mv strongswan-strongswan-6.0.2 strongswan-6.0.2
 			else
 				echo "下载失败，请检查网络连接"
 				return 1
 			fi
-		else
-			tar -jxvf strongswan-6.0.2.tar.bz2
 		fi
 	fi
 
@@ -418,18 +421,27 @@ strongswan_config_6() {
 		return 1
 	fi
 
-	# 复制 updown 脚本
+	# 创建 updown 脚本
 	sudo mkdir -p /etc/swanctl/scripts
-	sudo cp ../strongswan_6.0_conf/updown.sh /etc/swanctl/scripts/
+	sudo tee /etc/swanctl/scripts/updown.sh > /dev/null << 'EOF'
+#!/bin/bash
+# strongSwan updown script for 6.0.2
+case "$PLUTO_VERB" in
+    up-client)
+        # 客户端连接建立
+        ;;
+    down-client)
+        # 客户端连接断开
+        ;;
+esac
+EOF
 	sudo chmod +x /etc/swanctl/scripts/updown.sh
 
-	# 复制 swanctl.conf 并替换 IP (包含端口配置)
-	# 使用更安全的方式替换 IP 地址
-	sudo cp ../strongswan_6.0_conf/swanctl.conf.template /tmp/swanctl.conf
-	# 使用 perl 进行字符串替换，避免特殊字符问题
-	echo "原始 IP: $SERVER_IP"
-	# 使用 perl 的字符串替换，转义特殊字符
-	sudo perl -pi -e "s/\{\{SERVER_IP\}\}/$SERVER_IP/g" /tmp/swanctl.conf
+	# 复制 swanctl.conf 并替换 IP
+	echo "复制 swanctl.conf 并替换 IP..."
+	sudo cp ../strongswan_6.0_conf/swanctl.conf /tmp/swanctl.conf
+	# 使用 sed 进行字符串替换
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /tmp/swanctl.conf
 	# 验证替换结果
 	echo "验证替换结果："
 	sudo grep -n "{{SERVER_IP}}" /tmp/swanctl.conf || echo "IP 替换成功"
@@ -468,16 +480,15 @@ strongswan_config_complete() {
 	
 	# 1. 停止服务并清理
 	echo "1. 停止服务并清理..."
-#	sudo systemctl stop strongswan 2>/dev/null || true
-#	sudo pkill -f charon 2>/dev/null || true
-#	sudo pkill -f strongswan 2>/dev/null || true
-#	echo "1. 停止服务并清理..."
-#	sudo rm -f /var/run/charon.vici
-#	sudo rm -f /var/run/charon/*
-#	sudo rm -f /var/lock/charon.lock
-#	sudo rm -f /var/run/charon.pid
-#	sudo systemctl reset-failed strongswan 2>/dev/null || true
-#	sleep 3
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo pkill -f charon 2>/dev/null || true
+	sudo pkill -f strongswan 2>/dev/null || true
+	sudo rm -f /var/run/charon.vici
+	sudo rm -f /var/run/charon/*
+	sudo rm -f /var/lock/charon.lock
+	sudo rm -f /var/run/charon.pid
+	sudo systemctl reset-failed strongswan 2>/dev/null || true
+	sleep 3
 	
 	# 2. 修复服务配置权限问题
 	echo "2. 修复服务配置权限问题..."

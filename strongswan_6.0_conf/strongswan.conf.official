@@ -1,10 +1,11 @@
-# strongSwan 6.0.2 正确配置 - 完全按照 5.6.3 charon.conf 迁移
+# strongSwan 6.0.2 配置 - 完全按照官方文档语法
 charon {
-    # 6.0.2 中 duplicheck 配置方式不同
+    # DNS 配置
+    dns1 = 8.8.8.8
+    dns2 = 114.114.114.114
+    
+    # 插件配置
     plugins {
-        duplicheck {
-            enable = no
-        }
         eap-radius {
             accounting = yes
             servers {
@@ -18,10 +19,7 @@ charon {
         }
     }
     
-    dns1 = 8.8.8.8
-    dns2 = 114.114.114.114
-    
-    # 日志配置 - 6.0.2 语法
+    # 日志配置
     filelog {
         charon {
             path = /var/log/charon.log
@@ -37,6 +35,7 @@ charon {
         }
     }
     
+    # 系统日志配置
     syslog {
         identifier = charon-custom
         daemon {

@@ -396,6 +396,155 @@ strongswan_config_6() {
 	echo "=== 配置完成 ==="
 }
 
+# strongSwan 6.0.2 最简配置函数 - 完全按照 5.6.3 配置
+strongswan_config_minimal() {
+	echo "=== 开始配置 strongSwan 6.0.2 最简配置 ==="
+	cd ${WORKDIR}/myconf/shell
+	
+	# 复制最简配置文件
+	echo "复制最简配置文件..."
+	sudo cp ../strongswan_6.0_conf/strongswan.conf.minimal /etc/strongswan.conf
+	
+	# 创建必要的目录
+	echo "创建必要的目录..."
+	sudo mkdir -p /var/log/strongswan
+	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
+	sudo mkdir -p /var/run/charon
+	
+	# 设置权限
+	echo "设置权限..."
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
+	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
+	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
+	
+	# 重新加载 systemd 配置
+	echo "重新加载 systemd 配置..."
+	sudo systemctl daemon-reload
+	
+	# 停止旧服务并清理
+	echo "停止旧服务并清理..."
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
+	sudo pkill -f charon 2>/dev/null || true
+	sudo rm -f /var/run/charon.vici 2>/dev/null || true
+	sudo rm -f /var/run/charon/* 2>/dev/null || true
+	sleep 2
+	
+	# 启动服务以验证配置
+	echo "启动服务验证配置..."
+	sudo systemctl start strongswan
+	sleep 3
+	
+	# 检查服务状态
+	echo "检查服务状态..."
+	if sudo systemctl is-active --quiet strongswan; then
+		echo "✅ strongSwan 6.0.2 最简配置成功！"
+		echo "服务状态："
+		sudo systemctl status strongswan --no-pager -l
+		echo ""
+		echo "配置信息："
+		echo "- 完全按照你的 5.6.3 charon.conf 迁移"
+		echo "- 只包含基本的日志配置"
+		echo "- 没有复杂的插件配置"
+		echo ""
+		echo "查看日志：sudo journalctl -u strongswan -f"
+	else
+		echo "❌ 服务启动失败，请检查配置"
+		echo "配置文件内容："
+		cat /etc/strongswan.conf
+		echo "服务日志："
+		sudo systemctl status strongswan --no-pager -l
+		echo "详细日志："
+		sudo journalctl -u strongswan --no-pager -n 20
+		return 1
+	fi
+	
+	echo "=== 最简配置完成 ==="
+}
+
+# strongSwan 6.0.2 正确配置函数 - 完全按照 5.6.3 配置迁移
+strongswan_config_correct() {
+	echo "=== 开始配置 strongSwan 6.0.2 正确配置 ==="
+	cd ${WORKDIR}/myconf/shell
+	
+	# 获取服务器IP
+	SERVER_IP=$(get_ip)
+	if [ -z "$SERVER_IP" ]; then
+		echo "❌ 无法获取服务器IP地址"
+		return 1
+	fi
+	echo "服务器IP: $SERVER_IP"
+	
+	# 复制正确的配置文件
+	echo "复制正确的配置文件..."
+	sudo cp ../strongswan_6.0_conf/strongswan.conf.correct /etc/strongswan.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.correct /etc/swanctl/swanctl.conf
+	sudo cp ../strongswan_6.0_conf/swanctl.conf.correct /etc/swanctl.conf
+	
+	# 替换服务器IP
+	echo "替换服务器IP..."
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl/swanctl.conf
+	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl.conf
+	
+	# 创建必要的目录
+	echo "创建必要的目录..."
+	sudo mkdir -p /var/log/strongswan
+	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
+	sudo mkdir -p /var/run/charon
+	
+	# 设置权限
+	echo "设置权限..."
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
+	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
+	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
+	
+	# 重新加载 systemd 配置
+	echo "重新加载 systemd 配置..."
+	sudo systemctl daemon-reload
+	
+	# 停止旧服务并清理
+	echo "停止旧服务并清理..."
+	sudo systemctl stop strongswan 2>/dev/null || true
+	sudo systemctl stop strongswan-swanctl 2>/dev/null || true
+	sudo pkill -f charon 2>/dev/null || true
+	sudo rm -f /var/run/charon.vici 2>/dev/null || true
+	sudo rm -f /var/run/charon/* 2>/dev/null || true
+	sleep 2
+	
+	# 启动服务以验证配置
+	echo "启动服务验证配置..."
+	sudo systemctl start strongswan
+	sleep 3
+	
+	# 检查服务状态
+	echo "检查服务状态..."
+	if sudo systemctl is-active --quiet strongswan; then
+		echo "✅ strongSwan 6.0.2 正确配置成功！"
+		echo "服务状态："
+		sudo systemctl status strongswan --no-pager -l
+		echo ""
+		echo "配置信息："
+		echo "- 完全按照你的 5.6.3 配置迁移"
+		echo "- 包含 radius 和 radius-3 两个连接"
+		echo "- 使用 EAP-RADIUS 认证"
+		echo "- 保持原有的算法和参数"
+		echo ""
+		echo "检查连接：sudo swanctl --list-conns"
+		echo "查看日志：sudo journalctl -u strongswan -f"
+	else
+		echo "❌ 服务启动失败，请检查配置"
+		echo "配置文件内容："
+		cat /etc/strongswan.conf
+		echo "服务日志："
+		sudo systemctl status strongswan --no-pager -l
+		echo "详细日志："
+		sudo journalctl -u strongswan --no-pager -n 20
+		return 1
+	fi
+	
+	echo "=== 正确配置完成 ==="
+}
+
 # 注意：strongswan_config_port_6 函数已删除，因为与 strongswan_config_6 功能完全相同
 
 
@@ -720,6 +869,8 @@ usage()
     echo "=== strongSwan 6.0.2 (新版本，安全优化) ==="
     echo "strongswan6    Setup strongswan 6.0.2"
     echo "strongswanconf6 Setup strongswan 6.0.2 config (默认端口: 500/4500)"
+    echo "strongswanconf_minimal Setup strongswan 6.0.2 最简配置 (完全按照5.6.3)"
+    echo "strongswanconf_correct Setup strongswan 6.0.2 正确配置 (包含radius连接)"
     echo ""
     echo ""
     echo "=== 证书和网络 ==="
@@ -776,6 +927,8 @@ if [ $# != 0 ]; then
             # strongSwan 6.0.2 (新版本，安全优化)
             strongswan6)     strongswan_setup_6;;
             strongswanconf6) strongswan_config_6;;
+            strongswanconf_minimal) strongswan_config_minimal;;
+            strongswanconf_correct) strongswan_config_correct;;
             
             
             # 证书和网络

@@ -1,0 +1,104 @@
+# strongSwan 6.0.2 正确配置 - 完全按照 5.6.3 ipsec.conf 迁移
+# 包含两个连接：radius 和 radius-3
+
+connections {
+    radius {
+        local_addrs = %any
+        remote_addrs = %any
+        
+        local {
+            auth = pubkey
+            certs = serverCert.pem
+            id = {{SERVER_IP}}
+        }
+        remote {
+            auth = eap-radius
+        }
+        children {
+            radius {
+                remote_ts = 0.0.0.0/0,::/0
+                start_action = trap
+                dpd_action = restart
+                dpd_delay = 20s
+                dpd_timeout = 30s
+                rekey_time = 8h
+                rekey_bytes = 100m
+                rekey_packets = 1000000
+                life_time = 8h
+                install_policy = yes
+            }
+        }
+        version = 2
+        proposals = aes256-sha384-ecp384,aes128-sha1-modp2048,aes256-sha384-modp4096,aes256-sha1-modp4096,aes128-sha1-modp1536,aes256-sha384-modp2048,aes256-sha1-modp2048,aes128-sha1-modp1024,aes256-sha384-modp1536,aes256-sha1-modp1536,aes256-sha384-modp1024,aes256-sha1-modp1024
+        rekey_time = 8h
+        rekey_bytes = 100m
+        rekey_packets = 1000000
+        life_time = 8h
+        margintime = 5m
+    }
+    
+    radius-3 {
+        local_addrs = 154.22.124.96
+        remote_addrs = %any
+        
+        local {
+            auth = pubkey
+            certs = serverCert3.pem
+            id = 154.22.124.96
+        }
+        remote {
+            auth = eap-radius
+        }
+        children {
+            radius-3 {
+                remote_ts = 0.0.0.0/0,::/0
+                start_action = trap
+                dpd_action = restart
+                dpd_delay = 20s
+                dpd_timeout = 30s
+                rekey_time = 8h
+                rekey_bytes = 100m
+                rekey_packets = 1000000
+                life_time = 8h
+                install_policy = yes
+            }
+        }
+        version = 2
+        proposals = aes256-sha384-ecp384,aes128-sha1-modp2048,aes256-sha384-modp4096,aes256-sha1-modp4096,aes128-sha1-modp1536,aes256-sha384-modp2048,aes256-sha1-modp2048,aes128-sha1-modp1024,aes256-sha384-modp1536,aes256-sha1-modp1536,aes256-sha384-modp1024,aes256-sha1-modp1024
+        rekey_time = 8h
+        rekey_bytes = 100m
+        rekey_packets = 1000000
+        life_time = 8h
+        margintime = 5m
+        remote_port = 8080
+    }
+}
+
+authorities {
+    caCert {
+        cacert = caCert.pem
+        crl_uris = http://crl.example.org/strongswan.crl
+    }
+    caCert3 {
+        cacert = caCert3.pem
+        crl_uris = http://crl.example.org/strongswan.crl
+    }
+}
+
+pools {
+    radius {
+        addrs = 10.0.0.0/24, fec3::/120
+    }
+    radius-3 {
+        addrs = 10.3.0.0/24, fec3::/120
+    }
+}
+
+secrets {
+    private-server {
+        file = serverCert.pem
+    }
+    private-server3 {
+        file = serverCert3.pem
+    }
+}

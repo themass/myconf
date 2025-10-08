@@ -198,8 +198,6 @@ strongswan_config_6() {
 	echo "复制配置文件..."
 	mv /etc/strongswan.conf /etc/strongswan.conf.bak
 	mv /etc/swanctl/swanctl.conf /etc/swanctl/swanctl.conf.bak
-	rm /etc/strongswan.conf
-	rm /etc/swanctl/swanctl.conf
 	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
 	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl/swanctl.conf
 	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl.conf
@@ -216,6 +214,7 @@ strongswan_config_6() {
 	echo "加载配置..."
 	sudo swanctl --load-all
 	echo "重启服务应用配置..."
+	sudo systemctl daemon-reload
 	sudo systemctl restart strongswan
 	sudo swanctl --list-conns
 	# 检查服务状态

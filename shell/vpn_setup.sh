@@ -3,7 +3,7 @@
 #http://it.zhaozhao.info/archives/41127
 #https://segmentfault.com/a/1190000002540601
 #http://www.cnblogs.com/hyzhou/category/336618.html
-WORKDIR=/Users/liguoqing/work
+WORKDIR=/root/work
 TMP_HOME=/root/soft
 PWD=`pwd`
 #ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $1}'|tr -d "addr:"`
@@ -328,11 +328,11 @@ strongswan_config_6() {
 	sudo mkdir -p /etc/swanctl/{private,x509,scripts}
 	sudo mkdir -p /var/run/charon
 	
-	# 设置权限 - 关键：使用 root 权限
+	# 设置权限
 	echo "设置权限..."
-	sudo chown -R root:root /var/log/strongswan /etc/swanctl /var/run/charon
+	sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
 	sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
-	sudo chmod 700 /etc/swanctl/private
+	sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 	
 	# 重新加载 systemd 配置
 	echo "重新加载 systemd 配置..."

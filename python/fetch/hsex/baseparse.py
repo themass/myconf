@@ -70,7 +70,6 @@ class BaseParse(threading.Thread):
                 ]
                 process = subprocess.Popen(curl_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
-                print stdout
                 soup = BeautifulSoup(stdout)
                 return soup
 

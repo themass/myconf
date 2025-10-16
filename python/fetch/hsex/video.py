@@ -106,7 +106,7 @@ class VideoParse(BaseParse):
         time.sleep(3)
         return True
     def parseDomVideo(self, url):
-        time.sleep(1)
+        time.sleep(3)
         try:
             if url.count("script")==0:
                 soup = self.fetchUrl(url)

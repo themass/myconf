@@ -110,7 +110,7 @@ class VideoParse(BaseParse):
         try:
             if url.count("script")==0:
                 soup = self.fetchUrl(url)
-                source = soup.find("source")
+                source = soup.find("iframe")
                 if source != None:
                     text = source.get("src")
                     return text

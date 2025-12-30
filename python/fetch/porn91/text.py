@@ -84,7 +84,12 @@ class TextChannelParse(BaseParse):
                     try:
                         obj = {}
                         obj['fileDate'] = '1111'
-                        obj['name'] = ahref.first("h4").text
+                        h4 = ahref.first("h4")
+                        if h4==None:
+                            print '没有标题',itemUrl
+                            continue
+                        else:
+                            obj['name'] = h4.text
                         print obj['name'],itemUrl
                         obj['url'] = itemUrl
                         obj['baseurl'] = baseurl

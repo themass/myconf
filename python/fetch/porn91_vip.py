@@ -14,5 +14,6 @@ def parseText():
     textP = text.TextChannelParse()
     textP.run()
 if __name__ == '__main__':
+    parseText()
     parseVideo()
-    # parseText()
+

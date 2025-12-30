@@ -67,7 +67,7 @@ class BaseParse(threading.Thread):
                     '-H', 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
                     '-H', 'accept-language: zh-CN,zh;q=0.9',
                     '-H', 'cache-control: no-cache',
-                    '-b', 'user_uuid=a038d380-a8c0-4805-b56e-eabc06658799; _ga=GA1.1.963000055.1745343337; cf_clearance=QnSAwkngk4W5exaWWCR7JXTJBGFPK7ApdtPkJHlnaBE-1749880763-1.2.1.1-09aU2TOm8sOotWwJ4dkAfS5927mXRC646b7cdOFlLZdmaFKkH9vlykNio7Pj.XrKCrtkF8ZB.zWCyKYTAPm97JG7w2ZsifEB8bE24eWlxL6LoKuevi4vFhaVR14edcYOHxp7rweUS8z7P9hhQj262CfpOokPyFzotDBW7NVSExKnPdp3Oa6i.4GHVtjwCA7W3wVy8B4It0RG1QNdlWtOjBvI6mPYs.Y1DV1o7sMn3F3lKZezofjzSL7j3SWRk0wzckI0o6ikHpI6FAkOcyGTHu7Duxsjm1JcGf3APh1ibaGIvQxlS7IDF56hTEex0rZSbyJTAy72XHx2PxhQb8kja50ey29q6L17Htu5jSGy1Ac; _ga_0C6GHNFYBF=GS2.1.s1751801059$o7$g0$t1751801059$j60$l0$h0',
+                    '-b', 'user_uuid=a038d380-a8c0-4805-b56e-eabc06658799; _ga=GA1.1.963000055.1745343337; search_history=[%22spa%22]; _ga_0C6GHNFYBF=GS2.1.s1758816111$o10$g0$t1758816294$j52$l0$h0; cf_clearance=6NzhA3j3ChJcauV1M8GrEol36SoCujuF0NOVjZq23q4-1761839546-1.2.1.1-c.oFHN6s1aWM0poXhggSW5pirH5jFpxxROPVvNGui8PHdpEeZE.8.ysQBnJrPo31ahrFy0JfoY2vecpmc6Ce.JKdXuBwt.wrLJCpaeGUE6BkE9_XAA_VRDhrMjDrkvvO8_54diL_Qfp_KYm.CfkInCz58T22XAKftnneq9Ykg1Wi5nEtbO0aD0M0HPUDOYx3BxxG4J3ImAZdFbaaV1PgFqkHqodo2ovVm6dSx3X6ceQ; _ga_WVQPWV98M1=GS2.1.s1761839547$o1$g0$t1761839547$j60$l0$h0',
                     '-H', 'pragma: no-cache',
                     '-H', 'sec-ch-ua: "Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
                     '-H', 'sec-ch-ua-mobile: ?0',

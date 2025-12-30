@@ -13,8 +13,8 @@ import xiaoya_vip
 
 if __name__ == '__main__':
     # hsex_vip.parseVideo()
-    hsck_vip.parseVideo()
-    md51_vip.parseVideo()
+    # hsck_vip.parseVideo()
+    # md51_vip.parseVideo()
     weav_vip.parseVideo()
     weav_vip.parseVideoUrls()
     c4441_vip.parseVideo()

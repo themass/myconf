@@ -5,7 +5,7 @@ from fetch import noval1024_vip
 
 
 def pase1():
-    noval1024_vip.parseText()
+    # noval1024_vip.parseText()
     noval1024_vip.parseText4()
     noval1024_vip.parseText2()
     noval1024_vip.parseText5()

@@ -23,17 +23,19 @@
 1.  **开启转发**: `sysctl -w net.ipv4.ip_forward=1`
 2.  **配置 DNAT (目标转换)**:
     ```bash
-    iptables -t nat -A PREROUTING -p tcp --dport 1025 -j DNAT --to-destination 103.248.229.223:1025
-    iptables -t nat -A PREROUTING -p udp --dport 1025 -j DNAT --to-destination 103.248.229.223:1025
-    ```
-3.  **配置 MASQUERADE (源地址伪装)**:
-    ```bash
-    iptables -t nat -A POSTROUTING -p tcp -d 103.248.229.223 --dport 1025 -j MASQUERADE
-    iptables -t nat -A POSTROUTING -p udp -d 103.248.229.223 --dport 1025 -j MASQUERADE
+    iptables -t nat -A PREROUTING -p tcp --dport 1025 -j DNAT --to-destination 192.204.46.10:1025
+    iptables -t nat -A PREROUTING -p udp --dport 1025 -j DNAT --to-destination 192.204.46.10:1025
+    iptables -t nat -A POSTROUTING -p tcp -d 192.204.46.10 --dport 1025 -j MASQUERADE
+    iptables -t nat -A POSTROUTING -p udp -d 192.204.46.10 --dport 1025 -j MASQUERADE
     ```
 
 ---
 
+# 删除 UDP 协议的 DNAT 规则（PREROUTING 链）
+iptables -t nat -D PREROUTING -p tcp --dport 1025 -j DNAT --to-destination 206.223.84.4:1025
+iptables -t nat -D PREROUTING -p udp --dport 1025 -j DNAT --to-destination 206.223.84.4:1025
+iptables -t nat -D POSTROUTING -p tcp -d 206.223.84.4 --dport 1025 -j MASQUERADE
+iptables -t nat -D POSTROUTING -p udp -d 206.223.84.4 --dport 1025 -j MASQUERADE
 ## 3. 常见问题 (QA)
 
 *   **Q: 为什么找不到监听端口？**

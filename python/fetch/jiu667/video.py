@@ -145,7 +145,7 @@ class VideoParse(BaseParse):
                 soup = self.fetchUrl(url)
                 scripts = soup.findAll("script")
                 for s in scripts:
-                    text = unquote(s.text).replace("+@movivecom@+","watch1.kiveht.com")
+                    text = unquote(s.text).replace("+@movivecom@+","stream1.blmwlj.cn")
                     texts = text.split(';')
                     for item in texts:
                         match = regVideo.search(item)

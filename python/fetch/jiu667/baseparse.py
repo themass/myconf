@@ -16,12 +16,12 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 # 9226688.com 8182277.com 8283377.com qqav10.com qqav9.com qqav8.com qqav7.com qqav6.com qqav5.com 
-baseurl = "http://www.667jiu.com"
+baseurl = "https://cmyy.amjtc.cn"
 header = {'User-Agent':
           'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 
-          'Cookie':'Hm_lvt_a7dbcd0d5fd2dbdc43e5060c94acaa09=1527844837; PHPSESSID=g8ueibtojgjuub262ae109m2j1; Hm_lvt_c0060128b5e4b5b38a10be83f06960fd=1530951178; msvod_from_url=CXHdyI37jSHtNtnU%2FGBkOiMfjYp75b9bAMxJauXJEbCph8pO90GzNwM; msvod_user_id=sTLyUSP2KKex0l%2FenE0; msvod_user_login=0BUv%2FRmatXLtwy8ku6E2s8cfhsoQfkASdur2QcWy8wZb0twm3WRbkA; msvod_pl_token=A_FO9jJ79ZZkyVFTBxw1KLmX; Hm_lpvt_c0060128b5e4b5b38a10be83f06960fd=1530951284; msvod_token=_pF0%2FpHf%2FPEKXfOFQGGwSyOE'
+          'Cookie':'UM_distinctid=19d5cf1380f15a-08d7fac8c0d0aa8-19525631-1d73c0-19d5cf1381014a8; CNZZDATA1281430046=995972575-1775380806-%7C1777736252'
           ,"Referer": baseurl}
-maxCount = 3
+maxCount = 1
 regVideo = re.compile(r'http(.*?)m3u8"')
 namereg = re.compile(r"(&#[0-9]*;)+")
 
@@ -86,6 +86,17 @@ class BaseParse(threading.Thread):
         content=''
         print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__))
         with open("jiu667/header2.html") as f:
+            for line in f.readlines():
+                content = "%s%s"%(content,line)
+        print content
+        soup= BeautifulSoup(content)
+        alist = soup.findAll('a')
+        return alist
+    def headerText(self):
+        #         content = self.fetchContentUrl(headerUrl, header)
+        content=''
+        print "os.path.dirname(os.path.realpath(__file__))=%s" % os.path.dirname(os.path.realpath(__file__))
+        with open("jiu667/header3.html") as f:
             for line in f.readlines():
                 content = "%s%s"%(content,line)
         print content

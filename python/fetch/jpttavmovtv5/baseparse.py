@@ -16,6 +16,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 # 9226688.com 8182277.com 8283377.com qqav10.com qqav9.com qqav8.com qqav7.com qqav6.com qqav5.com 
+#https://jpttcntv.net/
 baseurl = "https://jpttavmovtv5.cc"
 header = {'User-Agent':
           'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 
@@ -34,7 +35,9 @@ class BaseParse(threading.Thread):
         count = 0
         while count < maxCount:
             try:
-                req = urllib2.Request(baseurl + url, headers=header)
+                if not url.startswith('http'):
+                    url = baseurl + url
+                req = urllib2.Request( url, headers=header)
                 req.encoding = 'utf-8'
                 response = urllib2.urlopen(req, timeout=3000)
                 gzipped = response.headers.get(

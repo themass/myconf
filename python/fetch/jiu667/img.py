@@ -8,6 +8,7 @@ from common import db_ops
 from common.envmod import *
 from common import dateutil
 from fetch.profile import *
+from urllib import unquote
 
 class ImgParse(BaseParse):
 
@@ -118,7 +119,9 @@ class ImgParse(BaseParse):
             try:
                 imgs = data.findAll('img')
                 for img in imgs:
-                    pics.append(img.get('src').replace("?max-age=3600",""))
+                    src = img.get('src').replace("?max-age=3600","")
+                    # URL 解码
+                    pics.append(src)
                 datasrc['pic']=pics
                 h1 = soup.first("h1")
                 datasrc['name']= h1.text

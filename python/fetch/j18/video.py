@@ -36,12 +36,17 @@ class VideoParse(BaseParse):
     def runUrls(self):
         for url in urls:
             for i in range(1, 100):
-                page = url%(i)
-                con = self.videoParse('weav', 'weav_all',page)
-                if con==False:
-                    print '没有数据了啊-======页数',i,'---',page
+                try:
+                    # 使用字符串拼接代替格式化，避免URL编码字符冲突
+                    page = url.replace('%s', str(i), 1)
+                    con = self.videoParse('weav', 'weav_all', page)
+                    if con==False:
+                        print '没有数据了啊-======页数',i,'---',page
+                        break
+                    print '解析完成 ', url, ' ---', i, '页'
+                except Exception as e:
+                    print 'URL处理错误:', common.format_exception(e), 'URL:', url
                     break
-                print '解析完成 ', url, ' ---', i, '页'
     def videoChannel(self):
         channelList = []
         ahrefs = self.header()

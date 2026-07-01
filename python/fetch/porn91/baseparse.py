@@ -19,7 +19,7 @@ sys.setdefaultencoding('utf8')
 baseurl = "https://rfd0i4.jstv800.com"
 header = {'User-Agent':
           'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 
-          'Cookie':'Hm_lvt_a7dbcd0d5fd2dbdc43e5060c94acaa09=1527844837; PHPSESSID=g8ueibtojgjuub262ae109m2j1; Hm_lvt_c0060128b5e4b5b38a10be83f06960fd=1530951178; msvod_from_url=CXHdyI37jSHtNtnU%2FGBkOiMfjYp75b9bAMxJauXJEbCph8pO90GzNwM; msvod_user_id=sTLyUSP2KKex0l%2FenE0; msvod_user_login=0BUv%2FRmatXLtwy8ku6E2s8cfhsoQfkASdur2QcWy8wZb0twm3WRbkA; msvod_pl_token=A_FO9jJ79ZZkyVFTBxw1KLmX; Hm_lpvt_c0060128b5e4b5b38a10be83f06960fd=1530951284; msvod_token=_pF0%2FpHf%2FPEKXfOFQGGwSyOE'
+          'Cookie':'_ym_uid=1726938050509318806; _ga=GA1.1.1936408816.1742034872; _ym_d=1774863920; server_name_session=e9ab65b41bb7d5b3bc4b9d8fbb495d8b; _ym_isad=2; _ym_visorc=b; _ga_F8MXJQGLN1=GS2.1.s1778856727$o11$g1$t1778856807$j60$l0$h1105965748; cf_clearance=5Lkp8o9jlg3swV4pmFI1.Tm94S5A_eFhCx9P_qZV89M-1778856807-1.2.1.1-iH8GS2VMEzkGhkARZmhyqBejH6G2CwJFOxtUKMSAbeyzbomX_N3tu7yvNIrdJat.d6mz17mfZ.3oZiyimFIP8.iYnBhz0Qs6dAuXmOkbLyi.rRmO0kUhxiIB6gSJtDR0l4faFJTtsFISJCzygk6UbZOiz9SwmpKspoNIoDpZbjsUZNOfwzwFttek2nTCbdspME_2kpfB5W9xOyDneQkwEzMGO0hKXYBSgk1yLLQFoQA0nK_TMeETiEqwKfrwiu2FfbUJmfNflenTxgnwRJ3czZSneygZdzlw17Blgdf03WYSFiEHZNLvkVCajHcRZwdHnD72odxdcbTunHcTEWaAWw'
           ,"Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")

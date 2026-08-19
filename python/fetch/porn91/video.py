@@ -21,13 +21,24 @@ class VideoParse(BaseParse):
         chs = self.videoChannel()
         for item in chs:
             ops.inertVideoChannel(item)
+        chs2 = self.videoChannel2()
+        for item in chs2:
+            ops.inertVideoChannel(item)
         print 'porn91 video -- channel ok;,len=',len(chs)
         dbVPN.commit()
         dbVPN.close()
-        for item in chs:
+        for item in chs2:
             url= item['url']
             for i in range(1, maxVideoPage):
                 con = self.videoParse(item['channel'], item['channelType'],'%s/%s'%(url,i))
+                if con==False:
+                    print '没有数据了啊-======页数',i,'---',item['name'],item['url']
+                    break
+                print '解析完成 ', item['channel'], ' ---', i, '页'
+        for item in chs:
+            url= item['url']
+            for i in range(1, maxVideoPage):
+                con = self.videoParse(item['channel'], item['channelType'],'%s&page=%s'%(url,i))
                 if con==False:
                     print '没有数据了啊-======页数',i,'---',item['name'],item['url']
                     break
@@ -47,34 +58,63 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channelType']='porn91_all'
             channelList.append(obj)
-#         channelList.reverse()
+        channelList.reverse()
+        ahrefs = self.header3()
+        for ahref in ahrefs:
+            obj={}
+            obj['name']=ahref.text
+            obj['url']=ahref.get('href')
+            obj['baseurl']=baseurl
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=''
+            obj['rate']=1.2
+            obj['channel']='porn91'+ahref.text
+            obj['showType']=3
+            obj['channelType']='porn91_all'
+            channelList.append(obj)
+            channelList.reverse()
+        return  channelList
+    def videoChannel2(self):
+        channelList = []
+        ahrefs = self.header3()
+        for ahref in ahrefs:
+            obj={}
+            obj['name']=ahref.text
+            obj['url']=ahref.get('href')
+            obj['baseurl']=baseurl
+            obj['updateTime']=datetime.datetime.now()
+            obj['pic']=''
+            obj['rate']=1.2
+            obj['channel']='porn91'+ahref.text
+            obj['showType']=3
+            obj['channelType']='porn91_all'
+            channelList.append(obj)
+            channelList.reverse()
         return  channelList
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        div = soup.first('div',{"id":"rd5"})
-        if div!=None:
-            divs = div.findAll("article")
-            if len(divs)==0:
-                return False
-            for item in divs:
-                ahref = item.first('a')
-                if ahref != None:
-                    obj = {}
-                    mp4Url = self.parseDomVideo(ahref.get("href"))
-                    if mp4Url == None:
-                        print '没有mp4 文件:', ahref.get("href")
-                        continue
-                    obj['url'] = mp4Url
-                    obj['pic'] = ahref.first("img").get("src")
+        divs = soup.findAll("article")
+        if len(divs)==0:
+            return False
+        for item in divs:
+            ahref = item.first('a')
+            if ahref != None:
+                obj = {}
+                mp4Url = self.parseDomVideo(ahref.get("href"))
+                if mp4Url == None:
+                    print '没有mp4 文件:', ahref.get("href")
+                    continue
+                obj['url'] = mp4Url
+                obj['pic'] = ahref.first("img").get("src")
 #                     item.first('h3').text.replace(" ","")
-                    obj['name'] = ahref.first("img").get("alt")
-                    obj['path'] = baseurl+ahref.get("href")
-                    obj['updateTime'] = datetime.datetime.now()
-                    obj['channel'] = channel
-                    obj['baseurl'] = baseurl+ahref.get("href")
-                    print obj['name'],obj['url'],obj['pic'],obj['baseurl']
-                    dataList.append(obj)
+                obj['name'] = ahref.first("img").get("alt")
+                obj['path'] = baseurl+ahref.get("href")
+                obj['updateTime'] = datetime.datetime.now()
+                obj['channel'] = channel
+                obj['baseurl'] = baseurl+ahref.get("href")
+                print obj['name'],obj['url'],obj['pic'],obj['baseurl']
+                dataList.append(obj)
         dbVPN = db.DbVPN()
         ops = db_ops.DbOps(dbVPN)
         for i in range(1, 3):
@@ -102,6 +142,7 @@ class VideoParse(BaseParse):
             print common.format_exception(e)
             return None
     def fetchCdnUrl(self,raw_text):
+        time.sleep(2)
         pattern = r'window\.\$avdt = ({.*?})\s*</script>'
         match = re.search(pattern, raw_text, re.DOTALL)  # re.DOTALL 让 . 匹配换行符
         if match:

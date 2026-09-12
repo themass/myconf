@@ -73,7 +73,7 @@ class VideoParse(BaseParse):
                         print '没有mp4 文件:', ahref.get("href")
                         continue
                     obj['url'] = mp4Url
-                    obj['pic'] = baseurl+ahref.get('data-original')
+                    obj['pic'] = ahref.get('data-original')
 #                     item.first('h3').text.replace(" ","")
                     obj['name'] = ahref.get('title')
                     print channel, obj['name'],obj['url'],obj['pic']

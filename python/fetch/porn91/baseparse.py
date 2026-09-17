@@ -81,22 +81,6 @@ class BaseParse(threading.Thread):
         print '打开页面错误,重试3次还是错误', url
         return BeautifulSoup('')
 
-    def fetchUrlWithBase(self, url):
-        count = 0
-        while count < maxCount:
-            try:
-                req = urllib2.Request(url, headers=header)
-                content = urllib2.urlopen(req, timeout=300).read()
-                soup = BeautifulSoup(content)
-                return soup
-            except Exception as e:
-                print common.format_exception(e)
-                print '打开页面错误,重试', url, '次数', count
-                count = count + 1
-                time.sleep(1)
-
-        print '打开页面错误,重试3次还是错误', url
-        return BeautifulSoup('')
     def header(self):
 #         content = self.fetchContentUrl(headerUrl, header)
         content=''
@@ -130,20 +114,5 @@ class BaseParse(threading.Thread):
         soup= BeautifulSoup(content)
         alist = soup.findAll('a')
         return alist
-    def fetchContent(self, url):
-        count = 0
-        while count < maxCount:
-            try:
-                req = urllib2.Request(baseurl+url, headers=header)
-                content = urllib2.urlopen(req, timeout=300).read()
-                return content
-            except Exception as e:
-                print common.format_exception(e)
-                print '打开页面错误,重试', url, '次数', count
-                count = count + 1
-                time.sleep(1)
-
-        print '打开页面错误,重试3次还是错误', url
-        return ''
 
     

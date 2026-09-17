@@ -74,22 +74,17 @@ class TextChannelParse(BaseParse):
     def fetchTextData(self, url, channel,name):
         try:
             soup = self.fetchUrl(url)
-            div = soup.first("div",{"id":"w0"})
-            datalist = div.findAll("a")
+            datalist = soup.findAll("div",{"class":"colNovelList"})
             objs = []
             sortType = dateutil.y_m_d()
-            for ahref in datalist:
+            for aitem in datalist:
+                ahref = aitem.first("a")
                 if ahref!=None:
                     itemUrl = ahref.get("href")
                     try:
                         obj = {}
                         obj['fileDate'] = '1111'
-                        h4 = ahref.first("h4")
-                        if h4==None:
-                            print '没有标题',itemUrl
-                            continue
-                        else:
-                            obj['name'] = h4.text
+                        obj['name'] = ahref.first("div",{"class":"container-title"}).text
                         print obj['name'],itemUrl
                         obj['url'] = itemUrl
                         obj['baseurl'] = baseurl
@@ -110,7 +105,7 @@ class TextChannelParse(BaseParse):
             print common.format_exception(e)
     def fetchText(self,url):
         soup = self.fetchUrl(url)
-        data = soup.first("div", {"id": "forum"})
+        data = soup.first("div", {"id": "photoShowPage"})
         if data != None:
             try:
                 obj = {}

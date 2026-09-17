@@ -94,7 +94,7 @@ class VideoParse(BaseParse):
     def videoParse(self, channel, channelType, url):
         dataList = []
         soup = self.fetchUrl(url)
-        divs = soup.findAll("article")
+        divs = soup.findAll("div",{"class":"colVideoList"})
         if len(divs)==0:
             return False
         for item in divs:
@@ -106,9 +106,9 @@ class VideoParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                obj['pic'] = ahref.first("img").get("src")
+                obj['pic'] = ahref.first("div",{"class":"img"}).get("style").replace("background-image: url('","").replace("')","")
 #                     item.first('h3').text.replace(" ","")
-                obj['name'] = ahref.first("img").get("alt")
+                obj['name'] = item.first("a",{"class":"title text-sub-title mt-2 mb-1"}).text
                 obj['path'] = baseurl+ahref.get("href")
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel

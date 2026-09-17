@@ -133,8 +133,8 @@ class VideoParse(BaseParse):
         return True
     def parseDomVideo(self, url):
         try:
-            text = self.fetchContent(url)
-            m3u8 = self.fetchCdnUrl(text)
+            soup = self.fetchUrl(url)
+            m3u8 = soup.first("video",{"id":"video-player"}).get("data-src").replace("&amp;","&")
             if m3u8 != None:
                 return m3u8
             return None

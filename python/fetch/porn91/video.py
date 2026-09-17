@@ -109,6 +109,7 @@ class VideoParse(BaseParse):
                 obj['pic'] = ahref.first("div",{"class":"img"}).get("style").replace("background-image: url('","").replace("')","")
 #                     item.first('h3').text.replace(" ","")
                 obj['name'] = item.first("a",{"class":"title text-sub-title mt-2 mb-1"}).text
+                print item
                 obj['path'] = baseurl+ahref.get("href")
                 obj['updateTime'] = datetime.datetime.now()
                 obj['channel'] = channel
@@ -134,7 +135,7 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         try:
             soup = self.fetchUrl(url)
-            m3u8 = soup.first("video",{"id":"video-player"}).get("data-src").replace("&amp;","&")
+            m3u8 = soup.first("video",{"id":"video-play"}).get("data-src").replace("&amp;","&")
             if m3u8 != None:
                 return m3u8
             return None

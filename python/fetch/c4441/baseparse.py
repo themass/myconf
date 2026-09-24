@@ -18,7 +18,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 # https://www.9k88x.com
-baseurl = "https://t92ts2.com"
+baseurl = "https://5m272e.com"
 headers = {'User-Agent':
                'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
            'Cookie':'Hm_lvt_95e2aff1f817e78b047d2bd592dab054=1780067916; HMACCOUNT=5435569E4E0FEDC7; Hm_lpvt_95e2aff1f817e78b047d2bd592dab054=1780067944; dialog_closed=true; second_dialog_closed=true'

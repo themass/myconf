@@ -1,7 +1,15 @@
 #!/usr/bin python
 # -*- coding: utf-8 -*-
 import datetime
-from fetch.porn91 import *
+import urllib2
+import threading
+from BeautifulSoup import BeautifulSoup
+from common.envmod import *
+from common import common
+from common import typeutil
+from common import db_ops
+from common import MyQueue
+from fetch.crdj91 import *
 import re
 import sys
 reload(sys)
@@ -10,10 +18,6 @@ sys.setdefaultencoding('utf8')
 def parseVideo():
     videop = video.VideoParse()
     videop.run()
-def parseText():
-    textP = text.TextChannelParse()
-    textP.run()
 if __name__ == '__main__':
     # parseText()
     parseVideo()
-#

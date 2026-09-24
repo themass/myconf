@@ -89,7 +89,7 @@ class VideoParse(BaseParse):
             obj['showType']=3
             obj['channelType']='porn91_all'
             channelList.append(obj)
-            channelList.reverse()
+            # channelList.reverse()
         return  channelList
     def videoParse(self, channel, channelType, url):
         dataList = []

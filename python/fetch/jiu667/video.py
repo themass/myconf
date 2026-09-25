@@ -114,7 +114,7 @@ class VideoParse(BaseParse):
                             continue
                         obj['url'] = mp4Url
                         img = ahref.first('img')
-                        obj['pic'] = baseurl+img.get('data-original')
+                        obj['pic'] = img.get('data-original')
     #                     item.first('h3').text.replace(" ","")
                         obj['name'] = ahref.get('title')
                         print channel, obj['name'],obj['url'],obj['pic']
@@ -145,7 +145,7 @@ class VideoParse(BaseParse):
                 soup = self.fetchUrl(url)
                 scripts = soup.findAll("script")
                 for s in scripts:
-                    text = unquote(s.text).replace("+@movivecom@+","stream1.blmwlj.cn")
+                    text = unquote(s.text).replace("+@movivecom@+","stream1.kfluuer.com")
                     texts = text.split(';')
                     for item in texts:
                         match = regVideo.search(item)

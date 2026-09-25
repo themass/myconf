@@ -16,7 +16,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 # 9226688.com 8182277.com 8283377.com qqav10.com qqav9.com qqav8.com qqav7.com qqav6.com qqav5.com 
-baseurl = "https://cmyy.dnugzn.cn"
+baseurl = "https://cmyy.bmdwngh.com"
 header = {'User-Agent':
           'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 
           'Cookie':'UM_distinctid=19d5cf1380f15a-08d7fac8c0d0aa8-19525631-1d73c0-19d5cf1381014a8; CNZZDATA1281430046=995972575-1775380806-%7C1777736252'

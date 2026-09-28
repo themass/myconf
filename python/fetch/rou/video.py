@@ -55,11 +55,10 @@ class VideoParse(BaseParse):
         dataList = []
         print "videoParse=", url
         soup = self.fetchUrl(url)
-        divs = soup.findAll("div",{"class":"aspect-video relative"})
+        divs = soup.findAll("a",{"class":"group block min-w-0"})
         if len(divs)==0:
             return False
-        for item in divs:
-            ahref = item.first('a')
+        for ahref in divs:
             if ahref != None:
                 obj = {}
                 mp4Url = self.parseDomVideo(ahref.get("href"))
@@ -67,7 +66,7 @@ class VideoParse(BaseParse):
                     print '没有mp4 文件:', ahref.get("href")
                     continue
                 obj['url'] = mp4Url
-                imgdiv = ahref.first('img',{"class":"relative w-full h-full object-contain"})
+                imgdiv = ahref.first('img',{"loading":"lazy"})
 
                 obj['pic'] = imgdiv.get("src")
 #                     item.first('h3').text.replace(" ","")
@@ -95,8 +94,9 @@ class VideoParse(BaseParse):
     def parseDomVideo(self, url):
         time.sleep(1)
         try:
-            print "https://rou.video/api",url
+
             jsonData = httputil.getData("https://rou.video/api"+url,header=header)
+            print "https://rou.video/api",url,jsonData
             m3u8url = jsonData.get("video").get("videoUrl")
             print m3u8url
             return m3u8url

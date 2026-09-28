@@ -12,10 +12,11 @@ import re
 import gzip
 import StringIO
 import sys
+import os
 reload(sys)
 sys.setdefaultencoding('utf8')
 #662cf,579cf,298cf,v5c5
-baseurl = "https://www.a3e9y.com/"
+baseurl = "https://exex.j8olo.cc/home"
 reg = re.compile(r"(.*\/)\d+\.htm")
 mp3Name = re.compile(r"<span>.*</span>")
 soundUrl = "/yousheng/index.html"
@@ -121,3 +122,25 @@ class BaseParse(threading.Thread):
                             return None
                         return match.group(1)
         return None
+
+    def header(self, filename='header.html'):
+        content = ''
+        path = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
+        with open(path) as f:
+            for line in f.readlines():
+                content = '%s%s' % (content, line)
+        soup = BeautifulSoup(content)
+        alist = []
+        seen = set()
+        for a in soup.findAll('a'):
+            href = a.get('href') or ''
+            cls = a.get('class') or ''
+            if isinstance(cls, list):
+                cls = ' '.join(cls)
+            if cls.count('video-sub-item') == 0:
+                continue
+            if href in seen:
+                continue
+            seen.add(href)
+            alist.append(a)
+        return alist

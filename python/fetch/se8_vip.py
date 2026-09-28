@@ -9,7 +9,7 @@ from common import common
 from common import typeutil
 from common import db_ops
 from common import MyQueue
-from se8 import *
+from fetch.error.se8 import *
 import re
 import sys
 import getopt
@@ -85,26 +85,8 @@ def parseImg():
 #             queue.put(img.ImgParse(obj))
         print obj
 def parseVideo():
-    lis = parser.fetchHead(u"在线电影")
-    objs = parser.parsHeadText(lis)
-    print "解析在线视频 ok----项目=", len(objs)
-    for obj in objs:
-        handle = video.VideoParse(obj)
-        handle.run()
-        print obj
-def parseVideoRmb():
-    lis = parser.fetchHead(u"手机下载")
-    objs = parser.parsHeadText(lis)
-    print "解析在线视频 ok----项目=", len(objs)
-    for obj in objs:
-        handle = video_rmb.VideoRmbParse(obj)
-        handle.run()
-#             queue.put(img.ImgParse(obj))
-        print obj
-def startWork():
-    for i in range(0, maxCount):
-        worker = HandleThread("work-%s" % (i), queue)
-        worker.start()
+    handle = video.VideoParse()
+    handle.run()
 if __name__ == '__main__':
     #startWork()
     

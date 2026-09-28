@@ -159,10 +159,17 @@ class DbOps(object):
             (name, url, channel, pic, updateTime, path, videoType, baseurl, sortType, channelType) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ON DUPLICATE KEY UPDATE 
+            name = VALUES(name),
             url = VALUES(url),
             pic = VALUES(pic),
-            channel = VALUES(channel)
+            channel = VALUES(channel),
+            updateTime = VALUES(updateTime),
+            videoType = VALUES(videoType),
+            baseurl = VALUES(baseurl),
+            sortType = VALUES(sortType),
+            channelType = VALUES(channelType)
         """
+        row_baseurl = obj.get("baseurl") or baseUrl or ""
         # 准备参数（自动处理单引号等特殊字符）
         params = (
             self.clean_special_chars(obj.get("name", "").replace("'", "")),
@@ -172,7 +179,7 @@ class DbOps(object):
             obj.get("updateTime", ""),
             obj.get("path", ""),
             videoType,
-            obj.get("baseurl", ""),
+            row_baseurl,
             sortType,
             channelType
         )
@@ -180,6 +187,8 @@ class DbOps(object):
             # 执行参数化查询
             return self.conn.execute(sql, params)
         except Exception as e:
+            print 'inertVideo failed path=%s: %s' % (
+                obj.get("path", ""), common.format_exception(e))
             return None
     def clean_special_chars(self,text):
         """

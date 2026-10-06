@@ -91,8 +91,8 @@ if __name__ == '__main__':
     #startWork()
     
     #     options, args = getopt.getopt(sys.argv[1:], "s:t:i:g")
-    # parseVideo()
-    parseSound()
+    parseVideo()
+    # parseSound()
 #     parseGirlImg()
 #     parseImg()
 #     parseText()

@@ -12,12 +12,12 @@ import crdj91_vip
 import quanji91_vip
 
 if __name__ == '__main__':
-    # hsex_vip.parseVideo()
-    # hsck_vip.parseVideo()
-    # jiu667_vip.parseVideo()
+    hsex_vip.parseVideo()
+    hsck_vip.parseVideo()
+    jiu667_vip.parseVideo()
     crdj91_vip.parseVideo()
     porn91_vip.parseVideo()
-    # se8_vip.parseVideo()
+    se8_vip.parseVideo()
     porn91luantan_vip.parseVideo()
     quanji91_vip.parseVideo2()
     xiaoya_vip.parseVideo2()

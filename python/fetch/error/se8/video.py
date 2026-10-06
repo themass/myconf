@@ -13,23 +13,28 @@ import subprocess
 
 MAOMI_VIDEO_HOST = 'https://kwmdmmsp.hongtaitanghua.com'
 MAOMI_SIGN_KEY = 'D7hGKHnWThaECaQ3ji4XyAF3MfYKJ53M'
-MAOMI_API_HOST = 'https://iofbsmcxzs.692fo7w1.com'
+MAOMI_JSON_HOST = 'https://kfsoahubdsjson.qxdlawyer.com'
 MAOMI_URI_PREFIX = 'gt6ikshg458mns4f'
 MAOMI_AES_KEY_B64 = 'SWRUSnEwSGtscHVJNm11OGlCJU9PQCF2ZF40SyZ1WFc='
 MAOMI_AES_IV_B64 = 'JDB2QGtySDdWMg=='
+MAOMI_MEDIA_PAGE_SIZE = 20
 reMaomiFullUrl = re.compile(
     r'https?://[^"\']*hongtaitanghua\.com[^"\']+\.m3u8\?[^"\']+')
 reMaomiVideoPath = re.compile(
-    r'(/common/impulses/[^"\']+\.m3u8)')
+    r'(/common/impulse[s]?/[^"\']+\.m3u8)')
 reMaomiPostId = re.compile(
     r'(?:post-detail|play)[/-](\d+)|/video/[^/]+/(\d+)(?:$|[/?#])')
 reMaomiVideoUrlJson = re.compile(r'"video_url"\s*:\s*"([^"]+)"')
 reMaomiListPath = re.compile(
     r'(?:page|video)/([^/]+)/([^/?#]+?)(?:\.html)?(?:$|[/?#])')
 reMaomiListPageSuffix = re.compile(r'-(\d+)\.html?$')
-MAOMI_SITE_ORIGIN = 'https://exex.j8olo.cc'
+MAOMI_SITE_ORIGIN = 'https://3qq.a0vcr5w48t7i.cc'
 
 class VideoParse(BaseParse):
+
+    def __init__(self):
+        BaseParse.__init__(self)
+        self._maomi_cat_jump_map = None
 
     def run(self):
         dbVPN = db.DbVPN()
@@ -92,12 +97,27 @@ class VideoParse(BaseParse):
         list_channel = spec['list_channel']
         if list_channel == 'topic':
             return 1
-        list_name = self._maomi_resolve_list_name(
-            list_channel, spec['list_name'] or list_channel)
-        payload = self._maomi_fetch_list_payload(
-            list_channel, list_name, 1)
-        if not payload:
-            return None
+        if list_channel == 'media_video':
+            try:
+                cat_id = int(spec['list_name'])
+            except Exception:
+                return None
+            plain = self._maomi_decrypt_api(
+                '/data/mediaVideo/list-%s-1-%d.js' % (
+                    cat_id, MAOMI_MEDIA_PAGE_SIZE))
+            if not plain:
+                return None
+            try:
+                payload = json.loads(plain)
+            except Exception:
+                return None
+        else:
+            list_name = self._maomi_resolve_list_name(
+                list_channel, spec['list_name'] or list_channel)
+            payload = self._maomi_fetch_list_payload(
+                list_channel, list_name, 1)
+            if not payload:
+                return None
         meta = payload.get('list') or {}
         last_page = meta.get('last_page')
         if last_page:
@@ -318,33 +338,54 @@ class VideoParse(BaseParse):
         except Exception:
             return None
 
+    def _maomi_load_category_jump_map(self):
+        if self._maomi_cat_jump_map is not None:
+            return self._maomi_cat_jump_map
+        mapping = {}
+        plain = self._maomi_decrypt_api('/data/category/base-1.js')
+        if plain:
+            try:
+                obj = json.loads(plain)
+                menus = obj.get('menus') or {}
+                if isinstance(menus, dict):
+                    menu_items = menus.values()
+                else:
+                    menu_items = menus
+                for top in menu_items:
+                    children = top.get('data') or []
+                    if isinstance(children, dict):
+                        children = children.values()
+                    for item in children:
+                        cid = item.get('id')
+                        ch = item.get('channel')
+                        if cid is None or not ch:
+                            continue
+                        jump = item.get('jump_name') or str(cid)
+                        mapping[(str(ch), str(cid))] = jump
+            except Exception as e:
+                print common.format_exception(e)
+        self._maomi_cat_jump_map = mapping
+        return mapping
+
     def _maomi_resolve_list_name(self, list_channel, list_name):
-        if list_channel == 'topic':
+        if list_channel in ('topic', 'media_video'):
             return list_name
         if not list_name or not re.match(r'^\d+$', str(list_name)):
             return list_name
+        jump = self._maomi_load_category_jump_map().get(
+            (str(list_channel), str(list_name)))
+        if jump:
+            return jump
         index = self._maomi_fetch_list_payload(list_channel, list_channel, 1)
         if not index:
             return list_name
         cat_id = str(list_name)
         for cat in index.get('cat_list') or []:
             if str(cat.get('id')) == cat_id or str(cat.get('cat_id')) == cat_id:
-                jump = cat.get('jump_name')
-                if jump:
-                    return jump
+                jump_name = cat.get('jump_name')
+                if jump_name:
+                    return jump_name
         return list_name
-
-    def _maomi_resolve_topic_id(self, raw_id):
-        raw_id = str(raw_id)
-        index = self._maomi_fetch_list_payload('topic', 'topic', 1)
-        if not index:
-            return raw_id
-        for cat in index.get('cat_list') or []:
-            if str(cat.get('id')) == raw_id or str(cat.get('topic_id')) == raw_id:
-                tid = cat.get('topic_id')
-                if tid:
-                    return str(tid)
-        return raw_id
 
     def _maomi_topic_video_rows(self, topic_id, page):
         if page > 1:
@@ -358,7 +399,9 @@ class VideoParse(BaseParse):
         except Exception:
             return []
         inner = obj.get('list') or {}
-        raw_list = inner.get('list') or {}
+        raw_list = inner.get('list')
+        if raw_list is None:
+            raw_list = inner.get('data') or {}
         rows = []
         if isinstance(raw_list, dict):
             keys = [k for k in raw_list.keys() if str(k).isdigit()]
@@ -372,6 +415,24 @@ class VideoParse(BaseParse):
         for row in rows:
             vid = row.get('id')
             ch = row.get('channel') or 'remen'
+            if vid:
+                row['_detail_url'] = self._maomi_detail_url(ch, vid)
+        return rows
+
+    def _maomi_media_video_rows(self, category_id, page):
+        api_path = '/data/mediaVideo/list-%s-%d-%d.js' % (
+            category_id, page, MAOMI_MEDIA_PAGE_SIZE)
+        plain = self._maomi_decrypt_api(api_path)
+        if not plain:
+            return []
+        try:
+            obj = json.loads(plain)
+        except Exception:
+            return []
+        rows = (obj.get('list') or {}).get('data') or []
+        for row in rows:
+            vid = row.get('id')
+            ch = row.get('channel') or 'media_video'
             if vid:
                 row['_detail_url'] = self._maomi_detail_url(ch, vid)
         return rows
@@ -406,8 +467,13 @@ class VideoParse(BaseParse):
         list_name = spec['list_name'] or list_channel
         page = spec['page']
         if list_channel == 'topic':
-            topic_id = self._maomi_resolve_topic_id(list_name)
-            return self._maomi_topic_video_rows(topic_id, page)
+            return self._maomi_topic_video_rows(list_name, page)
+        if list_channel == 'media_video':
+            try:
+                cat_id = int(list_name)
+            except Exception:
+                return []
+            return self._maomi_media_video_rows(cat_id, page)
         list_name = self._maomi_resolve_list_name(list_channel, list_name)
         payload = self._maomi_fetch_list_payload(
             list_channel, list_name, page)
@@ -571,42 +637,42 @@ class VideoParse(BaseParse):
         return None
 
     def _maomi_decrypt_api(self, api_path):
-        api_url = '%s/%s' % (
-            MAOMI_API_HOST.rstrip('/'), self._maomi_uri_encrypt(api_path))
+        if not api_path.startswith('/'):
+            api_path = '/' + api_path
+        api_url = MAOMI_JSON_HOST.rstrip('/') + api_path
         try:
-            proc = subprocess.Popen(
-                ['node', '-'],
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE)
-            node_script = '''
-var https=require("https");
-var CryptoJS;
-try{CryptoJS=require("/tmp/package/crypto-js");}catch(e1){
-  try{CryptoJS=require("crypto-js");}catch(e2){process.exit(1);}}
-var apiUrl=%s;
-var key=Buffer.from(%s,"base64").toString("utf8");
-var ivBase=Buffer.from(%s,"base64").toString("utf8");
-function decrypt(enc,suffix){
-  var iv=CryptoJS.enc.Utf8.parse(ivBase+(suffix||""));
-  var k=CryptoJS.enc.Utf8.parse(key);
-  return CryptoJS.AES.decrypt(enc,k,{iv:iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8);
-}
-https.get(apiUrl,{headers:{"User-Agent":"Mozilla/5.0"}},function(res){
-  var d="";res.on("data",function(c){d+=c;});
-  res.on("end",function(){
-    try{
-      var body=JSON.parse(d);
-      process.stdout.write(decrypt(body.data, body.suffix));
-    }catch(e){process.stdout.write("");}
-  });
-}).on("error",function(){process.stdout.write("");});
-''' % (
-                json.dumps(api_url),
+            import urllib2
+            req = urllib2.Request(
+                api_url,
+                headers={'User-Agent': 'Mozilla/5.0'})
+            raw = urllib2.urlopen(req, timeout=120).read()
+            wrap = json.loads(raw)
+            enc = wrap.get('data')
+            suffix = wrap.get('suffix') or ''
+            if not enc:
+                return None
+            node_script = (
+                'var crypto=require("crypto");'
+                'var enc=%s;var suffix=%s;'
+                'var key=Buffer.from(Buffer.from(%s,"base64").toString("utf8"),"utf8");'
+                'var ivStr=Buffer.from(%s,"base64").toString("utf8")+(suffix||"");'
+                'var iv=Buffer.from(ivStr,"utf8");'
+                'var ct=Buffer.from(enc,"base64");'
+                'var dec=crypto.createDecipheriv("aes-256-cbc", key, iv);'
+                'process.stdout.write(Buffer.concat([dec.update(ct), dec.final()]));'
+            ) % (
+                json.dumps(enc),
+                json.dumps(suffix),
                 json.dumps(MAOMI_AES_KEY_B64),
                 json.dumps(MAOMI_AES_IV_B64))
-            out, err = proc.communicate(node_script)
+            proc = subprocess.Popen(
+                ['node', '-e', node_script],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
+            out, err = proc.communicate()
             if proc.returncode != 0:
+                if err:
+                    print err
                 return None
             return (out or '').strip() or None
         except Exception as e:

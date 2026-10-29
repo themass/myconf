@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ -z "${BASH_VERSION:-}" ]; then
+    echo "This script requires Bash. Run: bash $0 xray" >&2
+    exit 2
+fi
+
 PANEL_WORKDIR=/home/web/webroot
 PANEL_TMP_HOME=/home/web/soft
 PANEL_SHELL_HOME=/home/web/work/myconf/shell
@@ -102,7 +107,10 @@ setup_xray()
 
     # JSON_PATH keeps the systemd unit aligned when a non-default config
     # directory is requested.
-    if ! JSON_PATH="$config_dir" bash "$installer_file" @ install; then
+    # The official script is normally invoked with `bash -c ... @ install`;
+    # when it is saved to a file, `@` would become a real argument and the
+    # installer may reject it as an unknown option.
+    if ! JSON_PATH="$config_dir" bash "$installer_file" install; then
         rm -f "$installer_file"
         echo "Xray installation failed" >&2
         return 1

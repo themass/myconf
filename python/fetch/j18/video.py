@@ -70,13 +70,14 @@ class VideoParse(BaseParse):
         div = soup.first('ul',{"class":"list"})
 
         if div!=None:
-            divs = div.findAll("li")
+            divs = div.findAll("div",{"class":"box"})
             if len(divs)==0:
                 return False
             for item in divs:
                 ahref = item.first('a')
                 if ahref != None:
                     obj = {}
+                    print ahref.get("href")
                     mp4Url = self.findM3u8Url(ahref.get("href"))
                     if mp4Url == None:
                         print '没有mp4 文件:', ahref.get("href")
@@ -124,7 +125,7 @@ class VideoParse(BaseParse):
     def findM3u8Url(self, url):
         try:
             text = self.fetchContent( url)
-            pattern = r"const source = '([^']+\.m3u8)'"
+            pattern = r'const source = "([^"]+\.m3u8)"'
             match = re.search(pattern, text)
             if match:
                 return match.group(1)

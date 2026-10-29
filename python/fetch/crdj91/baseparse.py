@@ -19,7 +19,7 @@ import cloudscraper
 sys.setdefaultencoding('utf8')
 
 # 9226688.com 8182277.com 8283377.com qqav10.com qqav9.com qqav8.com qqav7.com qqav6.com qqav5.com 
-baseurl = "https://91crdj.com/"
+baseurl = "https://91crdjai.com/"
 header = {'User-Agent':
           'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 
           'Cookie':'_ga=GA1.1.1987535338.1790184089; _ym_uid=1790184090227697502; _ym_d=1790184090; _ym_isad=2; _ym_visorc=w; _ga_NRW7S9SLR5=GS2.1.s1790184088$o1$g1$t1790186817$j60$l0$h0'

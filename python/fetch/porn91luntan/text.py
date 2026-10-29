@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import threading
+import re
 from common.envmod import *
 from common import common
 from common import db_ops
@@ -73,41 +74,54 @@ class TextChannelParse(BaseParse):
 
     def fetchTextData(self, url, channel,name):
         try:
-            soup = self.fetchUrl(baseurl+url)
+            soup = self.fetchUrl(url if url.startswith('http') else baseurl+url)
             datalist = soup.findAll("th",{"class":"subject new"})
+            # Some forum pages use class='subject common' for pinned/new
+            # topics.  Include those too, while filtering out the header row.
+            if not datalist:
+                datalist = soup.findAll("th", {"class": "subject"})
+                datalist = [item for item in datalist
+                            if item.find("a", href=re.compile("viewthread\\.php\\?tid="))]
             objs = []
             sortType = dateutil.y_m_d()
-            for ahref in datalist:
-                if ahref!=None:
-                    itemUrl = ahref.get("href")
+            for subject in datalist:
+                if subject is not None:
+                    # The href and actual title are on the nested <a>.  The
+                    # parent <th> contains view count/author/date metadata.
+                    title_link = subject.find(
+                        'a', href=re.compile(r'^viewthread\.php\?tid='))
+                    if title_link is None:
+                        continue
+                    itemUrl = title_link.get('href')
+                    title = title_link.text.strip()
                     try:
                         obj = {}
                         obj['fileDate'] = '1111'
-                        obj['name'] = ahref.text
-                        print obj['name'],itemUrl
+                        obj['name'] = title
+                        print obj['name'], itemUrl
                         obj['url'] = itemUrl
                         obj['baseurl'] = baseurl
                         obj['channel'] = channel
                         obj['updateTime'] = datetime.datetime.now()
-#                         self.t_queue.put(TextItemContentParse(ahref.get('href')))
+#                         self.t_queue.put(TextItemContentParse(itemUrl))
                         ret = self.fetchText(itemUrl)
-                        if ret==None:
-                            print '没有文章数据',itemUrl
+                        if ret is None:
+                            print '没有文章数据', itemUrl
                             continue
                         obj['sortType'] = sortType
                         obj['channelName'] = name
                         objs.append(obj)
                     except Exception as e:
-                        print  common.format_exception(e)
+                        print common.format_exception(e)
             return objs
         except Exception as e:
             print common.format_exception(e)
     def fetchText(self,url):
         if url ==None:
             return None
-        soup = self.fetchUrl(baseurl+url)
+        soup = self.fetchUrl(url if url.startswith('http') else baseurl+url)
         data = soup.findAll("div", {"class": "t_msgfontfix"})
-        if data != None:
+        if data:
             try:
                 obj = {}
                 obj['fileUrl'] = url

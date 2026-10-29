@@ -19,7 +19,7 @@ sys.setdefaultencoding('utf8')
 baseurl = "https://18j.tv"
 header = {'User-Agent':
           'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 
-          'Cookie':'Hm_lvt_a7dbcd0d5fd2dbdc43e5060c94acaa09=1527844837; PHPSESSID=g8ueibtojgjuub262ae109m2j1; Hm_lvt_c0060128b5e4b5b38a10be83f06960fd=1530951178; msvod_from_url=CXHdyI37jSHtNtnU%2FGBkOiMfjYp75b9bAMxJauXJEbCph8pO90GzNwM; msvod_user_id=sTLyUSP2KKex0l%2FenE0; msvod_user_login=0BUv%2FRmatXLtwy8ku6E2s8cfhsoQfkASdur2QcWy8wZb0twm3WRbkA; msvod_pl_token=A_FO9jJ79ZZkyVFTBxw1KLmX; Hm_lpvt_c0060128b5e4b5b38a10be83f06960fd=1530951284; msvod_token=_pF0%2FpHf%2FPEKXfOFQGGwSyOE'
+          'Cookie':'_ga=GA1.1.1955996551.1753978505; _ga_08LV2XLP13=GS2.1.s1759514561$o4$g1$t1759514585$j36$l0$h0; _ga_QGG6453XKD=GS2.1.s1777042946$o4$g1$t1777043236$j60$l0$h0; _ym_uid=1753978510577673088; _ym_d=1790330464; PHPSESSID=17f74c5a12415c073d66587833323b10; _ym_isad=2; _ga_D309HWGMKZ=GS2.1.s1791469809$o3$g1$t1791470402$j60$l0$h0'
           ,"Referer": baseurl}
 maxCount = 3
 regVideo = re.compile(r"http(.*?)m3u8")

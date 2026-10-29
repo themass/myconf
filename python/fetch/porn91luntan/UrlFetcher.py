@@ -71,7 +71,16 @@ class UrlFetcher(object):
         if not content:
             return False
         content_lower = content.lower()
-        return "cloudflare" in content_lower or "just a moment" in content_lower or "enable javascript and cookies to continue" in content_lower
+        # Ordinary pages can include Cloudflare's analytics beacon.  Do not
+        # treat the mere word "cloudflare" as a challenge.
+        challenge_markers = (
+            "just a moment",
+            "enable javascript and cookies to continue",
+            "cf-chl-",
+            "cf-turnstile",
+            "checking your browser",
+        )
+        return any(marker in content_lower for marker in challenge_markers)
 
     def _update_cookies(self):
         if not self.driver:
@@ -136,31 +145,41 @@ class UrlFetcher(object):
             return None
 
     def fetch_with_curl(self, url, cookies=None):
-        if not cookies or (time.time() - self.last_cookie_update) > self.cookie_update_interval:
-            cookies = self._update_cookies()
+        # ``None`` means "manage cookies automatically".  An explicitly
+        # supplied value, including an empty string, must not initialize
+        # Selenium just to refresh cookies; this is important when the local
+        # ChromeDriver does not match the installed Chrome version.
+        if cookies is None:
+            if (time.time() - self.last_cookie_update) > self.cookie_update_interval:
+                cookies = self._update_cookies()
             if not cookies:
                 print("使用默认 Cookie")
                 cookies = self.default_cookies
 
+        # Keep cookies received from the age-confirmation redirect so that
+        # requests to index.php/forum pages use the same session.
+        cookie_jar = getattr(self, '_curl_cookie_jar', None)
+        if cookie_jar is None:
+            cookie_jar = '/tmp/porn91luntan-cookies.txt'
+            self._curl_cookie_jar = cookie_jar
+
         curl_command = [
-            'curl', url,
+            'curl', '-L', url,
+            '-c', cookie_jar,
+            '-b', cookie_jar,
             '-H', 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
             '-H', 'accept-language: zh-CN,zh;q=0.9',
             '-H', 'cache-control: no-cache',
-            '-b', cookies,
             '-H', 'pragma: no-cache',
-            '-H', 'sec-ch-ua: "Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
-            '-H', 'sec-ch-ua-mobile: ?0',
-            '-H', 'sec-ch-ua-platform: "macOS"',
-            '-H', 'sec-fetch-dest: document',
-            '-H', 'sec-fetch-mode: navigate',
-            '-H', 'sec-fetch-site: none',
-            '-H', 'sec-fetch-user: ?1',
-            '-H', 'upgrade-insecure-requests: 1',
-            '-H', 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+            # Do not send stale sec-ch-ua/Chrome 137 headers.  They can make
+            # curl look inconsistent with the installed browser and trigger a
+            # challenge unnecessarily.
+            '-A', 'Mozilla/5.0',
             '--compressed',
             '--insecure'
         ]
+        if cookies:
+            curl_command.extend(['-b', cookies])
 
         try:
             process = subprocess.Popen(

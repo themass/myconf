@@ -224,26 +224,41 @@ openssl_version_major() {
 }
 
 strongswan_pick_legacy_version() {
-    local openssl_major
-    openssl_major=$(openssl_version_major)
-    if [ "${openssl_major:-0}" -ge 3 ]; then
-        echo 5.9.14
-        return
+    # 默认 5.9.14（OpenSSL 3 可用）；若需旧版可设 STRONGSWAN_LEGACY_VERSION=5.6.3
+    printf '%s\n' "${STRONGSWAN_LEGACY_VERSION:-5.9.14}"
+}
+
+# 6.x 留下的 charon-systemd unit 与 ipsec.conf/stroke 不兼容
+strongswan_prepare_stroke_service() {
+    local unit="/etc/systemd/system/strongswan.service"
+    if [ -f "$unit" ] && grep -q 'charon-systemd' "$unit" 2>/dev/null; then
+        echo "Removing swanctl-era strongswan.service (switching to ipsec/stroke)..."
+        if [ "$(id -u)" -eq 0 ]; then
+            rm -f "$unit" /etc/systemd/system/strongswan-swanctl.service
+            systemctl daemon-reload
+        else
+            sudo rm -f "$unit" /etc/systemd/system/strongswan-swanctl.service
+            sudo systemctl daemon-reload
+        fi
     fi
-    echo 5.6.3
 }
 
 strongswan_start_service() {
     systemctl daemon-reload 2>/dev/null || true
-    if systemctl list-unit-files 2>/dev/null | grep -q '^strongswan\.service'; then
-        systemctl enable strongswan
-        systemctl restart strongswan
+    # 5.9.x stroke 优先用 starter，避免误启 6.x 留下的 charon-systemd unit
+    if systemctl list-unit-files 2>/dev/null | grep -q '^strongswan-starter\.service'; then
+        systemctl enable strongswan-starter 2>/dev/null || sudo systemctl enable strongswan-starter
+        systemctl restart strongswan-starter 2>/dev/null || sudo systemctl restart strongswan-starter
         return
     fi
-    if systemctl list-unit-files 2>/dev/null | grep -q '^strongswan-starter\.service'; then
-        systemctl enable strongswan-starter
-        systemctl restart strongswan-starter
-        return
+    if systemctl list-unit-files 2>/dev/null | grep -q '^strongswan\.service'; then
+        if [ -f /etc/systemd/system/strongswan.service ] && grep -q 'charon-systemd' /etc/systemd/system/strongswan.service 2>/dev/null; then
+            echo "strongswan.service 仍为 swanctl/charon-systemd，请运行 strongswan 5.9 安装或 strongswan_prepare_stroke_service" >&2
+        else
+            systemctl enable strongswan 2>/dev/null || sudo systemctl enable strongswan
+            systemctl restart strongswan 2>/dev/null || sudo systemctl restart strongswan
+            return
+        fi
     fi
     if systemctl list-unit-files 2>/dev/null | grep -q '^ipsec\.service'; then
         systemctl enable ipsec

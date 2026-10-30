@@ -295,6 +295,7 @@ usage()
     echo "ssr          Setup setup_ssr"
     echo "xray         Install or upgrade Xray-core (VLESS + REALITY)"
     echo "xray_all     Same as xray (one-shot install + config + link)"
+    echo "xray_regen   Backup config.json and generate new UUID/REALITY keys + VLESS link"
 }
 
 ## =====================================
@@ -306,6 +307,7 @@ if [ $# != 0 ]; then
             sspanel)            setup_sspanel;;
             ssr)          setup_ssr;;
             xray|xray_all)         setup_xray;;
+            xray_regen)            XRAY_CONFIG_FORCE=1 setup_xray;;
         esac
     done
 else

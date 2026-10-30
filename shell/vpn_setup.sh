@@ -165,8 +165,17 @@ strongswan_config_port()
 	cp  "${MYCONF_HOME}/strongswan_conf_port/ipsec.secrets" /etc/ipsec.secrets
 	
 	cp  "${MYCONF_HOME}/strongswan_conf_port/strongswan.conf" /etc/strongswan.conf
-	
+
+	if [ ! -f /etc/ipsec.d/cacerts/caCert.pem ]; then
+		echo "缺少 CA: /etc/ipsec.d/cacerts/caCert.pem — 请先运行: bash vpn_setup.sh caip" >&2
+	fi
+	if ! grep -q 'leftikeport=8081' /etc/ipsec.conf; then
+		echo "警告: /etc/ipsec.conf 可能不是最新端口版，请 git pull 后重跑 strongswanconf_port" >&2
+	fi
+
 	ipsec restart
+	echo "--- ipsec listall (radius) ---"
+	ipsec listall 2>/dev/null | grep -E 'radius-natt|radius:' || true
 }
 
 # strongSwan 6.0.2 部署函数 - 简单版本

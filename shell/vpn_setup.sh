@@ -207,21 +207,24 @@ strongswan_setup_6() {
 	sudo groupadd -r strongswan 2>/dev/null || true
 	sudo useradd -r -g strongswan -s /bin/false -d /var/lib/strongswan strongswan 2>/dev/null || true
 	
-	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts} /var/log/strongswan /var/lib/strongswan /var/run/charon
+	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts} /var/log/strongswan /var/lib/strongswan /var/run/charon /var/log
 	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan /var/lib/strongswan 2>/dev/null || true
 
-	sudo cp "${MYCONF_HOME}/strongswan_6.0_conf/strongswan.service" /etc/systemd/system/strongswan.service
+	strongswan_install_systemd_unit || return 1
 
   sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
   sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 
-  sudo ln -sf /usr/lib/ipsec/libstrongswan.so.0 /usr/lib/libstrongswan.so.0
-  sudo ln -sf /usr/lib/ipsec/libcharon.so.0 /usr/lib/libcharon.so.0
+  sudo ln -sf /usr/lib/ipsec/libstrongswan.so.0 /usr/lib/libstrongswan.so.0 2>/dev/null || true
+  sudo ln -sf /usr/lib/ipsec/libcharon.so.0 /usr/lib/libcharon.so.0 2>/dev/null || true
   sudo ldconfig
 
-	sudo systemctl daemon-reload
 	sudo systemctl enable strongswan
-	sudo systemctl restart strongswan
+	if ! sudo systemctl restart strongswan; then
+		echo "strongswan.service failed to start; check: journalctl -xeu strongswan.service" >&2
+		sudo systemctl status strongswan --no-pager -l || true
+		return 1
+	fi
 	sleep 2
 	echo "strongSwan 6.0.2 部署完成"
 }

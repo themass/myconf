@@ -1,13 +1,11 @@
 [Unit]
 Description=strongSwan IPsec daemon
-After=network.target
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=notify
-User=strongswan
-Group=strongswan
-ExecStart=/usr/libexec/ipsec/charon --use-syslog
-ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/lib/ipsec/charon-systemd
 Restart=on-failure
 RestartSec=5s
 

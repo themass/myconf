@@ -117,6 +117,7 @@ strongswan_setup()
 	sudo ldconfig 2>/dev/null || true
 	strongswan_purge_libipsec_plugin || true
 	strongswan_prepare_stroke_service
+	strongswan_restore_59_main_conf || return 1
 	strongswan_start_service
 	cd ..
 	ipsec version 2>/dev/null || true

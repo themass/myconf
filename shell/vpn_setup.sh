@@ -197,7 +197,8 @@ strongswan_setup_6() {
 		tar -jxvf strongswan-6.0.2.tar.bz2 || return 1
 	fi
 	cd strongswan-6.0.2 || return 1
-	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-eap-radius --enable-eap-identity --enable-eap-md5 --enable-eap-mschapv2 --enable-eap-tls --enable-eap-ttls --enable-vici --enable-swanctl --enable-systemd --enable-kernel-netlink --enable-kernel-libipsec || return 1
+	# 与 5.6.3 一致：仅用内核 XFRM (kernel-netlink)。勿开 kernel-libipsec，否则走 ipsec0 用户态隧道，客户端一连易打满 CPU。
+	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-nat-transport --enable-eap-radius --enable-eap-identity --enable-eap-md5 --enable-eap-mschapv2 --enable-eap-tls --enable-eap-ttls --enable-vici --enable-swanctl --enable-systemd --enable-kernel-netlink --disable-kernel-libipsec || return 1
 	if ! make -j"$(nproc 2>/dev/null || echo 1)"; then
 		echo "strongSwan 6 build failed" >&2
 		return 1

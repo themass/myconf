@@ -8,6 +8,8 @@ connections {
         remote_addrs = %any
         pools = radius
         send_certreq = no
+        dpd_delay = 20s
+        dpd_action = restart
 
         local {
             auth = pubkey

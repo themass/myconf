@@ -127,6 +127,25 @@ updown.sh 脚本会自动配置防火墙规则：
 - 配置 NAT 规则
 - 配置转发规则
 
+## 故障排查
+
+### 客户端一连服务器 SSH/整机像卡死
+
+多半是编译时启用了 **kernel-libipsec**，日志里会出现 `created TUN device: ipsec0`。全隧道流量会在用户态 `ipsec0` 里转发，小 VPS 上 CPU 会瞬间打满；**5.6.3 默认走内核 XFRM，没有这个问题**。
+
+**立刻缓解（不必重装）：** 在 `/etc/strongswan.conf` 的 `charon.plugins` 里加上 `kernel-libipsec { load = no; }`，然后：
+
+```bash
+sudo systemctl restart strongswan
+sudo swanctl --load-all --noprompt
+```
+
+重启后 charon 日志里**不应再出现** `created TUN device: ipsec0`。
+
+**长期：** `git pull` 后重新 `bash vpn_setup.sh strongswan6`（configure 已改为 `--disable-kernel-libipsec`），或至少同步本目录的 `strongswan.conf` 并 `bash vpn_setup.sh strongswanconf6`。
+
+连接失败时同时看：`tail -f /var/log/charon.log`、`journalctl -u strongswan -f`、`top`（是否 charon 占满 CPU）。
+
 ## 参考文档
 
 - [strongSwan 官方文档](https://docs.strongswan.org/docs/latest/)

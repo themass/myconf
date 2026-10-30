@@ -267,9 +267,15 @@ strongswan_restore_59_main_conf() {
     if [ "$(id -u)" -eq 0 ]; then
         cp -f "$template" /etc/strongswan.conf
         rm -f /etc/strongswan.d/charon/zz-no-kernel-libipsec.conf 2>/dev/null || true
+        if [ -f "${myconf}/strongswan_conf_port/charon.conf" ]; then
+            cp -f "${myconf}/strongswan_conf_port/charon.conf" /etc/strongswan.d/charon.conf
+        fi
     else
         sudo cp -f "$template" /etc/strongswan.conf
         sudo rm -f /etc/strongswan.d/charon/zz-no-kernel-libipsec.conf 2>/dev/null || true
+        if [ -f "${myconf}/strongswan_conf_port/charon.conf" ]; then
+            sudo cp -f "${myconf}/strongswan_conf_port/charon.conf" /etc/strongswan.d/charon.conf
+        fi
     fi
 }
 

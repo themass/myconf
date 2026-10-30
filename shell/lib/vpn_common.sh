@@ -332,7 +332,8 @@ strongswan_reload_6() {
         sudo systemctl restart strongswan || return 1
     fi
     sleep 2
-    if ! swanctl --load-all --noprompt 2>/dev/null; then
+    if ! swanctl --load-all --noprompt; then
+        echo "swanctl --load-all 失败，常见原因：swanctl.conf 语法错误、证书缺失、/etc/swanctl/x509/ 下有 .p12 文件" >&2
         sudo swanctl --load-all --noprompt || return 1
     fi
 }

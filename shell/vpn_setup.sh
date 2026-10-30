@@ -237,6 +237,7 @@ strongswan_config_6() {
 	fi
 	echo "服务器 IP: $server_ip"
 
+	strongswan_install_systemd_unit || return 1
 	install_config_template "${conf_dir}/strongswan.conf" /etc/strongswan.conf || return 1
 	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts}
 	install_config_template "${conf_dir}/swanctl.conf.template" /etc/swanctl/swanctl.conf "$server_ip" || return 1
@@ -269,6 +270,7 @@ strongswan_config_port_6() {
 		echo "无法获取服务器 IP 地址" >&2
 		return 1
 	fi
+	strongswan_install_systemd_unit || return 1
 	install_config_template "${conf_dir}/strongswan.conf" /etc/strongswan.conf || return 1
 	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts}
 	install_config_template "${conf_dir}/swanctl_port.conf.template" /etc/swanctl/swanctl.conf "$server_ip" || return 1

@@ -5,14 +5,18 @@ if [ -z "${BASH_VERSION:-}" ]; then
     exit 2
 fi
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/vpn_common.sh
+source "${SCRIPT_DIR}/lib/vpn_common.sh"
+MYCONF_HOME="$(vpn_myconf_home)"
+
 PANEL_WORKDIR=/home/web/webroot
 PANEL_TMP_HOME=/home/web/soft
 PANEL_SHELL_HOME=/home/web/work/myconf/shell
 
-
-WORKDIR=/root/work
-TMP_HOME=/root/soft
-SHELL_HOME=/root/work/myconf/shell
+WORKDIR="${VPN_WORKDIR:-/root/work}"
+TMP_HOME="${VPN_TMP_HOME:-/root/soft}"
+SHELL_HOME="${SCRIPT_DIR}"
 #https://doub.io/ss-jc13/
 setup_sspanel() 
 {
@@ -49,7 +53,7 @@ setup_ssr()
 # Install Xray-core and create a VLESS + REALITY server configuration.
 #
 # Optional environment variables:
-#   XRAY_SERVER_ADDRESS  Address used in the printed client link
+#   XRAY_SERVER_ADDRESS  Override the client link address (auto-detected if unset)
 #   XRAY_PORT            Listening port (default: 443)
 #   XRAY_DEST            REALITY fallback, including port
 #   XRAY_SERVER_NAME     REALITY SNI/serverName
@@ -231,7 +235,7 @@ EOF
         config_created=1
     fi
 
-    if ! "$xray_bin" test -c "$config_file"; then
+    if ! xray_validate_config "$xray_bin" "$config_file"; then
         echo "Xray configuration test failed: $config_file" >&2
         return 1
     fi
@@ -246,9 +250,9 @@ EOF
         echo "systemd/xray.service was not found; start Xray manually after configuring it."
     fi
 
-    server_address="${XRAY_SERVER_ADDRESS:-}"
-    if [ -z "$server_address" ] && command -v curl >/dev/null 2>&1; then
-        server_address=$(curl -4fsS --max-time 5 https://api.ipify.org 2>/dev/null || true)
+    server_address=$(detect_server_address 2>/dev/null || true)
+    if [ -n "$server_address" ] && [ -z "${XRAY_SERVER_ADDRESS:-}" ]; then
+        echo "Detected server address: $server_address"
     fi
 
     # When re-running against an existing config, recover its values so the
@@ -286,7 +290,7 @@ EOF
         echo "VLESS REALITY link:"
         echo "$link"
     else
-        echo "Set XRAY_SERVER_ADDRESS to print a complete VLESS link."
+        echo "Unable to detect a public server address; set XRAY_SERVER_ADDRESS to print a complete VLESS link."
     fi
 }
 
@@ -298,7 +302,8 @@ usage()
     echo "Available arguments as below:"
     echo "sspanel           Setup setup_sspanel"
     echo "ssr          Setup setup_ssr"
-    echo "xray         Install or upgrade Xray-core"
+    echo "xray         Install or upgrade Xray-core (VLESS + REALITY)"
+    echo "xray_all     Same as xray (one-shot install + config + link)"
 }
 
 ## =====================================
@@ -309,7 +314,7 @@ if [ $# != 0 ]; then
         case "$arg" in
             sspanel)            setup_sspanel;;
             ssr)          setup_ssr;;
-            xray)         setup_xray;;
+            xray|xray_all)         setup_xray;;
         esac
     done
 else

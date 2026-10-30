@@ -220,13 +220,7 @@ strongswan_setup_6() {
   sudo ldconfig
 
 	sudo systemctl enable strongswan
-	if ! sudo systemctl restart strongswan; then
-		echo "strongswan.service failed to start; check: journalctl -xeu strongswan.service" >&2
-		sudo systemctl status strongswan --no-pager -l || true
-		return 1
-	fi
-	sleep 2
-	echo "strongSwan 6.0.2 部署完成"
+	echo "strongSwan 6.0.2 已编译安装；请在 swanctl 配置与 caip6 证书就绪后执行: bash vpn_setup.sh caip6"
 }
 
 # strongSwan 6.0.2 配置函数 (默认端口)
@@ -247,11 +241,13 @@ strongswan_config_6() {
 	install_config_template "${conf_dir}/swanctl.conf.template" /etc/swanctl/swanctl.conf "$server_ip" || return 1
 	install_config_template "${conf_dir}/swanctl.conf.template" /etc/swanctl.conf "$server_ip" || return 1
 
-	sudo systemctl daemon-reload
-	sudo systemctl restart strongswan || return 1
-	sleep 2
-	sudo swanctl --load-all || return 1
-	sudo swanctl --list-conns
+	if [ -f /etc/swanctl/x509ca/caCert.pem ]; then
+		strongswan_reload_6 || return 1
+		sudo swanctl --list-conns
+	else
+		echo "尚未生成证书，跳过启动 strongSwan。请接着运行: bash vpn_setup.sh caip6"
+		return 0
+	fi
 
 	if ! sudo systemctl is-active --quiet strongswan; then
 		echo "服务启动失败，请检查配置" >&2
@@ -276,9 +272,12 @@ strongswan_config_port_6() {
 	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts}
 	install_config_template "${conf_dir}/swanctl_port.conf.template" /etc/swanctl/swanctl.conf "$server_ip" || return 1
 	install_config_template "${conf_dir}/swanctl_port.conf.template" /etc/swanctl.conf "$server_ip" || return 1
-	sudo systemctl restart strongswan || return 1
-	sleep 2
-	sudo swanctl --load-all || return 1
+	if [ -f /etc/swanctl/x509ca/caCert.pem ]; then
+		strongswan_reload_6 || return 1
+	else
+		echo "尚未生成证书，请先运行: bash vpn_setup.sh caip6"
+		return 0
+	fi
 	echo "strongSwan 6.0.2 端口配置完成"
 }
 
@@ -310,7 +309,6 @@ strongswan_setup_all_6() {
 	net || true
 	check_vpn_6
 	echo "=== 一键部署完成 ==="
-	echo "下一步: bash ${SCRIPT_DIR}/vpn_setup.sh check_vpn6"
 }
 #ca setup
 init_ca()
@@ -489,9 +487,9 @@ caip6() {
 	sudo mkdir -p /etc/swanctl/{x509,private,x509ca}
 
 	sudo cp serverCert.pem /etc/swanctl/x509/
-	sudo cp serverKey.pem /etc/swanctl/private/
+	sudo cp serverKey.pem /etc/swanctl/private/serverCert.pem
 	sudo cp clientCert.pem /etc/swanctl/x509/
-	sudo cp clientKey.pem /etc/swanctl/private/
+	sudo cp clientKey.pem /etc/swanctl/private/clientCert.pem
 	sudo cp clientCert.p12 /etc/swanctl/x509/
 	sudo cp caCert.pem /etc/swanctl/x509ca/
 
@@ -505,16 +503,9 @@ caip6() {
 	sudo chmod 644 /etc/swanctl/x509/*.p12
 	sudo chmod 644 /etc/swanctl/x509ca/*.pem
 
-	# 重启服务以应用证书
-	echo "重启服务应用证书..."
-	sudo systemctl restart strongswan &
-	sleep 3
-	# 加载配置
-	echo "加载配置..."
-	sudo swanctl --load-all
-	sleep 2
-	# 验证证书
-	echo "验证证书..."
+	# 启动并加载 swanctl（必须在证书就位后）
+	echo "启动 strongSwan 并加载配置..."
+	strongswan_reload_6 || return 1
 	sudo swanctl --list-certs
 
 	echo "✅ strongSwan 6.0.2 证书生成完成！"

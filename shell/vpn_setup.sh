@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 #init soft
 
+if [ -z "${BASH_VERSION:-}" ]; then
+    if command -v bash >/dev/null 2>&1; then
+        exec bash "$0" "$@"
+    fi
+    echo "This script requires Bash. Run: bash $0 ..." >&2
+    exit 2
+fi
+
 #http://it.zhaozhao.info/archives/41127
 #https://segmentfault.com/a/1190000002540601
 #http://www.cnblogs.com/hyzhou/category/336618.html

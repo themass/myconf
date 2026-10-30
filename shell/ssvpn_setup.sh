@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 if [ -z "${BASH_VERSION:-}" ]; then
-    echo "This script requires Bash. Run: bash $0 xray" >&2
+    if command -v bash >/dev/null 2>&1; then
+        exec bash "$0" "$@"
+    fi
+    echo "This script requires Bash. Install bash or run: bash $0 xray" >&2
     exit 2
 fi
 
@@ -85,6 +88,8 @@ setup_xray()
     local dest="${XRAY_DEST:-www.samsung.com:443}"
     local server_name="${XRAY_SERVER_NAME:-www.samsung.com}"
 
+    local config_parse_ok=0
+
     installer_file=$(mktemp "${TMPDIR:-/tmp}/xray-install.XXXXXX.sh") || {
         echo "Unable to create a temporary file" >&2
         return 1
@@ -151,12 +156,7 @@ setup_xray()
             return 1
         }
 
-        # Xray versions before v25.8 print "Private key/Public key";
-        # newer versions print "PrivateKey/Password".  Both are supported.
-        private_key=$(printf '%s\n' "$key_output" | awk -F': *' \
-            '$1 == "Private key" || $1 == "PrivateKey" {print $2; exit}')
-        public_key=$(printf '%s\n' "$key_output" | awk -F': *' \
-            '$1 == "Public key" || $1 == "Password" {print $2; exit}')
+        xray_parse_x25519_keys "$key_output" private_key public_key
         short_id=$(openssl rand -hex 8 2>/dev/null) || {
             echo "openssl is required to generate the REALITY short ID" >&2
             return 1
@@ -255,33 +255,20 @@ EOF
         echo "Detected server address: $server_address"
     fi
 
-    # When re-running against an existing config, recover its values so the
-    # connection link is still printed instead of forcing the operator to
-    # inspect JSON manually.
-    if [ "$config_created" -eq 0 ] && command -v python3 >/dev/null 2>&1; then
-        config_values=$(python3 - "$config_file" <<'PY'
-import json
-import sys
-
-with open(sys.argv[1]) as f:
-    config = json.load(f)
-inbound = config["inbounds"][0]
-reality = inbound["streamSettings"]["realitySettings"]
-client = inbound["settings"]["clients"][0]
-print("\t".join([
-    client["id"],
-    str(inbound["port"]),
-    reality["serverNames"][0],
-    reality["privateKey"],
-    reality["shortIds"][0],
-]))
-PY
-)
-        IFS=$'\t' read -r uuid port server_name private_key short_id <<EOF
+    # When re-running against an existing config, recover link fields if possible.
+    if [ "$config_created" -eq 0 ]; then
+        if config_values=$(xray_read_reality_link_fields "$config_file" 2>/dev/null); then
+            IFS=$'\t' read -r uuid port server_name private_key short_id <<EOF
 $config_values
 EOF
-        public_key=$($xray_bin x25519 -i "$private_key" 2>/dev/null | awk -F': *' \
-            '$1 == "Public key" || $1 == "Password" {print $2; exit}')
+            public_key=$(xray_public_key_from_private "$xray_bin" "$private_key")
+            config_parse_ok=1
+        else
+            echo "Existing config is not a readable VLESS+REALITY profile." >&2
+            echo "Set XRAY_CONFIG_FORCE=1 to back it up and generate a new config." >&2
+        fi
+    else
+        config_parse_ok=1
     fi
 
     echo "Xray installed and configuration validated: $config_file"
@@ -289,8 +276,12 @@ EOF
         link="vless://${uuid}@${server_address}:${port}?flow=xtls-rprx-vision&encryption=none&type=tcp&security=reality&sni=${server_name}&fp=chrome&pbk=${public_key}&sid=${short_id}#Xray-REALITY"
         echo "VLESS REALITY link:"
         echo "$link"
+    elif [ -z "$server_address" ]; then
+        echo "Unable to detect server address; set XRAY_SERVER_ADDRESS to print a complete VLESS link."
+    elif [ "$config_parse_ok" -eq 0 ]; then
+        echo "Run with XRAY_CONFIG_FORCE=1 to regenerate config and print a new VLESS link."
     else
-        echo "Unable to detect a public server address; set XRAY_SERVER_ADDRESS to print a complete VLESS link."
+        echo "Could not derive REALITY public key from config; check: $xray_bin x25519 -i <privateKey>"
     fi
 }
 

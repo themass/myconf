@@ -137,6 +137,30 @@ install_config_template() {
     fi
 }
 
+xray_parse_x25519_keys() {
+    local key_output="$1"
+    local __private_var="${2:?}"
+    local __public_var="${3:?}"
+
+    # shellcheck disable=SC2034
+    printf -v "$__private_var" '%s' "$(printf '%s\n' "$key_output" | awk -F': *' '
+        $1 == "Private key" || $1 == "PrivateKey" { print $2; exit }
+    ')"
+    # shellcheck disable=SC2034
+    printf -v "$__public_var" '%s' "$(printf '%s\n' "$key_output" | awk -F': *' '
+        $1 == "Public key" || $1 == "Password" || $1 ~ /Public[Kk]ey/ { print $2; exit }
+    ')"
+}
+
+xray_public_key_from_private() {
+    local xray_bin="$1"
+    local private_key="$2"
+
+    "$xray_bin" x25519 -i "$private_key" 2>/dev/null | awk -F': *' '
+        $1 == "Public key" || $1 == "Password" || $1 ~ /Public[Kk]ey/ { print $2; exit }
+    '
+}
+
 xray_validate_config() {
     local xray_bin="$1"
     local config_file="$2"
@@ -148,6 +172,47 @@ xray_validate_config() {
         return 0
     fi
     return 1
+}
+
+xray_read_reality_link_fields() {
+    local config_file="$1"
+
+    python3 - "$config_file" <<'PY'
+import json
+import sys
+
+path = sys.argv[1]
+try:
+    with open(path, encoding="utf-8") as f:
+        config = json.load(f)
+except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+    sys.exit(1)
+
+for inbound in config.get("inbounds") or []:
+    if inbound.get("protocol") != "vless":
+        continue
+    stream = inbound.get("streamSettings") or {}
+    if stream.get("security") != "reality":
+        continue
+    reality = stream.get("realitySettings") or {}
+    clients = (inbound.get("settings") or {}).get("clients") or []
+    if not clients:
+        continue
+    client = clients[0]
+    uuid = client.get("id")
+    port = inbound.get("port")
+    server_names = reality.get("serverNames") or []
+    server_name = server_names[0] if server_names else ""
+    private_key = reality.get("privateKey") or ""
+    short_ids = reality.get("shortIds") or []
+    short_id = short_ids[0] if short_ids else ""
+    if not all([uuid, port, private_key, short_id, server_name]):
+        continue
+    print("\t".join([uuid, str(port), server_name, private_key, short_id]))
+    sys.exit(0)
+
+sys.exit(1)
+PY
 }
 
 openssl_version_major() {

@@ -285,6 +285,164 @@ EOF
     fi
 }
 
+# Verify syntax, keys, service, port, and REALITY inbound via local SOCKS (not just "started").
+xray_check() {
+    local xray_bin
+    local config_file="${XRAY_CONFIG_DIR:-/usr/local/etc/xray}/config.json"
+    local config_values
+    local uuid port server_name private_key short_id public_key
+    local server_address="${XRAY_SERVER_ADDRESS:-}"
+    local tmp_client
+    local self_pid
+    local http_code
+    local fail=0
+
+    xray_bin=$(command -v xray 2>/dev/null || true)
+    [ -z "$xray_bin" ] && [ -x /usr/local/bin/xray ] && xray_bin=/usr/local/bin/xray
+    if [ -z "$xray_bin" ]; then
+        echo "FAIL: xray binary not found" >&2
+        return 1
+    fi
+    if [ ! -f "$config_file" ]; then
+        echo "FAIL: missing $config_file" >&2
+        return 1
+    fi
+
+    echo "=== 1/5 配置语法 ==="
+    if xray_validate_config "$xray_bin" "$config_file"; then
+        echo "OK: xray run -test"
+    else
+        echo "FAIL: configuration test failed" >&2
+        fail=1
+    fi
+
+    echo "=== 2/5 服务与监听 ==="
+    if command -v systemctl >/dev/null 2>&1 && systemctl cat xray.service >/dev/null 2>&1; then
+        if systemctl is-active --quiet xray.service; then
+            echo "OK: systemctl is-active xray"
+        else
+            echo "FAIL: xray.service not active (systemctl status xray)" >&2
+            fail=1
+        fi
+    else
+        echo "WARN: xray.service not found; skip systemd check"
+    fi
+    if command -v ss >/dev/null 2>&1; then
+        if ss -tlnp 2>/dev/null | grep -q ':443'; then
+            ss -tlnp 2>/dev/null | grep ':443' || true
+            echo "OK: something listening on TCP 443"
+        else
+            echo "FAIL: no listener on TCP 443" >&2
+            fail=1
+        fi
+    fi
+
+    echo "=== 3/5 REALITY 字段与公钥 ==="
+    if ! config_values=$(xray_read_reality_link_fields "$config_file" 2>/dev/null); then
+        echo "FAIL: not a VLESS+REALITY server profile in $config_file" >&2
+        return 1
+    fi
+    IFS=$'\t' read -r uuid port server_name private_key short_id <<EOF
+$config_values
+EOF
+    public_key=$(xray_public_key_from_private "$xray_bin" "$private_key")
+    if [ -z "$public_key" ]; then
+        echo "FAIL: cannot derive public key from privateKey" >&2
+        fail=1
+    else
+        echo "OK: uuid=$uuid port=$port sni=$server_name sid=$short_id"
+        echo "OK: publicKey (client pbk) = $public_key"
+    fi
+
+    if [ -z "$server_address" ]; then
+        server_address=$(detect_server_address 2>/dev/null || true)
+    fi
+    if [ -n "$server_address" ] && [ -n "$public_key" ]; then
+        echo "VLESS link (for clients):"
+        echo "vless://${uuid}@${server_address}:${port}?flow=xtls-rprx-vision&encryption=none&type=tcp&security=reality&sni=${server_name}&fp=chrome&pbk=${public_key}&sid=${short_id}#Xray-REALITY"
+    fi
+
+    echo "=== 4/5 本机 REALITY 入站（经 SOCKS 访问外网）==="
+    echo "    （进程在跑 ≠ 鉴权成功；这一步才验证服务端 REALITY）"
+    tmp_client=$(mktemp "${TMPDIR:-/tmp}/xray-selftest.XXXXXX.json") || {
+        echo "FAIL: mktemp" >&2
+        return 1
+    }
+    cat > "$tmp_client" <<EOF
+{
+  "log": { "loglevel": "warning" },
+  "inbounds": [{
+    "listen": "127.0.0.1",
+    "port": 11080,
+    "protocol": "socks",
+    "settings": { "udp": true }
+  }],
+  "outbounds": [{
+    "protocol": "vless",
+    "settings": {
+      "vnext": [{
+        "address": "127.0.0.1",
+        "port": ${port},
+        "users": [{
+          "id": "${uuid}",
+          "encryption": "none",
+          "flow": "xtls-rprx-vision"
+        }]
+      }]
+    },
+    "streamSettings": {
+      "network": "tcp",
+      "security": "reality",
+      "realitySettings": {
+        "serverName": "${server_name}",
+        "publicKey": "${public_key}",
+        "shortId": "${short_id}",
+        "fingerprint": "chrome"
+      }
+    }
+  }]
+}
+EOF
+    if ! xray_validate_config "$xray_bin" "$tmp_client"; then
+        echo "FAIL: built self-test client config invalid" >&2
+        rm -f "$tmp_client"
+        return 1
+    fi
+    "$xray_bin" run -config "$tmp_client" >/dev/null 2>&1 &
+    self_pid=$!
+    sleep 2
+    if ! kill -0 "$self_pid" 2>/dev/null; then
+        echo "FAIL: self-test xray client exited immediately" >&2
+        fail=1
+    elif command -v curl >/dev/null 2>&1; then
+        http_code=$(curl -x socks5h://127.0.0.1:11080 -m 15 -sS -o /dev/null -w '%{http_code}' http://www.gstatic.com/generate_204 2>/dev/null || echo "000")
+        if [ "$http_code" = "204" ] || [ "$http_code" = "200" ]; then
+            echo "OK: HTTP $http_code via 127.0.0.1:${port} REALITY -> gstatic generate_204"
+        else
+            echo "FAIL: self-test HTTP code=$http_code (expect 204). REALITY inbound or outbound broken." >&2
+            fail=1
+        fi
+    else
+        echo "WARN: curl not installed; skip HTTP self-test"
+    fi
+    kill "$self_pid" 2>/dev/null || true
+    wait "$self_pid" 2>/dev/null || true
+    rm -f "$tmp_client"
+
+    echo "=== 5/5 客户端（路由器）别只看 Started! ==="
+    echo "SSR Plus 日志里 Main node Started 只表示本地 xray 进程起来。"
+    echo "在 iStoreOS 上应看到:"
+    echo "  curl -x socks5h://127.0.0.1:1080 -m 15 http://www.gstatic.com/generate_204  -> HTTP 204"
+    echo "Mac/手机用同一条 VLESS 链接能打开网页 -> 服务端 OK，问题在路由器导入或 xray 版本 (你当前 1.8.23 偏旧)."
+
+    if [ "$fail" -eq 0 ]; then
+        echo "=== 总结: 服务端检查通过 ==="
+        return 0
+    fi
+    echo "=== 总结: 服务端存在问题，见上方 FAIL ===" >&2
+    return 1
+}
+
 ## -----------------------
 ## Show help message
 ## -----------------------
@@ -296,6 +454,7 @@ usage()
     echo "xray         Install or upgrade Xray-core (VLESS + REALITY)"
     echo "xray_all     Same as xray (one-shot install + config + link)"
     echo "xray_regen   Backup config.json and generate new UUID/REALITY keys + VLESS link"
+    echo "xray_check   Validate config, keys, port, REALITY self-test (not just systemctl)"
 }
 
 ## =====================================
@@ -308,6 +467,7 @@ if [ $# != 0 ]; then
             ssr)          setup_ssr;;
             xray|xray_all)         setup_xray;;
             xray_regen)            XRAY_CONFIG_FORCE=1 setup_xray;;
+            xray_check)            xray_check;;
         esac
     done
 else

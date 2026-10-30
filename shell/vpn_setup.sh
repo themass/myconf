@@ -94,13 +94,9 @@ strongswan_setup()
 	local version
 	local src_dir
 	local tarball
-	local configure_extra=""
 
 	version=$(strongswan_pick_legacy_version)
-	if [ "$version" != "5.6.3" ]; then
-		echo "OpenSSL $(openssl version 2>/dev/null | awk '{print $2}') detected; building strongSwan ${version} instead of 5.6.3."
-		configure_extra=" --enable-systemd"
-	fi
+	echo "=== 编译安装 strongSwan ${version} (ipsec.conf / stroke) ==="
 
 	cd ${TMP_HOME} || return 1
 	tarball="strongswan-${version}.tar.bz2"
@@ -112,15 +108,18 @@ strongswan_setup()
 		tar -jxvf "$tarball" || return 1
 	fi
 	cd "$src_dir" || return 1
-	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2 --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls${configure_extra} || return 1
+	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2 --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls --enable-systemd --disable-kernel-libipsec || return 1
 	if ! make -j"$(nproc 2>/dev/null || echo 1)"; then
 		echo "strongSwan build failed" >&2
 		return 1
 	fi
 	sudo make install || return 1
 	sudo ldconfig 2>/dev/null || true
+	strongswan_purge_libipsec_plugin || true
+	strongswan_prepare_stroke_service
 	strongswan_start_service
 	cd ..
+	ipsec version 2>/dev/null || true
 }
 strongswan_config() 
 {
@@ -316,6 +315,23 @@ strongswan_setup_all_6() {
 	net || true
 	check_vpn_6
 	echo "=== 一键部署完成 ==="
+}
+
+# strongSwan 5.9.14 一键（ipsec.conf + 8080/8081 + RADIUS，替代原 5.6.3/6.x）
+strongswan_setup_all_59() {
+	local dev
+	echo "=== strongSwan 5.9.14 一键部署 (ipsec.conf 端口版) ==="
+	init_soft || return 1
+	strongswan_setup || return 1
+	strongswan_config_port || return 1
+	setup_caip || return 1
+	dev=$(get_netdev)
+	setup_iptables "$dev" || return 1
+	net || true
+	echo "=== 检查 ==="
+	ipsec version 2>/dev/null || true
+	ipsec statusall 2>/dev/null | head -20 || ipsec status 2>/dev/null || true
+	echo "=== 5.9.14 部署完成（IKE UDP 8081 / NAT-T 8080）==="
 }
 #ca setup
 init_ca()
@@ -615,12 +631,13 @@ usage()
     echo "fail2ban       Setup fail2ban"
     echo "kernel         Setup kernel"
     echo ""
-    echo "=== strongSwan 5.6.x / 5.9.x (ipsec.conf) ==="
-    echo "strongswan     编译安装 strongSwan（OpenSSL 3 自动用 5.9.14）"
-    echo "strongswanconf Setup strongSwan ipsec.conf 配置"
-    echo "strongswanconf_port Setup strongSwan 端口配置"
+    echo "=== strongSwan 5.9.14 (ipsec.conf，推荐生产) ==="
+    echo "strongswan          编译安装 5.9.14（默认，可用 STRONGSWAN_LEGACY_VERSION=5.6.3 覆盖）"
+    echo "strongswanconf      ipsec.conf 默认端口 500/4500"
+    echo "strongswanconf_port ipsec.conf 端口 8080/8081"
+    echo "strongswan59_all    一键：5.9.14 + 端口配置 + 证书 + 防火墙 + net"
     echo ""
-    echo "=== strongSwan 6.0.2 (swanctl，推荐) ==="
+    echo "=== strongSwan 6.0.2 (swanctl，实验) ==="
     echo "strongswan6         编译安装 strongSwan 6.0.2"
     echo "strongswanconf6     复制配置并自动填入服务器 IP"
     echo "strongswanconf_port6 端口版配置 (8080/8081)"
@@ -631,20 +648,28 @@ usage()
     echo ""
     echo "=== 证书和网络 ==="
     echo "ca             Setup ca"
-    echo "caip           Setup caip (5.6.3)"
+    echo "caip           Setup caip (5.9 ipsec.d)"
     echo "caip6          Setup caip6 (6.0.2)"
     echo "iptables       Setup iptables"
     echo "net            Setup net"
     echo ""
     echo "=== 检查和测试 ==="
     echo "check          checkspeed"
-    echo "check_vpn      check vpn (5.6.3)"
+    echo "check_vpn      check vpn (5.9 ipsec)"
     echo "check_mtr      Setup check_mtr"
     echo ""
     echo "=== 完整部署 ==="
-    echo "all            Setup all aboves (5.6.3 version)"
+    echo "all            Setup all aboves (5.9 默认配置 + 端口)"
     echo ""
     echo "=== 使用示例 ==="
+    echo "strongSwan 5.9.14 一键（推荐，从 6.x 换回）："
+    echo "  bash vpn_setup.sh strongswan59_all"
+    echo ""
+    echo "分步 5.9.14："
+    echo "  bash vpn_setup.sh strongswan"
+    echo "  bash vpn_setup.sh strongswanconf_port"
+    echo "  bash vpn_setup.sh caip"
+    echo ""
     echo "strongSwan 6 一键部署:"
     echo "  bash vpn_setup.sh strongswan6_all"
     echo ""
@@ -654,12 +679,12 @@ usage()
     echo "  bash vpn_setup.sh caip6"
     echo ""
     echo ""
-    echo "部署 strongSwan 5.6.3 默认配置："
+    echo "部署 strongSwan 5.9 默认端口："
     echo "  bash vpn_setup.sh strongswan"
     echo "  bash vpn_setup.sh strongswanconf"
     echo "  bash vpn_setup.sh caip"
     echo ""
-    echo "部署 strongSwan 5.6.3 端口配置："
+    echo "部署 strongSwan 5.9 端口配置："
     echo "  bash vpn_setup.sh strongswan"
     echo "  bash vpn_setup.sh strongswanconf_port"
     echo "  bash vpn_setup.sh caip"
@@ -678,10 +703,11 @@ if [ $# != 0 ]; then
             fail2ban)        setup_fail2ban;;
             kernel)          setup_kernel;;
 
-            # strongSwan 5.6.3 (旧版本)
+            # strongSwan 5.9.14 (ipsec.conf)
             strongswan)      strongswan_setup;;
             strongswanconf)  strongswan_config;;
             strongswanconf_port) strongswan_config_port;;
+            strongswan59_all|strongswan5914_all) strongswan_setup_all_59;;
 
             # strongSwan 6.0.2 (新版本，安全优化)
             strongswan6)     strongswan_setup_6;;

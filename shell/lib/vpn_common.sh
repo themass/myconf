@@ -288,18 +288,7 @@ strongswan_install_systemd_unit() {
         install_cmd=(sudo tee "$unit_path")
     fi
 
-    for candidate in /lib/systemd/system/strongswan.service /usr/lib/systemd/system/strongswan.service; do
-        if [ -f "$candidate" ] && grep -q 'charon-systemd' "$candidate" 2>/dev/null; then
-            if [ "$(id -u)" -eq 0 ]; then
-                cp "$candidate" "$unit_path"
-            else
-                sudo cp "$candidate" "$unit_path"
-            fi
-            systemctl daemon-reload 2>/dev/null || sudo systemctl daemon-reload
-            return 0
-        fi
-    done
-
+    # Do not reuse the upstream unit: its ExecStartPost runs swanctl before certs exist.
     charon_bin=$(strongswan_resolve_charon_bin) || {
         echo "charon or charon-systemd was not found after install" >&2
         return 1
@@ -323,5 +312,27 @@ RestartSec=5s
 [Install]
 WantedBy=multi-user.target
 EOF
+    if [ -L /etc/systemd/system/strongswan-swanctl.service ]; then
+        rm -f /etc/systemd/system/strongswan-swanctl.service
+    fi
     systemctl daemon-reload 2>/dev/null || sudo systemctl daemon-reload
+}
+
+strongswan_reload_6() {
+    if [ ! -f /etc/swanctl/x509ca/caCert.pem ]; then
+        echo "缺少 CA 证书，请先运行: bash vpn_setup.sh caip6" >&2
+        return 1
+    fi
+    if [ ! -f /etc/swanctl/x509/serverCert.pem ] || [ ! -f /etc/swanctl/private/serverCert.pem ]; then
+        echo "缺少服务器证书或私钥，请先运行: bash vpn_setup.sh caip6" >&2
+        return 1
+    fi
+    systemctl enable strongswan 2>/dev/null || sudo systemctl enable strongswan
+    if ! systemctl restart strongswan 2>/dev/null; then
+        sudo systemctl restart strongswan || return 1
+    fi
+    sleep 2
+    if ! swanctl --load-all --noprompt 2>/dev/null; then
+        sudo swanctl --load-all --noprompt || return 1
+    fi
 }

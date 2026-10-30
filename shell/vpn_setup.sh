@@ -490,7 +490,7 @@ caip6() {
 	sudo cp serverKey.pem /etc/swanctl/private/serverCert.pem
 	sudo cp clientCert.pem /etc/swanctl/x509/
 	sudo cp clientKey.pem /etc/swanctl/private/clientCert.pem
-	sudo cp clientCert.p12 /etc/swanctl/x509/
+	# 勿把 .p12 放进 x509/，charon 会当 PEM 解析导致 OpenSSL X.509 parsing failed
 	sudo cp caCert.pem /etc/swanctl/x509ca/
 
 	# 注意：端口配置不需要额外的证书，使用同一套证书即可
@@ -500,7 +500,6 @@ caip6() {
 	sudo chown -R strongswan:strongswan /etc/swanctl
 	sudo chmod 644 /etc/swanctl/x509/*.pem
 	sudo chmod 600 /etc/swanctl/private/*.pem
-	sudo chmod 644 /etc/swanctl/x509/*.p12
 	sudo chmod 644 /etc/swanctl/x509ca/*.pem
 
 	# 启动并加载 swanctl（必须在证书就位后）
@@ -510,6 +509,7 @@ caip6() {
 
 	echo "✅ strongSwan 6.0.2 证书生成完成！"
 	echo "证书位置：/etc/swanctl/x509/ 和 /etc/swanctl/private/"
+	echo "iOS/macOS 客户端 PKCS#12：${TMP_HOME}/ca6/clientCert.p12"
 	echo "查看证书：sudo swanctl --list-certs"
 	echo "=== 证书生成完成 ==="
 }

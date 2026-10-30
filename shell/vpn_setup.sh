@@ -140,21 +140,9 @@ strongswan_config()
 }
 strongswan_config_port() 
 {
-	#unzip strongswan_conf.zip
-#	dos2unix strongswan_conf/ipsec.conf
-#	dos2unix strongswan_conf/charon.conf
-#	dos2unix strongswan_conf/ipsec.secrets
-	#
-#	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-#	cp  strongswan_conf/ipsec.conf /etc/ipsec.conf
-#    #
-#	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
-#	cp  strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
-#    #
-#	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-#	cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
-	
 	cd "${SCRIPT_DIR}" || return 1
+	strongswan_ensure_stroke_charon_only || true
+	strongswan_ensure_ca_in_cacerts || true
 	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
 	cp  "${MYCONF_HOME}/strongswan_conf_port/ipsec.conf" /etc/ipsec.conf
     
@@ -169,8 +157,8 @@ strongswan_config_port()
 	if [ ! -f /etc/ipsec.d/cacerts/caCert.pem ]; then
 		echo "缺少 CA: /etc/ipsec.d/cacerts/caCert.pem — 请先运行: bash vpn_setup.sh caip" >&2
 	fi
-	if ! grep -q 'leftikeport=8081' /etc/ipsec.conf; then
-		echo "警告: /etc/ipsec.conf 可能不是最新端口版，请 git pull 后重跑 strongswanconf_port" >&2
+	if ! grep -q 'leftikeport=8080' /etc/ipsec.conf || ! grep -q 'radius-natt' /etc/ipsec.conf; then
+		echo "警告: /etc/ipsec.conf 缺少 radius-natt/8080，请 git pull 后重跑 strongswanconf_port" >&2
 	fi
 
 	ipsec restart
@@ -359,7 +347,7 @@ init_ca()
 	ipsec pki --gen --outform pem > clientKey.pem
 	ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem --dn "C=CN, O=timeline, CN=client" --outform pem > clientCert.pem
 
-	openssl pkcs12 -export -inkey clientKey.pem -in clientCert.pem -name "client" -certfile caCert.pem -caname "$1" -out clientCert.p12
+	openssl pkcs12 -export -inkey clientKey.pem -in clientCert.pem -name "client" -certfile caCert.pem -caname "$1" -out clientCert.p12 -passout pass:
 
 	cp caCert.pem /etc/ipsec.d/cacerts/
 	cp serverCert.pem /etc/ipsec.d/certs/
@@ -646,6 +634,7 @@ usage()
     echo "strongswanconf      ipsec.conf 默认端口 500/4500"
     echo "strongswanconf_port ipsec.conf 端口 8080/8081"
     echo "strongswan59_all    一键：5.9.14 + 端口配置 + 证书 + 防火墙 + net"
+    echo "strongswan_fix59    修复双 charon / CA / radius-natt(8080) 连不上"
     echo ""
     echo "=== strongSwan 6.0.2 (swanctl，实验) ==="
     echo "strongswan6         编译安装 strongSwan 6.0.2"
@@ -718,6 +707,7 @@ if [ $# != 0 ]; then
             strongswanconf)  strongswan_config;;
             strongswanconf_port) strongswan_config_port;;
             strongswan59_all|strongswan5914_all) strongswan_setup_all_59;;
+            strongswan_fix59) strongswan_fix59_connectivity;;
 
             # strongSwan 6.0.2 (新版本，安全优化)
             strongswan6)     strongswan_setup_6;;

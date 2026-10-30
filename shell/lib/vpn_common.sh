@@ -228,7 +228,14 @@ strongswan_pick_legacy_version() {
     printf '%s\n' "${STRONGSWAN_LEGACY_VERSION:-5.9.14}"
 }
 
-# 6.x 留下的 charon-systemd unit 与 ipsec.conf/stroke 不兼容
+# 6.x / --enable-systemd 安装的 strongswan.service（charon-systemd）与 ipsec.conf/stroke 不能并存
+strongswan_disable_charon_systemd_service() {
+    systemctl stop strongswan 2>/dev/null || sudo systemctl stop strongswan 2>/dev/null || true
+    systemctl disable strongswan 2>/dev/null || sudo systemctl disable strongswan 2>/dev/null || true
+    systemctl mask strongswan 2>/dev/null || sudo systemctl mask strongswan 2>/dev/null || true
+    pkill -9 -x charon-systemd 2>/dev/null || sudo pkill -9 -x charon-systemd 2>/dev/null || true
+}
+
 strongswan_prepare_stroke_service() {
     local unit="/etc/systemd/system/strongswan.service"
     if [ -f "$unit" ] && grep -q 'charon-systemd' "$unit" 2>/dev/null; then
@@ -241,6 +248,7 @@ strongswan_prepare_stroke_service() {
             sudo systemctl daemon-reload
         fi
     fi
+    strongswan_disable_charon_systemd_service
 }
 
 # 5.9 starter 读 /etc/strongswan.conf；6.x 或旧模板里的 charon.xxx= / duplicheck. 会解析失败
@@ -279,9 +287,70 @@ strongswan_restore_59_main_conf() {
     fi
 }
 
+strongswan_ensure_stroke_charon_only() {
+    echo "=== 确保仅 stroke charon 处理 UDP（避免 charon-systemd 抢 8080/8081）==="
+    strongswan_disable_charon_systemd_service
+    systemctl stop strongswan-starter 2>/dev/null || sudo systemctl stop strongswan-starter 2>/dev/null || true
+    pkill -9 -f '/usr/libexec/ipsec/charon' 2>/dev/null || sudo pkill -9 -f '/usr/libexec/ipsec/charon' 2>/dev/null || true
+    pkill -9 -f '/usr/lib/ipsec/charon' 2>/dev/null || sudo pkill -9 -f '/usr/lib/ipsec/charon' 2>/dev/null || true
+    sleep 1
+    systemctl enable strongswan-starter 2>/dev/null || sudo systemctl enable strongswan-starter 2>/dev/null || true
+    systemctl start strongswan-starter 2>/dev/null || sudo systemctl start strongswan-starter 2>/dev/null || \
+        ipsec restart 2>/dev/null || sudo ipsec restart
+    sleep 1
+    echo "--- 8080/8081 必须是 stroke charon，不能是 charon-systemd ---"
+    if command -v lsof >/dev/null 2>&1; then
+        lsof -i UDP:8080 -i UDP:8081 2>/dev/null || sudo lsof -i UDP:8080 -i UDP:8081 2>/dev/null || true
+    elif command -v ss >/dev/null 2>&1; then
+        ss -ulnp 2>/dev/null | grep -E ':8080|:8081' || sudo ss -ulnp | grep -E ':8080|:8081' || true
+    fi
+    ps aux 2>/dev/null | grep '[c]haron' || true
+    if lsof -i UDP:8080 2>/dev/null | grep -q charon-sy || sudo lsof -i UDP:8080 2>/dev/null | grep -q charon-sy; then
+        echo "错误: UDP 8080 仍被 charon-systemd 占用。请执行: systemctl mask strongswan && pkill -9 charon-systemd && ipsec restart" >&2
+        return 1
+    fi
+}
+
+strongswan_ensure_ca_in_cacerts() {
+    if [ -f /etc/ipsec.d/cacerts/caCert.pem ]; then
+        return 0
+    fi
+    local ca_dir="${TMP_HOME:-/root/soft}/ca"
+    if [ -f "${ca_dir}/caCert.pem" ]; then
+        echo "从 ${ca_dir}/caCert.pem 补装 CA 到 /etc/ipsec.d/cacerts/"
+        mkdir -p /etc/ipsec.d/cacerts
+        cp "${ca_dir}/caCert.pem" /etc/ipsec.d/cacerts/
+        return 0
+    fi
+    echo "缺少 /etc/ipsec.d/cacerts/caCert.pem，请运行: bash vpn_setup.sh caip" >&2
+    return 1
+}
+
+strongswan_fix59_connectivity() {
+    local myconf
+    myconf="$(vpn_myconf_home)"
+    strongswan_ensure_stroke_charon_only
+    strongswan_ensure_ca_in_cacerts || true
+    if [ -f "${myconf}/strongswan_conf_port/ipsec.conf" ]; then
+        if [ "$(id -u)" -eq 0 ]; then
+            cp -f "${myconf}/strongswan_conf_port/ipsec.conf" /etc/ipsec.conf
+        else
+            sudo cp -f "${myconf}/strongswan_conf_port/ipsec.conf" /etc/ipsec.conf
+        fi
+    fi
+    if [ "$(id -u)" -eq 0 ]; then
+        ipsec restart
+        ipsec listall 2>/dev/null | grep -E 'radius-natt|radius:' || true
+    else
+        sudo ipsec restart
+        sudo ipsec listall 2>/dev/null | grep -E 'radius-natt|radius:' || true
+    fi
+}
+
 strongswan_start_service() {
     systemctl daemon-reload 2>/dev/null || true
-    # 5.9.x stroke 优先用 starter，避免误启 6.x 留下的 charon-systemd unit
+    strongswan_disable_charon_systemd_service
+    # 5.9.x stroke 优先用 starter，避免与 charon-systemd 双进程抢端口
     if systemctl list-unit-files 2>/dev/null | grep -q '^strongswan-starter\.service'; then
         systemctl enable strongswan-starter 2>/dev/null || sudo systemctl enable strongswan-starter
         systemctl restart strongswan-starter 2>/dev/null || sudo systemctl restart strongswan-starter

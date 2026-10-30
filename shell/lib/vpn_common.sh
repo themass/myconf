@@ -256,3 +256,72 @@ strongswan_start_service() {
     fi
     echo "strongSwan installed, but no service unit was found." >&2
 }
+
+strongswan_resolve_charon_bin() {
+    local candidate
+
+    for candidate in \
+        /usr/lib/ipsec/charon-systemd \
+        /usr/sbin/charon-systemd \
+        /usr/libexec/ipsec/charon-systemd; do
+        if [ -x "$candidate" ]; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+    for candidate in /usr/lib/ipsec/charon /usr/libexec/ipsec/charon; do
+        if [ -x "$candidate" ]; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+    return 1
+}
+
+strongswan_install_systemd_unit() {
+    local charon_bin
+    local unit_type="simple"
+    local unit_path="/etc/systemd/system/strongswan.service"
+    local install_cmd=(tee "$unit_path")
+
+    if [ "$(id -u)" -ne 0 ]; then
+        install_cmd=(sudo tee "$unit_path")
+    fi
+
+    for candidate in /lib/systemd/system/strongswan.service /usr/lib/systemd/system/strongswan.service; do
+        if [ -f "$candidate" ] && grep -q 'charon-systemd' "$candidate" 2>/dev/null; then
+            if [ "$(id -u)" -eq 0 ]; then
+                cp "$candidate" "$unit_path"
+            else
+                sudo cp "$candidate" "$unit_path"
+            fi
+            systemctl daemon-reload 2>/dev/null || sudo systemctl daemon-reload
+            return 0
+        fi
+    done
+
+    charon_bin=$(strongswan_resolve_charon_bin) || {
+        echo "charon or charon-systemd was not found after install" >&2
+        return 1
+    }
+    case "$charon_bin" in
+        *charon-systemd) unit_type="notify" ;;
+    esac
+
+    "${install_cmd[@]}" <<EOF
+[Unit]
+Description=strongSwan IPsec daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=${unit_type}
+ExecStart=${charon_bin}
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    systemctl daemon-reload 2>/dev/null || sudo systemctl daemon-reload
+}

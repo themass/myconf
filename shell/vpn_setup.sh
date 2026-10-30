@@ -1,10 +1,15 @@
+#!/usr/bin/env bash
 #init soft
 
 #http://it.zhaozhao.info/archives/41127
 #https://segmentfault.com/a/1190000002540601
 #http://www.cnblogs.com/hyzhou/category/336618.html
-WORKDIR=/root/work
-TMP_HOME=/root/soft
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/vpn_common.sh
+source "${SCRIPT_DIR}/lib/vpn_common.sh"
+MYCONF_HOME="$(vpn_myconf_home)"
+WORKDIR="${VPN_WORKDIR:-/root/work}"
+TMP_HOME="${VPN_TMP_HOME:-/root/soft}"
 PWD=`pwd`
 #ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|grep -v 10. |awk '{print $1}'|tr -d "addr:"`
 init_soft() 
@@ -78,27 +83,50 @@ checkmtr()
 
 strongswan_setup() 
 {
-	cd ${TMP_HOME}
-	wget http://download.strongswan.org/strongswan-5.6.3.tar.bz2 --no-check-certificate
-	tar -jxvf strongswan-5.6.3.tar.bz2 && cd strongswan-5.6.3
-	./configure --prefix=/usr --sysconfdir=/etc  --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap  --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2  --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls
-	sudo make && sudo make install
-	sudo systemctl start strongswan
+	local version
+	local src_dir
+	local tarball
+	local configure_extra=""
+
+	version=$(strongswan_pick_legacy_version)
+	if [ "$version" != "5.6.3" ]; then
+		echo "OpenSSL $(openssl version 2>/dev/null | awk '{print $2}') detected; building strongSwan ${version} instead of 5.6.3."
+		configure_extra=" --enable-systemd"
+	fi
+
+	cd ${TMP_HOME} || return 1
+	tarball="strongswan-${version}.tar.bz2"
+	src_dir="strongswan-${version}"
+	if [ ! -f "$tarball" ]; then
+		wget "https://download.strongswan.org/${tarball}" --no-check-certificate || return 1
+	fi
+	if [ ! -d "$src_dir" ]; then
+		tar -jxvf "$tarball" || return 1
+	fi
+	cd "$src_dir" || return 1
+	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-nat-transport --disable-mysql --disable-ldap --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka --enable-eap-aka-3gpp2 --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls${configure_extra} || return 1
+	if ! make -j"$(nproc 2>/dev/null || echo 1)"; then
+		echo "strongSwan build failed" >&2
+		return 1
+	fi
+	sudo make install || return 1
+	sudo ldconfig 2>/dev/null || true
+	strongswan_start_service
 	cd ..
 }
 strongswan_config() 
 {
-	cd ${WORKDIR}/myconf/shell
+	cd "${SCRIPT_DIR}" || return 1
 	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-	cp  ../strongswan_conf/ipsec.conf /etc/ipsec.conf
+	cp  "${MYCONF_HOME}/strongswan_conf/ipsec.conf" /etc/ipsec.conf
     
 	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
-	cp  ../strongswan_conf/charon.conf /etc/strongswan.d/charon.conf
+	cp  "${MYCONF_HOME}/strongswan_conf/charon.conf" /etc/strongswan.d/charon.conf
     
 	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-	cp  ../strongswan_conf/ipsec.secrets /etc/ipsec.secrets
+	cp  "${MYCONF_HOME}/strongswan_conf/ipsec.secrets" /etc/ipsec.secrets
 	
-	cp  ../strongswan_conf/strongswan.conf /etc/strongswan.conf
+	cp  "${MYCONF_HOME}/strongswan_conf/strongswan.conf" /etc/strongswan.conf
 	
 	ipsec restart
 }
@@ -118,17 +146,17 @@ strongswan_config_port()
 #	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
 #	cp  strongswan_conf/ipsec.secrets /etc/ipsec.secrets
 	
-	cd ${WORKDIR}/myconf/shell
+	cd "${SCRIPT_DIR}" || return 1
 	cp  /etc/ipsec.conf /etc/ipsec.conf.bak
-	cp  ../strongswan_conf_port/ipsec.conf /etc/ipsec.conf
+	cp  "${MYCONF_HOME}/strongswan_conf_port/ipsec.conf" /etc/ipsec.conf
     
 	cp  /etc/strongswan.d/charon.conf /etc/strongswan.d/charon.conf.bak
-	cp  ../strongswan_conf_port/charon.conf /etc/strongswan.d/charon.conf
+	cp  "${MYCONF_HOME}/strongswan_conf_port/charon.conf" /etc/strongswan.d/charon.conf
     
 	cp  /etc/ipsec.secrets  /etc/ipsec.secrets.bak
-	cp  ../strongswan_conf_port/ipsec.secrets /etc/ipsec.secrets
+	cp  "${MYCONF_HOME}/strongswan_conf_port/ipsec.secrets" /etc/ipsec.secrets
 	
-	cp  ../strongswan_conf_port/strongswan.conf /etc/strongswan.conf
+	cp  "${MYCONF_HOME}/strongswan_conf_port/strongswan.conf" /etc/strongswan.conf
 	
 	ipsec restart
 }
@@ -136,9 +164,8 @@ strongswan_config_port()
 # strongSwan 6.0.2 部署函数 - 简单版本
 strongswan_setup_6() {
 	echo "=== 部署 strongSwan 6.0.2 ==="
-	cd ${TMP_HOME}
+	cd ${TMP_HOME} || return 1
 	
-	# 安装依赖 - Ubuntu 18.04 完整版本
 	sudo apt-get update
 	sudo apt-get install -y \
 		build-essential \
@@ -153,122 +180,126 @@ strongswan_setup_6() {
 		libsystemd-dev \
 		libiptc-dev \
 		libip4tc-dev \
-		libip6tc-dev \
-		libpam0g-dev \
-		libmysqlclient-dev \
-		libsqlite3-dev \
-		libldap2-dev \
-		libsoup2.4-dev \
-		libunbound-dev \
-		libcharon-extra-plugins \
-		libstrongswan-extra-plugins \
-		libstrongswan-standard-plugins \
-		strongswan-dev
+		libip6tc-dev
 
-	# 下载源码
 	if [ ! -d "strongswan-6.0.2" ]; then
-		wget https://download.strongswan.org/strongswan-6.0.2.tar.bz2 --no-check-certificate
-		tar -jxvf strongswan-6.0.2.tar.bz2
+		if [ ! -f strongswan-6.0.2.tar.bz2 ]; then
+			wget https://download.strongswan.org/strongswan-6.0.2.tar.bz2 --no-check-certificate || return 1
+		fi
+		tar -jxvf strongswan-6.0.2.tar.bz2 || return 1
 	fi
-	cd strongswan-6.0.2
-	# 配置编译
-	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-eap-radius --enable-eap-identity --enable-eap-md5 --enable-eap-mschapv2 --enable-eap-tls --enable-eap-ttls --enable-vici --enable-swanctl --enable-systemd --enable-kernel-netlink --enable-kernel-libipsec
-		# 编译安装
-	make -j$(nproc) && sudo make install
+	cd strongswan-6.0.2 || return 1
+	./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-eap-radius --enable-eap-identity --enable-eap-md5 --enable-eap-mschapv2 --enable-eap-tls --enable-eap-ttls --enable-vici --enable-swanctl --enable-systemd --enable-kernel-netlink --enable-kernel-libipsec || return 1
+	if ! make -j"$(nproc 2>/dev/null || echo 1)"; then
+		echo "strongSwan 6 build failed" >&2
+		return 1
+	fi
+	sudo make install || return 1
 	
-	# 创建用户
 	sudo groupadd -r strongswan 2>/dev/null || true
 	sudo useradd -r -g strongswan -s /bin/false -d /var/lib/strongswan strongswan 2>/dev/null || true
 	
-	# 创建目录
-	sudo mkdir -p /etc/swanctl/{private,x509,scripts} /var/log/strongswan /var/lib/strongswan
-	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan /var/lib/strongswan
+	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts} /var/log/strongswan /var/lib/strongswan /var/run/charon
+	sudo chown -R strongswan:strongswan /etc/swanctl /var/log/strongswan /var/lib/strongswan 2>/dev/null || true
 
-	# 创建服务文件
-	cd ${WORKDIR}/myconf/shell
-	cp ../strongswan_6.0_conf/strongswan.service /etc/systemd/system/strongswan.service
+	sudo cp "${MYCONF_HOME}/strongswan_6.0_conf/strongswan.service" /etc/systemd/system/strongswan.service
 
-# 创建必要的目录
-  echo "创建必要的目录..."
-  sudo mkdir -p /var/log/strongswan
-  sudo mkdir -p /etc/swanctl/{private,x509,scripts}
-  sudo mkdir -p /var/run/charon
-
-  # 设置权限
-  echo "设置权限..."
-  sudo chown -R strongswan:strongswan /var/log/strongswan /etc/swanctl /var/run/charon 2>/dev/null || true
   sudo chmod 755 /var/log/strongswan /etc/swanctl /var/run/charon
   sudo chmod 700 /etc/swanctl/private 2>/dev/null || true
 
   sudo ln -sf /usr/lib/ipsec/libstrongswan.so.0 /usr/lib/libstrongswan.so.0
   sudo ln -sf /usr/lib/ipsec/libcharon.so.0 /usr/lib/libcharon.so.0
-  # 更新库缓存
   sudo ldconfig
 
-	# 启动服务
 	sudo systemctl daemon-reload
 	sudo systemctl enable strongswan
-	sudo systemctl start strongswan &
+	sudo systemctl restart strongswan
 	sleep 2
-	echo "✅ strongSwan 6.0.2 部署完成"
+	echo "strongSwan 6.0.2 部署完成"
 }
 
 # strongSwan 6.0.2 配置函数 (默认端口)
 strongswan_config_6() {
-	echo "=== 开始配置 strongSwan 6.0.2 (包含所有端口) ==="
-	cd ${WORKDIR}/myconf/shell
+	local server_ip
+	local conf_dir="${MYCONF_HOME}/strongswan_6.0_conf"
 
-	# 获取服务器IP
-	SERVER_IP=$(get_ip)
-	if [ -z "$SERVER_IP" ]; then
-		echo "❌ 无法获取服务器IP地址"
+	echo "=== 开始配置 strongSwan 6.0.2 ==="
+	server_ip=$(get_ip)
+	if [ -z "$server_ip" ]; then
+		echo "无法获取服务器 IP 地址" >&2
 		return 1
 	fi
-	echo "服务器IP: $SERVER_IP"
+	echo "服务器 IP: $server_ip"
 
-	# 复制配置文件
-	echo "复制配置文件..."
-	mv /etc/strongswan.conf /etc/strongswan.conf.bak
-	mv /etc/swanctl/swanctl.conf /etc/swanctl/swanctl.conf.bak
-	sudo cp ../strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl/swanctl.conf
-	sudo cp ../strongswan_6.0_conf/swanctl.conf /etc/swanctl.conf
-	
-	# 替换服务器IP
-	echo "替换服务器IP..."
-	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl/swanctl.conf
-	sudo sed -i "s/{{SERVER_IP}}/$SERVER_IP/g" /etc/swanctl.conf
+	install_config_template "${conf_dir}/strongswan.conf" /etc/strongswan.conf || return 1
+	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts}
+	install_config_template "${conf_dir}/swanctl.conf.template" /etc/swanctl/swanctl.conf "$server_ip" || return 1
+	install_config_template "${conf_dir}/swanctl.conf.template" /etc/swanctl.conf "$server_ip" || return 1
 
-
-
-	echo "注意：证书文件需要单独运行 caip6 生成"
-	# 重启服务应用配置
-	echo "重启服务应用配置..."
 	sudo systemctl daemon-reload
-	sudo systemctl restart strongswan &
-	sleep 3
-	# 加载配置
-	echo "加载配置..."
-	sudo swanctl --load-all
+	sudo systemctl restart strongswan || return 1
 	sleep 2
-	# 验证配置
-	echo "验证配置..."
+	sudo swanctl --load-all || return 1
 	sudo swanctl --list-conns
-	netstat -ulpn
 
-	# 检查服务状态
-	echo "检查服务状态..."
 	if ! sudo systemctl is-active --quiet strongswan; then
-		echo "❌ 服务启动失败，请检查配置"
-		echo "服务日志："
+		echo "服务启动失败，请检查配置" >&2
 		sudo systemctl status strongswan --no-pager -l
 		sudo journalctl -u strongswan --no-pager -n 40
 		return 1
 	fi
-	echo "✅ strongSwan 6.0.2 配置完成！"
-	echo "检查配置：sudo swanctl --list-conns"
-	echo "查看日志：sudo journalctl -u strongswan-swanctl -f"
-	echo "=== 配置完成 ==="
+	echo "strongSwan 6.0.2 配置完成"
+}
+
+strongswan_config_port_6() {
+	local server_ip
+	local conf_dir="${MYCONF_HOME}/strongswan_6.0_conf"
+
+	echo "=== 开始配置 strongSwan 6.0.2 端口版 ==="
+	server_ip=$(get_ip)
+	if [ -z "$server_ip" ]; then
+		echo "无法获取服务器 IP 地址" >&2
+		return 1
+	fi
+	install_config_template "${conf_dir}/strongswan.conf" /etc/strongswan.conf || return 1
+	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts}
+	install_config_template "${conf_dir}/swanctl_port.conf.template" /etc/swanctl/swanctl.conf "$server_ip" || return 1
+	install_config_template "${conf_dir}/swanctl_port.conf.template" /etc/swanctl.conf "$server_ip" || return 1
+	sudo systemctl restart strongswan || return 1
+	sleep 2
+	sudo swanctl --load-all || return 1
+	echo "strongSwan 6.0.2 端口配置完成"
+}
+
+setup_iptables_6() {
+	local dev="${1:-$(get_netdev)}"
+	if [ -z "$dev" ]; then
+		echo "无法识别网卡设备" >&2
+		return 1
+	fi
+	echo "配置防火墙，出口网卡: $dev"
+	setup_iptables "$dev"
+}
+
+check_vpn_6() {
+	echo "=== strongSwan 6 状态 ==="
+	sudo systemctl status strongswan --no-pager -l || true
+	sudo swanctl --list-conns || true
+	sudo swanctl --list-certs || true
+	sudo ipsec statusall 2>/dev/null || true
+}
+
+strongswan_setup_all_6() {
+	echo "=== strongSwan 6 一键部署 ==="
+	init_soft || return 1
+	strongswan_setup_6 || return 1
+	strongswan_config_6 || return 1
+	caip6 || return 1
+	setup_iptables_6 || return 1
+	net || true
+	check_vpn_6
+	echo "=== 一键部署完成 ==="
+	echo "下一步: bash ${SCRIPT_DIR}/vpn_setup.sh check_vpn6"
 }
 #ca setup
 init_ca()
@@ -418,7 +449,7 @@ caip6() {
 	if [ ! -f "/etc/strongswan.conf" ]; then
 		echo "创建基础 strongswan.conf..."
 		sudo mkdir -p /etc/swanctl/{x509,private}
-		sudo cp ${WORKDIR}/myconf/strongswan_6.0_conf/strongswan.conf /etc/strongswan.conf
+		sudo cp "${MYCONF_HOME}/strongswan_6.0_conf/strongswan.conf" /etc/strongswan.conf
 	fi
 
 	# 生成 CA 证书
@@ -446,15 +477,11 @@ caip6() {
 	echo "复制证书到 strongSwan 6.0.2 目录..."
 	sudo mkdir -p /etc/swanctl/{x509,private,x509ca}
 
-	# 复制基础证书到 x509 目录
-	sudo cp caCert.pem /etc/swanctl/x509/
 	sudo cp serverCert.pem /etc/swanctl/x509/
 	sudo cp serverKey.pem /etc/swanctl/private/
 	sudo cp clientCert.pem /etc/swanctl/x509/
 	sudo cp clientKey.pem /etc/swanctl/private/
 	sudo cp clientCert.p12 /etc/swanctl/x509/
-
-	# 复制 CA 证书到 x509ca 目录（strongSwan 6.0.2 期望的位置）
 	sudo cp caCert.pem /etc/swanctl/x509ca/
 
 	# 注意：端口配置不需要额外的证书，使用同一套证书即可
@@ -547,7 +574,7 @@ setup_all()
     setup_iptables $dev
     #setup_fail2ban
     net
-    strongswanconf_port
+    strongswan_config_port
     setup_kernel
     setup_rclocal
     echo "crotab-----------------------------"
@@ -562,20 +589,9 @@ setup_all()
     echo "crotab-----------------------------"
 
 }
-get_ip(){
-    local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
-    [ -z ${IP} ] && IP=$( wget -qO- -t1 -T2 ipv4.icanhazip.com )
-    [ -z ${IP} ] && IP=$( wget -qO- -t1 -T2 ipinfo.io/ip )
-    echo ${IP}
-}
 get_internal_ip(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\." | head -n 1 )
     echo ${IP}
-}
-get_netdev(){
-    local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
-    DEV=$( ip addr | grep ${IP} ||egrep -o '(eth0|ens3|enp1s0)')
-    echo ${DEV}
 }
 ## -----------------------
 ## Show help message
@@ -590,14 +606,17 @@ usage()
     echo "fail2ban       Setup fail2ban"
     echo "kernel         Setup kernel"
     echo ""
-    echo "=== strongSwan 5.6.3 (旧版本) ==="
-    echo "strongswan     Setup strongswan 5.6.3"
-    echo "strongswanconf Setup strongswan 5.6.3 config"
-    echo "strongswanconf_port Setup strongswan 5.6.3 port config"
+    echo "=== strongSwan 5.6.x / 5.9.x (ipsec.conf) ==="
+    echo "strongswan     编译安装 strongSwan（OpenSSL 3 自动用 5.9.14）"
+    echo "strongswanconf Setup strongSwan ipsec.conf 配置"
+    echo "strongswanconf_port Setup strongSwan 端口配置"
     echo ""
-    echo "=== strongSwan 6.0.2 (新版本，安全优化) ==="
-    echo "strongswan6    Setup strongswan 6.0.2"
-    echo "strongswanconf6 Setup strongswan 6.0.2 config (一键完成所有配置)"
+    echo "=== strongSwan 6.0.2 (swanctl，推荐) ==="
+    echo "strongswan6         编译安装 strongSwan 6.0.2"
+    echo "strongswanconf6     复制配置并自动填入服务器 IP"
+    echo "strongswanconf_port6 端口版配置 (8080/8081)"
+    echo "strongswan6_all     一键：安装 + 配置 + 证书 + 防火墙 + 网络"
+    echo "strongswanall6      同上（别名）"
     echo ""
     echo ""
     echo "=== 证书和网络 ==="
@@ -616,7 +635,10 @@ usage()
     echo "all            Setup all aboves (5.6.3 version)"
     echo ""
     echo "=== 使用示例 ==="
-    echo "部署 strongSwan 6.0.2 配置 (默认端口):"
+    echo "strongSwan 6 一键部署:"
+    echo "  bash vpn_setup.sh strongswan6_all"
+    echo ""
+    echo "分步部署 strongSwan 6:"
     echo "  bash vpn_setup.sh strongswan6"
     echo "  bash vpn_setup.sh strongswanconf6"
     echo "  bash vpn_setup.sh caip6"
@@ -654,6 +676,8 @@ if [ $# != 0 ]; then
             # strongSwan 6.0.2 (新版本，安全优化)
             strongswan6)     strongswan_setup_6;;
             strongswanconf6) strongswan_config_6;;
+            strongswanconf_port6) strongswan_config_port_6;;
+            strongswan6_all|strongswanall6) strongswan_setup_all_6;;
             
             
             # 证书和网络

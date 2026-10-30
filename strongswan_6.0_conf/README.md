@@ -6,13 +6,17 @@
 
 ### 配置文件
 - `strongswan.conf` - strongSwan 主配置文件（包含 EAP-RADIUS 插件配置）
-- `swanctl.conf.template` - swanctl 默认端口配置模板 (500/4500)
-- `swanctl_port.conf.template` - swanctl 端口配置模板 (500/4500/8080/8081)
-- `updown.sh` - 连接生命周期脚本
+- `swanctl.conf.template` - swanctl 默认配置模板，含 `{{SERVER_IP}}` 占位符
+- `swanctl_port.conf.template` - 端口版 swanctl 模板
+- `strongswan.service` - systemd 单元文件
 
-### 使用方法
+#### 1. 一键部署（推荐）
+```bash
+cd shell
+bash vpn_setup.sh strongswan6_all
+```
 
-#### 1. 部署 strongSwan 6.0.2
+#### 2. 分步部署
 ```bash
 # 使用 bash 运行（推荐）
 bash vpn_setup.sh strongswan6

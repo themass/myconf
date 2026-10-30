@@ -243,6 +243,36 @@ strongswan_prepare_stroke_service() {
     fi
 }
 
+# 5.9 starter 读 /etc/strongswan.conf；6.x 或旧模板里的 charon.xxx= / duplicheck. 会解析失败
+strongswan_restore_59_main_conf() {
+    local template
+    local myconf
+    myconf="$(vpn_myconf_home)"
+    if [ -f "${myconf}/strongswan_conf_port/strongswan.conf" ]; then
+        template="${myconf}/strongswan_conf_port/strongswan.conf"
+    else
+        template="${myconf}/strongswan_conf/strongswan.conf"
+    fi
+    if [ ! -f "$template" ]; then
+        echo "Missing 5.9 strongswan.conf template under ${myconf}" >&2
+        return 1
+    fi
+    if [ -f /etc/strongswan.conf ]; then
+        if [ "$(id -u)" -eq 0 ]; then
+            cp -p /etc/strongswan.conf "/etc/strongswan.conf.bak.$(date +%Y%m%d%H%M%S)"
+        else
+            sudo cp -p /etc/strongswan.conf "/etc/strongswan.conf.bak.$(date +%Y%m%d%H%M%S)"
+        fi
+    fi
+    if [ "$(id -u)" -eq 0 ]; then
+        cp -f "$template" /etc/strongswan.conf
+        rm -f /etc/strongswan.d/charon/zz-no-kernel-libipsec.conf 2>/dev/null || true
+    else
+        sudo cp -f "$template" /etc/strongswan.conf
+        sudo rm -f /etc/strongswan.d/charon/zz-no-kernel-libipsec.conf 2>/dev/null || true
+    fi
+}
+
 strongswan_start_service() {
     systemctl daemon-reload 2>/dev/null || true
     # 5.9.x stroke 优先用 starter，避免误启 6.x 留下的 charon-systemd unit

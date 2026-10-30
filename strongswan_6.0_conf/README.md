@@ -39,29 +39,23 @@ bash vpn_setup.sh caip6
 
 ## 配置特点
 
-### strongswan.conf 配置
-基于 [strongSwan 官方文档](https://docs.strongswan.org/docs/latest/config/quickstart.html) 和 5.6 版本配置：
-- 启用模块化加载 (`load_modular = yes`)
-- 配置 EAP-RADIUS 插件，连接到 RADIUS 服务器：
-  - 服务器地址: `radius.sspacee.com`
-  - 认证端口: `1812` (默认)
-  - 计费端口: `1813` (默认)
-  - 共享密钥: `FreeVPN@vpn5296`
-  - 启用计费功能 (`accounting = yes`)
-- 包含日志配置和基本参数设置
-- 支持标准 IKE 端口 (500/udp) 和 NAT-T 端口 (4500/udp)
+### 认证方式（与 5.6.3 一致）
+
+- 客户端 **EAP 用户名/密码** 由 **远端 RADIUS** 校验（非本机 `secrets` 用户表）
+- RADIUS 在 `/etc/strongswan.conf` → `charon.plugins.eap-radius`：
+  - 地址：`radius.sspacee.com`
+  - 端口：`1812` / `1813`
+  - 共享密钥：`FreeVPN@vpn5296`
+- `swanctl` 连接 `radius`：`remote { auth = eap-radius }`，与 5.x `rightauth=eap-radius` 等价
+
+### strongswan.conf
+- 自定义端口：**8081**（IKE）、**8080**（NAT-T），与 `strongswan_conf_port` 一致
+- 启用 **eap-radius** 插件（见上）
 
 ### 默认端口配置
-- IKE: 500/udp
-- NAT-T: 4500/udp
-- 支持 EAP-RADIUS 和证书认证
-- IP 地址池: 10.0.0.0/24, 10.0.1.0/24
-
-### 端口配置
-- IKE: 500/udp, 8080/udp, 8081/udp
-- NAT-T: 4500/udp
-- 支持 EAP-RADIUS 和证书认证
-- IP 地址池: 10.0.0.0/24, 10.0.1.0/24, 10.0.2.0/24, 10.0.3.0/24
+- IKE: **8081/udp**，NAT-T: **8080/udp**
+- EAP-RADIUS + 服务器证书；地址池 `10.0.0.0/24`
+- 客户端账号密码在 **RADIUS** 侧管理（与 5.6.3 相同）
 
 ## 管理命令
 

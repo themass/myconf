@@ -1,37 +1,38 @@
-# strongSwan 6.0.2 配置 - 完全符合官方文档
-# 基于 strongswan_conf_port 简化版本，使用自定义端口
+# strongSwan 6.x 端口版 — EAP-RADIUS（与 strongswan_conf_port 一致）
+# IKE/NAT-T 端口见 /etc/strongswan.conf：8081 / 8080
 
 connections {
     radius {
         version = 2
         local_addrs = %any
         remote_addrs = %any
-        
+        pools = radius
+
         local {
             auth = pubkey
             certs = serverCert.pem
             id = {{SERVER_IP}}
         }
         remote {
-            auth = eap-identity
+            auth = eap-radius
+            eap_id = %any
         }
         children {
             radius {
-                local_ts = 0.0.0.0/0,::/0
-                remote_ts = 0.0.0.0/0,::/0
+                local_ts = 0.0.0.0/0, ::/0
+                remote_ts = 0.0.0.0/0, ::/0
                 start_action = trap
                 rekey_time = 8h
             }
         }
-        proposals = aes256-sha256-ecp256,aes128-sha256-ecp256,aes256-sha384-ecp256,aes256gcm16-prfsha256-ecp256,aes256-sha384-ecp384,aes128-sha1-modp2048,aes256-sha384-modp4096,aes256-sha1-modp4096,aes128-sha1-modp1536,aes256-sha384-modp2048,aes256-sha1-modp2048,aes128-sha1-modp1024,aes256-sha384-modp1536,aes256-sha1-modp1536,aes256-sha384-modp1024,aes256-sha1-modp1024
+        proposals = aes256-sha256-ecp256, aes128-sha256-ecp256, aes256-sha384-ecp256, aes256gcm16-prfsha256-ecp256, aes256-sha384-ecp384, aes128-sha1-modp2048, aes256-sha384-modp4096, aes256-sha1-modp4096, aes128-sha1-modp1536, aes256-sha384-modp2048, aes256-sha1-modp2048, aes128-sha1-modp1024, aes256-sha384-modp1536, aes256-sha1-modp1536, aes256-sha384-modp1024, aes256-sha1-modp1024
         rekey_time = 8h
     }
 }
 
 authorities {
-    caCert {
+    ca {
         cacert = caCert.pem
-        crl_uris = http://crl.example.org/strongswan.crl
     }
 }
 

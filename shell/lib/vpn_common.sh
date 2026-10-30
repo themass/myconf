@@ -318,6 +318,74 @@ EOF
     systemctl daemon-reload 2>/dev/null || sudo systemctl daemon-reload
 }
 
+strongswan_install_charon_dropins() {
+    local dropin_src
+    dropin_src="$(vpn_myconf_home)/strongswan_6.0_conf/charon/zz-no-kernel-libipsec.conf"
+    if [ ! -f "$dropin_src" ]; then
+        echo "Missing $dropin_src" >&2
+        return 1
+    fi
+    if [ "$(id -u)" -eq 0 ]; then
+        mkdir -p /etc/strongswan.d/charon
+        cp -f "$dropin_src" /etc/strongswan.d/charon/zz-no-kernel-libipsec.conf
+    else
+        sudo mkdir -p /etc/strongswan.d/charon
+        sudo cp -f "$dropin_src" /etc/strongswan.d/charon/zz-no-kernel-libipsec.conf
+    fi
+    strongswan_purge_libipsec_plugin || true
+}
+
+strongswan_purge_libipsec_plugin() {
+    local pattern
+    for pattern in \
+        '/usr/lib/ipsec/plugins/libstrongswan-kernel-libipsec.so*' \
+        '/usr/libexec/ipsec/plugins/libstrongswan-kernel-libipsec.so*'; do
+        # shellcheck disable=SC2086
+        if ls $pattern 1>/dev/null 2>&1; then
+            if [ "$(id -u)" -eq 0 ]; then
+                rm -f $pattern
+            else
+                sudo rm -f $pattern
+            fi
+            echo "Removed userspace IPsec plugin: $pattern"
+        fi
+    done
+    if [ -f /etc/strongswan.d/charon/kernel-libipsec.conf ]; then
+        if [ "$(id -u)" -eq 0 ]; then
+            sed -i 's/load *= *yes/load = no/' /etc/strongswan.d/charon/kernel-libipsec.conf 2>/dev/null || true
+        else
+            sudo sed -i 's/load *= *yes/load = no/' /etc/strongswan.d/charon/kernel-libipsec.conf 2>/dev/null || true
+        fi
+    fi
+}
+
+strongswan_verify_6() {
+    local log="/var/log/charon.log"
+    if ip link show ipsec0 >/dev/null 2>&1; then
+        echo "FATAL: 仍存在 ipsec0 设备 — 用户态 IPsec 未关闭，客户端流量会把 CPU 打满。" >&2
+        echo "请执行: bash vpn_setup.sh strongswan_fix6" >&2
+        return 1
+    fi
+    if [ -f "$log" ] && tail -30 "$log" | grep -q 'created TUN device: ipsec0'; then
+        echo "FATAL: charon 最近仍创建了 ipsec0，请重新编译并执行 strongswan_fix6。" >&2
+        return 1
+    fi
+    echo "OK: 未检测到 ipsec0（应走内核 XFRM）。"
+    return 0
+}
+
+strongswan_fix_libipsec_6() {
+    echo "=== 关闭 userspace IPsec (kernel-libipsec) ==="
+    strongswan_install_charon_dropins || return 1
+    if [ -f /etc/strongswan.conf ]; then
+        if ! grep -q 'kernel-libipsec' /etc/strongswan.conf; then
+            echo "提示: 请同步仓库中的 /etc/strongswan.conf（含 kernel-libipsec load = no）" >&2
+        fi
+    fi
+    strongswan_reload_6 || return 1
+    strongswan_verify_6 || return 1
+}
+
 strongswan_reload_6() {
     if [ ! -f /etc/swanctl/x509ca/caCert.pem ]; then
         echo "缺少 CA 证书，请先运行: bash vpn_setup.sh caip6" >&2
@@ -336,4 +404,5 @@ strongswan_reload_6() {
         echo "swanctl --load-all 失败，常见原因：swanctl.conf 语法错误、证书缺失、/etc/swanctl/x509/ 下有 .p12 文件" >&2
         sudo swanctl --load-all --noprompt || return 1
     fi
+    strongswan_verify_6 || return 1
 }

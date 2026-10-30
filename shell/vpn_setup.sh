@@ -204,6 +204,8 @@ strongswan_setup_6() {
 		return 1
 	fi
 	sudo make install || return 1
+	strongswan_purge_libipsec_plugin || true
+	strongswan_install_charon_dropins || return 1
 	
 	sudo groupadd -r strongswan 2>/dev/null || true
 	sudo useradd -r -g strongswan -s /bin/false -d /var/lib/strongswan strongswan 2>/dev/null || true
@@ -238,6 +240,7 @@ strongswan_config_6() {
 	echo "服务器 IP: $server_ip"
 
 	strongswan_install_systemd_unit || return 1
+	strongswan_install_charon_dropins || return 1
 	install_config_template "${conf_dir}/strongswan.conf" /etc/strongswan.conf || return 1
 	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts}
 	install_config_template "${conf_dir}/swanctl.conf.template" /etc/swanctl/swanctl.conf "$server_ip" || return 1
@@ -271,6 +274,7 @@ strongswan_config_port_6() {
 		return 1
 	fi
 	strongswan_install_systemd_unit || return 1
+	strongswan_install_charon_dropins || return 1
 	install_config_template "${conf_dir}/strongswan.conf" /etc/strongswan.conf || return 1
 	sudo mkdir -p /etc/swanctl/{private,x509,x509ca,scripts}
 	install_config_template "${conf_dir}/swanctl_port.conf.template" /etc/swanctl/swanctl.conf "$server_ip" || return 1
@@ -621,6 +625,7 @@ usage()
     echo "strongswanconf6     复制配置并自动填入服务器 IP"
     echo "strongswanconf_port6 端口版配置 (8080/8081)"
     echo "strongswan6_all     一键：安装 + 配置 + 证书 + 防火墙 + 网络"
+    echo "strongswan_fix6     关掉 ipsec0/userspace IPsec（一连打满 CPU 时用）"
     echo "strongswanall6      同上（别名）"
     echo ""
     echo ""
@@ -683,6 +688,7 @@ if [ $# != 0 ]; then
             strongswanconf6) strongswan_config_6;;
             strongswanconf_port6) strongswan_config_port_6;;
             strongswan6_all|strongswanall6) strongswan_setup_all_6;;
+            strongswan_fix6) strongswan_fix_libipsec_6;;
             
             
             # 证书和网络

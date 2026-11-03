@@ -48,5 +48,9 @@ chmod 600 privkey.pem
 chmod 644 fullchain.pem
 echo "已生成：$SSL_DIR/fullchain.pem 与 privkey.pem（有效期 ${DAYS} 天）"
 
-"$NGINX_BIN" -t && "$NGINX_BIN" -s reload
+if ! "$NGINX_BIN" -t; then
+    echo "nginx 配置检查失败，请先修复后再执行：$NGINX_BIN -t" >&2
+    exit 1
+fi
+"$NGINX_BIN" -s reload
 echo "nginx 已重载。本地测试：curl -vk https://${DOMAINS[0]}/vvv/api/version.json"

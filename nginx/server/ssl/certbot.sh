@@ -55,6 +55,10 @@ $NGINX_BIN -s reload
 HOOK
 chmod +x "$HOOK_DIR/nginx-reload.sh"
 
-"$NGINX_BIN" -t && "$NGINX_BIN" -s reload
+if ! "$NGINX_BIN" -t; then
+    echo "nginx 配置检查失败，请先修复后再执行：$NGINX_BIN -t" >&2
+    exit 1
+fi
+"$NGINX_BIN" -s reload
 echo "证书已就绪。测试续期：certbot renew --dry-run"
 echo "验证：curl -I https://${DOMAINS[0]}/vvv/api/version.json"

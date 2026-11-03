@@ -5,6 +5,9 @@
 | 仓库文件 | 服务器路径 |
 |---|---|
 | `nginx/vpn.conf` | `/root/local/nginx/conf/server/vpn.conf`（替换原文件） |
+| `book.conf` | `/root/local/nginx/conf/server/book.conf`（新增；book 的 443 用 Let's Encrypt 证书） |
+
+注意：`book.ok123find.top` 只能在一个文件里定义。部署前先删掉服务器上 `sspacee3.conf` 里的 book 块和 `proxy/book.ok123find.top.conf`，否则会报 `conflicting server name`。
 
 证书文件由 `ssl/` 下的脚本写入 `/root/local/nginx/conf/ssl/`。
 

@@ -2,15 +2,16 @@
 # Let's Encrypt 正式证书（免费，Android 与 AdMob 都信任）。
 #
 # 前提：
-#   1. 域名 api.ok123find.top、file.ok123find.top 的 A 记录指向本服务器；
+#   1. 域名 api / file / book.ok123find.top 的 A 记录指向本服务器；
 #   2. 服务器 80 端口可以从公网访问（Let's Encrypt 通过它校验域名）。
+# 三个域名共用一张证书（SAN），nginx 各 server 块都引用同一对 fullchain/privkey。
 #
 # 用法（root 执行）：
 #   bash certbot.sh 你的邮箱@example.com
 set -euo pipefail
 
 EMAIL="${1:?用法: $0 你的邮箱}"
-DOMAINS=(api.ok123find.top file.ok123find.top)
+DOMAINS=(api.ok123find.top file.ok123find.top book.ok123find.top)
 WEBROOT=/var/www/letsencrypt
 SSL_DIR="${SSL_DIR:-/root/local/nginx/conf/ssl}"
 NGINX_BIN="${NGINX_BIN:-/root/local/nginx/sbin/nginx}"
@@ -33,11 +34,12 @@ fi
 
 mkdir -p "$WEBROOT" "$SSL_DIR"
 
-# 申请证书（webroot 方式：不会中断 nginx）
+# 申请证书（webroot 方式：不会中断 nginx）。
+# --expand：已有旧的 api/file 证书时，把 book 加进去而不是报错。
 ARGS=()
 for d in "${DOMAINS[@]}"; do ARGS+=(-d "$d"); done
 certbot certonly --webroot -w "$WEBROOT" "${ARGS[@]}" \
-    -m "$EMAIL" --agree-tos --non-interactive
+    -m "$EMAIL" --agree-tos --non-interactive --expand
 
 # 复制到 nginx 使用的固定路径
 cp -L "$LIVE_DIR/fullchain.pem" "$SSL_DIR/fullchain.pem"

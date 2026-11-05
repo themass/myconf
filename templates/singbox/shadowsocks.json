@@ -1,0 +1,12 @@
+{
+  "inbounds": [
+    {
+      "type": "shadowsocks",
+      "tag": "shadowsocks",
+      "listen": "{{LISTEN}}",
+      "listen_port": {{PORT}},
+      "method": "{{METHOD}}",
+      "password": "{{PASSWORD}}"
+    }
+  ]
+}

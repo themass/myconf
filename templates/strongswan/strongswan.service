@@ -1,0 +1,13 @@
+[Unit]
+Description=strongSwan IPsec daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type={{UNIT_TYPE}}
+ExecStart={{CHARON_BIN}}
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+{
+  "inbounds": [
+    {
+      "type": "hysteria2",
+      "tag": "hysteria2",
+      "listen": "{{LISTEN}}",
+      "listen_port": {{PORT}},
+      "users": [
+        {
+          "password": "{{PASSWORD}}"
+        }
+      ],
+      "tls": {
+        "enabled": true,
+        "alpn": [
+          "h3"
+        ],
+        "certificate_path": "{{CERT_PATH}}",
+        "key_path": "{{KEY_PATH}}"
+      }
+    }
+  ]
+}

@@ -3,7 +3,7 @@
 #
 # 用法（通过 vpn.sh 调用）：
 #   vpn.sh wireguard install
-#   vpn.sh wireguard sync-install            安装每分钟一次的定时同步（需要 WG_SYNC_URL 和 WG_SYNC_TOKEN）
+#   WG_LEVEL=<线路等级> vpn.sh wireguard sync-install   安装每分钟一次的定时同步（需要 WG_SYNC_URL、WG_SYNC_TOKEN、WG_LEVEL）
 #   vpn.sh wireguard sync                    立即从后端同步一次
 #   vpn.sh wireguard add-peer <名字> [客户端公钥]   手工添加（地址落在保留段 10.66.255.0/24）
 #   vpn.sh wireguard del-peer <名字>
@@ -38,9 +38,10 @@ wireguard_usage() {
     cat <<EOF
 WireGuard 模块:
   install                        安装 wireguard-tools，生成服务端密钥，启动 ${WG_IF}
-  sync-install                   安装定时同步：每分钟从后端拉取 App 设备的公钥和地址
+  sync-install                   安装定时同步：每分钟从后端拉取本线路能用的设备公钥和地址
                                  需要: WG_SYNC_URL=https://api.example.com/vvv/api/noapp/wg/peers.txt
                                        WG_SYNC_TOKEN=<与后端 secrets.properties 的 wg.syncToken 一致>
+                                       WG_LEVEL=<本线路等级：0 免费，1/2… 为 VIP>
   sync                           立即同步一次
   add-peer <名字> [客户端公钥]   手工添加；不给公钥则生成密钥并输出完整客户端配置
   del-peer <名字>                删除手工添加的 peer
@@ -55,6 +56,7 @@ WireGuard 模块:
   WG_SUBNET       内网网段，必须是 /16，默认 10.66.0.0/16，要与后端 WgAddress.PREFIX 一致
   WG_DNS / WG_MTU 生成客户端配置时使用，默认 1.1.1.1 / 1420
   WG_SYNC_FORCE=1 同步时允许 peer 数量骤降或清空（默认拒绝，防止后端异常时把所有设备踢掉）
+  WG_LEVEL        sync-install 时写入本线路等级；已安装的改线路等级要重新运行 sync-install
   VPN_NETDEV      出口网卡（默认自动识别默认路由所在网卡）
   SERVER_ADDRESS  服务器公网地址（默认自动识别）
 EOF
@@ -231,6 +233,10 @@ wg_valid_sync_url() {
         || [[ "$1" =~ ^http://(127\.0\.0\.1|localhost)(:[0-9]+)?/[A-Za-z0-9/_.-]*$ ]]
 }
 
+wg_valid_level() {
+    [[ "$1" =~ ^[0-9]{1,2}$ ]]
+}
+
 wg_valid_sync_token() {
     # 限制字符集：令牌会被写进 curl 配置，不能含引号、换行等。
     [[ "$1" =~ ^[A-Za-z0-9._~-]{24,}$ ]]
@@ -249,12 +255,14 @@ wg_sync_fetch() {
 wg_sync() {
     require_root
     [ -f "${WG_ETC}/${WG_IF}.base.conf" ] || die "尚未安装，先运行: vpn.sh wireguard install"
-    local url token raw valid new_count old_count tmp
+    local url token level raw valid new_count old_count tmp
     url="${WG_SYNC_URL:-$(wg_sync_env_get WG_SYNC_URL)}"
     token="${WG_SYNC_TOKEN:-$(wg_sync_env_get WG_SYNC_TOKEN)}"
-    [ -n "$url" ] && [ -n "$token" ] || die "缺少同步配置，先运行: WG_SYNC_URL=... WG_SYNC_TOKEN=... vpn.sh wireguard sync-install"
+    level="$(wg_sync_env_get WG_SYNC_LEVEL)"
+    [ -n "$url" ] && [ -n "$token" ] && [ -n "$level" ] || die "缺少同步配置（地址、令牌或线路等级），重新运行: WG_LEVEL=<等级> WG_SYNC_URL=... WG_SYNC_TOKEN=... vpn.sh wireguard sync-install"
     wg_valid_sync_url "$url" || die "WG_SYNC_URL 不合法（公网必须 https）: ${url}"
     wg_valid_sync_token "$token" || die "WG_SYNC_TOKEN 不合法（至少 24 位，只允许字母数字和 ._~-）"
+    wg_valid_level "$level" || die "WG_SYNC_LEVEL 不合法: ${level}"
 
     # 定时器和手工运行不能同时改配置。
     if have flock; then
@@ -265,7 +273,7 @@ wg_sync() {
         }
     fi
 
-    raw="$(wg_sync_fetch "$url" "$token")" || die "拉取 peer 列表失败（地址、令牌或网络有问题）"
+    raw="$(wg_sync_fetch "${url}?level=${level}" "$token")" || die "拉取 peer 列表失败（地址、令牌、线路等级或网络有问题）"
     valid="$(printf '%s\n' "$raw" | wg_sync_parse)" || die "后端返回的 peer 列表不合法，已放弃本次同步，配置未改动"
 
     # 手工 peer 已经占用的公钥：wg 不允许同一个公钥出现两次，丢弃同步来的那条并提示。
@@ -330,12 +338,14 @@ wg_sync_install() {
     have systemctl || die "需要 systemd"
     ensure_cmds curl
     [ -f "${WG_ETC}/${WG_IF}.base.conf" ] || die "尚未安装，先运行: vpn.sh wireguard install"
-    local url="${WG_SYNC_URL:-}" token="${WG_SYNC_TOKEN:-}"
-    [ -n "$url" ] && [ -n "$token" ] || die "需要同时设置 WG_SYNC_URL 和 WG_SYNC_TOKEN"
+    local url="${WG_SYNC_URL:-}" token="${WG_SYNC_TOKEN:-}" level="${WG_LEVEL:-}"
+    [ -n "$url" ] && [ -n "$token" ] && [ -n "$level" ] || die "需要同时设置 WG_SYNC_URL、WG_SYNC_TOKEN 和 WG_LEVEL"
     wg_valid_sync_url "$url" || die "WG_SYNC_URL 不合法（公网必须 https，形如 https://api.example.com/vvv/api/noapp/wg/peers.txt）"
     wg_valid_sync_token "$token" || die "WG_SYNC_TOKEN 不合法（至少 24 位，只允许字母数字和 ._~-）"
+    wg_valid_level "$level" || die "WG_LEVEL 必须是 0~99 的整数（0 为免费线路）"
 
-    install_template "${TEMPLATE_DIR}/wireguard/sync.env" "$WG_SYNC_ENV" 600 "SYNC_URL=${url}" "SYNC_TOKEN=${token}"
+    install_template "${TEMPLATE_DIR}/wireguard/sync.env" "$WG_SYNC_ENV" 600 \
+        "SYNC_URL=${url}" "SYNC_TOKEN=${token}" "SYNC_LEVEL=${level}"
     install_template "${TEMPLATE_DIR}/wireguard/wg-sync.service" /etc/systemd/system/wg-sync.service 644 \
         "SCRIPT=${VPN_SHELL_DIR}/vpn.sh"
     install_file "${TEMPLATE_DIR}/wireguard/wg-sync.timer" /etc/systemd/system/wg-sync.timer 644
@@ -403,7 +413,7 @@ wg_info() {
     echo "端点:       $(wg_endpoint)"
     echo "网段:       ${WG_SUBNET}（本节点 $(wg_server_cidr)，手工 peer 用 $(wg_manual_prefix).0/24）"
     if systemctl is-active --quiet wg-sync.timer 2>/dev/null; then
-        echo "设备同步:   已启用（每分钟）"
+        echo "设备同步:   已启用（每分钟，线路等级 $(wg_sync_env_get WG_SYNC_LEVEL)）"
     else
         echo "设备同步:   未启用，App 设备连不上。运行 vpn.sh wireguard sync-install"
     fi

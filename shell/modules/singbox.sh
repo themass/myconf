@@ -31,6 +31,7 @@ sing-box 模块:
   add <协议>           添加协议并输出客户端链接；协议: ${SB_PROTOCOLS} all
   remove <协议>        删除协议
   links                输出所有已添加协议的客户端链接
+  sql [host_v2 行 id]  输出写入后端官方节点列表的 UPDATE 语句
   status               服务状态和监听端口
   check                校验配置并确认各端口在监听
   restart              重启服务
@@ -590,6 +591,32 @@ sb_links() {
     [ "$found" -eq 1 ] || warn "还没有添加任何协议，先运行: vpn.sh singbox add <协议>"
 }
 
+# ------------------------------------------------------------------ 官方节点列表
+
+# 打印写入后端 host_v2 的 UPDATE 语句（协议名和 proxyLinks，见后端 2026111100_proxy_links.sql）。
+# 脚本里的 vmess-ws 在后端和客户端里统一叫 vmess。
+sb_sql() {
+    local host_id="${1:-<host_v2 的行 id>}" p name names="" json="" sep=""
+    for p in $SB_PROTOCOLS; do
+        [ -f "$(sb_state_file "$p")" ] || continue
+        name="$p"
+        [ "$p" = "vmess-ws" ] && name="vmess"
+        names="${names}${names:+,}${name}"
+        json="${json}${sep}\"${name}\":\"$(sb_link "$p")\""
+        sep=","
+    done
+    [ -n "$names" ] || die "还没有添加任何协议，先运行: vpn.sh singbox add <协议>"
+    cat <<EOF
+-- 在后端 MySQL 上执行（需要先执行 2026111100_proxy_links.sql）。
+-- 代理协议要放在单独的节点行上，protocols 里不要写 ikev2，否则客户端不会使用这些链接。
+UPDATE vpn.host_v2
+SET protocols  = '${names}',
+    proxyLinks = '{${json}}',
+    needPing   = 0
+WHERE id = ${host_id};
+EOF
+}
+
 # ------------------------------------------------------------------ 状态与检查
 
 sb_status() {
@@ -628,6 +655,7 @@ singbox_main() {
         add) sb_add "$@" ;;
         remove) sb_remove "$@" ;;
         links) sb_links ;;
+        sql) sb_sql "$@" ;;
         status) sb_status ;;
         check) sb_check ;;
         restart) require_root && sb_restart ;;

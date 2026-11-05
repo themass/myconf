@@ -22,7 +22,7 @@ bash vpn.sh links                 # 已安装协议的客户端链接
 | `singbox` | VMess + WebSocket | tcp 8880 | `SB_VMESS_PORT` |
 | `singbox` | Shadowsocks | tcp+udp 8388 | `SB_SS_PORT` |
 | `singbox` | Hysteria2 | udp 8444 | `SB_HY2_PORT` |
-| `wireguard` | WireGuard | udp 51820 | `WG_PORT` |
+| `wireguard` | WireGuard（内网 10.66.0.0/16） | udp 51820 | `WG_PORT` |
 | `ssr` | ShadowsocksR / ss-panel | 见 `ssr_conf/` | |
 | `system` | 依赖、内核参数、BBR、IPsec NAT、监控、诊断 | | |
 
@@ -39,10 +39,10 @@ bash vpn.sh singbox add all
 bash vpn.sh singbox add hysteria2
 bash vpn.sh singbox links
 
-# WireGuard：给 App 登记公钥，或者直接生成整套客户端配置
+# WireGuard：App 设备的公钥由后端管理，服务器每分钟自动拉取（地址规划见 docs/WIREGUARD-BACKEND.md）
 bash vpn.sh wireguard install
-bash vpn.sh wireguard add-peer phone <客户端公钥>
-bash vpn.sh wireguard add-peer laptop
+WG_SYNC_URL=https://api.example.com/vvv/api/noapp/wg/peers.txt WG_SYNC_TOKEN=<令牌> bash vpn.sh wireguard sync-install
+bash vpn.sh wireguard add-peer laptop      # 自己电脑等手工 peer，地址落在保留段 10.66.255.0/24
 
 # strongSwan 5.9 一键（编译 + 端口版配置 + 证书 + 防火墙 + 内核参数）
 bash vpn.sh strongswan all 59

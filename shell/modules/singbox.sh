@@ -3,7 +3,7 @@
 #
 # 用法（通过 vpn.sh 调用）：
 #   vpn.sh singbox install                 只装二进制和服务
-#   vpn.sh singbox add <协议|all>           添加一个协议并输出客户端链接（没装会先装）
+#   vpn.sh singbox add <协议|all>           添加一个协议并输出客户端链接（没装会先装；vless-reality 请用 xray）
 #   vpn.sh singbox remove <协议>
 #   vpn.sh singbox links | status | check | restart | upgrade | uninstall
 #
@@ -12,8 +12,8 @@
 # 重复运行会沿用，不会让已发出去的链接失效；SB_FORCE=1 才会重新生成。
 #
 # 默认端口（和 Xray 的 443 错开，可以同机共存）：
-#   vless-reality 444/tcp   vmess-ws 8880/tcp   trojan 8443/tcp
-#   shadowsocks 8388/tcp+udp   hysteria2 8444/udp
+#   vmess-ws 8880/tcp   trojan 8443/tcp   shadowsocks 8388/tcp+udp   hysteria2 8444/udp
+# VLESS+Reality 服务端由 Xray 承载（tcp 443），见 modules/xray.sh。
 
 SB_VERSION="${SB_VERSION:-1.13.5}"
 SB_BIN="${SB_BIN:-/usr/local/bin/sing-box}"
@@ -22,13 +22,15 @@ SB_CONF="${SB_ETC}/conf.d"
 SB_STATE="${SB_ETC}/state"
 SB_CERT_DIR="${SB_ETC}/cert"
 SB_USER="sing-box"
-SB_PROTOCOLS="vless-reality vmess-ws trojan shadowsocks hysteria2"
+# 服务端 Reality 由 Xray 承载（见 xray.sh）；sing-box 的 vless-reality 模板保留但不再启用。
+SB_PROTOCOLS_ALL="vless-reality vmess-ws trojan shadowsocks hysteria2"
+SB_PROTOCOLS="vmess-ws trojan shadowsocks hysteria2"
 
 singbox_usage() {
     cat <<EOF
 sing-box 模块:
   install              下载 sing-box ${SB_VERSION} 并注册 systemd 服务（不启动）
-  add <协议>           添加协议并输出客户端链接；协议: ${SB_PROTOCOLS} all
+  add <协议>           添加协议并输出客户端链接；协议: ${SB_PROTOCOLS} all（all 不含 vless-reality，见 xray）
   remove <协议>        删除协议
   links                输出所有已添加协议的客户端链接
   sql [host_v2 行 id]  输出写入后端官方节点列表的 UPDATE 语句
@@ -53,7 +55,7 @@ EOF
 
 sb_valid_proto() {
     local p
-    for p in $SB_PROTOCOLS; do
+    for p in $SB_PROTOCOLS_ALL; do
         [ "$p" = "$1" ] && return 0
     done
     return 1
@@ -269,7 +271,7 @@ sb_resolve_port() {
 # 同一台机器上其他协议已经用了这个端口就拒绝。
 sb_assert_port_unique() {
     local proto="$1" port="$2" other f p
-    for other in $SB_PROTOCOLS; do
+    for other in $SB_PROTOCOLS_ALL; do
         [ "$other" = "$proto" ] && continue
         f="$(sb_state_file "$other")"
         [ -f "$f" ] || continue
@@ -504,6 +506,11 @@ sb_add() {
         return 0
     fi
     sb_valid_proto "$target" || die "不支持的协议: ${target}（可选: ${SB_PROTOCOLS}）"
+    if [ "$target" = "vless-reality" ]; then
+        # 2026-11-05 实测：sing-box 1.13.5 的 Reality 服务端在目标机上拒绝所有客户端（含全新密钥、
+        # 以及 Xray 客户端），而 sing-box 客户端连 Xray 的 Reality 服务端正常。服务端 Reality 请用 Xray。
+        die "sing-box 的 VLESS+Reality 服务端在 1.13.5 上不可用，请用: vpn.sh xray install（Xray 承载服务端，sing-box 客户端可连）"
+    fi
     case "$target" in
         vless-reality) sb_add_vless_reality ;;
         vmess-ws) sb_add_vmess_ws ;;
@@ -515,7 +522,7 @@ sb_add() {
 
 sb_remove() {
     local proto="${1:-}"
-    sb_valid_proto "$proto" || die "用法: vpn.sh singbox remove <${SB_PROTOCOLS// /|}>"
+    sb_valid_proto "$proto" || die "用法: vpn.sh singbox remove <${SB_PROTOCOLS_ALL// /|}>"
     require_root
     rm -f "${SB_CONF}/$(sb_conf_name "$proto")" "$(sb_state_file "$proto")"
     if svc_is_active sing-box; then
@@ -581,7 +588,7 @@ sb_link() {
 
 sb_links() {
     local p found=0
-    for p in $SB_PROTOCOLS; do
+    for p in $SB_PROTOCOLS_ALL; do
         if [ -f "$(sb_state_file "$p")" ]; then
             found=1
             printf '%s:\n  ' "$p"
@@ -597,7 +604,7 @@ sb_links() {
 # 脚本里的 vmess-ws 在后端和客户端里统一叫 vmess。
 sb_sql() {
     local host_id="${1:-<host_v2 的行 id>}" p name names="" json="" sep=""
-    for p in $SB_PROTOCOLS; do
+    for p in $SB_PROTOCOLS_ALL; do
         [ -f "$(sb_state_file "$p")" ] || continue
         name="$p"
         [ "$p" = "vmess-ws" ] && name="vmess"
@@ -632,7 +639,7 @@ sb_check() {
     sb_installed || die "尚未安装"
     log "校验配置"
     "$SB_BIN" check -C "$SB_CONF" || fail=1
-    for p in $SB_PROTOCOLS; do
+    for p in $SB_PROTOCOLS_ALL; do
         [ -f "$(sb_state_file "$p")" ] || continue
         port="$(sb_get "$p" PORT)"
         net=tcp

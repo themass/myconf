@@ -55,6 +55,7 @@ WireGuard 模块:
   WG_PORT         监听端口，默认 51820/udp
   WG_SUBNET       内网网段，必须是 /16，默认 10.66.0.0/16，要与后端 WgAddress.PREFIX 一致
   WG_DNS / WG_MTU 生成客户端配置时使用，默认 1.1.1.1 / 1420
+  WG_BACKEND      auto（默认：内核没有 wireguard 模块时改用 wireguard-go）| kernel | userspace
   WG_SYNC_FORCE=1 同步时允许 peer 数量骤降或清空（默认拒绝，防止后端异常时把所有设备踢掉）
   WG_LEVEL        sync-install 时写入本线路等级；已安装的改线路等级要重新运行 sync-install
   VPN_NETDEV      出口网卡（默认自动识别默认路由所在网卡）
@@ -350,12 +351,66 @@ wg_sync_install() {
         "SCRIPT=${VPN_SHELL_DIR}/vpn.sh"
     install_file "${TEMPLATE_DIR}/wireguard/wg-sync.timer" /etc/systemd/system/wg-sync.timer 644
     systemctl daemon-reload
+
+    # 先同步一次，成功后才启用定时器：配置有误时不让定时器每分钟失败刷日志。
+    # 子 shell 里运行，wg_sync 内部的 die 只退出子 shell，这里可以接住失败。
+    log "立即同步一次，成功后才启用定时器:"
+    if ! (wg_sync); then
+        systemctl disable --now wg-sync.timer >/dev/null 2>&1 || true
+        die "首次同步失败，定时器未启用。修正上面的错误后重新运行 sync-install"
+    fi
     systemctl enable --now wg-sync.timer >/dev/null
-    log "已安装定时同步（每分钟）。立即同步一次:"
-    wg_sync
+    log "已启用定时同步（每分钟）"
 }
 
 # ------------------------------------------------------------------ 动作
+
+# ------------------------------------------------------------------ 后端选择（内核模块 / wireguard-go）
+
+WG_DROPIN="/etc/systemd/system/wg-quick@${WG_IF}.service.d/userspace.conf"
+
+# 内核是否有 wireguard 模块（已加载、可加载，或编译进内核都算）。
+wg_kernel_has_module() {
+    [ -d /sys/module/wireguard ] && return 0
+    modprobe wireguard >/dev/null 2>&1
+}
+
+# WG_BACKEND: auto（默认，内核没有模块时用 wireguard-go）、kernel、userspace。
+# userspace 通过 systemd drop-in 设置 WG_QUICK_USERSPACE_IMPLEMENTATION=wireguard-go，wg-quick 会自动启动它。
+# 返回 0 表示改变了后端（需要重启接口）。
+wg_setup_backend() {
+    local want="${WG_BACKEND:-auto}" use_userspace=0 before=kernel after
+    case "$want" in
+        auto | kernel | userspace) ;;
+        *) die "WG_BACKEND 只能是 auto、kernel 或 userspace，当前: ${want}" ;;
+    esac
+    [ -f "$WG_DROPIN" ] && before=userspace
+
+    if [ "$want" = userspace ]; then
+        use_userspace=1
+    elif [ "$want" = auto ] && ! wg_kernel_has_module; then
+        use_userspace=1
+    elif [ "$want" = kernel ] && ! wg_kernel_has_module; then
+        die "内核没有 wireguard 模块。可安装 wireguard-dkms 或升级内核，或改用 WG_BACKEND=userspace"
+    fi
+
+    if [ "$use_userspace" = 1 ]; then
+        have wireguard-go || {
+            ensure_cmds wireguard-go || die "无法安装 wireguard-go（当前系统的 apt 源可能没有这个包），请手动安装或升级系统"
+        }
+        install_template "${TEMPLATE_DIR}/wireguard/userspace.conf" "$WG_DROPIN" 644
+        after=userspace
+        log "WireGuard 使用用户态实现 wireguard-go"
+    else
+        rm -f "$WG_DROPIN"
+        after=kernel
+        log "WireGuard 使用内核模块"
+    fi
+    systemctl daemon-reload
+
+    [ "$before" != "$after" ] && return 0
+    return 1
+}
 
 wg_install() {
     require_root
@@ -394,8 +449,15 @@ wg_install() {
     done < <(wg_manual_files)
 
     open_port udp "$WG_PORT"
+    local backend_changed=0
+    wg_setup_backend && backend_changed=1
     # 接口地址变了（比如从旧的 /24 升级到 /16）：syncconf 改不了接口地址，必须重启接口。
-    if [ -n "$old_addr" ] && [ "$old_addr" != "$server_cidr" ] && ip link show "$WG_IF" >/dev/null 2>&1; then
+    # 后端切换（内核 <-> wireguard-go）同样必须重启。
+    if [ "$backend_changed" = 1 ] && ip link show "$WG_IF" >/dev/null 2>&1; then
+        warn "WireGuard 后端已切换，重启 ${WG_IF}（已有连接会短暂中断）"
+        wg_rebuild
+        systemctl restart "wg-quick@${WG_IF}" || die "重启 ${WG_IF} 失败: journalctl -u wg-quick@${WG_IF}"
+    elif [ -n "$old_addr" ] && [ "$old_addr" != "$server_cidr" ] && ip link show "$WG_IF" >/dev/null 2>&1; then
         warn "接口地址 ${old_addr} -> ${server_cidr}，重启 ${WG_IF}（已有连接会短暂中断）"
         wg_rebuild
         systemctl restart "wg-quick@${WG_IF}" || die "重启 ${WG_IF} 失败: journalctl -u wg-quick@${WG_IF}"
@@ -499,6 +561,7 @@ wg_uninstall() {
     rm -f /etc/systemd/system/wg-sync.service /etc/systemd/system/wg-sync.timer
     systemctl stop "wg-quick@${WG_IF}" 2>/dev/null || true
     systemctl disable "wg-quick@${WG_IF}" 2>/dev/null || true
+    rm -f "$WG_DROPIN"
     systemctl daemon-reload 2>/dev/null || true
     if [ "${WG_PURGE:-0}" = "1" ]; then
         rm -rf "$WG_ETC"

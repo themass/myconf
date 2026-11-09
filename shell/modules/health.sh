@@ -73,7 +73,7 @@ hc_uptime() { # <unit>
 
 # 公网端口会被扫描器随机探测，sing-box 对这类连接会打 ERROR（坏请求、TLS 握手 EOF、路径不对）。
 # 这些不代表服务有问题，总览的计数里排除掉，否则数字永远虚高；health logs --errors 仍然全部显示。
-HC_NOISE_RE='bad request|bad path|TLS handshake: EOF'
+HC_NOISE_RE='bad request|bad path|TLS handshake: EOF|tls: first record does not look like a TLS handshake'
 
 hc_errors() { # <unit> -> 近期错误行数（已排除连接噪音）
     have journalctl || { printf '?'; return 0; }

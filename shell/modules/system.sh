@@ -3,6 +3,7 @@
 #
 # 用法（通过 vpn.sh 调用）：
 #   vpn.sh system init              安装编译 strongSwan 需要的依赖
+#   vpn.sh system upgrade [full] [dry-run]   升级系统包
 #   vpn.sh system net               内核转发、网络调优、文件句柄数（可重复运行）
 #   vpn.sh system bbr               开启 BBR
 #   vpn.sh system iptables-ipsec    IPsec 放行端口 + NAT（出口网卡自动识别，可重复运行）
@@ -16,7 +17,10 @@ system_usage() {
     cat <<EOF
 系统模块:
   init               安装依赖（编译 strongSwan 用）
-  net                内核转发 + 网络调优 + 文件句柄数，写入 /etc/sysctl.d，可重复运行
+  upgrade [full] [dry-run]
+                     升级系统包。默认 apt upgrade；full = dist-upgrade（可能换内核）；
+                     dry-run 只模拟。保留旧配置，不自动重启服务
+  net              内核转发 + 网络调优 + 文件句柄数，写入 /etc/sysctl.d，可重复运行
   bbr                开启 BBR 拥塞控制（内核 4.9+）
   iptables-ipsec     放行 IPsec 端口并做 NAT，规则已存在则跳过；出口网卡自动识别
   fail2ban           安装 fail2ban，使用 monitor/jail.conf
@@ -68,16 +72,67 @@ system_bbr() {
 }
 
 # 把规则持久化，否则重启后丢失。
+# 没装 iptables-persistent 时自动装（非交互），不再只是提示——否则 IKEv2 的 NAT 规则重启就没了，
+# 表现为"连上 VPN 却上不了网"。ufw 在用时由 ufw 自己持久化，这里不插手。
 system_persist_rules() {
+    if have ufw && ufw status 2>/dev/null | grep -q "Status: active"; then
+        log "ufw 在用，防火墙规则由 ufw 持久化"
+        return 0
+    fi
+    if ! have netfilter-persistent && have apt-get; then
+        log "安装 iptables-persistent（重启后恢复 NAT 和放行规则）"
+        apt_update_once || warn "apt-get update 失败，仍尝试安装"
+        # 预先回答 debconf，避免弹出"是否保存当前规则"的交互框。
+        echo "iptables-persistent iptables-persistent/autosave_v4 boolean true" | debconf-set-selections 2>/dev/null || true
+        echo "iptables-persistent iptables-persistent/autosave_v6 boolean true" | debconf-set-selections 2>/dev/null || true
+        DEBIAN_FRONTEND=noninteractive apt-get install -y iptables-persistent >/dev/null 2>&1 \
+            || warn "iptables-persistent 安装失败，规则只会保存到文件"
+    fi
     if have netfilter-persistent; then
         netfilter-persistent save >/dev/null && log "防火墙规则已持久化 (netfilter-persistent)"
     elif [ -d /etc/iptables ]; then
         iptables-save >/etc/iptables/rules.v4
         have ip6tables-save && ip6tables-save >/etc/iptables/rules.v6
-        log "防火墙规则已保存到 /etc/iptables/rules.v4（需要 iptables-persistent 才会在重启时恢复）"
+        warn "规则已保存到 /etc/iptables/rules.v4，但没有 iptables-persistent，重启时不会恢复"
     else
-        warn "规则没有持久化，重启后会丢失。安装 iptables-persistent，或运行: vpn.sh system rclocal"
+        warn "规则没有持久化，重启后会丢失。手动安装 iptables-persistent，或运行: vpn.sh system rclocal"
     fi
+}
+
+# 升级系统包。默认只做 apt upgrade（不装新依赖、不删包）；full 做 dist-upgrade（可能换内核）。
+# 旧配置文件一律保留（confold），不会弹交互框卡住。dry-run 只模拟，不改任何东西。
+system_upgrade() {
+    local mode="upgrade" dry=0 arg out
+    for arg in "$@"; do
+        case "$arg" in
+            full) mode="dist-upgrade" ;;
+            dry-run | --dry-run | -n) dry=1 ;;
+            *) die "未知参数: ${arg}（可选: full、dry-run）" ;;
+        esac
+    done
+    require_root
+    have apt-get || die "upgrade 只支持 apt 系统"
+    apt_update_once || die "apt-get update 失败"
+    if [ "$dry" -eq 1 ]; then
+        out="$(apt-get -s "$mode" 2>&1)" || { printf '%s\n' "$out" | tail -n 5; die "模拟失败"; }
+        log "模拟 apt-get ${mode}，将会升级/安装的包:"
+        printf '%s\n' "$out" | grep -E '^(Inst|Remv) ' | awk '{print "  " $1, $2}' | head -n 60
+        printf '%s\n' "$out" | grep -E '^[0-9]+ upgraded' || true
+        if printf '%s\n' "$out" | grep -qE '^Inst linux-(image|generic|modules)'; then
+            warn "包含内核更新，升级后需要重启才生效"
+        fi
+        return 0
+    fi
+    log "apt-get ${mode}（保留旧配置文件，非交互）"
+    # NEEDRESTART_MODE=l：只列出需要重启的服务，不自动重启——自动重启会把正在跑的
+    # xray / sing-box / strongswan 悄悄断掉。升级完用 vpn.sh health 看状态，手动重启。
+    NEEDRESTART_MODE=l DEBIAN_FRONTEND=noninteractive apt-get -y \
+        -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold "$mode" \
+        || die "apt-get ${mode} 失败"
+    if [ -f /var/run/reboot-required ]; then
+        warn "系统要求重启（内核或核心库有更新）: reboot"
+    fi
+    log "完成。检查服务状态: bash vpn.sh health"
 }
 
 system_iptables_ipsec() {
@@ -180,6 +235,7 @@ system_main() {
     [ $# -gt 0 ] && shift
     case "$action" in
         init) system_init ;;
+        upgrade) system_upgrade "$@" ;;
         net) system_net ;;
         bbr) system_bbr ;;
         iptables-ipsec) system_iptables_ipsec "$@" ;;

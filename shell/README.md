@@ -24,7 +24,8 @@ bash vpn.sh links                 # 已安装协议的客户端链接
 | `singbox` | Hysteria2 | udp 8444 | `SB_HY2_PORT` |
 | `wireguard` | WireGuard（内网 10.66.0.0/16） | udp 51820 | `WG_PORT` |
 | `ssr` | ShadowsocksR / ss-panel | 见 `ssr_conf/` | |
-| `system` | 依赖、内核参数、BBR、IPsec NAT、监控、诊断 | | |
+| `system` | 依赖、系统升级、内核参数、BBR、IPsec NAT、监控、诊断 | | |
+| `health` | 运行状况总览和日志（只读） | | |
 
 端口被其他进程占用时脚本会停下并说明占用者，不会覆盖。云厂商的安全组需要自己在控制台放行，脚本每次结束会列出要放行的端口。
 
@@ -46,7 +47,32 @@ bash vpn.sh wireguard add-peer laptop      # 自己电脑等手工 peer，地址
 
 # strongSwan 5.9 一键（编译 + 端口版配置 + 证书 + 防火墙 + 内核参数）
 bash vpn.sh strongswan all 59
+
+# 升级系统包：先模拟，再执行。默认不换内核、不自动重启服务；full 才是 dist-upgrade
+bash vpn.sh system upgrade dry-run
+bash vpn.sh system upgrade
+
+# 运行状况和日志（只读）：服务、端口、连接数、近期错误；日志默认打码 UUID 和密钥
+bash vpn.sh health
+bash vpn.sh health logs xray -f
 ```
+
+## 旧脚本去哪了
+
+| 旧脚本 | 现在 |
+|---|---|
+| `check.sh` | `system kernel-check` |
+| `check_strongswan.sh` | `strongswan check 6` |
+| `clean_strongswan_simple.sh` `cleanup_strongswan.sh` | `strongswan clean` |
+| `force_clean_strongswan.sh` | `strongswan clean force` |
+| `fix_strongswan_permissions.sh` | `strongswan clean`（重建目录和权限）+ `strongswan fix 6` |
+| `test_minimal_strongswan.sh` | 删除：依赖的 `strongswan.conf.test` 早已不在仓库 |
+| `vpn_setup_test.sh` | 删除：`vpn_setup.sh` 重构前的副本，写死了 IP，功能都在 `modules/` 里 |
+| `soft_setup.sh` 的 `kernel` | `system bbr`（原来的 `setup_kernel` 只配置 BBR，下载内核的命令早就被注释掉了） |
+
+被删的文件都在 git 历史里，取重构前的版本用 `git show 0bb0b0c9^:shell/<文件名>`。
+
+注意：`strongswan clean` 之后规则和目录是重建的，防火墙规则由 `system iptables-ipsec` 管理，会自动装 `iptables-persistent`，重启后 NAT 不会丢。
 
 ## 目录
 
@@ -55,7 +81,7 @@ shell/
   vpn.sh                  统一入口
   lib/common.sh           日志、地址/网卡识别、模板渲染、端口检查、防火墙
   lib/xray_reality_fields.py   读 Xray 配置里的 Reality 字段
-  modules/                每个模块一个文件：system strongswan ssr xray singbox wireguard
+  modules/                每个模块一个文件：system strongswan ssr xray singbox wireguard health
   vpn_setup.sh            旧参数 -> vpn.sh 的转发（兼容旧的 README 和手顺）
   ssvpn_setup.sh          同上
   ipsecstatus.sh          crontab 在用（monitor/root），路径不要动

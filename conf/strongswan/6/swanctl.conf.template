@@ -1,5 +1,6 @@
 # strongSwan 6.x — IKEv2 + EAP-RADIUS
-# {{SERVER_IP}} 由 vpn_setup.sh 自动替换；RADIUS 在 strongswan.conf 的 eap-radius 插件中配置
+# 服务器 IP、地址池由 vpn.sh strongswan config 填入：IP 自动识别（SERVER_ADDRESS 可覆盖），地址池取 IPSEC_SUBNET / IPSEC_SUBNET6。
+# RADIUS 在 strongswan.conf 的 eap-radius 插件中配置。
 
 connections {
     radius {
@@ -43,7 +44,7 @@ authorities {
 
 pools {
     radius {
-        addrs = 10.0.0.0/24, fec3::/120
+        addrs = {{POOL4}}, {{POOL6}}
     }
 }
 

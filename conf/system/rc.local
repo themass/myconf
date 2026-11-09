@@ -1,24 +1,14 @@
 #!/bin/sh -e
 #
-# rc.local
+# /etc/rc.local：开机最后执行。
 #
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
+# 防火墙和 NAT 规则不在这里写。它们由 `vpn.sh system iptables-ipsec` 按当前出口网卡
+# 添加，并由 iptables-persistent（netfilter-persistent）在开机时恢复。
+# 这里写死网卡名或重复 -A 规则，会在网卡名不一致时指向不存在的网卡，并让规则重复。
 #
-# In order to enable or disable this script just change the execution
-# bits.
-#
-# By default this script does nothing.
+# 需要开机额外执行的命令写在 exit 0 之前。
 
-iptables -A INPUT -p udp --dport 500 -j ACCEPT 
-iptables -A INPUT -p udp --dport 4500 -j ACCEPT 
-iptables -A INPUT -p udp --dport 8080 -j ACCEPT 
-iptables -A INPUT -p udp --dport 8081 -j ACCEPT
-iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o ens17 -j MASQUERADE
-iptables -A FORWARD -s 10.0.0.0/24 -j ACCEPT 
-iptables -A FORWARD -d 10.0.0.0/24 -j ACCEPT
-ip6tables -A INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
-ip6tables -A INPUT -p udp --dport 4500 -j ACCEPT
-ip6tables -A INPUT -m frag -m connmark --mark 0x42 -j ACCEPT
+# 开机时确保转发打开（sysctl 文件是持久的，这一行只是双保险）
+sysctl -q -w net.ipv4.ip_forward=1 >/dev/null 2>&1 || true
+
 exit 0

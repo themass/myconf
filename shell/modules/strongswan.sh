@@ -4,8 +4,8 @@
 # 用法（通过 vpn.sh 调用）：
 #   vpn.sh strongswan all                   一键：编译安装 + 配置 + 证书 + 防火墙 + 内核参数
 #   vpn.sh strongswan install               编译安装 strongSwan 6.x
-#   vpn.sh strongswan config                配置（默认端口 500/4500）
-#   vpn.sh strongswan config-port           配置（端口版 8081/8080，客户端在 NAT 后用这个）
+#   vpn.sh strongswan config                配置（IKE 8081 / NAT-T 8080，可用 SS_IKE_PORT / SS_NATT_PORT 改）
+#   vpn.sh strongswan config-port           同 config（保留旧名字）
 #   vpn.sh strongswan ca                    生成 CA、服务器、客户端证书
 #   vpn.sh strongswan fix                   关闭 ipsec0 用户态 IPsec，修复 CPU 打满
 #   vpn.sh strongswan check                 状态检查
@@ -19,21 +19,25 @@ source "${VPN_SHELL_DIR}/modules/system.sh"
 
 STRONGSWAN6_VERSION="${STRONGSWAN6_VERSION:-6.0.2}"
 SS6_CONF_DIR="${MYCONF_HOME}/conf/strongswan/6"
+# IKE / NAT-T 端口。默认 8081 / 8080，和现有线上节点、后端 host_v2.port=8080 一致。
+SS_IKE_PORT="${SS_IKE_PORT:-8081}"
+SS_NATT_PORT="${SS_NATT_PORT:-8080}"
 
 strongswan_usage() {
     cat <<USAGE
 strongSwan 模块（6.x，版本 ${STRONGSWAN6_VERSION}，swanctl + vici）:
   all             一键部署（编译 + 配置 + 证书 + 防火墙 + 内核参数）
   install         编译安装
-  config          配置，默认端口 500/4500
-  config-port     配置，端口版 8081/8080
+  config          配置：IKE ${SS_IKE_PORT}/udp，NAT-T ${SS_NATT_PORT}/udp，地址池 ${IPSEC_SUBNET}
+  config-port     同 config（保留旧名字）
   ca              生成证书
   fix             关闭 ipsec0 用户态 IPsec（kernel-libipsec），修复 CPU 打满
   check           状态检查
   clean [force]   清理残留进程和 socket；force 额外杀 ipsec 进程并清空 xfrm
   status          服务状态
 
-环境变量: STRONGSWAN6_VERSION（默认 ${STRONGSWAN6_VERSION}）、IPSEC_SUBNET
+环境变量: STRONGSWAN6_VERSION（默认 ${STRONGSWAN6_VERSION}）、SS_IKE_PORT（${SS_IKE_PORT}）、SS_NATT_PORT（${SS_NATT_PORT}）、
+          IPSEC_SUBNET（${IPSEC_SUBNET}）、IPSEC_SUBNET6（${IPSEC_SUBNET6}）、SERVER_ADDRESS（默认自动识别）
 USAGE
 }
 
@@ -152,16 +156,27 @@ ss_install_6() {
 
 
 # 6：把 swanctl 模板的 {{SERVER_IP}} 换成本机公网地址。template 是模板文件名。
+# 渲染 /etc/strongswan.conf（IKE / NAT-T 端口）。端口不合法直接报错，不写半成品。
+ss_render_main_conf() {
+    case "$SS_IKE_PORT$SS_NATT_PORT" in *[!0-9]*) die "SS_IKE_PORT / SS_NATT_PORT 必须是数字" ;; esac
+    [ "$SS_IKE_PORT" != "$SS_NATT_PORT" ] || die "SS_IKE_PORT 和 SS_NATT_PORT 不能相同"
+    install_template "${SS6_CONF_DIR}/strongswan.conf" /etc/strongswan.conf 644 \
+        "IKE_PORT=${SS_IKE_PORT}" "NATT_PORT=${SS_NATT_PORT}"
+}
+
 ss_config_6_with() {
     local template="$1" server_ip
     server_ip="$(detect_server_address)" || die "无法获取服务器公网 IP，请设置 SERVER_ADDRESS"
     log "服务器 IP: ${server_ip}"
     ss_install_systemd_unit || return 1
     ss_install_charon_dropins || return 1
-    install_file "${SS6_CONF_DIR}/strongswan.conf" /etc/strongswan.conf 644
+    ss_render_main_conf
     mkdir -p /etc/swanctl/{private,x509,x509ca,scripts}
-    install_template "${SS6_CONF_DIR}/${template}" /etc/swanctl/swanctl.conf 600 "SERVER_IP=${server_ip}"
-    install_template "${SS6_CONF_DIR}/${template}" /etc/swanctl.conf 600 "SERVER_IP=${server_ip}"
+    log "地址池: ${IPSEC_SUBNET}, ${IPSEC_SUBNET6}；IKE ${SS_IKE_PORT}/udp，NAT-T ${SS_NATT_PORT}/udp"
+    install_template "${SS6_CONF_DIR}/${template}" /etc/swanctl/swanctl.conf 600 \
+        "SERVER_IP=${server_ip}" "POOL4=${IPSEC_SUBNET}" "POOL6=${IPSEC_SUBNET6}"
+    install_template "${SS6_CONF_DIR}/${template}" /etc/swanctl.conf 600 \
+        "SERVER_IP=${server_ip}" "POOL4=${IPSEC_SUBNET}" "POOL6=${IPSEC_SUBNET6}"
     if [ -f /etc/swanctl/x509ca/caCert.pem ]; then
         ss_reload_6 || return 1
         swanctl --list-conns
@@ -171,7 +186,8 @@ ss_config_6_with() {
 }
 
 ss_config_6() { ss_config_6_with swanctl.conf.template; }
-ss_config_port_6() { ss_config_6_with swanctl_port.conf.template; }
+# 端口版：和 config 用同一个模板，端口由 SS_IKE_PORT / SS_NATT_PORT 决定（默认就是 8081/8080）。
+ss_config_port_6() { ss_config_6_with swanctl.conf.template; }
 
 # ------------------------------------------------------------------ 证书
 
@@ -183,7 +199,7 @@ ss_ca_6() {
     dir="${TMP_HOME}/ca6"
     mkdir -p "$dir" /etc/swanctl/{x509,private,x509ca}
     cd "$dir" || die "进入 ${dir} 失败"
-    [ -f /etc/strongswan.conf ] || install_file "${SS6_CONF_DIR}/strongswan.conf" /etc/strongswan.conf 644
+    [ -f /etc/strongswan.conf ] || ss_render_main_conf
 
     log "生成证书，CN=${ip}"
     pki --gen --outform pem >caKey.pem

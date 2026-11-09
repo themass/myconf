@@ -120,8 +120,7 @@ show_help() {
 show_ports() {
     cat <<'EOF'
 默认端口（同机共存，互不冲突）:
-  strongSwan 默认版      udp 500, 4500
-  strongSwan 端口版      udp 8081 (IKE), 8080 (NAT-T)
+  strongSwan            udp 8081 (IKE), 8080 (NAT-T)   SS_IKE_PORT / SS_NATT_PORT
   Xray VLESS+Reality     tcp 443            XRAY_PORT
   sing-box VLESS+Reality tcp 444            SB_VLESS_PORT
   sing-box Trojan        tcp 8443           SB_TROJAN_PORT

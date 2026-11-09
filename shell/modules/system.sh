@@ -6,11 +6,12 @@
 #   vpn.sh system upgrade [full] [dry-run]   升级系统包
 #   vpn.sh system net               内核转发、网络调优、文件句柄数（可重复运行）
 #   vpn.sh system bbr               开启 BBR
-#   vpn.sh system iptables-ipsec    IPsec 放行端口 + NAT（出口网卡自动识别，可重复运行）
+#   vpn.sh system firewall [网卡]   所有已装 VPN 的端口 + NAT（端口/网段读实际配置，网卡自动识别，可重复运行）
 #   vpn.sh system fail2ban | rclocal
 #   vpn.sh system speed | trace | kernel-check | ip
 
 IPSEC_SUBNET="${IPSEC_SUBNET:-10.0.0.0/24}"
+IPSEC_SUBNET6="${IPSEC_SUBNET6:-fec3::/120}"
 
 system_usage() {
     cat <<EOF
@@ -21,7 +22,9 @@ system_usage() {
                      dry-run 只模拟。保留旧配置，不自动重启服务
   net              内核转发 + 网络调优 + 文件句柄数，写入 /etc/sysctl.d，可重复运行
   bbr                开启 BBR 拥塞控制（内核 4.9+）
-  iptables-ipsec     放行 IPsec 端口并做 NAT，规则已存在则跳过；出口网卡自动识别
+  firewall [网卡]    所有已装 VPN（IKEv2/WireGuard/Xray/sing-box）的端口放行 + 虚拟网段 NAT
+                     端口和网段读各服务的实际配置；网卡、公网 IP 自动识别；删除指向旧网卡的规则
+  iptables-ipsec     同 firewall（旧名字）
   fail2ban           安装 fail2ban，使用 conf/system/jail.conf
   rclocal            安装 rc.local 及 systemd 服务
   speed              安装 speedtest-cli 并测速
@@ -55,7 +58,7 @@ system_net() {
     # -e：忽略当前内核没有的参数，不让一个未知参数中断整批应用。
     sysctl -e -p /etc/sysctl.d/99-vpn-tuning.conf >/dev/null
     install_template "${TEMPLATE_DIR}/system/limits-vpn.conf" /etc/security/limits.d/99-vpn.conf 644
-    log "内核参数已写入 /etc/sysctl.d，文件句柄上限写入 /etc/security/limits.d（重新登录后生效）"
+    log "内核参数已立即生效（sysctl -p）。文件句柄上限写入 /etc/security/limits.d，只对新登录会话生效，已开着的 shell 需要重新登录"
 }
 
 system_bbr() {
@@ -133,27 +136,130 @@ system_upgrade() {
     log "完成。检查服务状态: bash vpn.sh health"
 }
 
-system_iptables_ipsec() {
-    require_root
-    local dev="${1:-$(get_netdev)}"
-    [ -n "$dev" ] || die "无法识别出口网卡，请设置 VPN_NETDEV"
-    log "IPsec 防火墙，出口网卡: ${dev}，网段: ${IPSEC_SUBNET}"
+# ------------------------------------------------------------------ 防火墙
 
-    local port
-    for port in 500 4500 8080 8081; do
-        ensure_rule iptables INPUT -p udp --dport "$port" -j ACCEPT
-        open_port udp "$port"
+# 本机已装的 VPN 实际在用的端口和虚拟网段，全部从各服务的配置里读，读不到才用默认值。
+# 输出每行一项: "<类型> <值>"，类型: port-udp / port-tcp / nat4 / nat6 / ipsec-natt
+fw_collect() {
+    local f line addrs a ike natt p port wgnet
+    # strongSwan：端口取 /etc/strongswan.conf，地址池取 swanctl.conf 的 addrs。
+    if [ -f /etc/swanctl/swanctl.conf ] || [ -f /etc/strongswan.conf ]; then
+        ike="$(sed -n 's/^[[:space:]]*port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' /etc/strongswan.conf 2>/dev/null | head -n 1)"
+        natt="$(sed -n 's/^[[:space:]]*port_nat_t[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' /etc/strongswan.conf 2>/dev/null | head -n 1)"
+        printf 'port-udp %s\nport-udp %s\nipsec-natt %s\n' "${ike:-${SS_IKE_PORT:-8081}}" "${natt:-${SS_NATT_PORT:-8080}}" "${natt:-${SS_NATT_PORT:-8080}}"
+        addrs="$(sed -n 's/^[[:space:]]*addrs[[:space:]]*=[[:space:]]*//p' /etc/swanctl/swanctl.conf 2>/dev/null | head -n 1)"
+        [ -n "$addrs" ] || addrs="${IPSEC_SUBNET}, ${IPSEC_SUBNET6}"
+        for a in $(printf '%s' "$addrs" | tr ',' ' '); do
+            case "$a" in *:*) printf 'nat6 %s\n' "$a" ;; *) printf 'nat4 %s\n' "$a" ;; esac
+        done
+    fi
+    # WireGuard：端口取 wg0.conf 的 ListenPort；网段取接口路由（接口没起来就用 WG_SUBNET）。
+    f="/etc/wireguard/${WG_IF:-wg0}.conf"
+    if [ -f "$f" ]; then
+        port="$(sed -n 's/^[[:space:]]*ListenPort[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' "$f" | head -n 1)"
+        printf 'port-udp %s\n' "${port:-${WG_PORT:-51820}}"
+        wgnet="$(ip -4 route show dev "${WG_IF:-wg0}" scope link 2>/dev/null | awk '{print $1; exit}')"
+        printf 'nat4 %s\n' "${wgnet:-${WG_SUBNET:-10.66.0.0/16}}"
+    fi
+    # Xray：只放端口，代理协议不需要 NAT。
+    f="${XRAY_CONFIG_DIR:-/usr/local/etc/xray}/config.json"
+    if [ -f "$f" ]; then
+        port="$(grep -o '"port"[[:space:]]*:[[:space:]]*[0-9]*' "$f" | head -n 1 | grep -o '[0-9]*$')"
+        printf 'port-tcp %s\n' "${port:-${XRAY_PORT:-443}}"
+    fi
+    # sing-box：每个协议一个 state 文件。
+    for f in "${SB_ETC:-/etc/sing-box}"/state/*.env; do
+        [ -f "$f" ] || continue
+        p="$(basename "$f" .env)"
+        port="$(grep '^PORT=' "$f" | head -n 1 | cut -d= -f2-)"
+        [ -n "$port" ] || continue
+        case "$p" in
+            hysteria2) printf 'port-udp %s\n' "$port" ;;
+            shadowsocks) printf 'port-tcp %s\nport-udp %s\n' "$port" "$port" ;;
+            *) printf 'port-tcp %s\n' "$port" ;;
+        esac
     done
-    ensure_rule iptables -t nat POSTROUTING -s "$IPSEC_SUBNET" -o "$dev" -j MASQUERADE
-    ensure_rule iptables FORWARD -s "$IPSEC_SUBNET" -j ACCEPT
-    ensure_rule iptables FORWARD -d "$IPSEC_SUBNET" -j ACCEPT
-    # IPv6 分片的 NAT-T 报文：第一片打标记，后续分片按标记放行。
-    ensure_rule ip6tables INPUT -p udp --dport 4500 -m frag --fragfirst -j CONNMARK --set-mark 0x42
-    ensure_rule ip6tables INPUT -p udp --dport 4500 -j ACCEPT
-    ensure_rule ip6tables INPUT -m frag -m connmark --mark 0x42 -j ACCEPT
+}
+
+# 删除指向其它网卡的 MASQUERADE 规则（如镜像或旧 rc.local 留下的 -o ens17）。只删 -o 不等于当前网卡的。
+fw_drop_stale_nat() { # <iptables|ip6tables> <网段> <当前网卡>
+    local bin="$1" subnet="$2" dev="$3" line
+    local parts=()
+    have "$bin" || return 0
+    "$bin" -t nat -S POSTROUTING 2>/dev/null | grep -F -- "-s ${subnet} " | grep -- "-j MASQUERADE" | grep -- " -o " \
+        | while IFS= read -r line; do
+            case " $line " in *" -o ${dev} "*) continue ;; esac
+            read -r -a parts <<<"$line"
+            parts[0]="-D"
+            "$bin" -t nat "${parts[@]}" && warn "删除了出口网卡不对的旧规则: ${line}"
+        done
+}
+
+# 放行所有已装 VPN 的端口，为每个虚拟网段做 NAT 和转发，出口网卡自动识别，规则持久化。可重复运行。
+system_firewall() {
+    require_root
+    local dev="${1:-$(get_netdev)}" kind val ip natt="" has6=0 items
+    [ -n "$dev" ] || die "无法识别出口网卡，请设置 VPN_NETDEV"
+    ip link show "$dev" >/dev/null 2>&1 || die "出口网卡 ${dev} 不存在（ip link 里没有）。用 VPN_NETDEV=<网卡> 指定"
+    ip="$(detect_server_address 2>/dev/null || echo 未识别)"
+    ip -6 route show default 2>/dev/null | grep -q . && has6=1
+    items="$(fw_collect | sort -u)"
+    [ -n "$items" ] || { warn "没有发现已安装的 VPN 服务，跳过防火墙"; return 0; }
+    log "防火墙：出口网卡 ${dev}，公网地址 ${ip}"
+
+    while read -r kind val; do
+        [ -n "$val" ] || continue
+        case "$kind" in
+            port-udp | port-tcp)
+                ensure_rule iptables INPUT -p "${kind#port-}" --dport "$val" -j ACCEPT
+                open_port "${kind#port-}" "$val"
+                ;;
+            nat4)
+                fw_drop_stale_nat iptables "$val" "$dev"
+                ensure_rule iptables -t nat POSTROUTING -s "$val" -o "$dev" -j MASQUERADE
+                ensure_rule iptables FORWARD -s "$val" -j ACCEPT
+                ensure_rule iptables FORWARD -d "$val" -j ACCEPT
+                # TCP MSS 跟随路径 MTU：IPsec/WireGuard 封装后包变大，不夹 MSS 时常见"连上了但部分网站打不开"。
+                ensure_rule iptables -t mangle FORWARD -s "$val" -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+                log "  NAT ${val} -> ${dev}"
+                ;;
+            nat6)
+                # 地址池是 ULA（如 fec3::/120），服务器有 IPv6 默认路由时才做 NAT66，否则客户端的 IPv6 流量出不去。
+                if [ "$has6" = 1 ]; then
+                    fw_drop_stale_nat ip6tables "$val" "$dev"
+                    ensure_rule ip6tables -t nat POSTROUTING -s "$val" -o "$dev" -j MASQUERADE
+                    ensure_rule ip6tables FORWARD -s "$val" -j ACCEPT
+                    ensure_rule ip6tables FORWARD -d "$val" -j ACCEPT
+                    log "  NAT6 ${val} -> ${dev}"
+                fi
+                ;;
+            ipsec-natt) natt="$val" ;;
+        esac
+    done <<<"$items"
+
+    # IPv6 分片的 NAT-T 报文：第一片打标记，后续分片按标记放行。端口用实际的 NAT-T 端口。
+    if [ -n "$natt" ]; then
+        ensure_rule ip6tables INPUT -p udp --dport "$natt" -m frag --fragfirst -j CONNMARK --set-mark 0x42
+        ensure_rule ip6tables INPUT -p udp --dport "$natt" -j ACCEPT
+        ensure_rule ip6tables INPUT -m frag -m connmark --mark 0x42 -j ACCEPT
+    fi
+
+    # 旧 rc.local 开机会再加一遍写死网卡的规则，必须换掉，否则重启后又回来。
+    if [ -f /etc/rc.local ] && grep -qE 'iptables .*-(A|I) ' /etc/rc.local 2>/dev/null; then
+        warn "/etc/rc.local 里还有写死的 iptables 规则，重启后会再加回旧规则。修复: bash vpn.sh system rclocal"
+    fi
+    # WireGuard 的 PostUp 里网卡名是安装时写进去的，换网卡后要重新渲染。
+    if [ -f "/etc/wireguard/${WG_IF:-wg0}.base.conf" ] \
+        && grep -q -- "-o " "/etc/wireguard/${WG_IF:-wg0}.base.conf" \
+        && ! grep -q -- "-o ${dev} " "/etc/wireguard/${WG_IF:-wg0}.base.conf"; then
+        warn "WireGuard 配置里的出口网卡不是 ${dev}。修复: bash vpn.sh wireguard install（保留密钥，只更新配置）"
+    fi
     system_persist_rules
     remind_security_group
 }
+
+# 旧名字，保留兼容。
+system_iptables_ipsec() { system_firewall "$@"; }
 
 system_fail2ban() {
     require_root
@@ -164,6 +270,11 @@ system_fail2ban() {
 
 system_rclocal() {
     require_root
+    # 旧版的 rc.local 写死了网卡名和规则。若它还在，给出提示（install_file 会先备份）。
+    if [ -f /etc/rc.local ] && grep -qE 'iptables .*-(A|I) ' /etc/rc.local 2>/dev/null; then
+        warn "/etc/rc.local 里有旧的 iptables 规则（可能写死了网卡名），将替换为不含规则的版本，旧文件会备份"
+        grep -nE 'iptables' /etc/rc.local | sed 's/^/    /' >&2
+    fi
     install_file "${MYCONF_HOME}/conf/system/rc-local.service" /etc/systemd/system/rc-local.service 644
     install_file "${MYCONF_HOME}/conf/system/rc.local" /etc/rc.local 755
     systemctl daemon-reload
@@ -225,7 +336,7 @@ system_main() {
         upgrade) system_upgrade "$@" ;;
         net) system_net ;;
         bbr) system_bbr ;;
-        iptables-ipsec) system_iptables_ipsec "$@" ;;
+        firewall | iptables-ipsec) system_firewall "$@" ;;
         fail2ban) system_fail2ban ;;
         rclocal) system_rclocal ;;
         speed) system_speed ;;

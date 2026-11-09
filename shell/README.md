@@ -15,7 +15,7 @@ bash vpn.sh links                 # 已安装协议的客户端链接
 
 | 模块 | 协议 | 默认端口 | 改端口的环境变量 |
 |---|---|---|---|
-| `strongswan` | IKEv2/IPsec（strongSwan 6.x，swanctl + vici） | 默认版 udp 500/4500，端口版 udp 8081/8080 | 配置文件 |
+| `strongswan` | IKEv2/IPsec（strongSwan 6.x，swanctl + vici），地址池 10.0.0.0/24 | udp 8081 (IKE) / 8080 (NAT-T) | `SS_IKE_PORT` `SS_NATT_PORT` `IPSEC_SUBNET` |
 | `xray` | VLESS + Reality | tcp 443 | `XRAY_PORT` |
 | `singbox` | VLESS + Reality | tcp 444 | `SB_VLESS_PORT` |
 | `singbox` | Trojan | tcp 8443 | `SB_TROJAN_PORT` |
@@ -62,7 +62,7 @@ bash vpn.sh health logs xray -f
 **客户端连上后没有网，或者日志里没有连接记录**：先看 udp 端口是不是被别的 charon 占着，再看日志。
 
 ```bash
-ss -lunp | grep -E ':(500|4500|8080|8081) '   # 应该都是 charon
+ss -lunp | grep -E ':(8080|8081) '            # 应该都是 charon
 ps aux | grep '[c]haron'                       # 应该只有一个 charon-systemd
 bash vpn.sh health logs strongswan -f          # 手机再连一次，看 IKE_SA 和 EAP/RADIUS 的日志
 ```
@@ -70,7 +70,7 @@ bash vpn.sh health logs strongswan -f          # 手机再连一次，看 IKE_SA
 - 端口被占用或服务状态乱了：`bash vpn.sh strongswan clean force`，再 `bash vpn.sh strongswan config-port`（或 `config`）。
 - 认证失败找 `EAP` 或 `RADIUS` 字样；RADIUS 的来源 IP 白名单见 `bash radius.sh status`。
 
-## 非 VPN 的基础服务（nginx、MySQL、FreeRADIUS、Redis、JDK）
+## 非 VPN 的基础服务（nginx、MySQL、PostgreSQL、FreeRADIUS、Redis、PHP、JDK）
 
 ```bash
 bash infra.sh nginx      # OpenResty（官方 apt 源，最新版，自带常用模块）+ conf/nginx 站点配置
@@ -78,6 +78,8 @@ bash infra.sh redis      # Redis（apt），配置取自 conf/redis/redis.conf
 bash infra.sh mysql      # MySQL 5.6.40（官方 tarball + systemd，版本固定，和线上一致）
 bash infra.sh radius     # FreeRADIUS 3.2.x（NetworkRadius 官方 apt 源）+ sql 模块
 bash infra.sh jdk        # OpenJDK 17 + Maven
+bash infra.sh php        # PHP 8.4（sury 源）+ php-fpm 池 web（unix socket）+ composer
+PG_ADMIN_PASSWORD='<口令>' bash infra.sh postgres   # PostgreSQL 17（PGDG 源），只听内网地址，全部 scram-sha-256
 
 bash svc.sh status       # 所有基础服务的状态、自启、端口
 bash svc.sh restart nginx

@@ -25,13 +25,13 @@ bash vpn_setup.sh strongswan6
 sh vpn_setup.sh strongswan6
 ```
 
-#### 2. 配置默认端口 (500/4500)
+#### 2. 配置（IKE 8081 / NAT-T 8080，可用 SS_IKE_PORT / SS_NATT_PORT 改）
 ```bash
 bash vpn_setup.sh strongswanconf6
 bash vpn_setup.sh caip6
 ```
 
-#### 3. 配置端口版本 (500/4500/8080/8081)
+#### 3. config-port（和 config 相同，保留旧名字）
 ```bash
 bash vpn_setup.sh strongswanconf_port6
 bash vpn_setup.sh caip6
@@ -54,7 +54,7 @@ bash vpn_setup.sh caip6
 
 ### 默认端口配置
 - IKE: **8081/udp**，NAT-T: **8080/udp**
-- EAP-RADIUS + 服务器证书；地址池 `10.0.0.0/24`
+- EAP-RADIUS + 服务器证书；地址池默认 `10.0.0.0/24`（IPSEC_SUBNET），IPv6 `fec3::/120`（IPSEC_SUBNET6）
 - 客户端账号密码在 **RADIUS** 侧管理（与 5.6.3 相同）
 
 ## 管理命令

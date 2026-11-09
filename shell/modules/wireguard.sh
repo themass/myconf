@@ -17,7 +17,7 @@
 #
 # 文件布局（/etc/wireguard）：
 #   server.key / server.pub     服务端密钥
-#   wg0.base.conf               [Interface] 段，由 templates/wireguard/wg0.base.conf 渲染
+#   wg0.base.conf               [Interface] 段，由 conf/wireguard/wg0.base.conf 渲染
 #   peers.d/_synced.conf        后端同步来的全部 App 设备（自动生成，不要手改）
 #   peers.d/<名字>.conf          手工添加的 peer
 #   wg0.conf                    = wg0.base.conf + peers.d/*.conf，每次变动后重新生成

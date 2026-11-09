@@ -12,7 +12,7 @@ VPN_COMMON_LOADED=1
 
 VPN_SHELL_DIR="${VPN_SHELL_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 MYCONF_HOME="${MYCONF_HOME:-$(cd "${VPN_SHELL_DIR}/.." && pwd)}"
-TEMPLATE_DIR="${VPN_TEMPLATE_DIR:-${MYCONF_HOME}/templates}"
+TEMPLATE_DIR="${VPN_TEMPLATE_DIR:-${MYCONF_HOME}/conf}"
 WORKDIR="${VPN_WORKDIR:-/root/work}"
 TMP_HOME="${VPN_TMP_HOME:-/root/soft}"
 

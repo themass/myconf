@@ -15,7 +15,7 @@ bash vpn.sh links                 # 已安装协议的客户端链接
 
 | 模块 | 协议 | 默认端口 | 改端口的环境变量 |
 |---|---|---|---|
-| `strongswan` | IKEv2/IPsec（59 = 5.9 ipsec.conf，6 = 6.x swanctl） | 默认版 udp 500/4500，端口版 udp 8081/8080 | 配置文件 |
+| `strongswan` | IKEv2/IPsec（strongSwan 6.x，swanctl + vici） | 默认版 udp 500/4500，端口版 udp 8081/8080 | 配置文件 |
 | `xray` | VLESS + Reality | tcp 443 | `XRAY_PORT` |
 | `singbox` | VLESS + Reality | tcp 444 | `SB_VLESS_PORT` |
 | `singbox` | Trojan | tcp 8443 | `SB_TROJAN_PORT` |
@@ -23,7 +23,7 @@ bash vpn.sh links                 # 已安装协议的客户端链接
 | `singbox` | Shadowsocks | tcp+udp 8388 | `SB_SS_PORT` |
 | `singbox` | Hysteria2 | udp 8444 | `SB_HY2_PORT` |
 | `wireguard` | WireGuard（内网 10.66.0.0/16） | udp 51820 | `WG_PORT` |
-| `ssr` | ShadowsocksR / ss-panel | 见 `ssr_conf/` | |
+| `ssr` | ShadowsocksR / ss-panel | 见 `conf/ssr/` | |
 | `system` | 依赖、系统升级、内核参数、BBR、IPsec NAT、监控、诊断 | | |
 | `health` | 运行状况总览和日志（只读） | | |
 
@@ -45,8 +45,8 @@ bash vpn.sh wireguard install
 WG_SYNC_URL=https://api.example.com/vvv/api/noapp/wg/peers.txt WG_SYNC_TOKEN=<令牌> bash vpn.sh wireguard sync-install
 bash vpn.sh wireguard add-peer laptop      # 自己电脑等手工 peer，地址落在保留段 10.66.255.0/24
 
-# strongSwan 5.9 一键（编译 + 端口版配置 + 证书 + 防火墙 + 内核参数）
-bash vpn.sh strongswan all 59
+# strongSwan 6.x 一键（编译 + 配置 + 证书 + 防火墙 + 内核参数）
+bash vpn.sh strongswan all
 
 # 升级系统包：先模拟，再执行。默认不换内核、不自动重启服务；full 才是 dist-upgrade
 bash vpn.sh system upgrade dry-run
@@ -59,27 +59,48 @@ bash vpn.sh health logs xray -f
 
 ## IKEv2 排障
 
-**客户端连 8080 报 `no IKE config found`**：日志里已经有 `radius` / `radius-natt` 配置、`ipsec statusall` 也正常，却还报这个，最常见的原因是**同时有两个 charon**。6.x 的 `charon-systemd`（或残留的旧进程）占着 udp 8080/8081，但它没有加载 `ipsec.conf`，数据包被它收走了。
+**客户端连上后没有网，或者日志里没有连接记录**：先看 udp 端口是不是被别的 charon 占着，再看日志。
 
 ```bash
-ss -lunp | grep -E ':(8080|8081) '     # 看谁占着端口：5.9 应该是 charon，6.x 是 charon-systemd
-ps aux | grep '[c]haron'                # 不应同时出现两种
+ss -lunp | grep -E ':(500|4500|8080|8081) '   # 应该都是 charon
+ps aux | grep '[c]haron'                       # 应该只有一个 charon-systemd
+bash vpn.sh health logs strongswan -f          # 手机再连一次，看 IKE_SA 和 EAP/RADIUS 的日志
 ```
 
-- 用 5.9：`bash vpn.sh strongswan clean force`，再 `bash vpn.sh strongswan fix 59`（会停掉并屏蔽 6.x 的 unit，启用 strongswan-starter）。
-- 用 6.x：`bash vpn.sh strongswan clean force`，再 `bash vpn.sh strongswan config 6`。
-- 手机再连一次，同时看日志：`bash vpn.sh health logs strongswan -f`。5.9 的日志里应出现 `looking for an IKEv2 config` 和 `found matching ike config`；连上时没有任何新日志，说明包仍被别的进程收走，继续查上面的 `ss`。
-- 5.9 与 6.x 的 unit 互不兼容，来回切换要先 `clean force`。强制装旧版 5.6.3 不推荐：`STRONGSWAN_LEGACY_VERSION=5.6.3 bash vpn.sh strongswan install 59`。
+- 端口被占用或服务状态乱了：`bash vpn.sh strongswan clean force`，再 `bash vpn.sh strongswan config-port`（或 `config`）。
+- 认证失败找 `EAP` 或 `RADIUS` 字样；RADIUS 的来源 IP 白名单见 `bash radius.sh status`。
+
+## 非 VPN 的基础服务（nginx、MySQL、FreeRADIUS、Redis、JDK）
+
+```bash
+bash infra.sh nginx      # OpenResty（官方 apt 源，最新版，自带常用模块）+ conf/nginx 站点配置
+bash infra.sh redis      # Redis（apt），配置取自 conf/redis/redis.conf
+bash infra.sh mysql      # MySQL 5.6.40（官方 tarball + systemd，版本固定，和线上一致）
+bash infra.sh radius     # FreeRADIUS 3.2.x（NetworkRadius 官方 apt 源）+ sql 模块
+bash infra.sh jdk        # OpenJDK 17 + Maven
+
+bash svc.sh status       # 所有基础服务的状态、自启、端口
+bash svc.sh restart nginx
+bash svc.sh logs mysql -f
+
+bash radius.sh clients   # 用 conf/radius/clients.conf 替换线上的，校验通过才重启，失败自动还原
+bash radius.sh debug     # 停掉 freeradius 前台调试（radiusd -X）
+```
+
+- 服务由 systemd 管理，不再 `pkill -9`；`infra.sh` 装的服务开机自启。
+- `infra.sh` 的数据库连接参数取自 `conf/radius/sql.conf`，`clients.conf` 的共享密钥只在服务器上，不显示在日志里。
+- `infra.sh` 里的 `innerip` 占位符自动换成本机内网地址；没有内网地址时只绑 127.0.0.1，需要的话设 `INFRA_BIND`。
+- MySQL 5.6.40 和 Redis 6.0 都是老版本，MySQL 5.6 已停止维护。版本升级会影响线上数据和认证，没有单独测过，所以保持不变。
 
 ## 旧脚本去哪了
 
 | 旧脚本 | 现在 |
 |---|---|
 | `check.sh` | `system kernel-check` |
-| `check_strongswan.sh` | `strongswan check 6` |
+| `check_strongswan.sh` | `strongswan check` |
 | `clean_strongswan_simple.sh` `cleanup_strongswan.sh` | `strongswan clean` |
 | `force_clean_strongswan.sh` | `strongswan clean force` |
-| `fix_strongswan_permissions.sh` | `strongswan clean`（重建目录和权限）+ `strongswan fix 6` |
+| `fix_strongswan_permissions.sh` | `strongswan clean`（重建目录和权限）+ `strongswan fix` |
 | `test_minimal_strongswan.sh` | 删除：依赖的 `strongswan.conf.test` 早已不在仓库 |
 | `vpn_setup_test.sh` | 删除：`vpn_setup.sh` 重构前的副本，写死了 IP，功能都在 `modules/` 里 |
 | `soft_setup.sh` 的 `kernel` | `system bbr`（原来的 `setup_kernel` 只配置 BBR，下载内核的命令早就被注释掉了） |
@@ -88,24 +109,41 @@ ps aux | grep '[c]haron'                # 不应同时出现两种
 
 注意：`strongswan clean` 之后规则和目录是重建的，防火墙规则由 `system iptables-ipsec` 管理，会自动装 `iptables-persistent`，重启后 NAT 不会丢。
 
-## 目录
+## 仓库目录
 
 ```
-shell/
-  vpn.sh                  统一入口
-  lib/common.sh           日志、地址/网卡识别、模板渲染、端口检查、防火墙
-  lib/xray_reality_fields.py   读 Xray 配置里的 Reality 字段
-  modules/                每个模块一个文件：system strongswan ssr xray singbox wireguard health
-  vpn_setup.sh            旧参数 -> vpn.sh 的转发（兼容旧的 README 和手顺）
-  ssvpn_setup.sh          同上
-templates/                新协议的配置模板，脚本里不放配置内容
-  singbox/ xray/ wireguard/ strongswan/ system/
-strongswan_conf/ strongswan_conf_port/ strongswan_6.0_conf/ ssr_conf/   strongSwan、SSR 原有配置，位置不变
+myconf/
+  shell/                   脚本（只放逻辑，配置全在 conf/）
+    vpn.sh                 VPN 服务端统一入口（system strongswan xray singbox wireguard ssr health）
+    infra.sh               非 VPN 基础软件安装（nginx、redis、mysql、radius、jdk、php）
+    svc.sh                 非 VPN 服务的启停、状态、检查、日志
+    radius.sh              FreeRADIUS 的 clients.conf 更新、启停、调试
+    vpn_setup.sh           旧参数 -> vpn.sh 的转发（兼容旧手顺）
+    ssvpn_setup.sh         同上
+    lib/common.sh          日志、地址/网卡识别、模板渲染、端口检查、防火墙
+    lib/xray_reality_fields.py   读 Xray 配置里的 Reality 字段
+    modules/               每个模块一个文件
+  conf/                    所有配置文件，按服务分目录
+    system/                内核参数、limits、fail2ban jail、rc.local
+    xray/  singbox/  wireguard/
+    strongswan/
+      6/                   strongSwan 6.x，swanctl 版（唯一支持的版本）
+      strongswan.service   6.x 的 systemd 模板
+    mysql/                 my.cnf、建表/数据 SQL、mysql.service
+    redis/                 redis.conf
+    radius/                clients.conf、sql.conf、建表 SQL；legacy-2.x/ 是旧版 2.x 的配置（先留着）
+    php/                   php 通用设置 99-vpn.ini、php-fpm 池 web-pool.conf
+    nginx/                 VPN 用的站点配置
+    ssr/                   SSR 配置和 ss-panel 的 env
+  python/                  Python 代码（不动，已纳入仓库）
+  venv/                    Python 虚拟环境（不进仓库，见 .gitignore）
 ```
+
+约定：配置文件里需要按机器变化的值用 `{{KEY}}` 占位，脚本渲染时填入；`conf/` 下的其它文件原样复制。
 
 ## 配置模板怎么用
 
-模板用 `{{KEY}}` 占位。脚本渲染时把值填进去，**渲染后还有没填的占位符就直接报错**，不会把半成品配置写到服务器上。想改配置结构，改 `templates/` 下对应文件即可，不用动脚本。
+模板用 `{{KEY}}` 占位。脚本渲染时把值填进去，**渲染后还有没填的占位符就直接报错**，不会把半成品配置写到服务器上。想改配置结构，改 `conf/` 下对应文件即可，不用动脚本。
 
 - sing-box 每个协议一个 JSON，装在 `/etc/sing-box/conf.d/`，用 `-C` 目录方式合并加载；写入前会把整套配置放进临时目录用 `sing-box check` 校验，通过才生效。
 - 每个协议的 UUID、密钥、密码保存在 `/etc/sing-box/state/<协议>.env`（root 才能读）。重复运行沿用，已经发出去的链接不会失效；`SB_FORCE=1` 才重新生成。
@@ -117,6 +155,7 @@ strongswan_conf/ strongswan_conf_port/ strongswan_6.0_conf/ ssr_conf/   strongSw
 - **Xray**：下载固定版本发布包，用 `.dgst` 里的 SHA256 校验通过后才安装；不执行任何远端脚本。服务器上已经用官方脚本装过 Xray 时，二进制和 systemd 服务保持原样，只管理配置。
 - **系统参数**：内核参数写入 `/etc/sysctl.d/`，文件句柄数写入 `/etc/security/limits.d/`，重复运行不会堆叠。防火墙规则先检查再追加。
 
-## 没有搬动的
+## 还没处理的
 
-- `setup.sh start.sh root_init.sh radiusd.sh soft_setup.sh soft_setup_web.sh`：nginx / MySQL / Tomcat / Radius 等服务器基础设施脚本，不属于 VPN 安装。里面的相对路径（`../monitor`、`../radius`）依赖当前目录，没有改动。
+- `conf/radius/legacy-2.x/`：旧版 2.x 的配置，3.x 用不上，先留着。线上如果还在用其中某个功能（如拨号池、按次数限制），需要移植到 3.x。
+- `mysql/Dump` 已移出仓库，见 `/Users/gqli/work/backup/`；仓库历史已改写，要在 GitHub 上生效需要强制推送。

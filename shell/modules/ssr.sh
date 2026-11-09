@@ -2,7 +2,7 @@
 # ShadowsocksR 与 ss-panel（旧项目，保持原有行为）。
 #
 # 用法（通过 vpn.sh 调用）：
-#   vpn.sh ssr install      克隆 shadowsocksr，初始化配置，复制 ssr_conf/*.json
+#   vpn.sh ssr install      克隆 shadowsocksr，初始化配置，复制 conf/ssr/*.json
 #   vpn.sh ssr sspanel      部署 ss-panel（需要 PHP 和 composer 环境）
 #
 # 路径可用环境变量改：SSR_WORKDIR（默认 ${WORKDIR}）、PANEL_WORKDIR（默认 /home/web/webroot）。
@@ -13,8 +13,8 @@ PANEL_WORKDIR="${PANEL_WORKDIR:-/home/web/webroot}"
 ssr_usage() {
     cat <<EOF
 SSR 模块:
-  install     克隆 shadowsocksr 到 \${SSR_WORKDIR:-${WORKDIR}}，初始化并复制 ssr_conf/*.json
-  sspanel     部署 ss-panel 到 ${PANEL_WORKDIR}（配置取自 ss_panel/env）
+  install     克隆 shadowsocksr 到 \${SSR_WORKDIR:-${WORKDIR}}，初始化并复制 conf/ssr/*.json
+  sspanel     部署 ss-panel 到 ${PANEL_WORKDIR}（配置取自 conf/ssr/ss_panel/env）
 EOF
 }
 
@@ -32,9 +32,9 @@ ssr_install() {
     cd shadowsocksr || die "进入 shadowsocksr 失败"
     bash setup_cymysql.sh || die "setup_cymysql.sh 失败"
     bash initcfg.sh || die "initcfg.sh 失败"
-    # 只复制 json 配置，ssr_conf 里的 ssr_proxy.md 是说明文档，不该进代码目录。
+    # 只复制 json 配置，conf/ssr 里的 ssr_proxy.md 是说明文档，不该进代码目录。
     local f
-    for f in "${MYCONF_HOME}"/ssr_conf/*.json; do
+    for f in "${MYCONF_HOME}"/conf/ssr/*.json; do
         [ -f "$f" ] || continue
         install_file "$f" "./$(basename "$f")" 644
     done
@@ -44,7 +44,7 @@ ssr_install() {
 ssr_sspanel() {
     have php || die "需要先安装 PHP"
     have git || ensure_cmds git
-    [ -f "${MYCONF_HOME}/ss_panel/env" ] || die "缺少 ${MYCONF_HOME}/ss_panel/env"
+    [ -f "${MYCONF_HOME}/conf/ssr/ss_panel/env" ] || die "缺少 ${MYCONF_HOME}/conf/ssr/ss_panel/env"
     mkdir -p "$PANEL_WORKDIR"
     cd "$PANEL_WORKDIR" || die "进入 ${PANEL_WORKDIR} 失败"
     rm -rf ss-panel
@@ -53,7 +53,7 @@ ssr_sspanel() {
     download "https://getcomposer.org/installer" composer-setup.php || die "下载 composer 安装器失败"
     php composer-setup.php && rm -f composer-setup.php
     php composer.phar install || die "composer install 失败"
-    install_file "${MYCONF_HOME}/ss_panel/env" .env 600
+    install_file "${MYCONF_HOME}/conf/ssr/ss_panel/env" .env 600
     php xcat migrate || die "数据库迁移失败，检查 .env 里的数据库连接"
     # 面板要写 storage 目录。沿用原来的宽松权限，面板已是停止维护的旧项目，别暴露在公网。
     chmod -R 777 storage

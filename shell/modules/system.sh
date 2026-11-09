@@ -22,7 +22,7 @@ system_usage() {
   net              内核转发 + 网络调优 + 文件句柄数，写入 /etc/sysctl.d，可重复运行
   bbr                开启 BBR 拥塞控制（内核 4.9+）
   iptables-ipsec     放行 IPsec 端口并做 NAT，规则已存在则跳过；出口网卡自动识别
-  fail2ban           安装 fail2ban，使用 monitor/jail.conf
+  fail2ban           安装 fail2ban，使用 conf/system/jail.conf
   rclocal            安装 rc.local 及 systemd 服务
   speed              安装 speedtest-cli 并测速
   trace              到广州移动/联通/电信的路由追踪
@@ -158,14 +158,14 @@ system_iptables_ipsec() {
 system_fail2ban() {
     require_root
     ensure_cmds fail2ban-client:fail2ban sendmail:sendmail
-    install_file "${MYCONF_HOME}/monitor/jail.conf" /etc/fail2ban/jail.conf 644
+    install_file "${MYCONF_HOME}/conf/system/jail.conf" /etc/fail2ban/jail.conf 644
     svc_enable_restart fail2ban
 }
 
 system_rclocal() {
     require_root
-    install_file "${MYCONF_HOME}/monitor/rc-local.service" /etc/systemd/system/rc-local.service 644
-    install_file "${MYCONF_HOME}/monitor/rc.local" /etc/rc.local 755
+    install_file "${MYCONF_HOME}/conf/system/rc-local.service" /etc/systemd/system/rc-local.service 644
+    install_file "${MYCONF_HOME}/conf/system/rc.local" /etc/rc.local 755
     systemctl daemon-reload
     systemctl enable rc-local >/dev/null 2>&1 || true
 }

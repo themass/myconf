@@ -1,146 +1,49 @@
 #!/usr/bin/env bash
-# strongSwan（IKEv2/IPsec）服务端。
-#
-# 两个版本：
-#   59  strongSwan 5.9.x，ipsec.conf + stroke，推荐生产使用（配置在 strongswan_conf*/）
-#   6   strongSwan 6.x，swanctl + vici，实验（配置在 strongswan_6.0_conf/）
-# 动作后面带版本号，省略时用 59：  vpn.sh strongswan install 6
+# strongSwan 6.x（IKEv2/IPsec，swanctl + vici）服务端。
 #
 # 用法（通过 vpn.sh 调用）：
-#   vpn.sh strongswan all [59|6]            一键：依赖 + 编译安装 + 配置 + 证书 + 防火墙 + 内核参数
-#   vpn.sh strongswan install [59|6]        编译安装
-#   vpn.sh strongswan config [59|6]         配置（默认端口 500/4500）
-#   vpn.sh strongswan config-port [59|6]    配置（端口版 8081/8080）
-#   vpn.sh strongswan ca [59|6]             生成 CA、服务器、客户端证书
-#   vpn.sh strongswan fix [59|6]            修复连不上 / 双 charon / ipsec0 打满 CPU
-#   vpn.sh strongswan check [59|6]          状态检查
+#   vpn.sh strongswan all                   一键：编译安装 + 配置 + 证书 + 防火墙 + 内核参数
+#   vpn.sh strongswan install               编译安装 strongSwan 6.x
+#   vpn.sh strongswan config                配置（默认端口 500/4500）
+#   vpn.sh strongswan config-port           配置（端口版 8081/8080，客户端在 NAT 后用这个）
+#   vpn.sh strongswan ca                    生成 CA、服务器、客户端证书
+#   vpn.sh strongswan fix                   关闭 ipsec0 用户态 IPsec，修复 CPU 打满
+#   vpn.sh strongswan check                 状态检查
 #   vpn.sh strongswan clean [force]         清理残留进程、socket，重建目录和权限
 #   vpn.sh strongswan status
 #
-# 编译参数、systemd 处理、charon-systemd 与 stroke 的互斥处理都来自线上踩过的坑，
-# 这里原样保留，只改了路径、权限判断和模板渲染方式。
+# 只支持 6.x。5.9（ipsec.conf / stroke）的代码和配置已经删除。
 
 # shellcheck source=system.sh
 source "${VPN_SHELL_DIR}/modules/system.sh"
 
-STRONGSWAN59_VERSION="${STRONGSWAN_LEGACY_VERSION:-5.9.14}"
 STRONGSWAN6_VERSION="${STRONGSWAN6_VERSION:-6.0.2}"
-SS6_CONF_DIR="${MYCONF_HOME}/strongswan_6.0_conf"
+SS6_CONF_DIR="${MYCONF_HOME}/conf/strongswan/6"
 
 strongswan_usage() {
-    cat <<EOF
-strongSwan 模块（版本 59 = ${STRONGSWAN59_VERSION} 的 ipsec.conf 版，6 = ${STRONGSWAN6_VERSION} 的 swanctl 版，省略时为 59）:
-  all [59|6]          一键部署
-  install [59|6]      编译安装
-  config [59|6]       配置，默认端口 500/4500
-  config-port [59|6]  配置，端口版 8081/8080
-  ca [59|6]           生成证书
-  fix [59|6]          修复：59 修双 charon/CA/8080 连不上；6 关闭 ipsec0 用户态 IPsec
-  check [59|6]        状态检查
-  clean [force]       清理残留进程和 socket；force 额外杀 ipsec 进程并清空 xfrm
-  status              服务状态
+    cat <<USAGE
+strongSwan 模块（6.x，版本 ${STRONGSWAN6_VERSION}，swanctl + vici）:
+  all             一键部署（编译 + 配置 + 证书 + 防火墙 + 内核参数）
+  install         编译安装
+  config          配置，默认端口 500/4500
+  config-port     配置，端口版 8081/8080
+  ca              生成证书
+  fix             关闭 ipsec0 用户态 IPsec（kernel-libipsec），修复 CPU 打满
+  check           状态检查
+  clean [force]   清理残留进程和 socket；force 额外杀 ipsec 进程并清空 xfrm
+  status          服务状态
 
-环境变量: STRONGSWAN_LEGACY_VERSION（默认 ${STRONGSWAN59_VERSION}，可设 5.6.3）、STRONGSWAN6_VERSION、IPSEC_SUBNET
-EOF
+环境变量: STRONGSWAN6_VERSION（默认 ${STRONGSWAN6_VERSION}）、IPSEC_SUBNET
+USAGE
 }
 
 # ------------------------------------------------------------------ 共用：服务与进程
 
-ss_disable_charon_systemd() {
-    systemctl stop strongswan 2>/dev/null || true
-    systemctl disable strongswan 2>/dev/null || true
-    systemctl mask strongswan 2>/dev/null || true
-    pkill -9 -x charon-systemd 2>/dev/null || true
-}
 
-# 6.x / --enable-systemd 装出来的 strongswan.service（charon-systemd）和 ipsec.conf/stroke 不能并存。
-ss_prepare_stroke_service() {
-    local unit="/etc/systemd/system/strongswan.service"
-    if [ -f "$unit" ] && grep -q 'charon-systemd' "$unit" 2>/dev/null; then
-        log "移除 swanctl 时代的 strongswan.service（切换到 ipsec/stroke）"
-        rm -f "$unit" /etc/systemd/system/strongswan-swanctl.service
-        systemctl daemon-reload
-    fi
-    ss_disable_charon_systemd
-}
 
-# 5.9 的 starter 读 /etc/strongswan.conf；6.x 或旧模板里的 charon.xxx= / duplicheck. 会解析失败。
-ss_restore_59_main_conf() {
-    local template
-    if [ -f "${MYCONF_HOME}/strongswan_conf_port/strongswan.conf" ]; then
-        template="${MYCONF_HOME}/strongswan_conf_port/strongswan.conf"
-    else
-        template="${MYCONF_HOME}/strongswan_conf/strongswan.conf"
-    fi
-    [ -f "$template" ] || die "缺少 5.9 的 strongswan.conf 模板: ${MYCONF_HOME}/strongswan_conf*/"
-    install_file "$template" /etc/strongswan.conf 644
-    rm -f /etc/strongswan.d/charon/zz-no-kernel-libipsec.conf 2>/dev/null || true
-    if [ -f "${MYCONF_HOME}/strongswan_conf_port/charon.conf" ]; then
-        install_file "${MYCONF_HOME}/strongswan_conf_port/charon.conf" /etc/strongswan.d/charon.conf 644
-    fi
-}
 
-ss_ensure_stroke_charon_only() {
-    log "确保只有 stroke 的 charon 处理 UDP（避免 charon-systemd 抢 8080/8081）"
-    ss_disable_charon_systemd
-    systemctl stop strongswan-starter 2>/dev/null || true
-    pkill -9 -f '/usr/libexec/ipsec/charon' 2>/dev/null || true
-    pkill -9 -f '/usr/lib/ipsec/charon' 2>/dev/null || true
-    sleep 1
-    systemctl enable strongswan-starter 2>/dev/null || true
-    systemctl start strongswan-starter 2>/dev/null || ipsec restart
-    sleep 1
-    echo "--- 8080/8081 必须是 stroke 的 charon，不能是 charon-systemd ---"
-    ss -ulnp 2>/dev/null | grep -E ':8080|:8081' || true
-    ps aux 2>/dev/null | grep '[c]haron' || true
-    if ss -ulnp 2>/dev/null | grep -E ':8080' | grep -q charon-sy; then
-        err "UDP 8080 仍被 charon-systemd 占用。执行: systemctl mask strongswan && pkill -9 charon-systemd && ipsec restart"
-        return 1
-    fi
-}
 
-ss_ensure_ca_in_cacerts() {
-    [ -f /etc/ipsec.d/cacerts/caCert.pem ] && return 0
-    local ca_dir="${TMP_HOME}/ca"
-    if [ -f "${ca_dir}/caCert.pem" ]; then
-        log "从 ${ca_dir}/caCert.pem 补装 CA 到 /etc/ipsec.d/cacerts/"
-        mkdir -p /etc/ipsec.d/cacerts
-        cp "${ca_dir}/caCert.pem" /etc/ipsec.d/cacerts/
-        return 0
-    fi
-    err "缺少 /etc/ipsec.d/cacerts/caCert.pem，请运行: vpn.sh strongswan ca"
-    return 1
-}
 
-ss_start_service() {
-    systemctl daemon-reload 2>/dev/null || true
-    ss_disable_charon_systemd
-    # 5.9.x stroke 优先用 starter，避免和 charon-systemd 双进程抢端口。
-    if systemctl list-unit-files 2>/dev/null | grep -q '^strongswan-starter\.service'; then
-        systemctl enable strongswan-starter
-        systemctl restart strongswan-starter
-        return
-    fi
-    if systemctl list-unit-files 2>/dev/null | grep -q '^strongswan\.service'; then
-        if [ -f /etc/systemd/system/strongswan.service ] && grep -q 'charon-systemd' /etc/systemd/system/strongswan.service 2>/dev/null; then
-            err "strongswan.service 仍是 swanctl/charon-systemd，请重新运行 5.9 的安装"
-        else
-            systemctl enable strongswan
-            systemctl restart strongswan
-            return
-        fi
-    fi
-    if systemctl list-unit-files 2>/dev/null | grep -q '^ipsec\.service'; then
-        systemctl enable ipsec
-        systemctl restart ipsec
-        return
-    fi
-    if have ipsec; then
-        ipsec restart
-        return
-    fi
-    err "strongSwan 已安装，但没有找到服务单元"
-}
 
 ss_resolve_charon_bin() {
     local c
@@ -214,24 +117,6 @@ ss_fetch_source() {
     cd "strongswan-${version}" || die "进入源码目录失败"
 }
 
-ss_install_59() {
-    log "编译安装 strongSwan ${STRONGSWAN59_VERSION}（ipsec.conf / stroke）"
-    ss_fetch_source "$STRONGSWAN59_VERSION"
-    ./configure --prefix=/usr --sysconfdir=/etc --enable-openssl --enable-nat-transport --disable-mysql \
-        --disable-ldap --disable-static --enable-shared --enable-md4 --enable-eap-mschapv2 --enable-eap-aka \
-        --enable-eap-aka-3gpp2 --enable-eap-gtc --enable-eap-identity --enable-eap-md5 --enable-eap-peap \
-        --enable-eap-radius --enable-eap-sim --enable-eap-sim-file --enable-eap-simaka-pseudonym \
-        --enable-eap-simaka-reauth --enable-eap-simaka-sql --enable-eap-tls --enable-eap-tnc --enable-eap-ttls \
-        --enable-systemd --disable-kernel-libipsec || die "configure 失败"
-    make -j"$(nproc 2>/dev/null || echo 1)" || die "编译失败"
-    make install || die "make install 失败"
-    ldconfig 2>/dev/null || true
-    ss_purge_libipsec_plugin || true
-    ss_prepare_stroke_service
-    ss_restore_59_main_conf || die "写入 strongswan.conf 失败"
-    ss_start_service
-    ipsec version 2>/dev/null || true
-}
 
 ss_install_6() {
     log "编译安装 strongSwan ${STRONGSWAN6_VERSION}（swanctl）"
@@ -264,34 +149,7 @@ ss_install_6() {
 
 # ------------------------------------------------------------------ 配置
 
-# 5.9：默认端口。
-ss_config_59() {
-    local dir="${MYCONF_HOME}/strongswan_conf"
-    install_file "${dir}/ipsec.conf" /etc/ipsec.conf 644
-    install_file "${dir}/charon.conf" /etc/strongswan.d/charon.conf 644
-    install_file "${dir}/ipsec.secrets" /etc/ipsec.secrets 600
-    install_file "${dir}/strongswan.conf" /etc/strongswan.conf 644
-    ipsec restart
-}
 
-# 5.9：端口版 8081/8080 + RADIUS。
-ss_config_port_59() {
-    local dir="${MYCONF_HOME}/strongswan_conf_port"
-    ss_ensure_stroke_charon_only || true
-    ss_ensure_ca_in_cacerts || true
-    install_file "${dir}/ipsec.conf" /etc/ipsec.conf 644
-    install_file "${dir}/charon.conf" /etc/strongswan.d/charon.conf 644
-    install_file "${dir}/ipsec.secrets" /etc/ipsec.secrets 600
-    install_file "${dir}/strongswan.conf" /etc/strongswan.conf 644
-
-    [ -f /etc/ipsec.d/cacerts/caCert.pem ] || warn "缺少 CA: /etc/ipsec.d/cacerts/caCert.pem，请运行: vpn.sh strongswan ca"
-    if ! grep -q 'leftikeport=8080' /etc/ipsec.conf || ! grep -q 'radius-natt' /etc/ipsec.conf; then
-        warn "/etc/ipsec.conf 缺少 radius-natt/8080，更新仓库后重新运行 config-port"
-    fi
-    ipsec restart
-    echo "--- ipsec listall (radius) ---"
-    ipsec listall 2>/dev/null | grep -E 'radius-natt|radius:' || true
-}
 
 # 6：把 swanctl 模板的 {{SERVER_IP}} 换成本机公网地址。template 是模板文件名。
 ss_config_6_with() {
@@ -317,34 +175,6 @@ ss_config_port_6() { ss_config_6_with swanctl_port.conf.template; }
 
 # ------------------------------------------------------------------ 证书
 
-# 5.9：证书写进 /etc/ipsec.d，CN 和 SAN 是本机公网地址。
-ss_ca_59() {
-    local ip dir
-    ip="$(detect_server_address)" || die "无法获取服务器公网 IP，请设置 SERVER_ADDRESS"
-    dir="${TMP_HOME}/ca"
-    mkdir -p "$dir" /etc/ipsec.d/cacerts /etc/ipsec.d/certs /etc/ipsec.d/private
-    cd "$dir" || die "进入 ${dir} 失败"
-    log "生成证书，CN=${ip}"
-    ipsec pki --gen --outform pem >caKey.pem
-    ipsec pki --self --in caKey.pem --dn "C=CN, O=timeline, CN=${ip}" --ca --outform pem >caCert.pem
-    ipsec pki --gen --outform pem >serverKey.pem
-    ipsec pki --pub --in serverKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem \
-        --dn "C=CN, O=timeline, CN=${ip}" --san="$ip" --flag serverAuth --flag ikeIntermediate --outform pem >serverCert.pem
-    ipsec pki --gen --outform pem >clientKey.pem
-    ipsec pki --pub --in clientKey.pem | ipsec pki --issue --cacert caCert.pem --cakey caKey.pem \
-        --dn "C=CN, O=timeline, CN=client" --outform pem >clientCert.pem
-    openssl pkcs12 -export -inkey clientKey.pem -in clientCert.pem -name "client" -certfile caCert.pem \
-        -caname "$ip" -out clientCert.p12 -passout pass:
-
-    cp caCert.pem /etc/ipsec.d/cacerts/
-    cp serverCert.pem /etc/ipsec.d/certs/
-    cp serverKey.pem /etc/ipsec.d/private/
-    cp clientCert.pem /etc/ipsec.d/certs/
-    cp clientKey.pem /etc/ipsec.d/private/
-    chmod 600 /etc/ipsec.d/private/*.pem
-    ipsec restart
-    log "客户端 PKCS#12（无密码）: ${dir}/clientCert.p12"
-}
 
 # 6：证书写进 /etc/swanctl。
 ss_ca_6() {
@@ -425,15 +255,6 @@ ss_fix_6() {
     ss_reload_6
 }
 
-ss_fix_59() {
-    ss_ensure_stroke_charon_only
-    ss_ensure_ca_in_cacerts || true
-    if [ -f "${MYCONF_HOME}/strongswan_conf_port/ipsec.conf" ]; then
-        install_file "${MYCONF_HOME}/strongswan_conf_port/ipsec.conf" /etc/ipsec.conf 644
-    fi
-    ipsec restart
-    ipsec listall 2>/dev/null | grep -E 'radius-natt|radius:' || true
-}
 
 # ------------------------------------------------------------------ 清理与检查
 
@@ -468,7 +289,7 @@ ss_clean() {
     rm -f /var/run/charon/* 2>/dev/null || true
     ss_prepare_dirs
     systemctl daemon-reload
-    log "清理完成。重新启动: systemctl start strongswan（6）或 ipsec restart（59）"
+    log "清理完成。重新启动: systemctl start strongswan"
 }
 
 ss_check_6() {
@@ -485,27 +306,9 @@ ss_check_6() {
     ss_verify_6 || true
 }
 
-ss_check_59() {
-    echo "=== strongSwan 5.9 状态 ==="
-    ipsec version 2>/dev/null || true
-    ipsec statusall 2>/dev/null | head -n 30 || ipsec status 2>/dev/null || true
-    iptables -L -n | head -n 30
-    ps aux | grep '[c]haron' || echo "没有 charon 进程"
-}
 
 # ------------------------------------------------------------------ 一键
 
-ss_all_59() {
-    log "strongSwan ${STRONGSWAN59_VERSION} 一键部署（端口版 8081/8080 + RADIUS）"
-    system_init
-    ss_install_59
-    ss_config_port_59
-    ss_ca_59
-    system_net
-    system_iptables_ipsec
-    ss_check_59
-    log "部署完成（IKE UDP 8081 / NAT-T 8080）"
-}
 
 ss_all_6() {
     log "strongSwan ${STRONGSWAN6_VERSION} 一键部署"
@@ -519,34 +322,32 @@ ss_all_6() {
     log "部署完成"
 }
 
-# 带版本号的动作分发：version 为 59 或 6（默认 59）。
-ss_versioned() {
-    local fn="$1" version="${2:-59}"
-    case "$version" in
-        59 | 6) "ss_${fn}_${version}" ;;
-        *) die "版本只能是 59 或 6: ${version}" ;;
-    esac
-}
 
 strongswan_main() {
     local action="${1:-}"
     [ $# -gt 0 ] && shift
+    # 兼容旧命令 "strongswan all 6"：末尾的 6 直接忽略，其它版本号报错。
+    case "${1:-}" in
+        '') ;;
+        6) shift ;;
+        *) die "只支持 strongSwan 6.x（不再支持 5.9）: $1" ;;
+    esac
     case "$action" in
         all | install | config | config-port | ca | fix | clean)
             require_root
             ;;
     esac
     case "$action" in
-        all) ss_versioned all "$@" ;;
-        install) ss_versioned install "$@" ;;
-        config) ss_versioned config "$@" ;;
-        config-port) ss_versioned config_port "$@" ;;
-        ca) ss_versioned ca "$@" ;;
-        fix) ss_versioned fix "$@" ;;
-        check) ss_versioned check "$@" ;;
+        all) ss_all_6 "$@" ;;
+        install) ss_install_6 "$@" ;;
+        config) ss_config_6 "$@" ;;
+        config-port) ss_config_port_6 "$@" ;;
+        ca) ss_ca_6 "$@" ;;
+        fix) ss_fix_6 "$@" ;;
+        check) ss_check_6 "$@" ;;
         clean) ss_clean "$@" ;;
         status)
-            ipsec statusall 2>/dev/null || systemctl status strongswan --no-pager -l
+            ipsec statusall 2>/dev/null || swanctl --stats 2>/dev/null || systemctl status strongswan --no-pager -l
             ;;
         '' | help | -h | --help) strongswan_usage ;;
         *)

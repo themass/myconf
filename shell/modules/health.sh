@@ -83,7 +83,7 @@ hc_errors() { # <unit> -> 近期错误行数（已排除连接噪音）
 
 hc_strongswan_unit() {
     local u
-    for u in strongswan strongswan-starter strongswan-swanctl ipsec; do
+    for u in strongswan; do
         if systemctl cat "$u" >/dev/null 2>&1; then
             printf '%s' "$u"
             return 0

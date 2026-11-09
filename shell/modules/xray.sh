@@ -11,7 +11,7 @@
 #
 # 安装方式：下载固定版本的官方发布包，用 .dgst 里的 SHA256 校验后再安装，
 # 不执行任何远端脚本。已经用官方脚本装过 Xray 的机器：二进制和 systemd 服务保持原样，
-# 只管理配置。配置来自 templates/xray/config.json，已有配置默认保留。
+# 只管理配置。配置来自 conf/xray/config.json，已有配置默认保留。
 # 和 sing-box 同机共存：Xray 用 443，sing-box 的 VLESS+Reality 用 444。
 
 XRAY_VERSION="${XRAY_VERSION:-26.10.31}"

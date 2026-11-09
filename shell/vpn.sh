@@ -31,8 +31,8 @@ usage() {
   system      服务器准备
       init | upgrade [full] [dry-run] | net | bbr | iptables-ipsec | fail2ban
       rclocal | speed | trace | kernel-check | ip
-  strongswan  IKEv2/IPsec（59 = 5.9 ipsec.conf 版，6 = 6.x swanctl 版，省略为 59）
-      all [59|6] | install | config | config-port | ca | fix | check | clean [force] | status
+  strongswan  IKEv2/IPsec（strongSwan 6.x，swanctl + vici）
+      all | install | config | config-port | ca | fix | check | clean [force] | status
   xray        VLESS+Reality（tcp 443）
       install | upgrade | regen | links | check | status | restart
   singbox     vmess-ws / trojan / shadowsocks / hysteria2（vless-reality 由 xray 承载）
@@ -57,7 +57,7 @@ usage() {
       bash vpn.sh xray install
       bash vpn.sh singbox add all
       bash vpn.sh wireguard install
-      bash vpn.sh strongswan all 6
+      bash vpn.sh strongswan all
   升级系统包:
       bash vpn.sh system upgrade dry-run      # 先看会升级什么
       bash vpn.sh system upgrade              # 执行（不自动重启服务）

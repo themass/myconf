@@ -1,0 +1,15 @@
+[Unit]
+Description=MySQL {{MYSQL_VERSION}} (tarball install)
+After=network.target
+
+[Service]
+User=mysql
+Group=mysql
+# 前台运行交给 systemd 管理，不再用 mysqld_safe & 放后台。
+ExecStart=/usr/local/mysql/bin/mysqld --defaults-file=/etc/my.cnf
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

@@ -21,7 +21,7 @@ export VPN_SHELL_DIR
 # shellcheck source=lib/common.sh
 source "${VPN_SHELL_DIR}/lib/common.sh"
 
-SVC_ALL="nginx mysql radius redis php"
+SVC_ALL="nginx mysql radius redis php postgres"
 SVC_BAD=0
 
 svc_usage() {
@@ -47,6 +47,7 @@ svc_unit() {
         radius | radiusd) printf 'freeradius' ;;
         redis | redis-server) printf 'redis-server' ;;
         php | php-fpm) printf 'php%s-fpm' "${PHP_VERSION:-8.4}" ;;
+        postgres | pg) printf 'postgresql@%s-main' "${PG_VERSION:-17}" ;;
         *) return 1 ;;
     esac
 }
@@ -63,6 +64,10 @@ svc_port() {
         redis)
             p="$(sed -n 's/^port[[:space:]]\{1,\}\([0-9]*\).*/\1/p' /etc/redis/redis.conf 2>/dev/null | head -n 1)"
             printf 'tcp/%s' "${p:-6379}"
+            ;;
+        postgres)
+            p="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' "/etc/postgresql/${PG_VERSION:-17}/main/conf.d/90-vpn.conf" 2>/dev/null | head -n 1)"
+            printf 'tcp/%s' "${p:-5432}"
             ;;
         radius) printf 'udp/1812' ;;
     esac
@@ -82,6 +87,7 @@ svc_list() {
             radius | radiusd) out="${out} radius" ;;
             redis | redis-server) out="${out} redis" ;;
             php | php-fpm) out="${out} php" ;;
+            postgres | pg | postgresql) out="${out} postgres" ;;
             *) die "未知服务: ${s}（可选: ${SVC_ALL}）" ;;
         esac
     done
@@ -164,7 +170,7 @@ svc_act() { # <start|stop|restart> [服务...]
     require_root
     list="$(svc_list "$@")"
     # 启动按依赖顺序（mysql -> radius -> redis -> nginx），停止反过来。
-    for s in mysql radius redis php nginx; do
+    for s in postgres mysql radius redis php nginx; do
         case " $list " in *" $s "*) ordered="${ordered} ${s}" ;; esac
     done
     if [ "$act" = "stop" ]; then

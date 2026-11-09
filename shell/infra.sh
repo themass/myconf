@@ -35,14 +35,16 @@ infra_usage() {
   mysql    MySQL ${MYSQL_VERSION}（官方 tarball + systemd），配置取自 conf/mysql/my.cnf
   radius   FreeRADIUS 3.2.x（NetworkRadius 官方 apt 源）；sql 模块取自 conf/radius/sql.conf，clients.conf 日常用 radius.sh 更新
   jdk      ${INFRA_JDK_PKG} + maven（apt）
-  all      依次安装 mysql radius nginx redis jdk php
+  php      PHP ${PHP_VERSION:-8.4}（sury 源）：php-fpm、常用扩展、composer；池 web 用 unix socket
+  postgres PostgreSQL ${PG_VERSION:-17}（PGDG 源）：只听内网地址，pg_hba 只放内网段和本机，全部 scram-sha-256
+  all      依次安装 mysql radius nginx redis jdk php postgres
   help     本说明
 
 环境变量:
   INFRA_BIND            服务绑定的地址（默认自动识别内网地址，没有就 127.0.0.1）
   INFRA_REDIS_PASSWORD  覆盖 redis.conf 里的 requirepass
   INFRA_MYSQL_PUBLIC=1  MySQL 绑定 0.0.0.0（默认只绑 INFRA_BIND；root 初始无密码，别轻易公开）
-  MYSQL_VERSION / INFRA_JDK_PKG / MYSQL_DATADIR / PHP_VERSION（默认 8.4）
+  MYSQL_VERSION / INFRA_JDK_PKG / MYSQL_DATADIR / PHP_VERSION（默认 8.4）/ PG_VERSION（默认 17）/ PG_PORT / PG_ADMIN_PASSWORD（只读环境变量，不落盘）
 
 启停、状态、检查: bash svc.sh help
 EOF
@@ -165,6 +167,99 @@ infra_redis() {
     chown redis:redis /etc/redis/redis.conf
     svc_enable_restart redis-server
     log "Redis 已启动，监听 $(infra_ip):6380（端口取自 redis.conf）"
+}
+
+# ------------------------------------------------------------------ PostgreSQL
+
+# PostgreSQL 来自官方 PGDG apt 源（签名验证）。jammy 自带的是 14，PG 17 是当前稳定版。
+PG_VERSION="${PG_VERSION:-17}"
+PG_PORT="${PG_PORT:-5432}"
+PG_REPO="${PG_REPO:-https://apt.postgresql.org/pub/repos/apt}"
+PG_KEY_URL="${PG_KEY_URL:-https://www.postgresql.org/media/keys/ACCC4CF8.asc}"
+PG_ADMIN_PASSWORD="${PG_ADMIN_PASSWORD:-}"
+
+# 内网段：从 INFRA_BIND（或本机内网地址）推出 /24。pg_hba 只允许这个段和本机。
+infra_pg_net() {
+    local ip
+    ip="$(infra_ip)"
+    case "$ip" in
+        127.0.0.1) printf '127.0.0.1/32' ;;
+        *) printf '%s.0/24' "$(printf '%s' "$ip" | cut -d. -f1-3)" ;;
+    esac
+}
+
+infra_postgres() {
+    require_root
+    infra_need_apt
+    [ "$(detect_arch)" = "amd64" ] || die "PGDG 源这里只验证过 amd64"
+    # shellcheck disable=SC1091
+    . /etc/os-release
+    [ "${ID:-}" = "ubuntu" ] && [ "${VERSION_CODENAME:-}" = "jammy" ] \
+        || die "PGDG 源按 Ubuntu 22.04 (jammy) 验证过，当前: ${ID:-?} ${VERSION_CODENAME:-?}"
+    ensure_cmds gpg:gnupg curl
+    local v="$PG_VERSION" key ip net listen unit="postgresql@${PG_VERSION}-main" conf_dir data_dir
+    case "$v" in 1[3-9]) ;; *) die "PG_VERSION 不对: ${v}（如 17）" ;; esac
+
+    key="$(mktemp "${TMPDIR:-/tmp}/pgdg-key.XXXXXX")" || die "无法创建临时文件"
+    download "$PG_KEY_URL" "$key" || die "下载 PGDG 签名密钥失败"
+    gpg --batch --yes --dearmor -o /usr/share/keyrings/pgdg.gpg "$key" || die "导入签名密钥失败"
+    rm -f "$key"
+    printf 'deb [signed-by=/usr/share/keyrings/pgdg.gpg] %s jammy-pgdg main\n' "$PG_REPO" \
+        >/etc/apt/sources.list.d/pgdg.list
+    apt-get -o DPkg::Lock::Timeout=300 update || die "apt-get update 失败（PGDG 源）"
+    infra_apt_install "postgresql-${v}" "postgresql-client-${v}" || die "postgresql-${v} 安装失败"
+
+    conf_dir="/etc/postgresql/${v}/main"
+    data_dir="/var/lib/postgresql/${v}/main"
+    [ -d "$conf_dir" ] || die "没有找到 ${conf_dir}，包结构和预期不一样"
+
+    # 监听地址：INFRA_BIND 或本机内网地址；没有就只听本机。
+    ip="$(infra_ip)"
+    listen="$ip"
+    [ "$ip" = "127.0.0.1" ] && listen="127.0.0.1"
+    net="$(infra_pg_net)"
+
+    # 服务端参数：放进 conf.d，不改包自带的 postgresql.conf。
+    mkdir -p "${conf_dir}/conf.d"
+    infra_put "${TEMPLATE_DIR}/postgres/postgresql.conf" "${conf_dir}/conf.d/90-vpn.conf" 644 \
+        "s/{{LISTEN}}/${listen}/" "s/{{PORT}}/${PG_PORT}/"
+    chown postgres:postgres "${conf_dir}/conf.d/90-vpn.conf"
+
+    # 认证文件：整份替换为模板（旧文件备份）。
+    infra_put "${TEMPLATE_DIR}/postgres/pg_hba.conf" "${conf_dir}/pg_hba.conf" 640 \
+        "s|{{NET}}|${net}|"
+    chown postgres:postgres "${conf_dir}/pg_hba.conf"
+
+    mkdir -p /var/log/postgresql && chown postgres:postgres /var/log/postgresql
+
+    # 数据目录只在第一次安装时由 pg_createcluster 创建（包已经做了），这里只保证它存在。
+    [ -d "$data_dir" ] || die "数据目录 ${data_dir} 不存在，检查 pg_lsclusters"
+
+    svc_enable_restart "$unit" || die "PostgreSQL 启动失败: journalctl -u ${unit} -n 30"
+    # 等待就绪
+    local i=0
+    until su -s /bin/sh postgres -c "pg_isready -q -p ${PG_PORT}" 2>/dev/null; do
+        i=$((i + 1)); [ "$i" -ge 30 ] && die "PostgreSQL 30 秒内没就绪: pg_lsclusters / journalctl -u ${unit}"
+        sleep 1
+    done
+
+    # 管理员口令：只从 PG_ADMIN_PASSWORD 读。SQL 经标准输入传给 psql，不进命令行参数（ps 看不到），
+    # 单引号在这里转义，口令里有 ' 也不会断句或注入。不写进任何文件，不打印。
+    if [ -n "$PG_ADMIN_PASSWORD" ]; then
+        local pw_sql
+        pw_sql=$(printf '%s' "$PG_ADMIN_PASSWORD" | sed "s/'/''/g")
+        if printf "ALTER USER postgres PASSWORD '%s';\n" "$pw_sql" \
+            | su -s /bin/sh postgres -c "psql -q -v ON_ERROR_STOP=1 -f -" >/dev/null 2>&1; then
+            log "postgres 口令已设置（来自 PG_ADMIN_PASSWORD，未显示）"
+        else
+            die "设置 postgres 口令失败（检查 PG_ADMIN_PASSWORD 或 journalctl -u ${unit}）"
+        fi
+    else
+        warn "没有设置 postgres 口令：PG_ADMIN_PASSWORD=<口令> bash infra.sh postgres，或之后手动 ALTER USER"
+    fi
+    remind_security_group
+    log "PostgreSQL ${v} 已启动: 监听 ${listen}:${PG_PORT}，允许网段 ${net} + 本机，全部 scram-sha-256"
+    log "连接: psql -h ${ip} -p ${PG_PORT} -U postgres"
 }
 
 # ------------------------------------------------------------------ MySQL
@@ -376,6 +471,7 @@ infra_main() {
     case "$action" in
         nginx) infra_nginx ;;
         redis) infra_redis ;;
+        postgres | pg) infra_postgres ;;
         mysql) infra_mysql ;;
         radius) infra_radius ;;
         jdk) infra_jdk ;;
@@ -387,6 +483,7 @@ infra_main() {
             infra_redis
             infra_jdk
             infra_php
+            infra_postgres
             ;;
         '' | help | -h | --help) infra_usage ;;
         *)

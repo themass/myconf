@@ -20,7 +20,7 @@ export VPN_SHELL_DIR
 # shellcheck source=lib/common.sh
 source "${VPN_SHELL_DIR}/lib/common.sh"
 
-VPN_MODULES="system strongswan ssr xray singbox wireguard"
+VPN_MODULES="system strongswan ssr xray singbox wireguard health"
 
 usage() {
     cat <<EOF
@@ -33,6 +33,7 @@ usage() {
   xray        Xray VLESS+Reality（TCP 443）
   singbox     sing-box: vless-reality / vmess-ws / trojan / shadowsocks / hysteria2
   wireguard   WireGuard
+  health      运行状况总览和日志（只读）：服务、端口、连接数、近期错误
 
 其他:
   ports       各协议默认端口，以及本机当前的监听情况
@@ -44,6 +45,8 @@ usage() {
   bash vpn.sh singbox add all
   bash vpn.sh wireguard install && bash vpn.sh wireguard add-peer phone
   bash vpn.sh strongswan all
+  bash vpn.sh health                  # 总览；有异常退出码为 1
+  bash vpn.sh health logs xray -f     # 跟踪某个服务的日志
 
 配置模板在 ${TEMPLATE_DIR}（复制修改，不要写进脚本）。
 服务器地址和出口网卡自动识别；识别不对时设置 SERVER_ADDRESS / VPN_NETDEV。
@@ -111,7 +114,7 @@ main() {
         links)
             show_links
             ;;
-        system | strongswan | ssr | xray | singbox | wireguard)
+        system | strongswan | ssr | xray | singbox | wireguard | health)
             # shellcheck disable=SC1090
             source "${VPN_SHELL_DIR}/modules/${mod}.sh"
             "${mod}_main" "$@"

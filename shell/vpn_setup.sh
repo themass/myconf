@@ -3,7 +3,6 @@
 #
 # 旧参数        新命令
 # soft          system init
-# telegraf      system telegraf
 # fail2ban      system fail2ban
 # kernel        system bbr
 # strongswan*   strongswan ...
@@ -31,7 +30,6 @@ rc=0
 for arg in "$@"; do
     case "$arg" in
         soft) bash "${DIR}/vpn.sh" system init ;;
-        telegraf) bash "${DIR}/vpn.sh" system telegraf ;;
         fail2ban) bash "${DIR}/vpn.sh" system fail2ban ;;
         kernel) bash "${DIR}/vpn.sh" system bbr ;;
         strongswan) bash "${DIR}/vpn.sh" strongswan install 59 ;;

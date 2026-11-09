@@ -57,6 +57,20 @@ bash vpn.sh health
 bash vpn.sh health logs xray -f
 ```
 
+## IKEv2 排障
+
+**客户端连 8080 报 `no IKE config found`**：日志里已经有 `radius` / `radius-natt` 配置、`ipsec statusall` 也正常，却还报这个，最常见的原因是**同时有两个 charon**。6.x 的 `charon-systemd`（或残留的旧进程）占着 udp 8080/8081，但它没有加载 `ipsec.conf`，数据包被它收走了。
+
+```bash
+ss -lunp | grep -E ':(8080|8081) '     # 看谁占着端口：5.9 应该是 charon，6.x 是 charon-systemd
+ps aux | grep '[c]haron'                # 不应同时出现两种
+```
+
+- 用 5.9：`bash vpn.sh strongswan clean force`，再 `bash vpn.sh strongswan fix 59`（会停掉并屏蔽 6.x 的 unit，启用 strongswan-starter）。
+- 用 6.x：`bash vpn.sh strongswan clean force`，再 `bash vpn.sh strongswan config 6`。
+- 手机再连一次，同时看日志：`bash vpn.sh health logs strongswan -f`。5.9 的日志里应出现 `looking for an IKEv2 config` 和 `found matching ike config`；连上时没有任何新日志，说明包仍被别的进程收走，继续查上面的 `ss`。
+- 5.9 与 6.x 的 unit 互不兼容，来回切换要先 `clean force`。强制装旧版 5.6.3 不推荐：`STRONGSWAN_LEGACY_VERSION=5.6.3 bash vpn.sh strongswan install 59`。
+
 ## 旧脚本去哪了
 
 | 旧脚本 | 现在 |
@@ -84,7 +98,6 @@ shell/
   modules/                每个模块一个文件：system strongswan ssr xray singbox wireguard health
   vpn_setup.sh            旧参数 -> vpn.sh 的转发（兼容旧的 README 和手顺）
   ssvpn_setup.sh          同上
-  ipsecstatus.sh          crontab 在用（monitor/root），路径不要动
 templates/                新协议的配置模板，脚本里不放配置内容
   singbox/ xray/ wireguard/ strongswan/ system/
 strongswan_conf/ strongswan_conf_port/ strongswan_6.0_conf/ ssr_conf/   strongSwan、SSR 原有配置，位置不变
@@ -107,4 +120,3 @@ strongswan_conf/ strongswan_conf_port/ strongswan_6.0_conf/ ssr_conf/   strongSw
 ## 没有搬动的
 
 - `setup.sh start.sh root_init.sh radiusd.sh soft_setup.sh soft_setup_web.sh`：nginx / MySQL / Tomcat / Radius 等服务器基础设施脚本，不属于 VPN 安装。里面的相对路径（`../monitor`、`../radius`）依赖当前目录，没有改动。
-- `ipsecstatus.sh`：被 `monitor/root` 的 crontab 调用。注意它的 `status_send` 在取不到连接数时会 `sudo reboot`，并上报到写死的地址。

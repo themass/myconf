@@ -7,11 +7,10 @@
 #   vpn.sh system net               内核转发、网络调优、文件句柄数（可重复运行）
 #   vpn.sh system bbr               开启 BBR
 #   vpn.sh system iptables-ipsec    IPsec 放行端口 + NAT（出口网卡自动识别，可重复运行）
-#   vpn.sh system fail2ban | telegraf | rclocal
+#   vpn.sh system fail2ban | rclocal
 #   vpn.sh system speed | trace | kernel-check | ip
 
 IPSEC_SUBNET="${IPSEC_SUBNET:-10.0.0.0/24}"
-TELEGRAF_VERSION="${TELEGRAF_VERSION:-1.4.2-1}"
 
 system_usage() {
     cat <<EOF
@@ -24,7 +23,6 @@ system_usage() {
   bbr                开启 BBR 拥塞控制（内核 4.9+）
   iptables-ipsec     放行 IPsec 端口并做 NAT，规则已存在则跳过；出口网卡自动识别
   fail2ban           安装 fail2ban，使用 monitor/jail.conf
-  telegraf           安装 telegraf ${TELEGRAF_VERSION}，使用 monitor/telegraf.conf
   rclocal            安装 rc.local 及 systemd 服务
   speed              安装 speedtest-cli 并测速
   trace              到广州移动/联通/电信的路由追踪
@@ -164,17 +162,6 @@ system_fail2ban() {
     svc_enable_restart fail2ban
 }
 
-system_telegraf() {
-    require_root
-    local deb="telegraf_${TELEGRAF_VERSION}_amd64.deb"
-    [ "$(detect_arch)" = "amd64" ] || die "telegraf ${TELEGRAF_VERSION} 只有 amd64 安装包"
-    mkdir -p "$TMP_HOME"
-    download "https://dl.influxdata.com/telegraf/releases/${deb}" "${TMP_HOME}/${deb}" || die "下载 telegraf 失败"
-    dpkg -i "${TMP_HOME}/${deb}" || die "telegraf 安装失败"
-    install_file "${MYCONF_HOME}/monitor/telegraf.conf" /etc/telegraf/telegraf.conf 644
-    svc_enable_restart telegraf
-}
-
 system_rclocal() {
     require_root
     install_file "${MYCONF_HOME}/monitor/rc-local.service" /etc/systemd/system/rc-local.service 644
@@ -240,7 +227,6 @@ system_main() {
         bbr) system_bbr ;;
         iptables-ipsec) system_iptables_ipsec "$@" ;;
         fail2ban) system_fail2ban ;;
-        telegraf) system_telegraf ;;
         rclocal) system_rclocal ;;
         speed) system_speed ;;
         trace) system_trace ;;

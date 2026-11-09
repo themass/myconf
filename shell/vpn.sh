@@ -29,7 +29,7 @@ usage() {
 模块与全部动作（每个动作的参数和环境变量: bash vpn.sh help <模块>）:
 
   system      服务器准备
-      init | upgrade [full] [dry-run] | net | bbr | iptables-ipsec | fail2ban | telegraf
+      init | upgrade [full] [dry-run] | net | bbr | iptables-ipsec | fail2ban
       rclocal | speed | trace | kernel-check | ip
   strongswan  IKEv2/IPsec（59 = 5.9 ipsec.conf 版，6 = 6.x swanctl 版，省略为 59）
       all [59|6] | install | config | config-port | ca | fix | check | clean [force] | status

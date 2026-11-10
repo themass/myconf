@@ -155,6 +155,8 @@ myconf/
 
 ## 安装方式说明
 
+- **Xray 版本固定 26.3.27，不要随便升级**：App 的 VLESS 客户端是 sing-box 1.13.5，Xray 26.7.28 及以后的 REALITY 服务端不接受它（服务端日志 `REALITY: processed invalid connection`，客户端 `reality verification failed`）。已经装了新版本的机器：`XRAY_VERSION=26.3.27 bash vpn.sh xray upgrade`，配置不动。
+
 - **sing-box**：下载 GitHub 发布包，版本固定在 `SB_VERSION`（默认 1.13.5，和 App 里的 libbox 一致）。
 - **Xray**：下载固定版本发布包，用 `.dgst` 里的 SHA256 校验通过后才安装；不执行任何远端脚本。服务器上已经用官方脚本装过 Xray 时，二进制和 systemd 服务保持原样，只管理配置。
 - **系统参数**：内核参数写入 `/etc/sysctl.d/`，文件句柄数写入 `/etc/security/limits.d/`，重复运行不会堆叠。防火墙规则先检查再追加。

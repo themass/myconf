@@ -14,7 +14,13 @@
 # 只管理配置。配置来自 conf/xray/config.json，已有配置默认保留。
 # 和 sing-box 同机共存：Xray 用 443，sing-box 的 VLESS+Reality 用 444。
 
-XRAY_VERSION="${XRAY_VERSION:-26.10.31}"
+# 版本不能随便升：App 的 VLESS 客户端是 sing-box 1.13.5（libbox），它的 REALITY 客户端
+# 与 Xray 26.7.28 及以后的服务端不兼容——服务端日志 "REALITY: processed invalid connection"，
+# 客户端报 "reality verification failed"，指纹、flow 怎么换都不行。
+# 实测（2026-11-10，同一套密钥）：24.12.31 ~ 26.6.1 均可用；26.7.28、26.9.30、26.10.21、26.10.31、26.11.9 均不可用。
+# 26.3.27 是可用范围内最新的正式版（26.4.x / 26.6.x 是预发布）。
+# App 升级 libbox 之后，先用新版本客户端实测通过，再改这里。
+XRAY_VERSION="${XRAY_VERSION:-26.3.27}"
 XRAY_BIN="${XRAY_BIN:-/usr/local/bin/xray}"
 XRAY_CONFIG_DIR="${XRAY_CONFIG_DIR:-/usr/local/etc/xray}"
 XRAY_PORT="${XRAY_PORT:-443}"

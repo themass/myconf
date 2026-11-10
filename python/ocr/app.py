@@ -3,6 +3,7 @@
 from flask import Flask, request, render_template, jsonify, Response
 import os
 import tempfile
+import uuid
 import PyPDF2
 import docx
 import pandas as pd
@@ -433,6 +434,91 @@ def uplodocr():
             'summary': answer
         })
     return jsonify({'summary': '不支持的文件类型'})
+# ---------- 拍照解题（端上 PhotoSolveRepository 对接） ----------
+# 流程：upload（上传裁剪后的题目图片，拿 imageId）→ ocr（识别题干）→ solve（解题）。
+# 所有接口返回统一结构 {code, message, data}；code 0 成功，其它见下面的错误码。
+#   40001 图片不清晰（未识别到文字）  40002 不是题目  40003 图片过大或格式不支持 / 图片不存在
+#   42901 额度用完（本服务暂未实现额度，保留码）  50001 模型或 OCR 服务失败
+PHOTOSOLVE_DIR = os.getenv("PHOTOSOLVE_DIR", os.path.join(tempfile.gettempdir(), "photosolve"))
+PHOTOSOLVE_MAX_BYTES = 2 * 1024 * 1024  # 端上已压缩到 800KB 左右，这里留余量
+PHOTOSOLVE_ID_RE = re.compile(r'^[0-9a-f]{32}$')
+
+
+def _ps_error(code, message):
+    return jsonify({'code': code, 'message': message, 'data': None})
+
+
+def _ps_path(image_id):
+    """imageId 只接受 uuid4 hex，防止路径穿越。不存在返回 None。"""
+    if not isinstance(image_id, str) or not PHOTOSOLVE_ID_RE.match(image_id):
+        return None
+    path = os.path.join(PHOTOSOLVE_DIR, f"{image_id}.jpg")
+    return path if os.path.exists(path) else None
+
+
+@app.route('/photosolve/upload', methods=['POST'])
+def photosolve_upload():
+    file = request.files.get('image')
+    if file is None:
+        return _ps_error(40003, '没有图片')
+    data = file.read(PHOTOSOLVE_MAX_BYTES + 1)
+    if len(data) > PHOTOSOLVE_MAX_BYTES:
+        return _ps_error(40003, '图片过大，请重新拍摄或裁剪')
+    try:
+        # 统一转成 JPEG（去掉 EXIF，避免方向和隐私问题）
+        image = Image.open(io.BytesIO(data)).convert('RGB')
+    except Exception:
+        return _ps_error(40003, '图片格式不支持')
+    os.makedirs(PHOTOSOLVE_DIR, exist_ok=True)
+    image_id = uuid.uuid4().hex
+    image.save(os.path.join(PHOTOSOLVE_DIR, f"{image_id}.jpg"), 'JPEG', quality=85)
+    return jsonify({'code': 0, 'message': 'ok', 'data': {'imageId': image_id}})
+
+
+@app.route('/photosolve/ocr', methods=['POST'])
+def photosolve_ocr():
+    body = request.get_json(silent=True) or {}
+    path = _ps_path(body.get('imageId'))
+    if path is None:
+        return _ps_error(40003, '图片不存在，请重新上传')
+    try:
+        text = OCR_Qustion().ocr_image(path)
+    except Exception:
+        logger.exception('photosolve ocr failed')
+        return _ps_error(50001, '识别服务暂时不可用，请重试')
+    if not text or not text.strip():
+        return _ps_error(40001, '图片不清晰，未识别到文字，请重新拍摄')
+    return jsonify({'code': 0, 'message': 'ok', 'data': {'text': text.strip()}})
+
+
+@app.route('/photosolve/solve', methods=['POST'])
+def photosolve_solve():
+    body = request.get_json(silent=True) or {}
+    text = (body.get('text') or '').strip()
+    if not text:
+        # 没有传题干：先按图片做 OCR
+        path = _ps_path(body.get('imageId'))
+        if path is None:
+            return _ps_error(40003, '图片不存在，请重新上传')
+        try:
+            text = (OCR_Qustion().ocr_image(path) or '').strip()
+        except Exception:
+            logger.exception('photosolve ocr failed')
+            return _ps_error(50001, '识别服务暂时不可用，请重试')
+        if not text:
+            return _ps_error(40001, '图片不清晰，未识别到文字，请重新拍摄')
+    if len(text) < 4:
+        return _ps_error(40002, '未识别到题目，请重新框选')
+    try:
+        answer = OCR_Qustion().solve_question(text)
+    except Exception:
+        logger.exception('photosolve solve failed')
+        answer = None
+    if not answer:
+        return _ps_error(50001, '解题服务暂时不可用，请重试')
+    return jsonify({'code': 0, 'message': 'ok', 'data': {'question': text, 'answer': answer}})
+
+
 if __name__ == '__main__':
     logger.info("Starting Flask application...")  # 检查这条消息是否显示
     app.run(debug=True, use_reloader=False)

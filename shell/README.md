@@ -69,6 +69,8 @@ bash vpn.sh health logs strongswan -f          # 手机再连一次，看 IKE_SA
 
 - 端口被占用或服务状态乱了：`bash vpn.sh strongswan clean force`，再 `bash vpn.sh strongswan config-port`（或 `config`）。
 - 认证失败找 `EAP` 或 `RADIUS` 字样；RADIUS 的来源 IP 白名单见 `bash radius.sh status`。
+- 客户端收到 `NO_PROPOSAL_CHOSEN`、服务器日志是 `no IKE config found`：连接配置没加载（`swanctl --list-conns` 为空）。服务启动时会自动加载；旧机器上的 systemd 单元没有这一步，运行 `bash vpn.sh strongswan config-port` 更新。
+- 客户端认证通过后服务器整台失联：`swanctl.conf` 里有 `remote_ts = 0.0.0.0/0`，服务器自己的流量被送进了客户端隧道。用 `config-port` 重新生成配置（模板里已去掉）。
 
 ## 非 VPN 的基础服务（nginx、MySQL、PostgreSQL、FreeRADIUS、Redis、PHP、JDK）
 

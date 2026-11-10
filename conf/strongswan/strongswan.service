@@ -6,6 +6,13 @@ Wants=network-online.target
 [Service]
 Type={{UNIT_TYPE}}
 ExecStart={{CHARON_BIN}}
+# charon 启动后不会自己读 swanctl.conf，必须由 swanctl 经 vici 推进去。
+# 少了这一行，重启后进程在、端口在，但没有任何连接配置，客户端只会收到 NO_PROPOSAL_CHOSEN。
+# vici socket 可能比 READY 通知晚一点出现，所以重试几次。
+# 前缀 - ：首次安装时证书还没就位，加载失败不能让服务起不来（安装脚本随后会再加载一次）。
+ExecStartPost=-/bin/sh -c 'for i in 1 2 3 4 5 6 7 8 9 10; do {{SWANCTL_BIN}} --load-all --noprompt && exit 0; sleep 1; done; exit 1'
+ExecReload={{SWANCTL_BIN}} --reload
+ExecReload={{SWANCTL_BIN}} --load-all --noprompt
 Restart=on-failure
 RestartSec=5s
 

@@ -62,17 +62,22 @@ ss_resolve_charon_bin() {
 }
 
 ss_install_systemd_unit() {
-    local charon_bin unit_type=simple
-    # 不复用上游的 unit：它的 ExecStartPost 会在证书就位前执行 swanctl。
+    local charon_bin swanctl_bin unit_type=simple
+    # 用自己的 unit，不用上游的 strongswan-swanctl.service。启动后由 ExecStartPost 加载 swanctl.conf
+    # （charon 自己不读它），加载失败不影响服务启动：首次安装时证书还没生成，之后 ss_reload_6 会再加载。
     charon_bin="$(ss_resolve_charon_bin)" || {
         err "安装后没有找到 charon / charon-systemd"
+        return 1
+    }
+    swanctl_bin="$(command -v swanctl)" || {
+        err "安装后没有找到 swanctl"
         return 1
     }
     case "$charon_bin" in
         *charon-systemd) unit_type=notify ;;
     esac
     install_template "${TEMPLATE_DIR}/strongswan/strongswan.service" /etc/systemd/system/strongswan.service 644 \
-        "UNIT_TYPE=${unit_type}" "CHARON_BIN=${charon_bin}"
+        "UNIT_TYPE=${unit_type}" "CHARON_BIN=${charon_bin}" "SWANCTL_BIN=${swanctl_bin}"
     rm -f /etc/systemd/system/strongswan-swanctl.service
     systemctl daemon-reload
 }

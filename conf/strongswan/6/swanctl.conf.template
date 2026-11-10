@@ -24,8 +24,11 @@ connections {
         }
         children {
             radius {
-                local_ts = 0.0.0.0/0
-                remote_ts = 0.0.0.0/0
+                # 客户端一侧只能是分给它的虚拟地址（dynamic，不写就是这个）。
+                # 写成 remote_ts = 0.0.0.0/0 时，隧道一建立，服务器内核里就多了一条
+                # "发往任何地址都走这条隧道"的策略：服务器自己的 SSH 回包、RADIUS、DNS 全被塞进
+                # 手机的隧道，整台服务器失联，手机也收不到最后一个 IKE_AUTH 应答。
+                local_ts = 0.0.0.0/0, ::/0
                 start_action = none
                 dpd_action = restart
                 rekey_time = 8h

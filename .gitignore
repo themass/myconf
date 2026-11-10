@@ -10,3 +10,4 @@
 
 # Python 虚拟环境：只在本机用，不进仓库
 /venv/
+/python/ocr/app.log

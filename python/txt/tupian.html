@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>消息媒体卡片 6 种样式还原</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 20% 20%, #ffeef2 0, transparent 40%),
+      radial-gradient(circle at 80% 30%, #eaf6ff 0, transparent 45%),
+      radial-gradient(circle at 50% 90%, #f3ebff 0, transparent 40%),
+      linear-gradient(180deg, #fff7f9 0%, #f7f9fc 45%, #fff5fb 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #222;
+  }
+
+  .page {
+    width: min(1100px, 100%);
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 28px;
+    font-size: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .phone {
+    background: #ffffff;
+    border-radius: 42px;
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.25),
+      0 10px 30px rgba(0, 0, 0, 0.12),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    padding: 30px 18px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phone::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 22px;
+    background: #0b0b0b;
+    border-radius: 20px;
+    z-index: 20;
+  }
+
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 10px 14px;
+    color: #111;
+  }
+
+  .status-bar .right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chat {
+    background: #f2f4f7;
+    border-radius: 32px;
+    padding: 18px 14px 14px;
+    min-height: 520px;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  .chat.dark-chat {
+    background: #131517;
+  }
+
+  .chat::-webkit-scrollbar {
+    width: 6px;
+  }
+  .chat::-webkit-scrollbar-thumb {
+    background: #d0d5da;
+    border-radius: 99px;
+  }
+  .dark-chat::-webkit-scrollbar-thumb {
+    background: #34383c;
+  }
+
+  .message {
+    display: flex;
+    margin-bottom: 14px;
+  }
+
+  .message.received {
+    justify-content: flex-start;
+  }
+
+  .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: #eee;
+    overflow: hidden;
+  }
+
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .bubble {
+    max-width: 78%;
+    border-radius: 22px;
+    padding: 11px 12px;
+    position: relative;
+    word-break: break-word;
+  }
+
+  .bubble.light {
+    background: #ffffff;
+    color: #111;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+  }
+
+  .bubble.dark {
+    background: #1c1c1e;
+    color: #f5f5f7;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .bubble-label {
+    font-size: 12px;
+    color: #8e95a0;
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  /* ============ Stack 堆叠卡片 ============ */
+  .media-stack {
+    position: relative;
+    width: 240px;
+    height: 172px;
+  }
+
+  .stack-card {
+    position: absolute;
+    width: 190px;
+    height: 140px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    background: #000;
+  }
+
+  .stack-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .stack-card.s1 {
+    left: 0;
+    top: 0;
+    z-index: 3;
+  }
+
+  .stack-card.s2 {
+    left: 14px;
+    top: 14px;
+    z-index: 2;
+  }
+
+  .stack-card.s3 {
+    left: 28px;
+    top: 28px;
+    z-index: 1;
+  }
+
+  .stack-badge {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 999px;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+  }
+
+  /* ============ Carousel 横向卡片流 ============ */
+  .media-carousel {
+    width: 264px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 8px;
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+
+  .carousel-item {
+    flex: 0 0 162px;
+    height: 122px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .video-indicator {
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    backdrop-filter: blur(6px);
+  }
+
+  .carousel-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #c7ccd1;
+    transition: all 0.25s ease;
+  }
+
+  .dot.active {
+    background: #5b6470;
+    width: 18px;
+    border-radius: 999px;
+  }
+
+  .dark .dot {
+    background: #3a3f44;
+  }
+
+  .dark .dot.active {
+    background: #e6e7e9;
+  }
+
+  /* 底部说明 */
+  .legend {
+    margin-top: 24px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .legend h3 {
+    grid-column: 1 / -1;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .legend p {
+    font-size: 13px;
+    color: #4b5563;
+    line-height: 1.6;
+  }
+
+  code {
+    background: #eef2ff;
+    color: #4f46e5;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .legend {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="page">
+    <h1>消息媒体卡片 · 6 种样式还原</h1>
+    <p class="subtitle">Stack 堆叠卡片 / Carousel 横向卡片流 · 浅色与深色聊天气泡</p>
+
+    <div class="grid">
+      <!-- ========== 左栏：浅色聊天 ========== -->
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="right">
+            <span>●●●●</span>
+            <span>100%</span>
+          </span>
+        </div>
+
+        <div class="chat">
+          <!-- 1. 左上：浅色 Stack 4图 -->
+          <div class="message received">
+            <div class="avatar"><img src="https://i.pravatar.cc/60?img=47" alt="avatar" /></div>
+            <div class="bubble light">
+              <div class="bubble-label">Stack · 4 图堆叠</div>
+              <div class="media-stack">
+                <div class="stack-card s1"><img src="https://images.unsplash.com/photo-1529156069898-49953e34b201?w=400&h=300&fit=crop" alt="" /></div>
+                <div class="stack-card s2"><img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=400&h=300&fit=crop" alt="" /></div>
+                <div class="stack-card s3"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=300&fit=crop" alt="" /></div>
+                <div class="stack-badge">4</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 左中：浅色 Carousel 视频+图片 -->
+          <div class="message received">
+            <div class="avatar"><img src="https://i.pravatar.cc/60?img=32" alt="avatar" /></div>
+            <div class="bubble light">
+              <div class="bubble-label">Carousel · 视频 + 图片</div>
+              <div class="media-carousel">
+                <div class="carousel-track" data-index="0" data-total="3">
+                  <div class="carousel-item">
+                    <div class="video-indicator">▶</div>
+                    <img src="https://images.unsplash.com/photo-1502767089025-6572583495b9?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                </div>
+                <div class="carousel-dots">
+                  <span class="dot active"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. 左下：浅色 Stack 2图 -->
+          <div class="message received">
+            <div class="avatar"><img src="https://i.pravatar.cc/60?img=12" alt="avatar" /></div>
+            <div class="bubble light">
+              <div class="bubble-label">Stack · 2 图堆叠</div>
+              <div class="media-stack">
+                <div class="stack-card s1"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=300&fit=crop" alt="" /></div>
+                <div class="stack-card s2"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=300&fit=crop" alt="" /></div>
+                <div class="stack-badge">4</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== 右栏：深色聊天 ========== -->
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="right">
+            <span>●●●●</span>
+            <span>100%</span>
+          </span>
+        </div>
+
+        <div class="chat dark-chat">
+          <!-- 4. 右上：深色 Carousel 4图 -->
+          <div class="message received">
+            <div class="avatar"><img src="https://i.pravatar.cc/60?img=5" alt="avatar" /></div>
+            <div class="bubble dark">
+              <div class="bubble-label">Carousel · 4 图轮播</div>
+              <div class="media-carousel">
+                <div class="carousel-track" data-index="0" data-total="4">
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1511945863118-515c1f379241?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                </div>
+                <div class="carousel-dots">
+                  <span class="dot active"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. 右中：深色 Carousel 5图 视频混排 -->
+          <div class="message received">
+            <div class="avatar"><img src="https://i.pravatar.cc/60?img=25" alt="avatar" /></div>
+            <div class="bubble dark">
+              <div class="bubble-label">Carousel · 5 图视频混排</div>
+              <div class="media-carousel">
+                <div class="carousel-track" data-index="0" data-total="5">
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <div class="video-indicator">▶</div>
+                    <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <div class="video-indicator">▶</div>
+                    <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <div class="video-indicator">▶</div>
+                    <img src="https://images.unsplash.com/photo-1506792006437-256b665541e2?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                </div>
+                <div class="carousel-dots">
+                  <span class="dot active"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. 右下：深色 Carousel 双卡片 视频+图片 -->
+          <div class="message received">
+            <div class="avatar"><img src="https://i.pravatar.cc/60?img=9" alt="avatar" /></div>
+            <div class="bubble dark">
+              <div class="bubble-label">Carousel · 视频 + 图片</div>
+              <div class="media-carousel">
+                <div class="carousel-track" data-index="0" data-total="2">
+                  <div class="carousel-item">
+                    <div class="video-indicator">▶</div>
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=300&fit=crop" alt="" />
+                  </div>
+                </div>
+                <div class="carousel-dots">
+                  <span class="dot active"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部说明 -->
+    <div class="legend">
+      <h3>交互说明</h3>
+      <p><strong>Carousel：</strong>点击卡片区域可切换下一张，底部圆点会同步高亮。</p>
+      <p><strong>Stack：</strong>当前为静态堆叠展示，可扩展为点击顶部卡片预览全部媒体。</p>
+      <p><strong>主题：</strong>左栏为浅色气泡，右栏为深色气泡，可直接作为聊天消息组件参考。</p>
+      <p><strong>扩展建议：</strong>移动端建议改用 <code>touchstart / touchend</code> 实现左右滑动切换。</p>
+    </div>
+  </div>
+
+<script>
+  // Carousel 点击切换下一张
+  document.querySelectorAll('.media-carousel').forEach((carousel) => {
+    const track = carousel.querySelector('.carousel-track');
+    const dots = carousel.querySelectorAll('.dot');
+    const total = Number(track.dataset.total) || dots.length;
+    let index = Number(track.dataset.index) || 0;
+
+    function update() {
+      track.style.transform = `translateX(-${index * 170}px)`;
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+    }
+
+    carousel.addEventListener('click', () => {
+      index = (index + 1) % total;
+      update();
+    });
+
+    update();
+  });
+</script>
+</body>
+</html>
+

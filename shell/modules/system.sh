@@ -219,8 +219,14 @@ system_firewall() {
                 ensure_rule iptables -t nat POSTROUTING -s "$val" -o "$dev" -j MASQUERADE
                 ensure_rule iptables FORWARD -s "$val" -j ACCEPT
                 ensure_rule iptables FORWARD -d "$val" -j ACCEPT
-                # TCP MSS 跟随路径 MTU：IPsec/WireGuard 封装后包变大，不夹 MSS 时常见"连上了但部分网站打不开"。
-                ensure_rule iptables -t mangle FORWARD -s "$val" -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+                # TCP MSS 固定夹到 VPN_CLAMP_MSS（默认 1240 = 客户端隧道下限 1280 - 40），两个方向都夹。
+                # 不用 --clamp-mss-to-pmtu：它按服务器出口网卡（1500）算，得到的 MSS 比客户端通告的还大，等于没夹。
+                # --set-mss 只会调小，客户端 MTU 设得更小时不受影响。
+                local mss="${VPN_CLAMP_MSS:-1240}"
+                # 删掉旧版本留下的 clamp-mss-to-pmtu 规则（同一网段只保留一条生效的 MSS 规则）
+                iptables -t mangle -D FORWARD -s "$val" -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu 2>/dev/null || true
+                ensure_rule iptables -t mangle FORWARD -s "$val" -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss "$mss"
+                ensure_rule iptables -t mangle FORWARD -d "$val" -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss "$mss"
                 log "  NAT ${val} -> ${dev}"
                 ;;
             nat6)
@@ -230,6 +236,10 @@ system_firewall() {
                     ensure_rule ip6tables -t nat POSTROUTING -s "$val" -o "$dev" -j MASQUERADE
                     ensure_rule ip6tables FORWARD -s "$val" -j ACCEPT
                     ensure_rule ip6tables FORWARD -d "$val" -j ACCEPT
+                    # IPv6 最小 MTU 1280，减 IPv6 头 40、TCP 头 20 = 1220；两个方向都夹
+                    local mss6="${VPN_CLAMP_MSS6:-1220}"
+                    ensure_rule ip6tables -t mangle FORWARD -s "$val" -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss "$mss6"
+                    ensure_rule ip6tables -t mangle FORWARD -d "$val" -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss "$mss6"
                     log "  NAT6 ${val} -> ${dev}"
                 fi
                 ;;

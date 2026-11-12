@@ -354,6 +354,9 @@ pg_listen_addr() {
         addr="$(sed -n "s/^[[:space:]]*listen_addresses[[:space:]]*=[[:space:]]*\([^#]*\).*/\1/p" \
             "${conf_dir}/postgresql.conf" 2>/dev/null | head -n 1 | tr -d "' \"")"
     fi
+    # 两处都没写：PostgreSQL 自身的默认值是 localhost，不是"未配置"。
+    # 这种情况出现在机器上原本就有一套独立安装的 PostgreSQL、没跑过 infra.sh 的时候。
+    [ -n "$addr" ] || addr="localhost"
     printf '%s\n' "${addr%%,*}"
 }
 

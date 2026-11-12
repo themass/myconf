@@ -26,7 +26,8 @@ MYSQL_VERSION="${MYSQL_VERSION:-8.0}"
 # 要换：改这里，或用 MYSQL_APP_PASSWORD=... 覆盖（不进脚本历史）。
 MYSQL_APP_PASSWORD="${MYSQL_APP_PASSWORD:-Themass@5296}"
 # 账号清单，空格分隔的 "用户@主机:库列表"。库列表用逗号分隔，* 表示该账号可见的所有库。
-MYSQL_ACCOUNTS="${MYSQL_ACCOUNTS:-root@localhost:* vpn@%:vpn radius@%:radius}"
+# 注意 vpn@server@% 拆成 用户=vpn@server、主机=%（用户名本身含 @，按最后一个 @ 拆）。
+MYSQL_ACCOUNTS="${MYSQL_ACCOUNTS:-root@localhost:* vpn@%:vpn radius@%:radius vpn@server@%:vpn,radius}"
 INFRA_JDK_PKG="${INFRA_JDK_PKG:-openjdk-17-jdk-headless}"
 OPENRESTY_PREFIX="/usr/local/openresty"
 
@@ -366,9 +367,10 @@ infra_mysql() {
 # 8.0 移除了 GRANT ... IDENTIFIED BY，必须拆成 CREATE USER + GRANT。
 # 账号清单见 MYSQL_ACCOUNTS，密码见 MYSQL_APP_PASSWORD。
 #
-# root@localhost 特殊处理：Ubuntu 包建的是 auth_socket（本机 root 免密），
-# 这里同时给它设一个口令，这样带 -p 从本机/远程都能用；auth_socket 那条保留，
-# 所以 sudo mysql 仍然免密可用。
+# 关于 root@localhost：Ubuntu 包默认是 auth_socket，本机 root 免密。
+# 这里会把它改成 mysql_native_password 并设口令（否则脚本改完就再也进不去）。
+# 想同时保留免密，装完之后再手工执行一次：
+#   ALTER USER 'root'@'localhost' IDENTIFIED WITH auth_socket;
 infra_mysql_accounts() {
     local spec acct user host db_list sql="" db pw_sql
     pw_sql="$(printf '%s' "$MYSQL_APP_PASSWORD" | sed "s/'/''/g")"

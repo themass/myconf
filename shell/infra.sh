@@ -103,6 +103,35 @@ infra_put() {
 # 内核和模块（echo / srcache / set-misc / redis2 / NDK / headers-more / lua 等）由官方打包，
 # 随 apt 升级。cache_purge、consistent_hash、php_session、slowfs_cache 官方包没有，
 # 配置里也没有用到它们的指令（只用了 stub_status）；一致性哈希可用内置的 `hash $key consistent;`。
+# SSL 证书目录。正式证书就替换这里的 fullchain.pem / privkey.pem。
+infra_nginx_ssl_dir() {
+    printf '%s/nginx/conf/ssl' "$OPENRESTY_PREFIX"
+}
+
+# 没有证书就生成一张自签的，否则带 listen 443 ssl 的 server 块会让 openresty -t 失败。
+# 已有证书（正式或上次生成的自签）就保持不动，不要覆盖。
+infra_nginx_ensure_cert() {
+    local dir="$1" cn="${SERVER_ADDRESS:-}"
+    [ -n "$cn" ] || cn="$(detect_server_address 2>/dev/null || echo localhost)"
+    mkdir -p "$dir"
+
+    if [ -s "${dir}/fullchain.pem" ] && [ -s "${dir}/privkey.pem" ]; then
+        log "SSL 证书已存在: ${dir}（不覆盖，换证书请直接替换文件）"
+        return 0
+    fi
+
+    have openssl || ensure_cmds openssl
+    log "生成自签证书: CN=${cn}（正式环境请替换成 CA 签发的证书）"
+    openssl req -x509 -nodes -newkey rsa:2048 -days 3650 \
+        -keyout "${dir}/privkey.pem" -out "${dir}/fullchain.pem" \
+        -subj "/CN=${cn}" \
+        -addext "subjectAltName=DNS:${cn},DNS:api.ok123find.top,DNS:file.ok123find.top,DNS:book.ok123find.top,DNS:sspacee.com" \
+        >/dev/null 2>&1 || die "生成自签证书失败"
+    chmod 600 "${dir}/privkey.pem"
+    chmod 644 "${dir}/fullchain.pem"
+    log "证书已生成: ${dir}"
+}
+
 infra_nginx() {
     require_root
     infra_need_apt
@@ -135,12 +164,29 @@ infra_nginx() {
 
     # 官方 systemd 单元里的 PIDFile 必须和 nginx.conf 的 pid 一致，否则 systemctl start 会超时。
     local conf="${OPENRESTY_PREFIX}/nginx/conf" src="${MYCONF_HOME}/conf/nginx" pidfile f
+    local ssl_dir="$(infra_nginx_ssl_dir)" inner_ip
+    inner_ip="$(infra_ip)"
     pidfile="$(systemctl cat openresty 2>/dev/null | sed -n 's/^PIDFile=//p' | head -n 1)"
     [ -n "$pidfile" ] || pidfile="${OPENRESTY_PREFIX}/nginx/logs/nginx.pid"
+
+    # SSL 证书：目录里没有就生成自签证书，保证 openresty -t 能过。
+    infra_nginx_ensure_cert "$ssl_dir"
+
     infra_put "${src}/nginx.conf" "${conf}/nginx.conf" 644 "s|^pid[[:space:]].*|pid ${pidfile};|"
     mkdir -p "${conf}/server"
-    for f in nginx_check.conf upstream.conf vpn.conf; do
-        infra_put "${src}/${f}" "${conf}/server/${f}" 644
+
+    # server/*.conf 全量部署。旧服务器上的 openapi.conf / openapi-http.conf 没有迁移：
+    # 它们和 book.conf 声明同一个 server_name，按字母序 book.conf 先加载，
+    # 那两个块从来没生效过（nginx -t 会报 conflicting server name）。
+    for f in nginx_check.conf upstream.conf vpn.conf sspacee.conf sspacee3.conf book.conf; do
+        infra_put "${src}/${f}" "${conf}/server/${f}" 644 \
+            "s|{{SSL_DIR}}|${ssl_dir}|g" "s|{{NGINX_INNER_IP}}|${inner_ip}|g"
+    done
+
+    # 清掉不再是配置的残留（比如以前手动放进去的 .bak 或已废弃的 openapi*.conf），
+    # 否则 nginx 会把它们一并加载。只删本脚本不管理的、明确废弃的文件。
+    for f in openapi.conf openapi-http.conf; do
+        [ -f "${conf}/server/${f}" ] && { rm -f "${conf}/server/${f}"; log "移除废弃配置: ${f}"; }
     done
 
     "${OPENRESTY_PREFIX}/bin/openresty" -t || die "nginx 配置检查失败（旧配置已备份为 .bak 之类，见上面的输出）"

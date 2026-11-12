@@ -48,3 +48,36 @@ ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT ALL ON FUNCTION
 ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT ALL ON TABLES    TO root, sspacee;
 ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT ALL ON SEQUENCES TO root, sspacee;
 ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT ALL ON FUNCTIONS TO root, sspacee;
+
+-- ------------------------------------------------------------------ 业务读写账号
+-- vpn@server：应用侧账号，只能读写数据，不能建表 / 删表（没有 DDL 权限）。
+-- 和 MySQL 里的 'vpn@server' 是两个独立的东西：那边是"用户 vpn 从主机 server"，
+-- 这里整个字符串就是角色名。角色名含 @，所有地方都必须用双引号。
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'vpn@server') THEN
+        CREATE ROLE "vpn@server" LOGIN;
+    END IF;
+END
+$$;
+
+-- 显式写全属性，重复执行会把权限收回成"只读写的普通角色"。
+ALTER ROLE "vpn@server" WITH LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE PASSWORD 'Themass@5296';
+
+GRANT CONNECT, TEMPORARY ON DATABASE uher TO "vpn@server";
+GRANT USAGE ON SCHEMA public TO "vpn@server";
+
+-- 现有对象
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES    IN SCHEMA public TO "vpn@server";
+GRANT USAGE, SELECT                  ON ALL SEQUENCES IN SCHEMA public TO "vpn@server";
+GRANT EXECUTE                        ON ALL FUNCTIONS IN SCHEMA public TO "vpn@server";
+
+-- 将来由 root 或 sspacee 新建的表/序列也要自动带上权限，
+-- 否则应用跑一段时间后会突然报 "permission denied for table xxx"。
+ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES    TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT USAGE, SELECT                  ON SEQUENCES TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT EXECUTE                        ON FUNCTIONS TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES    TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT USAGE, SELECT                  ON SEQUENCES TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT EXECUTE                        ON FUNCTIONS TO "vpn@server";

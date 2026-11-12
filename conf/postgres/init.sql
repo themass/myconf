@@ -28,12 +28,21 @@ $$;
 ALTER ROLE root WITH LOGIN SUPERUSER CREATEDB CREATEROLE PASSWORD 'Themass@5296';
 ALTER ROLE sspacee WITH LOGIN SUPERUSER CREATEDB CREATEROLE PASSWORD 'Themass@5296';
 
--- ------------------------------------------------------------------ uher 库授权
+-- ------------------------------------------------------------------ 库级授权
+-- 这个文件对"当前连着的那个库"生效，所以 dbinit.sh 会对 PG_DBS 里的每个库各跑一遍。
+-- 库名用 current_database() 取，不在 SQL 里写死，加库不用改这里。
+--
 -- 三层，缺一层就会出现"owner 能用、另一个账号看不到"：
 --   1) 库级    2) schema 级    3) 默认权限（管将来新建的对象）
--- dbinit.sh 保证库存在后执行这一段。
 
-GRANT ALL PRIVILEGES ON DATABASE uher TO root, sspacee;
+DO $$
+DECLARE db text := current_database();
+BEGIN
+    EXECUTE format('GRANT ALL PRIVILEGES ON DATABASE %I TO root, sspacee', db);
+    EXECUTE format('GRANT CONNECT, TEMPORARY ON DATABASE %I TO "vpn@server"', db);
+END
+$$;
+
 ALTER SCHEMA public OWNER TO sspacee;
 GRANT ALL PRIVILEGES ON SCHEMA public TO root, sspacee;
 GRANT ALL PRIVILEGES ON ALL TABLES    IN SCHEMA public TO root, sspacee;

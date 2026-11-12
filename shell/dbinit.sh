@@ -26,7 +26,8 @@ export VPN_SHELL_DIR
 source "${VPN_SHELL_DIR}/lib/common.sh"
 
 PG_VERSION="${PG_VERSION:-17}"
-PG_DB="${PG_DB:-uher}"
+# 要初始化的库，空格分隔。每个库都会跑一遍 init.sql 的库级授权。
+PG_DBS="${PG_DBS:-uher job_come}"
 PG_DB_OWNER="${PG_DB_OWNER:-sspacee}"
 
 dbinit_usage() {
@@ -34,12 +35,12 @@ dbinit_usage() {
 用法: bash dbinit.sh <mysql|postgres|all> [SQL文件]
 
   mysql     执行 conf/mysql/init.sql（建账号、设口令、授权）
-  postgres  执行 conf/postgres/init.sql（建角色、建库 uher、授权）
+  postgres  执行 conf/postgres/init.sql（建角色、建库、授权，每个库各跑一遍）
   all       两个都执行
 
 环境变量:
   PG_VERSION     PostgreSQL 版本，默认 ${PG_VERSION}
-  PG_DB          业务库名，默认 ${PG_DB}
+  PG_DBS         要初始化的库，空格分隔，默认 "${PG_DBS}"
   PG_DB_OWNER    业务库 owner，默认 ${PG_DB_OWNER}
 
 注意: SQL 文件里含明文口令，会进 git 历史。要求保密时把口令换成
@@ -97,29 +98,42 @@ dbinit_postgres() {
         die "PostgreSQL 没在运行。先启动: bash vpn.sh postgres start"
     fi
 
-    # 库先存在，后面的 GRANT 才有意义。owner 给 PG_DB_OWNER。
-    local exists
-    exists="$(printf "SELECT 1 FROM pg_database WHERE datname = '%s';\n" "$PG_DB" \
-        | su -s /bin/sh postgres -c "psql -tAq -d postgres -f -" | head -n 1)"
-    if [ "$exists" = "1" ]; then
-        log "库 ${PG_DB} 已存在"
-    else
-        log "创建库 ${PG_DB}（owner ${PG_DB_OWNER}）"
-        # owner 可能还没建，先建角色再建库：init.sql 里有 CREATE ROLE，
-        # 但库要在它之前存在。这里角色不存在就先建空的。
-        printf "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='%s') THEN CREATE ROLE %s LOGIN; END IF; END \$\$;\n" \
-            "$PG_DB_OWNER" "$PG_DB_OWNER" \
-            | su -s /bin/sh postgres -c "psql -q -v ON_ERROR_STOP=1 -d postgres -f -" || die "创建角色 ${PG_DB_OWNER} 失败"
-        printf 'CREATE DATABASE %s OWNER %s ENCODING UTF8;\n' "$PG_DB" "$PG_DB_OWNER" \
-            | su -s /bin/sh postgres -c "psql -q -v ON_ERROR_STOP=1 -d postgres -f -" || die "创建库 ${PG_DB} 失败"
-    fi
+    # 每个库各自处理：先保证库存在（GRANT 才有意义），再在库内执行 init.sql。
+    # init.sql 用 current_database() 取库名，所以同一份文件对每个库都适用。
+    local db exists
 
-    log "执行 ${sql}（PostgreSQL ${ver}/${name}）"
-    if su -s /bin/sh postgres -c "psql -q -v ON_ERROR_STOP=1 -d ${PG_DB} -f -" <"$sql"; then
-        log "PostgreSQL 角色与授权已初始化（口令未显示）"
-    else
-        die "PostgreSQL 初始化失败。见上面的报错"
-    fi
+    # owner 角色在 init.sql 里也有定义，但库比角色先需要它，这里先建一个空的。
+    printf "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='%s') THEN CREATE ROLE %s LOGIN; END IF; END \$\$;\n" \
+        "$PG_DB_OWNER" "$PG_DB_OWNER" \
+        | su -s /bin/sh postgres -c "psql -q -v ON_ERROR_STOP=1 -d postgres -f -" \
+        || die "创建角色 ${PG_DB_OWNER} 失败"
+
+    for db in $PG_DBS; do
+        case "$db" in
+            '' | *[!a-zA-Z0-9_]*) die "库名不合法: ${db}" ;;
+            [0-9]*) die "库名不能以数字开头: ${db}" ;;
+        esac
+
+        exists="$(printf "SELECT 1 FROM pg_database WHERE datname = '%s';\n" "$db" \
+            | su -s /bin/sh postgres -c "psql -tAq -d postgres -f -" | head -n 1)"
+        if [ "$exists" = "1" ]; then
+            log "库 ${db} 已存在"
+        else
+            log "创建库 ${db}（owner ${PG_DB_OWNER}）"
+            printf 'CREATE DATABASE %s OWNER %s ENCODING UTF8;\n' "$db" "$PG_DB_OWNER" \
+                | su -s /bin/sh postgres -c "psql -q -v ON_ERROR_STOP=1 -d postgres -f -" \
+                || die "创建库 ${db} 失败"
+        fi
+
+        # 角色只在 init.sql 第一次执行时建；放到库循环外面也行，
+        # 但每个库都跑一遍 ALTER 也没副作用。
+        log "执行 ${sql}（PostgreSQL ${ver}/${name}，库 ${db}）"
+        if su -s /bin/sh postgres -c "psql -q -v ON_ERROR_STOP=1 -d ${db} -f -" <"$sql"; then
+            log "库 ${db} 的角色与授权已初始化（口令未显示）"
+        else
+            die "库 ${db} 初始化失败。见上面的报错"
+        fi
+    done
 }
 
 # ------------------------------------------------------------------ 入口

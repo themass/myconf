@@ -97,6 +97,9 @@ bash radius.sh debug     # 停掉 freeradius 前台调试（radiusd -X）
 - `infra.sh` 里的 `innerip` 占位符自动换成本机内网地址；没有内网地址时只绑 127.0.0.1，需要的话设 `INFRA_BIND`。
 - MySQL 8.0 走 apt，配置在 `/etc/mysql/mysql.conf.d/zz-vpn.cnf`（模板 `conf/mysql/zz-vpn.cnf`），
   不再整份替换 `/etc/mysql/my.cnf`。Redis 6.0 仍是发行版自带的版本。
+- **`bind-address` 重跑不会丢**：`infra.sh mysql` 只在首次安装时写入本机内网地址；
+  之后重跑会沿用配置里已有的值。要对外开放用 `INFRA_MYSQL_PUBLIC=1 bash infra.sh mysql`，
+  或者直接改 `/etc/mysql/mysql.conf.d/zz-vpn.cnf`（手工改过也不会被下次重跑覆盖）。
 
 ## PostgreSQL：安装、账号、业务库
 

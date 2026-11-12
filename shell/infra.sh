@@ -48,7 +48,7 @@ infra_usage() {
 环境变量:
   INFRA_BIND            服务绑定的地址（默认自动识别内网地址，没有就 127.0.0.1）
   INFRA_REDIS_PASSWORD  覆盖 redis.conf 里的 requirepass
-  INFRA_MYSQL_PUBLIC=1  MySQL 绑定 0.0.0.0（默认只绑 INFRA_BIND；root 默认走 auth_socket）
+  INFRA_MYSQL_PUBLIC=1  MySQL 绑定 0.0.0.0 对外开放（默认沿用已有配置，首次装是本机内网地址）
   MYSQL_VERSION / INFRA_JDK_PKG / PHP_VERSION（默认 8.4）/ PG_VERSION（默认 17）/ PG_PORT / PG_ADMIN_PASSWORD（只读环境变量，不落盘）
 
 启停、状态、检查: bash svc.sh help
@@ -320,14 +320,22 @@ infra_mysql() {
 
     # 关键顺序：先把配置放好，再装包。apt 装包时会初始化数据目录，
     # lower_case_table_names 只有在那之前设定才生效。
+    #
+    # bind-address 的取值顺序：INFRA_MYSQL_PUBLIC=1 → 0.0.0.0；
+    # 否则沿用已安装配置里的值（服务器上可能已手工改成 0.0.0.0 对外开放，
+    # 重跑脚本不能把它改回去）；都没有才用本机内网地址。
     mkdir -p "$config_dir"
-    if [ "${INFRA_MYSQL_PUBLIC:-0}" = "1" ]; then
-        infra_put "${TEMPLATE_DIR}/mysql/zz-vpn.cnf" "${config_dir}/zz-vpn.cnf" 644 \
-            "s/^bind-address[[:space:]]*=.*/bind-address = 0.0.0.0/"
-    else
-        infra_put "${TEMPLATE_DIR}/mysql/zz-vpn.cnf" "${config_dir}/zz-vpn.cnf" 644 \
-            "s/^bind-address[[:space:]]*=.*/bind-address = ${ip}/"
+    local bind="${ip}"
+    if [ -f "${config_dir}/zz-vpn.cnf" ]; then
+        bind="$(sed -n 's/^bind-address[[:space:]]*=[[:space:]]*\([0-9.]*\).*/\1/p' \
+            "${config_dir}/zz-vpn.cnf" 2>/dev/null | head -n 1)"
+        [ -n "$bind" ] || bind="${ip}"
     fi
+    if [ "${INFRA_MYSQL_PUBLIC:-0}" = "1" ]; then
+        bind="0.0.0.0"
+    fi
+    infra_put "${TEMPLATE_DIR}/mysql/zz-vpn.cnf" "${config_dir}/zz-vpn.cnf" 644 \
+        "s/^bind-address[[:space:]]*=.*/bind-address = ${bind}/"
     chown root:root "${config_dir}/zz-vpn.cnf"
     chmod 644 "${config_dir}/zz-vpn.cnf"
 

@@ -59,9 +59,14 @@ ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT ALL ON SEQUENCE
 ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT ALL ON FUNCTIONS TO root, sspacee;
 
 -- ------------------------------------------------------------------ 业务读写账号
--- vpn@server：应用侧账号，只能读写数据，不能建表 / 删表（没有 DDL 权限）。
+-- vpn@server：应用侧账号，读写数据 + 建表（DDL），但不给删库/建库/建角色的权限。
 -- 和 MySQL 里的 'vpn@server' 是两个独立的东西：那边是"用户 vpn 从主机 server"，
 -- 这里整个字符串就是角色名。角色名含 @，所有地方都必须用双引号。
+--
+-- 权限说明：
+--   * CREATE ON SCHEMA public —— 允许建表，这是应用做 migration 的前提。
+--   * 表级 TRUNCATE 也给了，因为 migration 工具常用。
+--   * 没给 NOSUPERUSER/NOCREATEDB/NOCREATEROLE，也拿不到别人的表。
 
 DO $$
 BEGIN
@@ -71,22 +76,26 @@ BEGIN
 END
 $$;
 
--- 显式写全属性，重复执行会把权限收回成"只读写的普通角色"。
+-- 显式写全属性，重复执行会把权限收回成"普通登录角色"。
 ALTER ROLE "vpn@server" WITH LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE PASSWORD 'Themass@5296';
 
+-- 库级：连接 + 建临时表
 GRANT CONNECT, TEMPORARY ON DATABASE uher TO "vpn@server";
-GRANT USAGE ON SCHEMA public TO "vpn@server";
+
+-- schema 级：USAGE 才能看见表，CREATE 才能建表
+GRANT USAGE, CREATE ON SCHEMA public TO "vpn@server";
 
 -- 现有对象
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES    IN SCHEMA public TO "vpn@server";
-GRANT USAGE, SELECT                  ON ALL SEQUENCES IN SCHEMA public TO "vpn@server";
-GRANT EXECUTE                        ON ALL FUNCTIONS IN SCHEMA public TO "vpn@server";
+GRANT SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER
+    ON ALL TABLES IN SCHEMA public TO "vpn@server";
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO "vpn@server";
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO "vpn@server";
 
 -- 将来由 root 或 sspacee 新建的表/序列也要自动带上权限，
 -- 否则应用跑一段时间后会突然报 "permission denied for table xxx"。
-ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES    TO "vpn@server";
-ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT USAGE, SELECT                  ON SEQUENCES TO "vpn@server";
-ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT EXECUTE                        ON FUNCTIONS TO "vpn@server";
-ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES    TO "vpn@server";
-ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT USAGE, SELECT                  ON SEQUENCES TO "vpn@server";
-ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT EXECUTE                        ON FUNCTIONS TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER ON TABLES TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE root    IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER ON TABLES TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO "vpn@server";
+ALTER DEFAULT PRIVILEGES FOR ROLE sspacee IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO "vpn@server";

@@ -460,16 +460,27 @@ radius_install_sql_module() {
     # 3.x 包自带的站点里 sql 是注释掉的，不挂上就不会查数据库，认证只会走 users 文件。
     # 把 authorize / accounting / session / post-auth 段里的 "#  sql" 取消注释（只动这几行）。
     local site
+    # 注意：不能直接用 install_file —— 它会把备份写成 "default.bak.<时间戳>"
+    # 放在 sites-enabled/ 里，而 FreeRADIUS 会加载这个目录下的**所有**文件，
+    # 备份会被当成第二个 virtual server，报 "Duplicate virtual server"。
+    # 所以备份统一放到 ${RADIUS_ETC}/backup/。
+    mkdir -p "${RADIUS_ETC}/backup"
     for site in default inner-tunnel; do
         [ -f "${RADIUS_ETC}/sites-enabled/${site}" ] || continue
         local tmp
         tmp="$(mktemp "${TMPDIR:-/tmp}/site.XXXXXX")" || die "无法创建临时文件"
         sed -E 's/^([[:space:]]*)#[[:space:]]*sql[[:space:]]*$/\1sql/' "${RADIUS_ETC}/sites-enabled/${site}" >"$tmp"
-        install_file "$tmp" "${RADIUS_ETC}/sites-enabled/${site}" 640
+        if [ -f "${RADIUS_ETC}/sites-enabled/${site}" ] && ! cmp -s "$tmp" "${RADIUS_ETC}/sites-enabled/${site}"; then
+            cp -p "${RADIUS_ETC}/sites-enabled/${site}" \
+                "${RADIUS_ETC}/backup/${site}.bak.$(date +%Y%m%d%H%M%S)"
+        fi
+        install -m 640 -o root -g freerad "$tmp" "${RADIUS_ETC}/sites-enabled/${site}"
         rm -f "$tmp"
         grep -qE '^[[:space:]]*sql[[:space:]]*$' "${RADIUS_ETC}/sites-enabled/${site}" \
             || warn "${site} 站点里没有找到可以启用的 sql 行，请检查包的默认配置"
     done
+    # 老版本脚本可能已经在 sites-enabled/ 里留下了 .bak 文件，清掉，否则服务起不来。
+    rm -f "${RADIUS_ETC}/sites-enabled/"*.bak.* "${RADIUS_ETC}/mods-enabled/"*.bak.*
     # 密码和账号不在日志里出现
     log "sql 模块已指向 ${host}:${port:-3306}（库 ${db:-radius}，账号已写入，未显示）"
 }

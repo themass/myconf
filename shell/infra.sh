@@ -367,19 +367,30 @@ infra_mysql() {
 
 # ------------------------------------------------------------------ FreeRADIUS
 
-# FreeRADIUS 3.2.x，来自 NetworkRadius 官方 apt 源（jammy 上最新 3.2.10，已签名）。
+# FreeRADIUS 3.2.x，来自 NetworkRadius 官方 apt 源（已签名）。
 # 只装包、放自定义的 sql 模块和 clients.conf；2.x 的配置文件格式和 3.x 不兼容，不能整套覆盖。
 # 日常的 clients.conf 更新和重启用 radius.sh。
-RADIUS_REPO_BASE="${RADIUS_REPO_BASE:-https://packages.networkradius.com/freeradius-3.2/ubuntu/jammy}"
+#
+# 源地址里的发行版按系统自己的 codename 拼（jammy / noble 都有 3.2.10）。
+RADIUS_REPO_ROOT="${RADIUS_REPO_ROOT:-https://packages.networkradius.com/freeradius-3.2/ubuntu}"
 RADIUS_ETC=/etc/freeradius/3.0
 
 infra_radius() {
     require_root
     infra_need_apt
-    [ "$(detect_arch)" = "amd64" ] || die "NetworkRadius 3.2 jammy 源这里只验证过 amd64"
+    case "$(detect_arch)" in
+        amd64 | arm64) ;;
+        *) die "NetworkRadius 源只提供 amd64 和 arm64，当前: $(uname -m)" ;;
+    esac
     # shellcheck disable=SC1091
     . /etc/os-release
-    [ "${VERSION_CODENAME:-}" = "jammy" ] || die "这个脚本按 Ubuntu 22.04 (jammy) 写的，当前: ${VERSION_CODENAME:-unknown}"
+    # 源地址按系统 codename 拼：NetworkRadius 对 jammy / noble / focal 都出包。
+    local codename="${VERSION_CODENAME:-}"
+    case "${ID:-}:${codename}" in
+        ubuntu:jammy | ubuntu:noble | ubuntu:focal | debian:bookworm) ;;
+        ubuntu:*) die "NetworkRadius 源覆盖 jammy/noble/focal，当前: ${codename}" ;;
+        *) die "这个分支只按 Ubuntu 验证过，当前: ${ID:-unknown} ${codename:-?}" ;;
+    esac
     ensure_cmds gpg:gnupg curl
 
     local key
@@ -388,7 +399,8 @@ infra_radius() {
         || die "下载 NetworkRadius 签名密钥失败"
     gpg --batch --yes --dearmor -o /usr/share/keyrings/networkradius.gpg "$key" || die "导入签名密钥失败"
     rm -f "$key"
-    printf 'deb [signed-by=/usr/share/keyrings/networkradius.gpg] %s jammy main\n' "$RADIUS_REPO_BASE" \
+    printf 'deb [signed-by=/usr/share/keyrings/networkradius.gpg] %s/%s %s main\n' \
+        "$RADIUS_REPO_ROOT" "$codename" "$codename" \
         >/etc/apt/sources.list.d/networkradius.list
     apt-get -o DPkg::Lock::Timeout=300 update || die "apt-get update 失败"
     infra_apt_install freeradius freeradius-mysql freeradius-utils || die "freeradius 安装失败"

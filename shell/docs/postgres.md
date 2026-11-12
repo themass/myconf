@@ -117,25 +117,21 @@ curl -o /dev/null -w '%{http_code}\n' https://apt.postgresql.org/pub/repos/apt/d
 | `root` | `LOGIN SUPERUSER CREATEDB CREATEROLE` | 管理账号之一，与系统 root 同名但互不相干 |
 | `sspacee` | `LOGIN SUPERUSER CREATEDB CREATEROLE` | 管理账号之一，也是业务库 owner |
 
-- 两个管理账号由 `bash vpn.sh postgres roles` 创建或对齐。**重复运行安全**：存在就 `ALTER` 权限和口令，
-  不存在才 `CREATE`。
+- 两个管理账号的**定义**在 `conf/postgres/init.sql`，由 `bash dbinit.sh postgres` 应用
+  （`bash vpn.sh postgres roles` 也是同一个入口）。
+  **重复运行安全**：存在就 `ALTER` 权限和口令，不存在才 `CREATE`。
+  账号管理和安装是分开的：装完 PostgreSQL 之后不用再跑安装，改口令只改 SQL 再执行一次。
 - 两个账号的权限完全一致；之所以建两个，是历史习惯（root 用于个人运维，sspacee 用于应用侧）。
-  真要收敛权限时改成 `CREATEDB` 即可，改 `PG_SUPER_ROLES` 之外的代码不用动。
-- 口令：脚本开头的 `PG_SUPER_PASSWORD_DEFAULT` 里带了一个默认值，**仓库里就有**。
+  真要收敛权限，把 `init.sql` 里的 `SUPERUSER` 改成 `NOSUPERUSER` 再重跑。
+- 口令：写在 `conf/postgres/init.sql` 的 `ALTER ROLE ... PASSWORD` 里，**仓库里就有**。
   这样拉下代码直接能跑，代价是它进了 git 历史 —— 改掉之后旧值仍然留在历史里，
-  仓库如果不是私有的就等于公开。要换成自己的口令，下面三种方式优先级从高到低：
-  1. 环境变量 `PG_SUPER_PASSWORD`；
-  2. `conf/postgres/.env` 里的 `PG_SUPER_PASSWORD='...'`（已被 `.gitignore` 覆盖，`chmod 600`）；
-  3. 改脚本开头的 `PG_SUPER_PASSWORD_DEFAULT`（改完 `git commit`，同样会进历史）。
+  仓库如果不是私有的就等于公开。要求保密时，把口令换成从
+  `conf/postgres/.env`（`.gitignore` 已覆盖，`chmod 600`）读取，模板见 `.env.example`。
 
-  脚本运行时会打印**口令来源**（例如"脚本内置默认值"），但从不打印口令本身。
-  口令经标准输入传给 `psql`，不进命令行参数（`ps` 看不到）、不写日志。
-  **不要**用 `PG_SUPER_PASSWORD=...` 的写法直接敲在命令行上，它会留在 shell 历史里。
-  想把仓库变成"不含口令"，把 `PG_SUPER_PASSWORD_DEFAULT` 设成空字符串即可，
-  那时就必须由环境变量或口令文件提供口令。
+  脚本运行时不打印口令，只打印执行结果。
 
-- 新增其他管理账号：改 `PG_SUPER_ROLES="root sspacee 别人" bash vpn.sh postgres roles`，
-  口令共用同一个变量。生产上建议给不同人不同账号，这属于后续演进。
+- 新增其他管理账号：在 `conf/postgres/init.sql` 里加一段 `CREATE ROLE ... / ALTER ROLE ...`
+  和对应的 `GRANT`，再跑 `bash dbinit.sh postgres`。生产上建议给不同人不同账号，这属于后续演进。
 
 ## 6. 数据库清单
 
@@ -245,9 +241,10 @@ sudo -u postgres pg_dumpall > /var/backups/pg/all-$(date +%F).sql
 - **不要改** `/etc/postgresql/17/main/postgresql.conf` 和 `pg_hba.conf` 里的 `90-vpn.conf` 之外内容：
   前者被包管理，后者是模板渲染出来的，下次跑脚本会被覆盖（旧文件会备份成 `.bak.<时间戳>`）。
   要改参数，改 `conf/postgres/postgresql.conf` 再重跑 `bash infra.sh postgres`。
-- **不要把口令**写进 README、提交信息、工单或聊天记录。当前脚本里带了一个默认口令
-  （`PG_SUPER_PASSWORD_DEFAULT`），那是已知的、只图方便的默认值；正式使用的口令放
-  `conf/postgres/.env` 并 `chmod 600`，不要继续往仓库里加新的明文。
+- **口令**统一写在 `conf/postgres/init.sql`（`bash dbinit.sh postgres` 应用），
+  这是唯一来源。它会在 git 历史里，属于已知的取舍；正式环境要保密时改成从
+  `conf/postgres/.env` 读取（`chmod 600`）。除此之外，不要把口令写进 README、
+  提交信息、工单或聊天记录。
 - 不要用 `pkill -9 postgres`；要停就 `pg_ctlcluster 17 main stop` 或 `systemctl stop`。
 - 不要删 `/var/lib/postgresql/17/main` 下的任何文件，`pg_ctlcluster` 会自己管。
 - 大版本升级（17 → 18）不是改 `PG_VERSION` 重跑：需要新建集群 + `pg_upgrade`，单独安排窗口。

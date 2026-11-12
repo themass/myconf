@@ -82,7 +82,12 @@ bash infra.sh mysql      # MySQL 8.0（apt 发行版包 + systemd），配置以
 bash infra.sh radius     # FreeRADIUS 3.2.x（NetworkRadius 官方 apt 源）+ sql 模块
 bash infra.sh jdk        # OpenJDK 17 + Maven
 bash infra.sh php        # PHP 8.4（sury 源）+ php-fpm 池 web（unix socket）+ composer
-PG_ADMIN_PASSWORD='<口令>' bash infra.sh postgres   # PostgreSQL 17（PGDG 源），只听内网地址，全部 scram-sha-256
+bash infra.sh postgres   # PostgreSQL 17（PGDG 源），只听内网地址，全部 scram-sha-256
+
+# 账号、口令、授权（和安装分开，改完重跑这一行即可）
+bash dbinit.sh all       # conf/mysql/init.sql + conf/postgres/init.sql
+bash dbinit.sh mysql     # 只做 MySQL
+bash dbinit.sh postgres  # 只做 PostgreSQL（会保证 uher 库存在）
 
 bash svc.sh status       # 所有基础服务的状态、自启、端口
 bash svc.sh restart nginx
@@ -104,16 +109,17 @@ bash radius.sh debug     # 停掉 freeradius 前台调试（radiusd -X）
 ## PostgreSQL：安装、账号、业务库
 
 安装和配置（`postgresql.conf` / `pg_hba.conf`）由 `infra.sh postgres` 负责；
-装好之后还要建超级用户和业务库，用 `vpn.sh postgres`，两者不重复实现：
+装好之后还要建超级用户和业务库，用 `dbinit.sh`，两者不重复实现：
 
 ```bash
-# 首次：装包 + 建超级用户 root/sspacee + 建库 uher 并授权（可重复运行）
+# 首次：装包
 bash vpn.sh postgres setup
 
 # 只做其中一步
 bash vpn.sh postgres install
-bash vpn.sh postgres roles      # 角色存在就 ALTER 对齐权限和口令
-bash vpn.sh postgres db         # 库/owner/schema/默认权限一次补齐
+bash dbinit.sh postgres         # 建角色 root/sspacee、建库 uher、授权（可重复运行）
+bash vpn.sh postgres roles      # 同 dbinit.sh postgres
+bash vpn.sh postgres db
 
 # 启停和自检
 bash vpn.sh postgres status | start | stop | restart
@@ -124,11 +130,10 @@ bash vpn.sh postgres check
 - 监听内网地址的 tcp 5432，`pg_hba.conf` 只允许本机 + 内网段，全部 `scram-sha-256`；只有 `local postgres` 走 peer。
 - 超级用户 `root`、`sspacee`：`LOGIN SUPERUSER CREATEDB CREATEROLE`；库 `uher` owner 是 `sspacee`，
   两个账号都有库级 / schema 级 / 默认权限的完整权限（新建的表自动可见）。
-- **口令**：脚本 `modules/postgres.sh` 开头带默认口令 `PG_SUPER_PASSWORD_DEFAULT`，拉下代码直接可跑。
-  换成自己的口令（优先级从高到低）：环境变量 `PG_SUPER_PASSWORD` → `conf/postgres/.env`（`.gitignore` 覆盖，
-  `chmod 600`）→ 改脚本里的默认值。运行时只打印口令来源，不打印口令；口令经 psql 标准输入传入，
-  不进命令行参数、不写日志。
-  注意默认值写在仓库里会进入 git 历史，改掉后旧值仍在；要求保密时把默认值清空，改走口令文件。
+- **口令和授权**：唯一来源是 `conf/postgres/init.sql`，由 `bash dbinit.sh postgres` 应用
+  （`vpn.sh postgres roles` 也走它）。账号管理和安装分开，改口令只改 SQL 再跑一次，不用重装。
+  口令写在 SQL 里会进 git 历史；要求保密时改成从 `conf/postgres/.env` 读取。
+  运行时只打印结果，不打印口令。
 - 运维细节（路径、认证、备份、故障处理）见 [docs/postgres.md](docs/postgres.md)。
 
 ## 旧脚本去哪了
@@ -156,6 +161,7 @@ myconf/
     vpn.sh                 VPN 服务端统一入口（system strongswan xray singbox wireguard ssr health）
     infra.sh               非 VPN 基础软件安装（nginx、redis、mysql、radius、jdk、php）
     svc.sh                 非 VPN 服务的启停、状态、检查、日志
+    dbinit.sh              数据库账号初始化（执行 conf/<db>/init.sql）
     radius.sh              FreeRADIUS 的 clients.conf 更新、启停、调试
     vpn_setup.sh           旧参数 -> vpn.sh 的转发（兼容旧手顺）
     ssvpn_setup.sh         同上
@@ -169,7 +175,7 @@ myconf/
     strongswan/
       6/                   strongSwan 6.x，swanctl 版（唯一支持的版本）
       strongswan.service   6.x 的 systemd 模板
-    mysql/                 zz-vpn.cnf（8.0 的 drop-in）、建表/数据 SQL
+    mysql/                 zz-vpn.cnf（8.0 的 drop-in）、init.sql（账号口令授权）、建表/数据 SQL
     redis/                 redis.conf
     radius/                clients.conf、sql.conf、建表 SQL；legacy-2.x/ 是旧版 2.x 的配置（先留着）
     php/                   php 通用设置 99-vpn.ini、php-fpm 池 web-pool.conf

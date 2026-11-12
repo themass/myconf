@@ -22,6 +22,11 @@ source "${VPN_SHELL_DIR}/lib/common.sh"
 
 INFRA_OPT="${INFRA_OPT:-/opt}"
 MYSQL_VERSION="${MYSQL_VERSION:-8.0}"
+# MySQL 业务账号。密码与 PostgreSQL 那套一致，按用户要求写在脚本里便于直接部署。
+# 要换：改这里，或用 MYSQL_APP_PASSWORD=... 覆盖（不进脚本历史）。
+MYSQL_APP_PASSWORD="${MYSQL_APP_PASSWORD:-Themass@5296}"
+# 账号清单，空格分隔的 "用户@主机:库列表"。库列表用逗号分隔，* 表示该账号可见的所有库。
+MYSQL_ACCOUNTS="${MYSQL_ACCOUNTS:-root@localhost:* vpn@%:vpn radius@%:radius}"
 INFRA_JDK_PKG="${INFRA_JDK_PKG:-openjdk-17-jdk-headless}"
 OPENRESTY_PREFIX="/usr/local/openresty"
 
@@ -352,7 +357,69 @@ infra_mysql() {
         || die "MySQL 启动失败: journalctl -u mysql -n 30，或 tail -50 /var/log/mysql/error.log"
     log "MySQL $(mysqld --version 2>/dev/null | awk '{print $3}' | head -n 1) 已启动（systemd: mysql）"
     log "监听 ${ip}:6666，配置 ${config_dir}/zz-vpn.cnf"
-    log "root 默认走 auth_socket：本机用 mysql（或 sudo mysql）直接进，不需要口令"
+
+    infra_mysql_accounts
+}
+
+# 建业务账号并授权。可重复运行：存在就 ALTER 密码，不存在才建。
+#
+# 8.0 移除了 GRANT ... IDENTIFIED BY，必须拆成 CREATE USER + GRANT。
+# 账号清单见 MYSQL_ACCOUNTS，密码见 MYSQL_APP_PASSWORD。
+#
+# root@localhost 特殊处理：Ubuntu 包建的是 auth_socket（本机 root 免密），
+# 这里同时给它设一个口令，这样带 -p 从本机/远程都能用；auth_socket 那条保留，
+# 所以 sudo mysql 仍然免密可用。
+infra_mysql_accounts() {
+    local spec acct user host db_list sql="" db pw_sql
+    pw_sql="$(printf '%s' "$MYSQL_APP_PASSWORD" | sed "s/'/''/g")"
+
+    for spec in $MYSQL_ACCOUNTS; do
+        acct="${spec%%:*}"
+        db_list="${spec#*:}"
+        # 用户名本身可能含 @（旧库里有 'vpn@server' 这种），
+        # 所以按**最后一个** @ 拆：前面是用户，后面是主机。
+        case "$acct" in
+            *@*) user="${acct%@*}"; host="${acct##*@}" ;;
+            *) die "MYSQL_ACCOUNTS 格式应为 用户@主机:库列表，出错项: ${spec}" ;;
+        esac
+        [ -n "$user" ] && [ -n "$host" ] || die "账号格式不对: ${spec}"
+
+        # 8.0 默认 caching_sha2_password，5.6 时代的客户端不认，
+        # 这里统一 mysql_native_password，和 zz-vpn.cnf 里的默认值一致。
+        sql="${sql}CREATE USER IF NOT EXISTS '${user}'@'${host}' IDENTIFIED WITH mysql_native_password BY '${pw_sql}';
+ALTER USER '${user}'@'${host}' IDENTIFIED WITH mysql_native_password BY '${pw_sql}';
+"
+        if [ "$db_list" = "*" ]; then
+            sql="${sql}GRANT ALL PRIVILEGES ON *.* TO '${user}'@'${host}' WITH GRANT OPTION;
+"
+        else
+            for db in $(printf '%s' "$db_list" | tr ',' ' '); do
+                case "$db" in
+                    '' | *[!A-Za-z0-9_]*) die "库名不合法: ${db}" ;;
+                esac
+                sql="${sql}GRANT ALL PRIVILEGES ON \`${db}\`.* TO '${user}'@'${host}';
+"
+            done
+        fi
+    done
+    sql="${sql}FLUSH PRIVILEGES;
+"
+
+    # 执行：先试本机 socket（root@localhost 若是 auth_socket 就这样免密进），
+    # 不行再用口令连（root 已被改成 mysql_native_password 时）。
+    if ! printf '%s' "$sql" | mysql --defaults-file=/dev/null >/dev/null 2>&1; then
+        if ! MYSQL_PWD="$MYSQL_APP_PASSWORD" mysql --defaults-file=/dev/null -uroot -h127.0.0.1 \
+            -P "$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' "${config_dir}/zz-vpn.cnf" 2>/dev/null | head -n 1)" \
+            >/dev/null 2>&1 <<<"$sql"; then
+            warn "设置 MySQL 账号失败。用 root 手工执行:"
+            printf '%s' "$sql" | sed "s/'${pw_sql}'/'<口令>'/g" >&2
+            return 1
+        fi
+    fi
+
+    for spec in $MYSQL_ACCOUNTS; do
+        log "MySQL 账号 ${spec%%:*} 已就绪（口令未显示）"
+    done
 }
 
 # ------------------------------------------------------------------ FreeRADIUS

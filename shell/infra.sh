@@ -479,6 +479,22 @@ radius_install_sql_module() {
             || die "${dst} 里没找到 ${k}，包模板结构和预期不一样"
     done
 
+    # 3.2.10 的模板里 mysql 下面的 tls{} 是**未注释**的，而且指向
+    # /etc/ssl/certs/my_ca.crt 这类不存在的文件。只要有任何一行被设置，
+    # rlm_sql_mysql 就认为要开 TLS，启动时直接报
+    # "Unable to check file ... my_ca.crt" 并让整个模块实例化失败。
+    # 我们连的是内网/本机库，不开 TLS，把这一段整块注释掉。
+    # 已经注释过的版本（3.0.x）不匹配这个模式，不会被二次注释。
+    awk '
+    /^[[:space:]]*mysql[[:space:]]*\{[[:space:]]*$/ { in_mysql=1; print; next }
+    in_mysql && /^[[:space:]]*tls[[:space:]]*\{[[:space:]]*$/ { in_tls=1; print "#" $0; next }
+    in_tls {
+        if ($0 ~ /^[[:space:]]*\}[[:space:]]*$/) { in_tls=0; in_mysql=0 }
+        print "#" $0; next
+    }
+    { print }
+    ' "$tmp" >"${tmp}.tls" && mv "${tmp}.tls" "$tmp"
+
     install_file "$tmp" "$dst" 640
     rm -f "$tmp"
     chgrp freerad "$dst" 2>/dev/null || true

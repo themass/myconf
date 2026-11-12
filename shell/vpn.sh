@@ -4,7 +4,7 @@
 #   bash vpn.sh <模块> <动作> [参数...]
 #   bash vpn.sh ports | links | help
 #
-# 模块: system strongswan ssr xray singbox wireguard
+# 模块: system strongswan ssr xray singbox wireguard postgres health
 # 每个模块 `bash vpn.sh <模块> help` 查看动作和环境变量。
 
 if [ -z "${BASH_VERSION:-}" ]; then
@@ -20,7 +20,7 @@ export VPN_SHELL_DIR
 # shellcheck source=lib/common.sh
 source "${VPN_SHELL_DIR}/lib/common.sh"
 
-VPN_MODULES="system strongswan ssr xray singbox wireguard health"
+VPN_MODULES="system strongswan ssr xray singbox wireguard postgres health"
 
 usage() {
     cat <<EOF
@@ -43,6 +43,8 @@ usage() {
       restart | uninstall
   ssr         ShadowsocksR / ss-panel
       install | sspanel
+  postgres    PostgreSQL（安装、启停、超级用户、业务库；说明见 docs/postgres.md）
+      setup | install | roles | db | start | stop | restart | status | check
   health      运行状况总览和日志（只读）
       status（默认） | logs [服务...] [-n N] [-f] [--since T] [--errors] [--raw]
 
@@ -180,7 +182,7 @@ main() {
         links)
             show_links
             ;;
-        system | strongswan | ssr | xray | singbox | wireguard | health)
+        system | strongswan | ssr | xray | singbox | wireguard | postgres | health)
             # shellcheck disable=SC1090
             source "${VPN_SHELL_DIR}/modules/${mod}.sh"
             "${mod}_main" "$@"

@@ -24,6 +24,7 @@ bash vpn.sh links                 # 已安装协议的客户端链接
 | `singbox` | Hysteria2 | udp 8444 | `SB_HY2_PORT` |
 | `wireguard` | WireGuard（内网 10.66.0.0/16） | udp 51820 | `WG_PORT` |
 | `ssr` | ShadowsocksR / ss-panel | 见 `conf/ssr/` | |
+| `postgres` | PostgreSQL 17 的安装、启停、超级用户、业务库（说明见 `docs/postgres.md`） | tcp 5432（只监听内网） | `PG_VERSION` `PG_PORT` |
 | `system` | 依赖、系统升级、内核参数、BBR、IPsec NAT、监控、诊断 | | |
 | `health` | 运行状况总览和日志（只读） | | |
 
@@ -96,6 +97,34 @@ bash radius.sh debug     # 停掉 freeradius 前台调试（radiusd -X）
 - `infra.sh` 里的 `innerip` 占位符自动换成本机内网地址；没有内网地址时只绑 127.0.0.1，需要的话设 `INFRA_BIND`。
 - MySQL 5.6.40 和 Redis 6.0 都是老版本，MySQL 5.6 已停止维护。版本升级会影响线上数据和认证，没有单独测过，所以保持不变。
 
+## PostgreSQL：安装、账号、业务库
+
+安装和配置（`postgresql.conf` / `pg_hba.conf`）由 `infra.sh postgres` 负责；
+装好之后还要建超级用户和业务库，用 `vpn.sh postgres`，两者不重复实现：
+
+```bash
+# 首次：装包 + 建超级用户 root/sspacee + 建库 uher 并授权（可重复运行）
+read -rsp 'PG_SUPER_PASSWORD: ' PG_SUPER_PASSWORD; echo; export PG_SUPER_PASSWORD
+bash vpn.sh postgres setup
+
+# 只做其中一步
+bash vpn.sh postgres install
+bash vpn.sh postgres roles      # 角色存在就 ALTER 对齐权限和口令
+bash vpn.sh postgres db         # 库/owner/schema/默认权限一次补齐
+
+# 启停和自检
+bash vpn.sh postgres status | start | stop | restart
+bash vpn.sh postgres check
+```
+
+- 服务以系统用户 `postgres` 运行，数据目录 `/var/lib/postgresql/17/main` 只属于它（700）。
+- 监听内网地址的 tcp 5432，`pg_hba.conf` 只允许本机 + 内网段，全部 `scram-sha-256`；只有 `local postgres` 走 peer。
+- 超级用户 `root`、`sspacee`：`LOGIN SUPERUSER CREATEDB CREATEROLE`；库 `uher` owner 是 `sspacee`，
+  两个账号都有库级 / schema 级 / 默认权限的完整权限（新建的表自动可见）。
+- **口令不落盘到仓库**：脚本从 `PG_SUPER_PASSWORD` 或 `conf/postgres/.env`（`.gitignore` 覆盖，建议 `chmod 600`）
+  读取，经 psql 标准输入传给服务器，不进命令行参数、不打印、不写日志。
+- 运维细节（路径、认证、备份、故障处理）见 [docs/postgres.md](docs/postgres.md)。
+
 ## 旧脚本去哪了
 
 | 旧脚本 | 现在 |
@@ -127,6 +156,7 @@ myconf/
     lib/common.sh          日志、地址/网卡识别、模板渲染、端口检查、防火墙
     lib/xray_reality_fields.py   读 Xray 配置里的 Reality 字段
     modules/               每个模块一个文件
+    docs/postgres.md       PostgreSQL 运维说明（安装位置、账号、库、备份、排障）
   conf/                    所有配置文件，按服务分目录
     system/                内核参数、limits、fail2ban jail、rc.local
     xray/  singbox/  wireguard/

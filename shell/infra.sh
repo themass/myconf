@@ -159,8 +159,18 @@ infra_nginx() {
     # 80 被别的进程占着就停下；nginx 配置里的端口要改，请直接改 conf/nginx/vpn.conf 的 listen。
     assert_port_free tcp 80 nginx NGINX_PORT_IN_VPN_CONF
     id web >/dev/null 2>&1 || useradd -r -m -s /usr/sbin/nologin web
-    mkdir -p /home/file/nginx/cache/temp /home/file/nginx_cache/cache/body
-    chown -R web:web /home/file/nginx /home/file/nginx_cache
+
+    # nginx 会往这些目录读到/写到内容，缺一个就 404 或 500。旧服务器上这些都是存在的，
+    # 新机器不会自动有，所以在这里建齐（已存在则不动，不覆盖里面的文件）。
+    mkdir -p /home/file/html /home/file/book /home/file/soft \
+             /home/web/webroot/files \
+             /home/file/nginx/cache/temp /home/file/nginx_cache/cache/body \
+             /var/www/letsencrypt
+    chown -R web:web /home/file/nginx /home/file/nginx_cache /home/web/webroot /var/www/letsencrypt
+    # 静态站点目录由 web 读即可，保持 root 属主和旧服务器一致。
+    chown root:root /home/file/html /home/file/book /home/file/soft
+    chmod 755 /home/file/html /home/file/book /home/file/soft
+    log "静态目录已就绪: /home/file/{html,book,soft}、/home/web/webroot/files"
 
     # 官方 systemd 单元里的 PIDFile 必须和 nginx.conf 的 pid 一致，否则 systemctl start 会超时。
     local conf="${OPENRESTY_PREFIX}/nginx/conf" src="${MYCONF_HOME}/conf/nginx" pidfile f

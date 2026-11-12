@@ -1,4 +1,4 @@
-# MySQL 8.0 服务端配置，由 infra.sh mysql 渲染到 /etc/mysql/mysql.conf.d/90-vpn.cnf
+# MySQL 8.0 服务端配置，由 infra.sh mysql 渲染到 /etc/mysql/mysql.conf.d/zz-vpn.cnf
 #
 # 为什么放在 mysql.conf.d 而不是 conf.d：
 #   /etc/mysql/my.cnf 里的 include 顺序是
@@ -6,14 +6,14 @@
 #     !includedir /etc/mysql/mysql.conf.d/
 #   MySQL 后加载的配置覆盖先加载的。放在 conf.d 里会被 mysql.conf.d/mysqld.cnf
 #   的 bind-address = 127.0.0.1 覆盖掉（实测过：配置写的是内网地址，实际只听 127.0.0.1）。
-#   文件名 90-vpn.cnf 排在 mysqld.cnf 之后，同名项以本文件为准。
+#   文件名 zz-vpn.cnf 排在 mysqld.cnf 之后，同名项以本文件为准。
 #
 # 为什么不整份替换 my.cnf：
 #   /etc/mysql/my.cnf 是符号链接，包自带的默认值在 mysql.conf.d/mysqld.cnf。
 #   整份替换会和包管理打架（升级被覆盖、debian-sys-maint 丢失）。
 #   这里只放差异项。
 #
-# 改这些值：改本文件再跑 bash infra.sh mysql，不要直接改服务器上的 90-vpn.cnf。
+# 改这些值：改本文件再跑 bash infra.sh mysql，不要直接改服务器上的 zz-vpn.cnf。
 
 [mysqld]
 user = mysql

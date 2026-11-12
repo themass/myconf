@@ -290,7 +290,7 @@ infra_postgres() {
 
 # MySQL 8.0，走 apt（Ubuntu 官方源，jammy 上是 8.0.x）。
 # 旧版是 5.6.40 的官方 tarball 解在 /opt 下；8.0 起改用发行版包，由 systemd 的
-# mysql.service 管理，配置以 drop-in 叠在 /etc/mysql/conf.d/ 上（见 conf/mysql/90-vpn.cnf）。
+# mysql.service 管理，配置以 drop-in 叠在 /etc/mysql/mysql.conf.d/ 上（见 conf/mysql/zz-vpn.cnf）。
 #
 # 两个 8.0 特有的前提：
 #   - lower_case_table_names 必须在数据目录初始化**之前**定好，初始化后再改会启动失败。
@@ -316,14 +316,14 @@ infra_mysql() {
     # lower_case_table_names 只有在那之前设定才生效。
     mkdir -p "$config_dir"
     if [ "${INFRA_MYSQL_PUBLIC:-0}" = "1" ]; then
-        infra_put "${TEMPLATE_DIR}/mysql/90-vpn.cnf" "${config_dir}/90-vpn.cnf" 644 \
+        infra_put "${TEMPLATE_DIR}/mysql/zz-vpn.cnf" "${config_dir}/zz-vpn.cnf" 644 \
             "s/^bind-address[[:space:]]*=.*/bind-address = 0.0.0.0/"
     else
-        infra_put "${TEMPLATE_DIR}/mysql/90-vpn.cnf" "${config_dir}/90-vpn.cnf" 644 \
+        infra_put "${TEMPLATE_DIR}/mysql/zz-vpn.cnf" "${config_dir}/zz-vpn.cnf" 644 \
             "s/^bind-address[[:space:]]*=.*/bind-address = ${ip}/"
     fi
-    chown root:root "${config_dir}/90-vpn.cnf"
-    chmod 644 "${config_dir}/90-vpn.cnf"
+    chown root:root "${config_dir}/zz-vpn.cnf"
+    chmod 644 "${config_dir}/zz-vpn.cnf"
 
     if have mysqld; then
         log "MySQL 已安装（$(mysqld --version 2>/dev/null | head -n 1)），跳过装包"
@@ -351,7 +351,7 @@ infra_mysql() {
     svc_enable_restart mysql \
         || die "MySQL 启动失败: journalctl -u mysql -n 30，或 tail -50 /var/log/mysql/error.log"
     log "MySQL $(mysqld --version 2>/dev/null | awk '{print $3}' | head -n 1) 已启动（systemd: mysql）"
-    log "监听 ${ip}:6666，配置 ${config_dir}/90-vpn.cnf"
+    log "监听 ${ip}:6666，配置 ${config_dir}/zz-vpn.cnf"
     log "root 默认走 auth_socket：本机用 mysql（或 sudo mysql）直接进，不需要口令"
 }
 

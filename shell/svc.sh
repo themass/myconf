@@ -59,7 +59,7 @@ svc_port() {
         nginx) printf 'tcp/80' ;;
         mysql)
             # 8.0 起配置在 /etc/mysql/conf.d/；旧版 tarball 的在 /etc/my.cnf。
-            p="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' /etc/mysql/mysql.conf.d/90-vpn.cnf 2>/dev/null | head -n 1)"
+            p="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' /etc/mysql/mysql.conf.d/zz-vpn.cnf 2>/dev/null | head -n 1)"
             [ -n "$p" ] || p="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' /etc/my.cnf 2>/dev/null | head -n 1)"
             printf 'tcp/%s' "${p:-6666}"
             ;;

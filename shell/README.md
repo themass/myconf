@@ -78,7 +78,7 @@ bash vpn.sh health logs strongswan -f          # 手机再连一次，看 IKE_SA
 ```bash
 bash infra.sh nginx      # OpenResty（官方 apt 源，最新版，自带常用模块）+ conf/nginx 站点配置
 bash infra.sh redis      # Redis（apt），配置取自 conf/redis/redis.conf
-bash infra.sh mysql      # MySQL 5.6.40（官方 tarball + systemd，版本固定，和线上一致）
+bash infra.sh mysql      # MySQL 8.0（apt 发行版包 + systemd），配置以 drop-in 放进 conf.d
 bash infra.sh radius     # FreeRADIUS 3.2.x（NetworkRadius 官方 apt 源）+ sql 模块
 bash infra.sh jdk        # OpenJDK 17 + Maven
 bash infra.sh php        # PHP 8.4（sury 源）+ php-fpm 池 web（unix socket）+ composer
@@ -95,7 +95,8 @@ bash radius.sh debug     # 停掉 freeradius 前台调试（radiusd -X）
 - 服务由 systemd 管理，不再 `pkill -9`；`infra.sh` 装的服务开机自启。
 - `infra.sh` 的数据库连接参数取自 `conf/radius/sql.conf`，`clients.conf` 的共享密钥只在服务器上，不显示在日志里。
 - `infra.sh` 里的 `innerip` 占位符自动换成本机内网地址；没有内网地址时只绑 127.0.0.1，需要的话设 `INFRA_BIND`。
-- MySQL 5.6.40 和 Redis 6.0 都是老版本，MySQL 5.6 已停止维护。版本升级会影响线上数据和认证，没有单独测过，所以保持不变。
+- MySQL 8.0 走 apt，配置在 `/etc/mysql/conf.d/90-vpn.cnf`（模板 `conf/mysql/90-vpn.cnf`），
+  不再整份替换 `/etc/mysql/my.cnf`。Redis 6.0 仍是发行版自带的版本。
 
 ## PostgreSQL：安装、账号、业务库
 
@@ -165,7 +166,7 @@ myconf/
     strongswan/
       6/                   strongSwan 6.x，swanctl 版（唯一支持的版本）
       strongswan.service   6.x 的 systemd 模板
-    mysql/                 my.cnf、建表/数据 SQL、mysql.service
+    mysql/                 90-vpn.cnf（8.0 的 drop-in）、建表/数据 SQL
     redis/                 redis.conf
     radius/                clients.conf、sql.conf、建表 SQL；legacy-2.x/ 是旧版 2.x 的配置（先留着）
     php/                   php 通用设置 99-vpn.ini、php-fpm 池 web-pool.conf

@@ -58,8 +58,10 @@ svc_port() {
     case "$1" in
         nginx) printf 'tcp/80' ;;
         mysql)
-            p="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' /etc/my.cnf 2>/dev/null | head -n 1)"
-            printf 'tcp/%s' "${p:-3306}"
+            # 8.0 起配置在 /etc/mysql/conf.d/；旧版 tarball 的在 /etc/my.cnf。
+            p="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' /etc/mysql/conf.d/90-vpn.cnf 2>/dev/null | head -n 1)"
+            [ -n "$p" ] || p="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' /etc/my.cnf 2>/dev/null | head -n 1)"
+            printf 'tcp/%s' "${p:-6666}"
             ;;
         redis)
             p="$(sed -n 's/^port[[:space:]]\{1,\}\([0-9]*\).*/\1/p' /etc/redis/redis.conf 2>/dev/null | head -n 1)"
@@ -203,12 +205,21 @@ svc_check() {
         echo "  未安装"
     fi
     echo "== mysql 存活 =="
-    if [ -x /usr/local/mysql/bin/mysqladmin ]; then
+    if have mysqladmin; then
         # ping 即使没有账号权限也会回应，只用来确认进程活着。
+        # 8.0 的 root 走 auth_socket，本机 root 直接跑就能过。
+        mysqladmin --defaults-file=/dev/null -h 127.0.0.1 -P "$(svc_port mysql | cut -d/ -f2)" ping 2>&1 \
+            | head -n 2 || true
+    elif [ -x /usr/local/mysql/bin/mysqladmin ]; then
+        # 旧版 tarball 安装，没有在 PATH 里。
         /usr/local/mysql/bin/mysqladmin --defaults-file=/dev/null -h 127.0.0.1 -P "$(svc_port mysql | cut -d/ -f2)" ping 2>&1 \
             | head -n 2 || true
     else
         echo "  未安装"
+    fi
+    echo "== mysql 版本与关键设置 =="
+    if have mysql; then
+        mysql --defaults-file=/dev/null -e "SELECT VERSION() AS version, @@lower_case_table_names AS lctn, @@character_set_server AS charset, @@sql_mode AS sql_mode\G" 2>&1 | head -20 || true
     fi
     echo "== redis 配置里的绑定与端口 =="
     grep -E '^(bind|port) ' /etc/redis/redis.conf 2>/dev/null || echo "  未安装"

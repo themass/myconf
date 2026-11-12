@@ -1,0 +1,59 @@
+# MySQL 8.0 服务端配置，由 infra.sh mysql 渲染到 /etc/mysql/conf.d/90-vpn.cnf
+#
+# 为什么是 conf.d 而不是整份 my.cnf：
+#   apt 包自带的 /etc/mysql/my.cnf 是符号链接，真正的默认值在
+#   /etc/mysql/mysql.conf.d/mysqld.cnf。整份替换会和包管理打架（升级时被覆盖、
+#   debian-sys-maint 账号等设置丢失）。这里只放差异项，包升级时不会被冲掉。
+#
+# 改这些值：改本文件再跑 bash infra.sh mysql，不要直接改服务器上的 90-vpn.cnf。
+
+[mysqld]
+user = mysql
+port = 6666
+# 由脚本替换为本机内网地址；INFRA_MYSQL_PUBLIC=1 时为 0.0.0.0。
+bind-address = innerip
+datadir = /var/lib/mysql
+socket = /var/run/mysqld/mysqld.sock
+pid-file = /var/run/mysqld/mysqld.pid
+
+# ------------------------------------------------------------------ 8.0 的关键项
+
+# 表名大小写：8.0 起这个值只能在数据目录初始化之前设定，初始化后改会直接启动失败。
+# 老库（5.6）是大小写不敏感，所以取 1。改这个值等于重建实例，不是改配置。
+lower_case_table_names = 1
+
+# 老客户端（5.6 时代的驱动、旧版 mysql/mysqldump）不认 8.0 默认的 caching_sha2_password，
+# 会报 "Authentication plugin 'caching_sha2_password' cannot be loaded"。
+# 8.0 里还能退回 mysql_native_password；8.4 起该插件被移除，到那时要升级客户端。
+default_authentication_plugin = mysql_native_password
+
+# 原配置是 utf8（= utf8mb3）。8.0 里 utf8mb3 已弃用但仍可用，
+# 为了和现有数据一致先保持；新项目建议改成 utf8mb4。
+character_set_server = utf8mb3
+collation_server = utf8mb3_general_ci
+
+# 沿用老库的 SQL 模式。ANSI 包含 ANSI_QUOTES（双引号当标识符）和 ONLY_FULL_GROUP_BY。
+sql-mode = ANSI
+
+# ------------------------------------------------------------------ 容量与性能
+
+max_connections = 151
+max_allowed_packet = 32M
+
+innodb_buffer_pool_size = 256M
+innodb_log_file_size = 128M
+innodb_flush_log_at_trx_commit = 1
+innodb_file_per_table = 1
+innodb_lock_wait_timeout = 50
+
+# ------------------------------------------------------------------ binlog
+
+log-bin = mysql-bin
+binlog_format = ROW
+server-id = 1
+# 5.6 的 expire_logs_days 在 8.0 已弃用，换成秒。
+binlog_expire_logs_seconds = 86400
+
+[mysqldump]
+quick
+max_allowed_packet = 32M

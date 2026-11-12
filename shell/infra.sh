@@ -21,8 +21,7 @@ export VPN_SHELL_DIR
 source "${VPN_SHELL_DIR}/lib/common.sh"
 
 INFRA_OPT="${INFRA_OPT:-/opt}"
-MYSQL_VERSION="${MYSQL_VERSION:-5.6.40}"
-MYSQL_DATADIR="${MYSQL_DATADIR:-/home/mysql/db_data}"
+MYSQL_VERSION="${MYSQL_VERSION:-8.0}"
 INFRA_JDK_PKG="${INFRA_JDK_PKG:-openjdk-17-jdk-headless}"
 OPENRESTY_PREFIX="/usr/local/openresty"
 
@@ -32,7 +31,7 @@ infra_usage() {
 
   nginx    OpenResty（官方 apt 源，最新版，不用编译）+ conf/nginx 里的站点配置
   redis    Redis（apt），配置取自 conf/redis/redis.conf
-  mysql    MySQL ${MYSQL_VERSION}（官方 tarball + systemd），配置取自 conf/mysql/my.cnf
+  mysql    MySQL ${MYSQL_VERSION}（apt 发行版包 + systemd），配置以 drop-in 放进 conf.d
   radius   FreeRADIUS 3.2.x（NetworkRadius 官方 apt 源）；sql 模块取自 conf/radius/sql.conf，clients.conf 日常用 radius.sh 更新
   jdk      ${INFRA_JDK_PKG} + maven（apt）
   php      PHP ${PHP_VERSION:-8.4}（sury 源）：php-fpm、常用扩展、composer；池 web 用 unix socket
@@ -43,8 +42,8 @@ infra_usage() {
 环境变量:
   INFRA_BIND            服务绑定的地址（默认自动识别内网地址，没有就 127.0.0.1）
   INFRA_REDIS_PASSWORD  覆盖 redis.conf 里的 requirepass
-  INFRA_MYSQL_PUBLIC=1  MySQL 绑定 0.0.0.0（默认只绑 INFRA_BIND；root 初始无密码，别轻易公开）
-  MYSQL_VERSION / INFRA_JDK_PKG / MYSQL_DATADIR / PHP_VERSION（默认 8.4）/ PG_VERSION（默认 17）/ PG_PORT / PG_ADMIN_PASSWORD（只读环境变量，不落盘）
+  INFRA_MYSQL_PUBLIC=1  MySQL 绑定 0.0.0.0（默认只绑 INFRA_BIND；root 默认走 auth_socket）
+  MYSQL_VERSION / INFRA_JDK_PKG / PHP_VERSION（默认 8.4）/ PG_VERSION（默认 17）/ PG_PORT / PG_ADMIN_PASSWORD（只读环境变量，不落盘）
 
 启停、状态、检查: bash svc.sh help
 EOF
@@ -289,47 +288,71 @@ infra_postgres() {
 
 # ------------------------------------------------------------------ MySQL
 
-# 保持旧的安装方式（官方 tarball，版本固定）以便和线上一致；升级版本是另一件事，见最后的说明。
+# MySQL 8.0，走 apt（Ubuntu 官方源，jammy 上是 8.0.x）。
+# 旧版是 5.6.40 的官方 tarball 解在 /opt 下；8.0 起改用发行版包，由 systemd 的
+# mysql.service 管理，配置以 drop-in 叠在 /etc/mysql/conf.d/ 上（见 conf/mysql/90-vpn.cnf）。
+#
+# 两个 8.0 特有的前提：
+#   - lower_case_table_names 必须在数据目录初始化**之前**定好，初始化后再改会启动失败。
+#     所以配置要在装包之前写进去。
+#   - root 默认走 auth_socket，本机 sudo mysql 免密可进，不再是"初始无密码"。
 infra_mysql() {
     require_root
     infra_need_apt
-    local v="$MYSQL_VERSION" name dest ip
-    name="mysql-${v}-linux-glibc2.12-x86_64"
-    dest="${INFRA_OPT}/mysql-${v}"
-    infra_apt_install libaio1 libnuma1 libncurses5 perl || die "依赖安装失败"
-    id mysql >/dev/null 2>&1 || useradd -r -m -d /home/mysql -s /bin/bash mysql
-    if [ ! -d "$dest" ]; then
-        mkdir -p "$TMP_HOME" "$INFRA_OPT"
-        download "https://cdn.mysql.com/archives/mysql-5.6/${name}.tar.gz" "${TMP_HOME}/${name}.tar.gz" \
-            || die "下载 MySQL ${v} 失败"
-        tar -xzf "${TMP_HOME}/${name}.tar.gz" -C "$INFRA_OPT" && mv "${INFRA_OPT}/${name}" "$dest" \
-            || die "解压失败"
-        chown -R root:root "$dest"
-    fi
-    ln -sfn "$dest" /usr/local/mysql
-    mkdir -p "$MYSQL_DATADIR" /home/mysql/log_data /var/log/mysql /var/run/mysqld /var/lib/mysql /usr/share/mysql
-    chown mysql:mysql "$MYSQL_DATADIR" /home/mysql/log_data /var/log/mysql /var/run/mysqld /var/lib/mysql
+    local v="$MYSQL_VERSION" ip config_dir="/etc/mysql/conf.d"
+
+    case "$(detect_arch)" in
+        amd64 | arm64) ;;
+        *) die "MySQL 8.0 的 apt 包只提供 amd64 和 arm64，当前: $(uname -m)" ;;
+    esac
+    # shellcheck disable=SC1091
+    . /etc/os-release
+    [ "${ID:-}" = "ubuntu" ] || [ "${ID:-}" = "debian" ] \
+        || die "infra.sh mysql 只支持 Ubuntu / Debian，当前: ${ID:-unknown}"
 
     ip="$(infra_ip)"
-    if [ "${INFRA_MYSQL_PUBLIC:-0}" = "1" ]; then
-        infra_put "${MYCONF_HOME}/conf/mysql/my.cnf" /etc/my.cnf 640
-    else
-        infra_put "${MYCONF_HOME}/conf/mysql/my.cnf" /etc/my.cnf 640 "s/^\(bind-address[[:space:]]*=[[:space:]]*\)0\.0\.0\.0/\1${ip}/"
-    fi
-    chgrp mysql /etc/my.cnf
-    cp "${dest}/share/english/errmsg.sys" /usr/share/mysql/
 
-    # 数据目录里已有 mysql 库就绝不重新初始化（旧脚本这里是 rm -rf db_data/*）。
-    if [ -d "${MYSQL_DATADIR}/mysql" ]; then
-        log "数据目录已有数据，跳过初始化（${MYSQL_DATADIR}）"
+    # 关键顺序：先把配置放好，再装包。apt 装包时会初始化数据目录，
+    # lower_case_table_names 只有在那之前设定才生效。
+    mkdir -p "$config_dir"
+    if [ "${INFRA_MYSQL_PUBLIC:-0}" = "1" ]; then
+        infra_put "${TEMPLATE_DIR}/mysql/90-vpn.cnf" "${config_dir}/90-vpn.cnf" 644 \
+            "s/^bind-address[[:space:]]*=.*/bind-address = 0.0.0.0/"
     else
-        (cd "$dest" && scripts/mysql_install_db --user=mysql --basedir="$dest" --datadir="$MYSQL_DATADIR") \
-            || die "mysql_install_db 失败"
-        warn "root 初始没有密码。先设置: /usr/local/mysql/bin/mysqladmin -u root password '<新密码>'"
+        infra_put "${TEMPLATE_DIR}/mysql/90-vpn.cnf" "${config_dir}/90-vpn.cnf" 644 \
+            "s/^bind-address[[:space:]]*=.*/bind-address = ${ip}/"
     fi
-    install_template "${TEMPLATE_DIR}/mysql/mysql.service" /etc/systemd/system/mysql.service 644 "MYSQL_VERSION=${v}"
-    svc_enable_restart mysql
-    log "MySQL ${v} 已启动（systemd: mysql）"
+    chown root:root "${config_dir}/90-vpn.cnf"
+    chmod 644 "${config_dir}/90-vpn.cnf"
+
+    if have mysqld; then
+        log "MySQL 已安装（$(mysqld --version 2>/dev/null | head -n 1)），跳过装包"
+    else
+        log "安装 mysql-server（apt，目标 ${v}）"
+        infra_apt_install mysql-server || die "mysql-server 安装失败"
+    fi
+
+    # 数据目录：包会建好并初始化。只在没初始化成功时兜底。
+    # 已经有数据就绝不动它 —— 和旧脚本"数据目录有 mysql 库就不重装"的原则一致。
+    if [ -d /var/lib/mysql/mysql ]; then
+        log "数据目录已有数据，跳过初始化（/var/lib/mysql）"
+    else
+        warn "/var/lib/mysql 里没有系统库，手动初始化"
+        mkdir -p /var/lib/mysql /var/run/mysqld
+        chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
+        mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql \
+            || die "mysqld --initialize-insecure 失败"
+        warn "root 初始没有密码。先设置: mysql_secure_installation"
+    fi
+    mkdir -p /var/run/mysqld /var/log/mysql
+    chown -R mysql:mysql /var/lib/mysql /var/run/mysqld /var/log/mysql 2>/dev/null || true
+
+    # 30 秒没起来的常见原因是配置和数据目录不匹配，报错指向具体位置。
+    svc_enable_restart mysql \
+        || die "MySQL 启动失败: journalctl -u mysql -n 30，或 tail -50 /var/log/mysql/error.log"
+    log "MySQL $(mysqld --version 2>/dev/null | awk '{print $3}' | head -n 1) 已启动（systemd: mysql）"
+    log "监听 ${ip}:6666，配置 ${config_dir}/90-vpn.cnf"
+    log "root 默认走 auth_socket：本机用 mysql（或 sudo mysql）直接进，不需要口令"
 }
 
 # ------------------------------------------------------------------ FreeRADIUS

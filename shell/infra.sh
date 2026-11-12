@@ -422,6 +422,9 @@ infra_radius() {
     # 自定义 sql 模块：数据库地址、账号、密码取自 conf/radius/sql.conf 的 sql {} 段。
     # 只改这一个模块的 server/port/login/password/radius_db，其它保持包自带的默认值。
     radius_install_sql_module
+    # 本地属性字典：radius 库里存着 Max-Daily-Traffic 之类的自定义属性，
+    # 字典里没有定义的话 authorize 会解析失败并返回 Access-Reject。
+    radius_install_dictionary
     # clients.conf 是唯一会经常改的文件，交给 radius.sh clients 管理（会校验后再重载）。
     install_file "${MYCONF_HOME}/conf/radius/clients.conf" "${RADIUS_ETC}/clients.conf" 640
     chgrp freerad "${RADIUS_ETC}/clients.conf" 2>/dev/null || true
@@ -436,6 +439,47 @@ infra_radius() {
         || die "FreeRADIUS 启动失败: journalctl -u freeradius -n 30（常见原因：数据库连不上、证书缺失）"
     log "FreeRADIUS $(freeradius -v 2>/dev/null | head -n 1 | grep -oE '[0-9.]+' | head -n 1) 已启动（systemd: freeradius）"
     log "日常更新 clients.conf 和重启: bash radius.sh clients"
+}
+
+# 把本地自定义属性追加进 /etc/freeradius/dictionary（3.x 的本地字典，主字典之后加载）。
+#
+# 为什么需要：旧服务器（FreeRADIUS 2.1.12）在 raddb/dictionary 里定义了
+# Max-Daily-Traffic / Max-Monthly-Traffic 等属性，radius 库的 radgroupcheck、
+# radcheck 里存着这些名字。新装的 3.2.10 没有这些定义，读库时会报
+# 'Unknown name "Max-Daily-Traffic"' → "Error parsing user data from database result"
+# → authorize 失败 → 所有用户 Access-Reject。
+radius_install_dictionary() {
+    local src="${MYCONF_HOME}/conf/radius/dictionary.local"
+    local dst="${RADIUS_ETC}/dictionary"
+    [ -f "$src" ] || { warn "缺少 ${src}，跳过自定义属性"; return 0; }
+    [ -f "$dst" ] || { warn "没有 ${dst}，跳过自定义属性"; return 0; }
+
+    # 幂等：已经存在的 ATTRIBUTE 行不重复追加。
+    local tmp added=0 line name
+    tmp="$(mktemp "${TMPDIR:-/tmp}/dict.XXXXXX")" || die "无法创建临时文件"
+    cp "$dst" "$tmp"
+    while IFS= read -r line; do
+        case "$line" in
+            ATTRIBUTE*) ;;
+            *) continue ;;
+        esac
+        name="$(printf '%s' "$line" | awk '{print $2}')"
+        if grep -qE "^[[:space:]]*ATTRIBUTE[[:space:]]+${name}[[:space:]]" "$tmp"; then
+            continue
+        fi
+        printf '\n%s\n' "$line" >>"$tmp"
+        added=$((added + 1))
+        log "字典新增属性: ${name}"
+    done <"$src"
+
+    if [ "$added" -gt 0 ]; then
+        install_file "$tmp" "$dst" 640
+        chgrp freerad "$dst" 2>/dev/null || true
+        log "自定义属性已写入 ${dst}（${added} 条）"
+    else
+        log "自定义属性已存在，跳过（${dst}）"
+    fi
+    rm -f "$tmp"
 }
 
 # 把 conf/radius/sql.conf 里的数据库连接参数写进 3.x 的 mods-available/sql，并在 default 站点里启用 sql。

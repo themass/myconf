@@ -1,0 +1,18 @@
+# 本地 RADIUS 属性（来自旧服务器 2.1.12 的 raddb/dictionary）
+#
+# 为什么需要：radius 库里 radgroupcheck / radcheck 存着这些属性名
+# （比如 VPN_VIP 组的 Max-Daily-Traffic）。FreeRADIUS 如果字典里没有定义，
+# 读出来会报 'Unknown name "Max-Daily-Traffic"'，接着 "Error parsing user data
+# from database result"，整个 authorize 失败，认证结果是 Access-Reject。
+#
+# 3.2.x 里这些行要放进 /etc/freeradius/dictionary（本地 dictionary，
+# 它在主字典之后加载，可以直接覆盖/新增属性）。由 infra.sh radius 幂等追加。
+#
+# 编号 3000-4000 是本地私有段，不进 RADIUS 报文。
+
+ATTRIBUTE Max-Monthly-Traffic 3003 integer
+ATTRIBUTE Monthly-Traffic-Limit 3004 integer
+ATTRIBUTE Max-Daily-Traffic 3005 integer
+ATTRIBUTE Daily-Traffic-Limit 3006 integer
+ATTRIBUTE Client-Type 3007 string
+ATTRIBUTE Max-All-Session 3008 integer

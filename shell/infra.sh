@@ -22,12 +22,8 @@ source "${VPN_SHELL_DIR}/lib/common.sh"
 
 INFRA_OPT="${INFRA_OPT:-/opt}"
 MYSQL_VERSION="${MYSQL_VERSION:-8.0}"
-# MySQL 业务账号。密码与 PostgreSQL 那套一致，按用户要求写在脚本里便于直接部署。
-# 要换：改这里，或用 MYSQL_APP_PASSWORD=... 覆盖（不进脚本历史）。
-MYSQL_APP_PASSWORD="${MYSQL_APP_PASSWORD:-Themass@5296}"
-# 账号清单，空格分隔的 "用户@主机:库列表"。库列表用逗号分隔，* 表示该账号可见的所有库。
-# 注意 vpn@server@% 拆成 用户=vpn@server、主机=%（用户名本身含 @，按最后一个 @ 拆）。
-MYSQL_ACCOUNTS="${MYSQL_ACCOUNTS:-root@localhost:* vpn@%:vpn radius@%:radius vpn@server@%:vpn,radius}"
+# 账号、口令、授权都不在这个脚本里：改 conf/mysql/init.sql，再用 bash dbinit.sh mysql 应用。
+# 这样安装和"账号管理"分开，装完不用重跑安装。
 INFRA_JDK_PKG="${INFRA_JDK_PKG:-openjdk-17-jdk-headless}"
 OPENRESTY_PREFIX="/usr/local/openresty"
 
@@ -365,77 +361,8 @@ infra_mysql() {
     svc_enable_restart mysql \
         || die "MySQL 启动失败: journalctl -u mysql -n 30，或 tail -50 /var/log/mysql/error.log"
     log "MySQL $(mysqld --version 2>/dev/null | awk '{print $3}' | head -n 1) 已启动（systemd: mysql）"
-    log "监听 ${ip}:6666，配置 ${config_dir}/zz-vpn.cnf"
-
-    infra_mysql_accounts
-}
-
-# 建业务账号并授权。可重复运行：存在就 ALTER 密码，不存在才建。
-#
-# 8.0 移除了 GRANT ... IDENTIFIED BY，必须拆成 CREATE USER + GRANT。
-# 账号清单见 MYSQL_ACCOUNTS，密码见 MYSQL_APP_PASSWORD。
-#
-# 关于 root@localhost：Ubuntu 包默认是 auth_socket，本机 root 免密。
-# 这里会把它改成 mysql_native_password 并设口令（否则脚本改完就再也进不去）。
-# 想同时保留免密，装完之后再手工执行一次：
-#   ALTER USER 'root'@'localhost' IDENTIFIED WITH auth_socket;
-infra_mysql_accounts() {
-    local spec acct user host db_list sql="" db pw_sql
-    pw_sql="$(printf '%s' "$MYSQL_APP_PASSWORD" | sed "s/'/''/g")"
-
-    for spec in $MYSQL_ACCOUNTS; do
-        acct="${spec%%:*}"
-        db_list="${spec#*:}"
-        # 用户名本身可能含 @（旧库里有 'vpn@server' 这种），
-        # 所以按**最后一个** @ 拆：前面是用户，后面是主机。
-        case "$acct" in
-            *@*) user="${acct%@*}"; host="${acct##*@}" ;;
-            *) die "MYSQL_ACCOUNTS 格式应为 用户@主机:库列表，出错项: ${spec}" ;;
-        esac
-        [ -n "$user" ] && [ -n "$host" ] || die "账号格式不对: ${spec}"
-
-        # 8.0 默认 caching_sha2_password，5.6 时代的客户端不认，
-        # 这里统一 mysql_native_password，和 zz-vpn.cnf 里的默认值一致。
-        sql="${sql}CREATE USER IF NOT EXISTS '${user}'@'${host}' IDENTIFIED WITH mysql_native_password BY '${pw_sql}';
-ALTER USER '${user}'@'${host}' IDENTIFIED WITH mysql_native_password BY '${pw_sql}';
-"
-        if [ "$db_list" = "*" ]; then
-            sql="${sql}GRANT ALL PRIVILEGES ON *.* TO '${user}'@'${host}' WITH GRANT OPTION;
-"
-        else
-            for db in $(printf '%s' "$db_list" | tr ',' ' '); do
-                case "$db" in
-                    '' | *[!A-Za-z0-9_]*) die "库名不合法: ${db}" ;;
-                esac
-                sql="${sql}GRANT ALL PRIVILEGES ON \`${db}\`.* TO '${user}'@'${host}';
-"
-            done
-        fi
-    done
-    sql="${sql}FLUSH PRIVILEGES;
-"
-
-    # 执行顺序（root 通常只有 root@localhost，所以只能走 socket）：
-    #   1. socket 免密 —— root@localhost 还是 auth_socket 时可用；
-    #   2. socket + 口令 —— 已被改成 mysql_native_password 时可用；
-    #   3. TCP + 口令 —— 只有存在 root@'%' 或 root@'<主机名>' 时才成立，兜底。
-    local port host
-    port="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' "${config_dir}/zz-vpn.cnf" 2>/dev/null | head -n 1)"
-    host="$(sed -n 's/^bind-address[[:space:]]*=[[:space:]]*\([0-9.]*\).*/\1/p' "${config_dir}/zz-vpn.cnf" 2>/dev/null | head -n 1)"
-    case "$host" in '' | 0.0.0.0) host=127.0.0.1 ;; esac
-
-    if ! printf '%s' "$sql" | mysql --defaults-file=/dev/null >/dev/null 2>&1 \
-        && ! printf '%s' "$sql" | MYSQL_PWD="$MYSQL_APP_PASSWORD" mysql --defaults-file=/dev/null >/dev/null 2>&1 \
-        && ! printf '%s' "$sql" | MYSQL_PWD="$MYSQL_APP_PASSWORD" mysql --defaults-file=/dev/null \
-            -uroot -h"${host}" -P"${port:-3306}" >/dev/null 2>&1; then
-        warn "设置 MySQL 账号失败。用 root 手工执行:"
-        printf '%s' "$sql" | sed "s/'${pw_sql}'/'<口令>'/g" >&2
-        return 1
-    fi
-
-    for spec in $MYSQL_ACCOUNTS; do
-        log "MySQL 账号 ${spec%%:*} 已就绪（口令未显示）"
-    done
+    log "监听 ${bind}:6666，配置 ${config_dir}/zz-vpn.cnf"
+    log "账号和授权不在这里建：改 conf/mysql/init.sql 后运行 bash dbinit.sh mysql"
 }
 
 # ------------------------------------------------------------------ FreeRADIUS

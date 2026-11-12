@@ -14,12 +14,9 @@
 #     只做"装好之后还要什么"的部分，避免两份配置漂移。
 #   - 数据库里一律使用系统包自带的 postgres 用户（Debian 包创建的系统用户，不是 root），
 #     数据目录 /var/lib/postgresql/<版本>/<cluster> 只属于它。
-#   - 口令写在下面的 PG_SUPER_PASSWORD 默认值里（按用户要求方便直接跑）。这只是一个**默认值**：
-#     环境变量或 conf/postgres/.env 都能覆盖它。改动口令：改这一行，或
-#     PG_SUPER_PASSWORD='新口令' bash vpn.sh postgres roles。
-#     注意：写进仓库意味着它进 git 历史，改掉之后旧值仍然存在；仓库若是公开的，等于公开口令。
-#     比较正式的环境请把这一行清空，改用 conf/postgres/.env（.gitignore 已覆盖）。
-#   - 口令通过 psql 的标准输入传给服务器：不进命令行参数（ps 看不到）、不写日志、不回显。
+#   - 角色、口令、授权不在本文件里：唯一来源是 conf/postgres/init.sql，
+#     由 shell/dbinit.sh 执行。安装和账号管理分开，装完不用重跑安装，
+#     改口令只改 init.sql 再跑 `bash dbinit.sh postgres`。
 #   - 所有 SQL 都是幂等的：角色存在就 ALTER 对齐权限，库存在就跳过创建。
 #
 # 详见 docs/postgres.md。
@@ -27,44 +24,33 @@
 PG_VERSION="${PG_VERSION:-17}"
 PG_PORT="${PG_PORT:-5432}"
 # 超级用户清单：默认 root 和 sspacee，都是 SUPERUSER + CREATEDB + CREATEROLE。
+# 仅用于状态显示和自检；真正建角色的是 conf/postgres/init.sql。
 PG_SUPER_ROLES="${PG_SUPER_ROLES:-root sspacee}"
-# 业务库，owner 默认给 sspacee；root 是超级用户，另外再显式授权一次。
+# 业务库，owner 默认给 sspacee。
 PG_DB="${PG_DB:-uher}"
 PG_DB_OWNER="${PG_DB_OWNER:-sspacee}"
-# 口令来源，优先级：环境变量 > conf/postgres/.env > 脚本里的默认值。
-# 默认值是为了"拉下仓库直接能跑"；要换掉就改这一行，或者用上面两种方式临时覆盖。
+# 口令文件，init.sql 里若改成从文件读取时用得到（当前 init.sql 直接写口令）。
 PG_SECRET_FILE="${PG_SECRET_FILE:-${MYCONF_HOME}/conf/postgres/.env}"
-# 内置默认口令；设成空字符串就变成"必须由环境变量或口令文件提供"。
-PG_SUPER_PASSWORD_DEFAULT="Themass529696"
-PG_SUPER_PASSWORD="${PG_SUPER_PASSWORD:-}"
-# 实际用到的来源，只在日志里显示名字，不显示口令。
-PG_PASSWORD_SOURCE=""
 
 postgres_usage() {
     cat <<EOF
 PostgreSQL 模块:
   setup               首次安装一条龙：install + roles + db（可重复运行）
   install             安装 PostgreSQL ${PG_VERSION}（PGDG 源）并校验系统用户/数据目录
-  roles               创建或更新超级用户: ${PG_SUPER_ROLES}
-  db                  创建库 ${PG_DB}（owner ${PG_DB_OWNER}），授权给 ${PG_SUPER_ROLES}
+  roles               执行 conf/postgres/init.sql 建角色（等同 bash dbinit.sh postgres）
+  db                  建库 ${PG_DB}（owner ${PG_DB_OWNER}）并授权（同上）
   start | stop | restart | status
   check               服务、端口、pg_hba、角色、库、数据目录权限自检
 
 环境变量:
   PG_VERSION          版本，默认 ${PG_VERSION}
   PG_PORT             端口，默认 ${PG_PORT}
-  PG_SUPER_ROLES      超级用户，默认 "${PG_SUPER_ROLES}"
+  PG_SUPER_ROLES      超级用户，默认 "${PG_SUPER_ROLES}"（仅用于自检）
   PG_DB               业务库，默认 ${PG_DB}
   PG_DB_OWNER         业务库 owner，默认 ${PG_DB_OWNER}
-  PG_SUPER_PASSWORD   超级用户口令；不设则依次读 ${PG_SECRET_FILE}、脚本内置默认值
-  PG_SECRET_FILE      口令文件路径，默认 ${PG_SECRET_FILE}（.gitignore 已覆盖）
-  PG_ADMIN_PASSWORD   可选：同时设置 postgres 账号口令（默认走 peer 认证，不设）
 
-口令: 脚本里带了一个默认值，直接跑就能用。改口令用下面任意一种（优先级从高到低）:
-  PG_SUPER_PASSWORD='新口令' bash vpn.sh postgres roles
-  写进 ${PG_SECRET_FILE}
-  改脚本开头的 PG_SUPER_PASSWORD_DEFAULT
-口令不会打印、不会写进日志。写进脚本的值会进入 git 历史，需要保密时改用口令文件。
+口令和授权: 改 conf/postgres/init.sql，然后 bash dbinit.sh postgres
+口令不会打印、不会写进日志。写进 init.sql 的值会进入 git 历史。
 
 文档: docs/postgres.md
 EOF
@@ -143,54 +129,7 @@ pg_ready() {
     su -s /bin/sh postgres -c "pg_isready -q -p ${port}" 2>/dev/null
 }
 
-# ------------------------------------------------------------------ 口令
-
-# 只解析 PG_SUPER_PASSWORD=... 这一行，不 source 文件：口令文件里出现命令也不会被执行。
-# 优先级：环境变量 > 口令文件 > 脚本内置默认值。只记录来源名字，不记录口令本身。
-pg_load_password() {
-    if [ -n "${PG_SUPER_PASSWORD:-}" ]; then
-        PG_PASSWORD_SOURCE="环境变量 PG_SUPER_PASSWORD"
-        return 0
-    fi
-
-    if [ -f "$PG_SECRET_FILE" ]; then
-        local line val
-        line="$(grep -E '^[[:space:]]*PG_SUPER_PASSWORD[[:space:]]*=' "$PG_SECRET_FILE" 2>/dev/null | tail -n 1)"
-        if [ -n "$line" ]; then
-            val="${line#*=}"
-            # 去掉首尾空白和成对的引号
-            val="$(printf '%s' "$val" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-            case "$val" in
-                \'*\') val="${val#\'}"; val="${val%\'}" ;;
-                \"*\") val="${val#\"}"; val="${val%\"}" ;;
-            esac
-            if [ -n "$val" ]; then
-                PG_SUPER_PASSWORD="$val"
-                PG_PASSWORD_SOURCE="$PG_SECRET_FILE"
-                return 0
-            fi
-        fi
-    fi
-
-    # 内置默认值（脚本开头 PG_SUPER_PASSWORD_DEFAULT）。设成空就不再兜底。
-    if [ -n "${PG_SUPER_PASSWORD_DEFAULT:-}" ]; then
-        PG_SUPER_PASSWORD="$PG_SUPER_PASSWORD_DEFAULT"
-        PG_PASSWORD_SOURCE="脚本内置默认值"
-        return 0
-    fi
-    return 1
-}
-
-# 口令文件权限过宽就提醒；不打印内容。
-pg_check_secret_perms() {
-    [ -f "$PG_SECRET_FILE" ] || return 0
-    local mode
-    mode="$(stat -c '%a' "$PG_SECRET_FILE" 2>/dev/null)" || return 0
-    case "$mode" in
-        600 | 400) ;;
-        *) warn "口令文件 ${PG_SECRET_FILE} 权限是 ${mode}，建议 chmod 600（只有 root 能读）" ;;
-    esac
-}
+# ------------------------------------------------------------------ 角色与库
 
 # ------------------------------------------------------------------ 系统用户与数据目录
 
@@ -259,55 +198,17 @@ postgres_install() {
 
 # ------------------------------------------------------------------ 角色与库
 
-# 把口令里的单引号转义成 ''（SQL 字面量规则）。返回值仍然是明文，只经管道进入 psql，不打印。
-pg_sql_quote() {
-    printf '%s' "$1" | sed "s/'/''/g"
-}
-
 postgres_roles() {
     require_root
     pg_require_cluster
     postgres_assert_user
 
-    pg_load_password || die "没有拿到超级用户口令。三选一：
-  1) 改脚本开头的 PG_SUPER_PASSWORD_DEFAULT（最省事，但这个值会进 git 历史）
-  2) export PG_SUPER_PASSWORD='<口令>'  再运行本命令（前面加空格可避开 shell 历史）
-  3) 把 PG_SUPER_PASSWORD='<口令>' 写进 ${PG_SECRET_FILE}（已被 .gitignore 覆盖），然后 chmod 600
-口令不会打印，也不会写进日志。"
-    pg_check_secret_perms
-    log "口令来源: ${PG_PASSWORD_SOURCE}（内容不显示）"
-
-    local pw_sql role exists sql=""
-    pw_sql="$(pg_sql_quote "$PG_SUPER_PASSWORD")"
-
-    for role in $PG_SUPER_ROLES; do
-        case "$role" in
-            postgres) die "PG_SUPER_ROLES 里不要包含 postgres（它由 peer 认证管理）" ;;
-            *[!a-z0-9_]*) die "角色名只能用 a-z 0-9 _: ${role}" ;;
-        esac
-    done
-
-    for role in $PG_SUPER_ROLES; do
-        # 先查再建：CREATE ROLE 不能放在 DO 块里，这样也更容易看清动作。
-        exists="$(printf "SELECT 1 FROM pg_roles WHERE rolname = '%s';\n" "$role" | pg_admin_query | head -n 1)"
-        if [ "$exists" = "1" ]; then
-            sql="${sql}ALTER ROLE ${role} WITH LOGIN SUPERUSER CREATEDB CREATEROLE PASSWORD '${pw_sql}';
-"
-            log "角色 ${role} 已存在，对齐权限和口令"
-        else
-            sql="${sql}CREATE ROLE ${role} WITH LOGIN SUPERUSER CREATEDB CREATEROLE PASSWORD '${pw_sql}';
-"
-            log "创建角色 ${role}"
-        fi
-    done
-
-    printf '%s' "$sql" | pg_admin_psql postgres \
-        || die "设置超级用户失败（口令来自口令文件或环境变量，未显示）"
-
-    for role in $PG_SUPER_ROLES; do
-        log "超级用户 ${role} 已就绪: LOGIN SUPERUSER CREATEDB CREATEROLE（口令已更新，未显示）"
-    done
-    log "本地连接用 scram-sha-256 验证，和操作系统同名用户 ${PG_SUPER_ROLES} 不冲突（只有 postgres 走 peer）"
+    # 角色定义和口令都在 conf/postgres/init.sql，由 dbinit.sh 统一执行。
+    # 这样账号管理和其他数据库放在一起，装完不用重跑安装。
+    local script="${VPN_SHELL_DIR}/dbinit.sh"
+    [ -f "$script" ] || die "缺少 ${script}"
+    bash "$script" postgres || return 1
+    log "角色的定义在 conf/postgres/init.sql（改完重跑: bash dbinit.sh postgres）"
 }
 
 postgres_db() {
@@ -315,52 +216,10 @@ postgres_db() {
     pg_require_cluster
     postgres_assert_user
 
-    local owner="$PG_DB_OWNER" exists
-    case "$owner" in
-        '' | *[!a-z0-9_]*) die "PG_DB_OWNER 不合法: ${owner}" ;;
-    esac
-    case "$PG_DB" in
-        '' | *[!a-zA-Z0-9_]*) die "PG_DB 不合法: ${PG_DB}" ;;
-        [0-9]*) die "PG_DB 不能以数字开头: ${PG_DB}" ;;
-    esac
-
-    exists="$(printf "SELECT 1 FROM pg_database WHERE datname = '%s';\n" "$PG_DB" | pg_admin_query | head -n 1)"
-    if [ "$exists" = "1" ]; then
-        log "库 ${PG_DB} 已存在，只补齐 owner 和权限"
-        printf 'ALTER DATABASE %s OWNER TO %s;\n' "$PG_DB" "$owner" | pg_admin_psql postgres \
-            || die "修改库 ${PG_DB} 的 owner 失败"
-    else
-        printf 'CREATE DATABASE %s OWNER %s ENCODING %s;\n' "$PG_DB" "$owner" "UTF8" | pg_admin_psql postgres \
-            || die "创建库 ${PG_DB} 失败"
-        log "库 ${PG_DB} 已创建（owner ${owner}）"
-    fi
-
-    # 授权分三层，缺一层就会出现"超级用户能用、别人看不见"的情况：
-    #   1) 库级：CONNECT / TEMP / CREATE
-    #   2) schema 级：public schema 改成 owner，并对两个角色全权
-    #   3) 默认权限：将来新建的表/序列/函数自动带权限（ALTER DEFAULT PRIVILEGES 只对指定角色生效，
-    #      所以 sspacee 和 root 各设一遍）
-    local roles_csv="" grant_sql
-    for grant_sql in $PG_SUPER_ROLES; do
-        roles_csv="${roles_csv:+${roles_csv},}${grant_sql}"
-    done
-    [ -n "$roles_csv" ] || die "PG_SUPER_ROLES 为空"
-
-    {
-        printf 'GRANT ALL PRIVILEGES ON DATABASE %s TO %s;\n' "$PG_DB" "$roles_csv"
-        printf 'ALTER SCHEMA public OWNER TO %s;\n' "$owner"
-        printf 'GRANT ALL PRIVILEGES ON SCHEMA public TO %s;\n' "$roles_csv"
-        printf 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO %s;\n' "$roles_csv"
-        printf 'GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO %s;\n' "$roles_csv"
-        printf 'GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO %s;\n' "$roles_csv"
-        for grant_sql in $PG_SUPER_ROLES; do
-            printf 'ALTER DEFAULT PRIVILEGES FOR ROLE %s IN SCHEMA public GRANT ALL ON TABLES TO %s;\n' "$grant_sql" "$roles_csv"
-            printf 'ALTER DEFAULT PRIVILEGES FOR ROLE %s IN SCHEMA public GRANT ALL ON SEQUENCES TO %s;\n' "$grant_sql" "$roles_csv"
-            printf 'ALTER DEFAULT PRIVILEGES FOR ROLE %s IN SCHEMA public GRANT ALL ON FUNCTIONS TO %s;\n' "$grant_sql" "$roles_csv"
-        done
-    } | pg_admin_psql "$PG_DB" || die "库 ${PG_DB} 授权失败"
-
-    log "库 ${PG_DB}: owner ${owner}，${roles_csv} 已获得库/schema/默认权限（新建对象自动可见）"
+    # 建库和授权都在 dbinit.sh 里（它先保证库存在，再执行 init.sql 的 GRANT）。
+    local script="${VPN_SHELL_DIR}/dbinit.sh"
+    [ -f "$script" ] || die "缺少 ${script}"
+    bash "$script" postgres || return 1
 }
 
 postgres_setup() {

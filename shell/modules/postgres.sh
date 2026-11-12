@@ -26,9 +26,11 @@ PG_PORT="${PG_PORT:-5432}"
 # 超级用户清单：默认 root 和 sspacee，都是 SUPERUSER + CREATEDB + CREATEROLE。
 # 仅用于状态显示和自检；真正建角色的是 conf/postgres/init.sql。
 PG_SUPER_ROLES="${PG_SUPER_ROLES:-root sspacee}"
-# 业务库，owner 默认给 sspacee。
-PG_DB="${PG_DB:-uher}"
+# 业务库清单，空格分隔；check 会逐个核对。真正建库的是 dbinit.sh。
+PG_DBS="${PG_DBS:-uher job_come}"
 PG_DB_OWNER="${PG_DB_OWNER:-sspacee}"
+# 兼容旧的单库变量：只用于 setup 结束时的连接串提示。
+PG_DB="${PG_DB:-${PG_DBS%% *}}"
 # 口令文件，init.sql 里若改成从文件读取时用得到（当前 init.sql 直接写口令）。
 PG_SECRET_FILE="${PG_SECRET_FILE:-${MYCONF_HOME}/conf/postgres/.env}"
 
@@ -38,7 +40,7 @@ PostgreSQL 模块:
   setup               首次安装一条龙：install + roles + db（可重复运行）
   install             安装 PostgreSQL ${PG_VERSION}（PGDG 源）并校验系统用户/数据目录
   roles               执行 conf/postgres/init.sql 建角色（等同 bash dbinit.sh postgres）
-  db                  建库 ${PG_DB}（owner ${PG_DB_OWNER}）并授权（同上）
+  db                  建库 ${PG_DBS}（owner ${PG_DB_OWNER}）并授权（同上）
   start | stop | restart | status
   check               服务、端口、pg_hba、角色、库、数据目录权限自检
 
@@ -46,7 +48,7 @@ PostgreSQL 模块:
   PG_VERSION          版本，默认 ${PG_VERSION}
   PG_PORT             端口，默认 ${PG_PORT}
   PG_SUPER_ROLES      超级用户，默认 "${PG_SUPER_ROLES}"（仅用于自检）
-  PG_DB               业务库，默认 ${PG_DB}
+  PG_DBS              业务库，空格分隔，默认 "${PG_DBS}"
   PG_DB_OWNER         业务库 owner，默认 ${PG_DB_OWNER}
 
 口令和授权: 改 conf/postgres/init.sql，然后 bash dbinit.sh postgres
@@ -354,7 +356,7 @@ postgres_check() {
     done
 
     echo "== 数据库 =="
-    for db in $PG_DB; do
+    for db in ${PG_DBS:-uher}; do
         printf "SELECT datname || ' owner=' || pg_get_userbyid(datdba) FROM pg_database WHERE datname = '%s';\n" "$db" \
             | pg_admin_query | sed 's/^/  /'
     done

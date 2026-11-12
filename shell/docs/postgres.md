@@ -19,6 +19,40 @@
 
 - **软件包**：官方 PGDG apt 源（签名验证过）安装 `postgresql-17` + `postgresql-client-17`。
   Ubuntu 22.04 (jammy) 自带 14，所以走 PGDG；版本由 `PG_VERSION` 控制，默认 17。
+
+### 操作系统兼容性
+
+PGDG 只为**最近几个发行版**出包，源地址里的 suite 由系统自己的 codename 决定
+（`<codename>-pgdg`），不是写死的。当前允许：
+
+| 发行版 | codename | PGDG |
+|---|---|---|
+| Ubuntu 22.04 | `jammy` | ✅ |
+| Ubuntu 24.04 | `noble` | ✅ |
+| Debian 12 | `bookworm` | ✅ |
+| Debian 13 | `trixie` | ✅ |
+| **Ubuntu 18.04** | `bionic` | ❌ 仓库 404 |
+| **Ubuntu 20.04** | `focal` | ❌ 仓库 404 |
+
+查一下当前是否还能用（404 就是不能）：
+
+```bash
+curl -o /dev/null -w '%{http_code}\n' https://apt.postgresql.org/pub/repos/apt/dists/jammy-pgdg/Release
+```
+
+**18.04 / 20.04 怎么办**：不要在旧系统上凑。UEFI 对齐的路径是先升级系统再装 PG：
+
+1. 备份这台机器上现有的数据库和配置（`pg_dumpall`，见第 9 节）。
+2. `sudo do-release-upgrade`，18.04 → 20.04，再执行一次 20.04 → 22.04。
+   **Ubuntu 不允许一次跨两个 LTS**，必须分两步。
+3. 升级完确认 `lsb_release -cs` 是 `jammy`，再回到
+   `bash vpn.sh postgres setup`。
+
+在 18.04 上装自带的 PostgreSQL 10 也能跑，但 PG 10 已于 2022-11 停止安全维护，
+不建议作为长期方案。如果确实必须留在旧系统，注意 PG 10–13 的
+`password_encryption` 默认是 `md5`，与本项目的 `scram-sha-256` 认证不兼容，
+必须在 `90-vpn.conf` 里显式设成 `scram-sha-256` 并重建角色口令。
+
 - **集群**：Debian 的包管理方式，一个版本一个 cluster，名字 `main`。
   实际路径都带版本号，升级大版本会新增 `postgresql/<新版本>/main`，旧集群保留。
 - **安装入口**：

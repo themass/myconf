@@ -172,6 +172,8 @@ infra_redis() {
 # ------------------------------------------------------------------ PostgreSQL
 
 # PostgreSQL 来自官方 PGDG apt 源（签名验证）。jammy 自带的是 14，PG 17 是当前稳定版。
+# 发行版支持范围很窄：PGDG 现在只为 jammy / noble（Ubuntu）和 bookworm / trixie（Debian）出包，
+# bionic(18.04)、focal(20.04) 已经 404。硬拦在下面，比装到一半失败好查。
 PG_VERSION="${PG_VERSION:-17}"
 PG_PORT="${PG_PORT:-5432}"
 PG_REPO="${PG_REPO:-https://apt.postgresql.org/pub/repos/apt}"
@@ -191,20 +193,43 @@ infra_pg_net() {
 infra_postgres() {
     require_root
     infra_need_apt
-    [ "$(detect_arch)" = "amd64" ] || die "PGDG 源这里只验证过 amd64"
+    # PGDG 对所有发行版都出 amd64；arm64 只在 LTS 上有。其它架构没有包。
+    case "$(detect_arch)" in
+        amd64 | arm64) ;;
+        *) die "PGDG 源只提供 amd64 和 arm64 的包，当前架构: $(uname -m)" ;;
+    esac
     # shellcheck disable=SC1091
     . /etc/os-release
-    [ "${ID:-}" = "ubuntu" ] && [ "${VERSION_CODENAME:-}" = "jammy" ] \
-        || die "PGDG 源按 Ubuntu 22.04 (jammy) 验证过，当前: ${ID:-?} ${VERSION_CODENAME:-?}"
-    ensure_cmds gpg:gnupg curl
-    local v="$PG_VERSION" key ip net listen unit="postgresql@${PG_VERSION}-main" conf_dir data_dir
+    # 用系统自己的 codename，不要写死：PGDG 只保留最近的几个 LTS，
+    # bionic(18.04) 和 focal(20.04) 已经不再出包（仓库 404）。
+    # 支持列表见 https://www.postgresql.org/download/linux/ubuntu/
+    local codename="${VERSION_CODENAME:-}" key ip net listen conf_dir data_dir v="$PG_VERSION"
+    local unit="postgresql@${PG_VERSION}-main"
+    case "${ID:-}" in
+        ubuntu) ;;
+        debian) codename="${VERSION_CODENAME:-}" ;;
+        *) die "infra.sh postgres 只支持 Ubuntu / Debian，当前: ${ID:-unknown}" ;;
+    esac
+    case "$codename" in
+        jammy | noble | bookworm | trixie) ;;
+        '')
+            die "读不到系统 codename（/etc/os-release 里没有 VERSION_CODENAME）"
+            ;;
+        *)
+            die "PGDG 已经不为 ${codename} 出包（仓库会 404）。Ubuntu 18.04/20.04 需要先升级到 22.04：
+  1) 备份数据库和配置
+  2) do-release-upgrade 升到 20.04，再升到 22.04（不能一步跨两个 LTS）
+  3) 回到本脚本重新安装
+详见 docs/postgres.md 的“操作系统兼容性”一节"
+            ;;
+    esac
     case "$v" in 1[3-9]) ;; *) die "PG_VERSION 不对: ${v}（如 17）" ;; esac
 
     key="$(mktemp "${TMPDIR:-/tmp}/pgdg-key.XXXXXX")" || die "无法创建临时文件"
     download "$PG_KEY_URL" "$key" || die "下载 PGDG 签名密钥失败"
     gpg --batch --yes --dearmor -o /usr/share/keyrings/pgdg.gpg "$key" || die "导入签名密钥失败"
     rm -f "$key"
-    printf 'deb [signed-by=/usr/share/keyrings/pgdg.gpg] %s jammy-pgdg main\n' "$PG_REPO" \
+    printf 'deb [signed-by=/usr/share/keyrings/pgdg.gpg] %s %s-pgdg main\n' "$PG_REPO" "$codename" \
         >/etc/apt/sources.list.d/pgdg.list
     apt-get -o DPkg::Lock::Timeout=300 update || die "apt-get update 失败（PGDG 源）"
     infra_apt_install "postgresql-${v}" "postgresql-client-${v}" || die "postgresql-${v} 安装失败"

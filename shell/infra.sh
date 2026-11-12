@@ -462,69 +462,53 @@ radius_install_sql_module() {
     local tmp
     tmp="$(mktemp "${TMPDIR:-/tmp}/sqlmod.XXXXXX")" || die "无法创建临时文件"
     # 3.2.x 的模板把连接参数整段注释掉了，而且默认 dialect=sqlite / driver=rlm_sql_null
-    # （只把 SQL 记到文件里，不连数据库）。所以这里必须同时处理"已注释"和"未注释"两种写法，
+    # （只把 SQL 记到文件里，不连数据库）。所以必须同时处理"已注释"和"未注释"两种写法，
     # 并且把 dialect / driver 一起改掉，否则认证永远查不到库。
     #
-    # 关键：只改 **sql {} 块的第一层**。模板里还有 sqlite{}、mysql{}、mongo{}、postgresql{}
-    # 这些子块，mongo 的 tls{} 里同样有 certificate_file / ca_file / password 之类的名字，
-    # 按"第一次出现"替换会把口令写进 mongo 的 tls 块，MySQL 那边反而没有口令
-    # （表现为 "Access denied ... using password: NO"）。
-    local line out=""
-    local depth=0 in_sql=0
-    local done_dialect=0 done_driver=0 done_server=0 done_port=0 done_login=0 done_pass=0 done_db=0
-    while IFS= read -r line || [ -n "$line" ]; do
-        # 进入顶层的 sql { 块
-        if [ "$in_sql" -eq 0 ] && printf '%s' "$line" | grep -qE '^[[:space:]]*sql[[:space:]]*\{[[:space:]]*$'; then
-            in_sql=1; depth=1; out="${out}${line}"$'\n'; continue
-        fi
-        if [ "$in_sql" -eq 1 ]; then
-            # 括号只数非注释行。模板里有大段被注释掉的示例块（# postgresql { ... # }），
-            # 把它们也算进深度会让 depth 永远回不到 1，连接参数就一个都替换不到。
-            case "$line" in
-                [[:space:]]*\#*) ;;   # 注释行，不计深度
-                *"{"*) depth=$((depth + 1)) ;;
-                *"}"*) depth=$((depth - 1)) ;;
-            esac
-            # 只在 depth==1（sql 块内、任何子块外）时替换。
-            # 模板里的连接参数是 "#\tserver = \"localhost\"" 这种「注释 + 一个制表符」的形式，
-            # 而 dialet/driver 在前面是未注释的，两种都要认。
-            if [ "$depth" -eq 1 ]; then
-                # 未注释：[[:space:]]key = ；注释掉并缩进：[[:space:]]*#[[:space:]]key =
-                case "$line" in
-                    [[:space:]]*dialect[[:space:]]*=* | [[:space:]]*driver[[:space:]]*=* | \
-                    [[:space:]]*server[[:space:]]*=* | [[:space:]]*port[[:space:]]*=* | \
-                    [[:space:]]*login[[:space:]]*=* | [[:space:]]*password[[:space:]]*=* | \
-                    [[:space:]]*radius_db[[:space:]]*=* | \
-                    [[:space:]]*\#[[:space:]]dialect[[:space:]]*=* | [[:space:]]*\#[[:space:]]driver[[:space:]]*=* | \
-                    [[:space:]]*\#[[:space:]]server[[:space:]]*=* | [[:space:]]*\#[[:space:]]port[[:space:]]*=* | \
-                    [[:space:]]*\#[[:space:]]login[[:space:]]*=* | [[:space:]]*\#[[:space:]]password[[:space:]]*=* | \
-                    [[:space:]]*\#[[:space:]]radius_db[[:space:]]*=*)
-                        # 取出这个 key（去掉缩进、# 和空白）
-                        k="${line#"${line%%[![:space:]]*}"}"   # 去前导空白
-                        k="${k#\#}"
-                        k="${k#"${k%%[![:space:]]*}"}"
-                        k="${k%%[[:space:]]*=*}"
-                        case "$k" in
-                            dialect)   if [ $done_dialect -eq 0 ]; then out="${out}"$'\t''dialect = "mysql"'$'\n'; done_dialect=1; continue; fi ;;
-                            driver)    if [ $done_driver -eq 0 ];  then out="${out}"$'\t''driver = "rlm_sql_mysql"'$'\n'; done_driver=1; continue; fi ;;
-                            server)    if [ $done_server -eq 0 ];  then out="${out}"$'\t''server = "'"${host}"'"'$'\n'; done_server=1; continue; fi ;;
-                            port)      if [ $done_port -eq 0 ];    then out="${out}"$'\t''port = '"${port:-3306}"$'\n'; done_port=1; continue; fi ;;
-                            login)     if [ $done_login -eq 0 ];   then out="${out}"$'\t''login = "'"${login}"'"'$'\n'; done_login=1; continue; fi ;;
-                            password)  if [ $done_pass -eq 0 ];    then out="${out}"$'\t''password = "'"${pass}"'"'$'\n'; done_pass=1; continue; fi ;;
-                            radius_db) if [ $done_db -eq 0 ];      then out="${out}"$'\t''radius_db = "'"${db:-radius}"'"'$'\n'; done_db=1; continue; fi ;;
-                        esac
-                        ;;
-                esac
-            fi
-            if [ "$depth" -eq 0 ]; then in_sql=0; fi
-        fi
-        out="${out}${line}"$'\n'
-    done <"$tmpl"
-    printf '%s' "$out" >"$tmp"
-
-    # 四个连接参数都必须真的落在 sql 块第一层，否则宁可失败也不要写出一份连不上库的配置。
-    [ $done_server -eq 1 ] && [ $done_pass -eq 1 ] && [ $done_login -eq 1 ] && [ $done_dialect -eq 1 ] \
-        || die "${dst} 的模板结构和预期不一致（找不到顶层连接参数），需要人工检查"
+    # 两个坑（都在真实模板上踩过）：
+    #   1. 只改 sql {} 的**第一层**。模板里还有 sqlite{}、mysql{}、mongo{}、postgresql{}
+    #      子块，mongo 的 tls{} 里同样有 password，按"第一次出现"替换会把口令写进
+    #      mongo 块，MySQL 那边反而没口令（报 "using password: NO"）。
+    #   2. 嵌套深度只在**非注释行**上统计。模板有大段 # postgresql { ... } 之类的
+    #      注释示例，把它们算进去会让 depth 永远回不到 1。
+    #   3. 连接参数那几行是 "#\tserver = ..."（行首就是 #），剥离时要先剥前导空白
+    #      再剥 #，否则 key 取成空串，一个都替换不到。
+    #
+    # 用 awk 而不是 bash 循环：这套逻辑在 bash 里容易写错，awk 版本已在真实模板上验证。
+    awk -v HOST="$host" -v PORT="${port:-3306}" -v LOGIN="$login" -v PASS="$pass" -v DBNAME="${db:-radius}" '
+    BEGIN { d_dialect=0; d_driver=0; d_server=0; d_port=0; d_login=0; d_pass=0; d_db=0 }
+    {
+        if (!in_sql && $0 ~ /^[[:space:]]*sql[[:space:]]*\{[[:space:]]*$/) {
+            in_sql = 1; depth = 1; print; next
+        }
+        if (in_sql) {
+            if ($0 !~ /^[[:space:]]*#/) {
+                t = $0
+                depth += gsub(/\{/, "{", t) - gsub(/\}/, "}", t)
+            }
+            if (depth == 1) {
+                key = $0
+                sub(/^[[:space:]]*/, "", key)
+                sub(/^#/, "", key)
+                sub(/^[[:space:]]*/, "", key)
+                sub(/[[:space:]]*=.*$/, "", key)
+                if (key == "dialect"   && !d_dialect) { print "\tdialect = \"mysql\"";       d_dialect=1; next }
+                if (key == "driver"    && !d_driver)  { print "\tdriver = \"rlm_sql_mysql\""; d_driver=1;  next }
+                if (key == "server"    && !d_server)  { print "\tserver = \"" HOST "\"";      d_server=1;  next }
+                if (key == "port"      && !d_port)    { print "\tport = " PORT;               d_port=1;    next }
+                if (key == "login"     && !d_login)   { print "\tlogin = \"" LOGIN "\"";      d_login=1;   next }
+                if (key == "password"  && !d_pass)    { print "\tpassword = \"" PASS "\"";    d_pass=1;    next }
+                if (key == "radius_db" && !d_db)      { print "\tradius_db = \"" DBNAME "\""; d_db=1;      next }
+            }
+            if (depth <= 0) in_sql = 0
+        }
+        print
+    }
+    END {
+        if (!d_dialect || !d_driver || !d_server || !d_login || !d_pass || !d_db) exit 3
+    }
+    ' "$tmpl" >"$tmp" \
+        || { rm -f "$tmp"; die "${tmpl} 的模板结构和预期不一致（找不到 sql 块第一层的连接参数），需要人工检查"; }
 
     for k in dialect driver server port login password radius_db; do
         grep -qE "^[[:space:]]*${k}[[:space:]]*=" "$tmp" \

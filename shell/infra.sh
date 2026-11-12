@@ -428,7 +428,12 @@ infra_radius() {
 
     # 用包自带的配置做语法检查，失败就不启动。
     freeradius -XC -d "$RADIUS_ETC" >/dev/null 2>&1 || die "配置检查失败，运行: freeradius -XC -d ${RADIUS_ETC} 看具体错误"
+    # svc_enable_restart 只返回 systemctl 的退出码；systemd 有时明明失败了也返回 0，
+    # 所以启动后再确认一次真的在跑，否则会把失败报成成功。
     svc_enable_restart freeradius
+    sleep 2
+    svc_is_active freeradius \
+        || die "FreeRADIUS 启动失败: journalctl -u freeradius -n 30（常见原因：数据库连不上、证书缺失）"
     log "FreeRADIUS $(freeradius -v 2>/dev/null | head -n 1 | grep -oE '[0-9.]+' | head -n 1) 已启动（systemd: freeradius）"
     log "日常更新 clients.conf 和重启: bash radius.sh clients"
 }
@@ -450,29 +455,51 @@ radius_install_sql_module() {
     # （只把 SQL 记到文件里，不连数据库）。所以这里必须同时处理"已注释"和"未注释"两种写法，
     # 并且把 dialect / driver 一起改掉，否则认证永远查不到库。
     #
-    # 每个键只替换第一次出现：server 后面还有一行 mongodb 的示例，不能一起改。
+    # 关键：只改 **sql {} 块的第一层**。模板里还有 sqlite{}、mysql{}、mongo{}、postgresql{}
+    # 这些子块，mongo 的 tls{} 里同样有 certificate_file / ca_file / password 之类的名字，
+    # 按"第一次出现"替换会把口令写进 mongo 的 tls 块，MySQL 那边反而没有口令
+    # （表现为 "Access denied ... using password: NO"）。
     local line out=""
+    local depth=0 in_sql=0
     local done_dialect=0 done_driver=0 done_server=0 done_port=0 done_login=0 done_pass=0 done_db=0
     while IFS= read -r line || [ -n "$line" ]; do
-        case "$line" in
-            [[:space:]]*dialect[[:space:]]*=* | \#*dialect[[:space:]]*=*)
-                if [ $done_dialect -eq 0 ]; then out="${out}"$'\t''dialect = "mysql"'$'\n'; done_dialect=1; continue; fi ;;
-            [[:space:]]*driver[[:space:]]*=* | \#*driver[[:space:]]*=*)
-                if [ $done_driver -eq 0 ]; then out="${out}"$'\t''driver = "rlm_sql_mysql"'$'\n'; done_driver=1; continue; fi ;;
-            [[:space:]]*server[[:space:]]*=* | \#*server[[:space:]]*=*)
-                if [ $done_server -eq 0 ]; then out="${out}"$'\t''server = "'"${host}"'"'$'\n'; done_server=1; continue; fi ;;
-            [[:space:]]*port[[:space:]]*=* | \#*port[[:space:]]*=*)
-                if [ $done_port -eq 0 ]; then out="${out}"$'\t''port = '"${port:-3306}"$'\n'; done_port=1; continue; fi ;;
-            [[:space:]]*login[[:space:]]*=* | \#*login[[:space:]]*=*)
-                if [ $done_login -eq 0 ]; then out="${out}"$'\t''login = "'"${login}"'"'$'\n'; done_login=1; continue; fi ;;
-            [[:space:]]*password[[:space:]]*=* | \#*password[[:space:]]*=*)
-                if [ $done_pass -eq 0 ]; then out="${out}"$'\t''password = "'"${pass}"'"'$'\n'; done_pass=1; continue; fi ;;
-            [[:space:]]*radius_db[[:space:]]*=* | \#*radius_db[[:space:]]*=*)
-                if [ $done_db -eq 0 ]; then out="${out}"$'\t''radius_db = "'"${db:-radius}"'"'$'\n'; done_db=1; continue; fi ;;
-        esac
+        # 进入顶层的 sql { 块
+        if [ "$in_sql" -eq 0 ] && printf '%s' "$line" | grep -qE '^[[:space:]]*sql[[:space:]]*\{[[:space:]]*$'; then
+            in_sql=1; depth=1; out="${out}${line}"$'\n'; continue
+        fi
+        if [ "$in_sql" -eq 1 ]; then
+            case "$line" in
+                *"{"*) depth=$((depth + 1)) ;;
+                *"}"*) depth=$((depth - 1)) ;;
+            esac
+            # 只在 depth==1（sql 块内、任何子块外）时替换
+            if [ "$depth" -eq 1 ]; then
+                case "$line" in
+                    [[:space:]]*dialect[[:space:]]*=* | \#*dialect[[:space:]]*=*)
+                        if [ $done_dialect -eq 0 ]; then out="${out}"$'\t''dialect = "mysql"'$'\n'; done_dialect=1; continue; fi ;;
+                    [[:space:]]*driver[[:space:]]*=* | \#*driver[[:space:]]*=*)
+                        if [ $done_driver -eq 0 ]; then out="${out}"$'\t''driver = "rlm_sql_mysql"'$'\n'; done_driver=1; continue; fi ;;
+                    [[:space:]]*server[[:space:]]*=* | \#*server[[:space:]]*=*)
+                        if [ $done_server -eq 0 ]; then out="${out}"$'\t''server = "'"${host}"'"'$'\n'; done_server=1; continue; fi ;;
+                    [[:space:]]*port[[:space:]]*=* | \#*port[[:space:]]*=*)
+                        if [ $done_port -eq 0 ]; then out="${out}"$'\t''port = '"${port:-3306}"$'\n'; done_port=1; continue; fi ;;
+                    [[:space:]]*login[[:space:]]*=* | \#*login[[:space:]]*=*)
+                        if [ $done_login -eq 0 ]; then out="${out}"$'\t''login = "'"${login}"'"'$'\n'; done_login=1; continue; fi ;;
+                    [[:space:]]*password[[:space:]]*=* | \#*password[[:space:]]*=*)
+                        if [ $done_pass -eq 0 ]; then out="${out}"$'\t''password = "'"${pass}"'"'$'\n'; done_pass=1; continue; fi ;;
+                    [[:space:]]*radius_db[[:space:]]*=* | \#*radius_db[[:space:]]*=*)
+                        if [ $done_db -eq 0 ]; then out="${out}"$'\t''radius_db = "'"${db:-radius}"'"'$'\n'; done_db=1; continue; fi ;;
+                esac
+            fi
+            if [ "$depth" -eq 0 ]; then in_sql=0; fi
+        fi
         out="${out}${line}"$'\n'
     done <"$dst"
     printf '%s' "$out" >"$tmp"
+
+    # 四个连接参数都必须真的落在 sql 块第一层，否则宁可失败也不要写出一份连不上库的配置。
+    [ $done_server -eq 1 ] && [ $done_pass -eq 1 ] && [ $done_login -eq 1 ] && [ $done_dialect -eq 1 ] \
+        || die "${dst} 的模板结构和预期不一致（找不到顶层连接参数），需要人工检查"
 
     for k in dialect driver server port login password radius_db; do
         grep -qE "^[[:space:]]*${k}[[:space:]]*=" "$tmp" \

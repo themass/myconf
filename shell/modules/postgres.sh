@@ -14,9 +14,12 @@
 #     只做"装好之后还要什么"的部分，避免两份配置漂移。
 #   - 数据库里一律使用系统包自带的 postgres 用户（Debian 包创建的系统用户，不是 root），
 #     数据目录 /var/lib/postgresql/<版本>/<cluster> 只属于它。
-#   - 口令只从环境变量 PG_SUPER_PASSWORD 或 conf/postgres/.env（已被 .gitignore 覆盖）读取，
-#     通过 psql 的标准输入传给服务器：不进命令行参数（ps 看不到）、不写日志、不回显。
-#     仓库里不保存任何口令。
+#   - 口令写在下面的 PG_SUPER_PASSWORD 默认值里（按用户要求方便直接跑）。这只是一个**默认值**：
+#     环境变量或 conf/postgres/.env 都能覆盖它。改动口令：改这一行，或
+#     PG_SUPER_PASSWORD='新口令' bash vpn.sh postgres roles。
+#     注意：写进仓库意味着它进 git 历史，改掉之后旧值仍然存在；仓库若是公开的，等于公开口令。
+#     比较正式的环境请把这一行清空，改用 conf/postgres/.env（.gitignore 已覆盖）。
+#   - 口令通过 psql 的标准输入传给服务器：不进命令行参数（ps 看不到）、不写日志、不回显。
 #   - 所有 SQL 都是幂等的：角色存在就 ALTER 对齐权限，库存在就跳过创建。
 #
 # 详见 docs/postgres.md。
@@ -28,9 +31,14 @@ PG_SUPER_ROLES="${PG_SUPER_ROLES:-root sspacee}"
 # 业务库，owner 默认给 sspacee；root 是超级用户，另外再显式授权一次。
 PG_DB="${PG_DB:-uher}"
 PG_DB_OWNER="${PG_DB_OWNER:-sspacee}"
-# 口令来源：环境变量优先，其次这个本地文件（.gitignore 里的 .env 规则覆盖它）。
+# 口令来源，优先级：环境变量 > conf/postgres/.env > 脚本里的默认值。
+# 默认值是为了"拉下仓库直接能跑"；要换掉就改这一行，或者用上面两种方式临时覆盖。
 PG_SECRET_FILE="${PG_SECRET_FILE:-${MYCONF_HOME}/conf/postgres/.env}"
+# 内置默认口令；设成空字符串就变成"必须由环境变量或口令文件提供"。
+PG_SUPER_PASSWORD_DEFAULT="Themass529696"
 PG_SUPER_PASSWORD="${PG_SUPER_PASSWORD:-}"
+# 实际用到的来源，只在日志里显示名字，不显示口令。
+PG_PASSWORD_SOURCE=""
 
 postgres_usage() {
     cat <<EOF
@@ -48,12 +56,15 @@ PostgreSQL 模块:
   PG_SUPER_ROLES      超级用户，默认 "${PG_SUPER_ROLES}"
   PG_DB               业务库，默认 ${PG_DB}
   PG_DB_OWNER         业务库 owner，默认 ${PG_DB_OWNER}
-  PG_SUPER_PASSWORD   超级用户口令；不设则读 ${PG_SECRET_FILE}（只读，不执行文件内容）
+  PG_SUPER_PASSWORD   超级用户口令；不设则依次读 ${PG_SECRET_FILE}、脚本内置默认值
   PG_SECRET_FILE      口令文件路径，默认 ${PG_SECRET_FILE}（.gitignore 已覆盖）
   PG_ADMIN_PASSWORD   可选：同时设置 postgres 账号口令（默认走 peer 认证，不设）
 
-注意: 口令不会打印、不会写进日志。不要用 PG_SUPER_PASSWORD=... 直接写在命令行里，
-      那会留在 shell 历史里；用 export、read -s 或口令文件。
+口令: 脚本里带了一个默认值，直接跑就能用。改口令用下面任意一种（优先级从高到低）:
+  PG_SUPER_PASSWORD='新口令' bash vpn.sh postgres roles
+  写进 ${PG_SECRET_FILE}
+  改脚本开头的 PG_SUPER_PASSWORD_DEFAULT
+口令不会打印、不会写进日志。写进脚本的值会进入 git 历史，需要保密时改用口令文件。
 
 文档: docs/postgres.md
 EOF
@@ -135,23 +146,39 @@ pg_ready() {
 # ------------------------------------------------------------------ 口令
 
 # 只解析 PG_SUPER_PASSWORD=... 这一行，不 source 文件：口令文件里出现命令也不会被执行。
+# 优先级：环境变量 > 口令文件 > 脚本内置默认值。只记录来源名字，不记录口令本身。
 pg_load_password() {
-    [ -n "${PG_SUPER_PASSWORD:-}" ] && return 0
-    [ -f "$PG_SECRET_FILE" ] || return 1
+    if [ -n "${PG_SUPER_PASSWORD:-}" ]; then
+        PG_PASSWORD_SOURCE="环境变量 PG_SUPER_PASSWORD"
+        return 0
+    fi
 
-    local line val
-    line="$(grep -E '^[[:space:]]*PG_SUPER_PASSWORD[[:space:]]*=' "$PG_SECRET_FILE" 2>/dev/null | tail -n 1)"
-    [ -n "$line" ] || return 1
-    val="${line#*=}"
-    # 去掉首尾空白和成对的引号
-    val="$(printf '%s' "$val" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-    case "$val" in
-        \'*\') val="${val#\'}"; val="${val%\'}" ;;
-        \"*\") val="${val#\"}"; val="${val%\"}" ;;
-    esac
-    [ -n "$val" ] || return 1
-    PG_SUPER_PASSWORD="$val"
-    return 0
+    if [ -f "$PG_SECRET_FILE" ]; then
+        local line val
+        line="$(grep -E '^[[:space:]]*PG_SUPER_PASSWORD[[:space:]]*=' "$PG_SECRET_FILE" 2>/dev/null | tail -n 1)"
+        if [ -n "$line" ]; then
+            val="${line#*=}"
+            # 去掉首尾空白和成对的引号
+            val="$(printf '%s' "$val" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+            case "$val" in
+                \'*\') val="${val#\'}"; val="${val%\'}" ;;
+                \"*\") val="${val#\"}"; val="${val%\"}" ;;
+            esac
+            if [ -n "$val" ]; then
+                PG_SUPER_PASSWORD="$val"
+                PG_PASSWORD_SOURCE="$PG_SECRET_FILE"
+                return 0
+            fi
+        fi
+    fi
+
+    # 内置默认值（脚本开头 PG_SUPER_PASSWORD_DEFAULT）。设成空就不再兜底。
+    if [ -n "${PG_SUPER_PASSWORD_DEFAULT:-}" ]; then
+        PG_SUPER_PASSWORD="$PG_SUPER_PASSWORD_DEFAULT"
+        PG_PASSWORD_SOURCE="脚本内置默认值"
+        return 0
+    fi
+    return 1
 }
 
 # 口令文件权限过宽就提醒；不打印内容。
@@ -242,11 +269,13 @@ postgres_roles() {
     pg_require_cluster
     postgres_assert_user
 
-    pg_load_password || die "没有拿到超级用户口令。二选一：
-  1) export PG_SUPER_PASSWORD='<口令>'  再用同一行运行本命令（前面加空格可避开 shell 历史）
-  2) 把 PG_SUPER_PASSWORD='<口令>' 写进 ${PG_SECRET_FILE}（已被 .gitignore 覆盖），然后 chmod 600
+    pg_load_password || die "没有拿到超级用户口令。三选一：
+  1) 改脚本开头的 PG_SUPER_PASSWORD_DEFAULT（最省事，但这个值会进 git 历史）
+  2) export PG_SUPER_PASSWORD='<口令>'  再运行本命令（前面加空格可避开 shell 历史）
+  3) 把 PG_SUPER_PASSWORD='<口令>' 写进 ${PG_SECRET_FILE}（已被 .gitignore 覆盖），然后 chmod 600
 口令不会打印，也不会写进日志。"
     pg_check_secret_perms
+    log "口令来源: ${PG_PASSWORD_SOURCE}（内容不显示）"
 
     local pw_sql role exists sql=""
     pw_sql="$(pg_sql_quote "$PG_SUPER_PASSWORD")"

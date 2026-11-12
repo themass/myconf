@@ -87,13 +87,18 @@
   不存在才 `CREATE`。
 - 两个账号的权限完全一致；之所以建两个，是历史习惯（root 用于个人运维，sspacee 用于应用侧）。
   真要收敛权限时改成 `CREATEDB` 即可，改 `PG_SUPER_ROLES` 之外的代码不用动。
-- 口令：**仓库里没有，`git log` 里也没有**。脚本只从下面两处读，读不到就报错退出：
-  1. 环境变量 `PG_SUPER_PASSWORD`（本次命令有效）；
-  2. `conf/postgres/.env` 里的 `PG_SUPER_PASSWORD='...'`（已被 `.gitignore` 覆盖，`chmod 600`）。
+- 口令：脚本开头的 `PG_SUPER_PASSWORD_DEFAULT` 里带了一个默认值，**仓库里就有**。
+  这样拉下代码直接能跑，代价是它进了 git 历史 —— 改掉之后旧值仍然留在历史里，
+  仓库如果不是私有的就等于公开。要换成自己的口令，下面三种方式优先级从高到低：
+  1. 环境变量 `PG_SUPER_PASSWORD`；
+  2. `conf/postgres/.env` 里的 `PG_SUPER_PASSWORD='...'`（已被 `.gitignore` 覆盖，`chmod 600`）；
+  3. 改脚本开头的 `PG_SUPER_PASSWORD_DEFAULT`（改完 `git commit`，同样会进历史）。
 
-  口令经标准输入传给 `psql`，不进命令行参数（`ps` 看不到）、不写日志、不打印。
-  **不要**用 `PG_SUPER_PASSWORD=... bash vpn.sh postgres roles` 这种写法，它会留在 shell 历史里；
-  先 `export`（前面加一个空格可避开 zsh/bash 历史），或者用口令文件。
+  脚本运行时会打印**口令来源**（例如"脚本内置默认值"），但从不打印口令本身。
+  口令经标准输入传给 `psql`，不进命令行参数（`ps` 看不到）、不写日志。
+  **不要**用 `PG_SUPER_PASSWORD=...` 的写法直接敲在命令行上，它会留在 shell 历史里。
+  想把仓库变成"不含口令"，把 `PG_SUPER_PASSWORD_DEFAULT` 设成空字符串即可，
+  那时就必须由环境变量或口令文件提供口令。
 
 - 新增其他管理账号：改 `PG_SUPER_ROLES="root sspacee 别人" bash vpn.sh postgres roles`，
   口令共用同一个变量。生产上建议给不同人不同账号，这属于后续演进。
@@ -206,7 +211,9 @@ sudo -u postgres pg_dumpall > /var/backups/pg/all-$(date +%F).sql
 - **不要改** `/etc/postgresql/17/main/postgresql.conf` 和 `pg_hba.conf` 里的 `90-vpn.conf` 之外内容：
   前者被包管理，后者是模板渲染出来的，下次跑脚本会被覆盖（旧文件会备份成 `.bak.<时间戳>`）。
   要改参数，改 `conf/postgres/postgresql.conf` 再重跑 `bash infra.sh postgres`。
-- **不要把口令**写进脚本、README、提交信息、工单或聊天记录。要用就放 `conf/postgres/.env`，`chmod 600`。
+- **不要把口令**写进 README、提交信息、工单或聊天记录。当前脚本里带了一个默认口令
+  （`PG_SUPER_PASSWORD_DEFAULT`），那是已知的、只图方便的默认值；正式使用的口令放
+  `conf/postgres/.env` 并 `chmod 600`，不要继续往仓库里加新的明文。
 - 不要用 `pkill -9 postgres`；要停就 `pg_ctlcluster 17 main stop` 或 `systemctl stop`。
 - 不要删 `/var/lib/postgresql/17/main` 下的任何文件，`pg_ctlcluster` 会自己管。
 - 大版本升级（17 → 18）不是改 `PG_VERSION` 重跑：需要新建集群 + `pg_upgrade`，单独安排窗口。

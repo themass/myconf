@@ -104,7 +104,6 @@ bash radius.sh debug     # 停掉 freeradius 前台调试（radiusd -X）
 
 ```bash
 # 首次：装包 + 建超级用户 root/sspacee + 建库 uher 并授权（可重复运行）
-read -rsp 'PG_SUPER_PASSWORD: ' PG_SUPER_PASSWORD; echo; export PG_SUPER_PASSWORD
 bash vpn.sh postgres setup
 
 # 只做其中一步
@@ -121,8 +120,11 @@ bash vpn.sh postgres check
 - 监听内网地址的 tcp 5432，`pg_hba.conf` 只允许本机 + 内网段，全部 `scram-sha-256`；只有 `local postgres` 走 peer。
 - 超级用户 `root`、`sspacee`：`LOGIN SUPERUSER CREATEDB CREATEROLE`；库 `uher` owner 是 `sspacee`，
   两个账号都有库级 / schema 级 / 默认权限的完整权限（新建的表自动可见）。
-- **口令不落盘到仓库**：脚本从 `PG_SUPER_PASSWORD` 或 `conf/postgres/.env`（`.gitignore` 覆盖，建议 `chmod 600`）
-  读取，经 psql 标准输入传给服务器，不进命令行参数、不打印、不写日志。
+- **口令**：脚本 `modules/postgres.sh` 开头带默认口令 `PG_SUPER_PASSWORD_DEFAULT`，拉下代码直接可跑。
+  换成自己的口令（优先级从高到低）：环境变量 `PG_SUPER_PASSWORD` → `conf/postgres/.env`（`.gitignore` 覆盖，
+  `chmod 600`）→ 改脚本里的默认值。运行时只打印口令来源，不打印口令；口令经 psql 标准输入传入，
+  不进命令行参数、不写日志。
+  注意默认值写在仓库里会进入 git 历史，改掉后旧值仍在；要求保密时把默认值清空，改走口令文件。
 - 运维细节（路径、认证、备份、故障处理）见 [docs/postgres.md](docs/postgres.md)。
 
 ## 旧脚本去哪了

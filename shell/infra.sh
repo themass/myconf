@@ -449,6 +449,16 @@ radius_install_sql_module() {
     db="$(sed -n 's/^[[:space:]]*radius_db[[:space:]]*=[[:space:]]*"\(.*\)".*/\1/p' "$src" | head -n 1)"
     [ -n "$host" ] && [ -n "$login" ] && [ -n "$pass" ] || die "conf/radius/sql.conf 里读不到数据库连接参数"
     [ -f "$dst" ] || die "没有 ${dst}（freeradius-mysql 没装上？）"
+
+    # 每次都从**未被改过的**模板生成，否则第二次运行会拿上次改过的文件当模板，
+    # 已注释的 tls 块会被二次注释、键名的位置也会漂移。
+    # 模板只保存一次；以后要恢复就用它。
+    local tmpl="${dst}.dist"
+    if [ ! -f "$tmpl" ]; then
+        cp -p "$dst" "$tmpl" || die "无法保存模板到 ${tmpl}"
+        log "已保存原始模板: ${tmpl}"
+    fi
+
     local tmp
     tmp="$(mktemp "${TMPDIR:-/tmp}/sqlmod.XXXXXX")" || die "无法创建临时文件"
     # 3.2.x 的模板把连接参数整段注释掉了，而且默认 dialect=sqlite / driver=rlm_sql_null
@@ -468,7 +478,10 @@ radius_install_sql_module() {
             in_sql=1; depth=1; out="${out}${line}"$'\n'; continue
         fi
         if [ "$in_sql" -eq 1 ]; then
+            # 括号只数非注释行。模板里有大段被注释掉的示例块（# postgresql { ... # }），
+            # 把它们也算进深度会让 depth 永远回不到 1，连接参数就一个都替换不到。
             case "$line" in
+                [[:space:]]*\#*) ;;   # 注释行，不计深度
                 *"{"*) depth=$((depth + 1)) ;;
                 *"}"*) depth=$((depth - 1)) ;;
             esac
@@ -494,7 +507,7 @@ radius_install_sql_module() {
             if [ "$depth" -eq 0 ]; then in_sql=0; fi
         fi
         out="${out}${line}"$'\n'
-    done <"$dst"
+    done <"$tmpl"
     printf '%s' "$out" >"$tmp"
 
     # 四个连接参数都必须真的落在 sql 块第一层，否则宁可失败也不要写出一份连不上库的配置。

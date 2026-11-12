@@ -407,20 +407,22 @@ ALTER USER '${user}'@'${host}' IDENTIFIED WITH mysql_native_password BY '${pw_sq
     sql="${sql}FLUSH PRIVILEGES;
 "
 
-    # 执行：先试本机 socket（root@localhost 若是 auth_socket 就这样免密进）；
-    # 不行再用口令走 TCP —— 要用配置里的 bind 地址，不是 127.0.0.1：
-    # 服务只监听内网地址时，127.0.0.1 连不上。
+    # 执行顺序（root 通常只有 root@localhost，所以只能走 socket）：
+    #   1. socket 免密 —— root@localhost 还是 auth_socket 时可用；
+    #   2. socket + 口令 —— 已被改成 mysql_native_password 时可用；
+    #   3. TCP + 口令 —— 只有存在 root@'%' 或 root@'<主机名>' 时才成立，兜底。
     local port host
     port="$(sed -n 's/^port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' "${config_dir}/zz-vpn.cnf" 2>/dev/null | head -n 1)"
     host="$(sed -n 's/^bind-address[[:space:]]*=[[:space:]]*\([0-9.]*\).*/\1/p' "${config_dir}/zz-vpn.cnf" 2>/dev/null | head -n 1)"
     case "$host" in '' | 0.0.0.0) host=127.0.0.1 ;; esac
-    if ! printf '%s' "$sql" | mysql --defaults-file=/dev/null >/dev/null 2>&1; then
-        if ! printf '%s' "$sql" | MYSQL_PWD="$MYSQL_APP_PASSWORD" mysql --defaults-file=/dev/null \
+
+    if ! printf '%s' "$sql" | mysql --defaults-file=/dev/null >/dev/null 2>&1 \
+        && ! printf '%s' "$sql" | MYSQL_PWD="$MYSQL_APP_PASSWORD" mysql --defaults-file=/dev/null >/dev/null 2>&1 \
+        && ! printf '%s' "$sql" | MYSQL_PWD="$MYSQL_APP_PASSWORD" mysql --defaults-file=/dev/null \
             -uroot -h"${host}" -P"${port:-3306}" >/dev/null 2>&1; then
-            warn "设置 MySQL 账号失败。用 root 手工执行:"
-            printf '%s' "$sql" | sed "s/'${pw_sql}'/'<口令>'/g" >&2
-            return 1
-        fi
+        warn "设置 MySQL 账号失败。用 root 手工执行:"
+        printf '%s' "$sql" | sed "s/'${pw_sql}'/'<口令>'/g" >&2
+        return 1
     fi
 
     for spec in $MYSQL_ACCOUNTS; do

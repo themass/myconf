@@ -95,7 +95,7 @@ bash radius.sh debug     # 停掉 freeradius 前台调试（radiusd -X）
 - 服务由 systemd 管理，不再 `pkill -9`；`infra.sh` 装的服务开机自启。
 - `infra.sh` 的数据库连接参数取自 `conf/radius/sql.conf`，`clients.conf` 的共享密钥只在服务器上，不显示在日志里。
 - `infra.sh` 里的 `innerip` 占位符自动换成本机内网地址；没有内网地址时只绑 127.0.0.1，需要的话设 `INFRA_BIND`。
-- MySQL 8.0 走 apt，配置在 `/etc/mysql/conf.d/90-vpn.cnf`（模板 `conf/mysql/90-vpn.cnf`），
+- MySQL 8.0 走 apt，配置在 `/etc/mysql/mysql.conf.d/90-vpn.cnf`（模板 `conf/mysql/90-vpn.cnf`），
   不再整份替换 `/etc/mysql/my.cnf`。Redis 6.0 仍是发行版自带的版本。
 
 ## PostgreSQL：安装、账号、业务库

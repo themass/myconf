@@ -299,7 +299,7 @@ infra_postgres() {
 infra_mysql() {
     require_root
     infra_need_apt
-    local v="$MYSQL_VERSION" ip config_dir="/etc/mysql/conf.d"
+    local v="$MYSQL_VERSION" ip config_dir="/etc/mysql/mysql.conf.d"
 
     case "$(detect_arch)" in
         amd64 | arm64) ;;

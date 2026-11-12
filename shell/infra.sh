@@ -373,7 +373,18 @@ infra_mysql() {
 #
 # 源地址里的发行版按系统自己的 codename 拼（jammy / noble 都有 3.2.10）。
 RADIUS_REPO_ROOT="${RADIUS_REPO_ROOT:-https://packages.networkradius.com/freeradius-3.2/ubuntu}"
-RADIUS_ETC=/etc/freeradius/3.0
+
+# 配置目录随包版本不同：
+#   Ubuntu 自带的 3.0.x  -> /etc/freeradius/3.0
+#   NetworkRadius 3.2.10 -> /etc/freeradius
+# 有 mods-available 的那一层才是有用的配置目录。
+radius_etc_dir() {
+    local d
+    for d in "${RADIUS_ETC:-}" "/etc/freeradius/3.0" "/etc/freeradius"; do
+        [ -n "$d" ] && [ -d "${d}/mods-available" ] && { printf '%s\n' "$d"; return 0; }
+    done
+    return 1
+}
 
 infra_radius() {
     require_root
@@ -405,7 +416,9 @@ infra_radius() {
     apt-get -o DPkg::Lock::Timeout=300 update || die "apt-get update 失败"
     infra_apt_install freeradius freeradius-mysql freeradius-utils || die "freeradius 安装失败"
 
-    [ -d "$RADIUS_ETC" ] || die "没有找到 ${RADIUS_ETC}，包结构和预期不一样"
+    # 配置目录随包版本变化（3.0.x 在 /etc/freeradius/3.0，3.2.10 在 /etc/freeradius）。
+    RADIUS_ETC="$(radius_etc_dir)" || die "没有找到 FreeRADIUS 配置目录（缺 mods-available），包结构异常"
+    log "FreeRADIUS 配置目录: ${RADIUS_ETC}"
     # 自定义 sql 模块：数据库地址、账号、密码取自 conf/radius/sql.conf 的 sql {} 段。
     # 只改这一个模块的 server/port/login/password/radius_db，其它保持包自带的默认值。
     radius_install_sql_module

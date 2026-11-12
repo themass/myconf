@@ -21,7 +21,16 @@ export VPN_SHELL_DIR
 # shellcheck source=lib/common.sh
 source "${VPN_SHELL_DIR}/lib/common.sh"
 
-RADIUS_ETC="${RADIUS_ETC:-/etc/freeradius/3.0}"
+# 配置目录随包版本不同：Ubuntu 3.0.x 在 /etc/freeradius/3.0，
+# NetworkRadius 3.2.10 在 /etc/freeradius。有 mods-available 的那层才是配置根。
+radius_etc_dir() {
+    local d
+    for d in "${RADIUS_ETC:-}" /etc/freeradius/3.0 /etc/freeradius; do
+        [ -n "$d" ] && [ -d "${d}/mods-available" ] && { printf '%s\n' "$d"; return 0; }
+    done
+    return 1
+}
+RADIUS_ETC="$(radius_etc_dir)" || RADIUS_ETC="${RADIUS_ETC:-/etc/freeradius}"
 RADIUS_UNIT=freeradius
 RADIUS_SRC="${MYCONF_HOME}/conf/radius/clients.conf"
 

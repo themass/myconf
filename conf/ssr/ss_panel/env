@@ -11,7 +11,7 @@ AUTH_SALT=
 AUTH_PASSWORD_ENCRYPTION_TYPE=bcrypt
 
 // Database
-DB_HOST=mysql.sspacee.com
+DB_HOST=newdb.sspacee.com
 DB_PORT = '6666'
 DB_DATABASE = 'sspanel'
 DB_USERNAME = 'vpn@server'

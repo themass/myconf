@@ -8,7 +8,7 @@ from common.base.data_base import DataBase
 # db_passwd = 'root'
 # db_vpn = 'vpn'
 
-db_host = 'mysql.sspacee.com'
+db_host = 'newdb.sspacee.com'
 db_port = 6666
 db_user = 'root'
 db_passwd = 'Themass@5296'

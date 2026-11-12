@@ -446,12 +446,39 @@ radius_install_sql_module() {
     [ -f "$dst" ] || die "没有 ${dst}（freeradius-mysql 没装上？）"
     local tmp
     tmp="$(mktemp "${TMPDIR:-/tmp}/sqlmod.XXXXXX")" || die "无法创建临时文件"
-    sed -e "s|^\([[:space:]]*server[[:space:]]*=\).*|\1 \"${host}\"|" \
-        -e "s|^\([[:space:]]*port[[:space:]]*=\).*|\1 ${port:-3306}|" \
-        -e "s|^\([[:space:]]*login[[:space:]]*=\).*|\1 \"${login}\"|" \
-        -e "s|^\([[:space:]]*password[[:space:]]*=\).*|\1 \"${pass}\"|" \
-        -e "s|^\([[:space:]]*radius_db[[:space:]]*=\).*|\1 \"${db:-radius}\"|" \
-        "$dst" >"$tmp"
+    # 3.2.x 的模板把连接参数整段注释掉了，而且默认 dialect=sqlite / driver=rlm_sql_null
+    # （只把 SQL 记到文件里，不连数据库）。所以这里必须同时处理"已注释"和"未注释"两种写法，
+    # 并且把 dialect / driver 一起改掉，否则认证永远查不到库。
+    #
+    # 每个键只替换第一次出现：server 后面还有一行 mongodb 的示例，不能一起改。
+    local line out=""
+    local done_dialect=0 done_driver=0 done_server=0 done_port=0 done_login=0 done_pass=0 done_db=0
+    while IFS= read -r line || [ -n "$line" ]; do
+        case "$line" in
+            [[:space:]]*dialect[[:space:]]*=* | \#*dialect[[:space:]]*=*)
+                if [ $done_dialect -eq 0 ]; then out="${out}"$'\t''dialect = "mysql"'$'\n'; done_dialect=1; continue; fi ;;
+            [[:space:]]*driver[[:space:]]*=* | \#*driver[[:space:]]*=*)
+                if [ $done_driver -eq 0 ]; then out="${out}"$'\t''driver = "rlm_sql_mysql"'$'\n'; done_driver=1; continue; fi ;;
+            [[:space:]]*server[[:space:]]*=* | \#*server[[:space:]]*=*)
+                if [ $done_server -eq 0 ]; then out="${out}"$'\t''server = "'"${host}"'"'$'\n'; done_server=1; continue; fi ;;
+            [[:space:]]*port[[:space:]]*=* | \#*port[[:space:]]*=*)
+                if [ $done_port -eq 0 ]; then out="${out}"$'\t''port = '"${port:-3306}"$'\n'; done_port=1; continue; fi ;;
+            [[:space:]]*login[[:space:]]*=* | \#*login[[:space:]]*=*)
+                if [ $done_login -eq 0 ]; then out="${out}"$'\t''login = "'"${login}"'"'$'\n'; done_login=1; continue; fi ;;
+            [[:space:]]*password[[:space:]]*=* | \#*password[[:space:]]*=*)
+                if [ $done_pass -eq 0 ]; then out="${out}"$'\t''password = "'"${pass}"'"'$'\n'; done_pass=1; continue; fi ;;
+            [[:space:]]*radius_db[[:space:]]*=* | \#*radius_db[[:space:]]*=*)
+                if [ $done_db -eq 0 ]; then out="${out}"$'\t''radius_db = "'"${db:-radius}"'"'$'\n'; done_db=1; continue; fi ;;
+        esac
+        out="${out}${line}"$'\n'
+    done <"$dst"
+    printf '%s' "$out" >"$tmp"
+
+    for k in dialect driver server port login password radius_db; do
+        grep -qE "^[[:space:]]*${k}[[:space:]]*=" "$tmp" \
+            || die "${dst} 里没找到 ${k}，包模板结构和预期不一样"
+    done
+
     install_file "$tmp" "$dst" 640
     rm -f "$tmp"
     chgrp freerad "$dst" 2>/dev/null || true

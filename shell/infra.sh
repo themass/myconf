@@ -485,23 +485,35 @@ radius_install_sql_module() {
                 *"{"*) depth=$((depth + 1)) ;;
                 *"}"*) depth=$((depth - 1)) ;;
             esac
-            # 只在 depth==1（sql 块内、任何子块外）时替换
+            # 只在 depth==1（sql 块内、任何子块外）时替换。
+            # 模板里的连接参数是 "#\tserver = \"localhost\"" 这种「注释 + 一个制表符」的形式，
+            # 而 dialet/driver 在前面是未注释的，两种都要认。
             if [ "$depth" -eq 1 ]; then
+                # 未注释：[[:space:]]key = ；注释掉并缩进：[[:space:]]*#[[:space:]]key =
                 case "$line" in
-                    [[:space:]]*dialect[[:space:]]*=* | \#*dialect[[:space:]]*=*)
-                        if [ $done_dialect -eq 0 ]; then out="${out}"$'\t''dialect = "mysql"'$'\n'; done_dialect=1; continue; fi ;;
-                    [[:space:]]*driver[[:space:]]*=* | \#*driver[[:space:]]*=*)
-                        if [ $done_driver -eq 0 ]; then out="${out}"$'\t''driver = "rlm_sql_mysql"'$'\n'; done_driver=1; continue; fi ;;
-                    [[:space:]]*server[[:space:]]*=* | \#*server[[:space:]]*=*)
-                        if [ $done_server -eq 0 ]; then out="${out}"$'\t''server = "'"${host}"'"'$'\n'; done_server=1; continue; fi ;;
-                    [[:space:]]*port[[:space:]]*=* | \#*port[[:space:]]*=*)
-                        if [ $done_port -eq 0 ]; then out="${out}"$'\t''port = '"${port:-3306}"$'\n'; done_port=1; continue; fi ;;
-                    [[:space:]]*login[[:space:]]*=* | \#*login[[:space:]]*=*)
-                        if [ $done_login -eq 0 ]; then out="${out}"$'\t''login = "'"${login}"'"'$'\n'; done_login=1; continue; fi ;;
-                    [[:space:]]*password[[:space:]]*=* | \#*password[[:space:]]*=*)
-                        if [ $done_pass -eq 0 ]; then out="${out}"$'\t''password = "'"${pass}"'"'$'\n'; done_pass=1; continue; fi ;;
-                    [[:space:]]*radius_db[[:space:]]*=* | \#*radius_db[[:space:]]*=*)
-                        if [ $done_db -eq 0 ]; then out="${out}"$'\t''radius_db = "'"${db:-radius}"'"'$'\n'; done_db=1; continue; fi ;;
+                    [[:space:]]*dialect[[:space:]]*=* | [[:space:]]*driver[[:space:]]*=* | \
+                    [[:space:]]*server[[:space:]]*=* | [[:space:]]*port[[:space:]]*=* | \
+                    [[:space:]]*login[[:space:]]*=* | [[:space:]]*password[[:space:]]*=* | \
+                    [[:space:]]*radius_db[[:space:]]*=* | \
+                    [[:space:]]*\#[[:space:]]dialect[[:space:]]*=* | [[:space:]]*\#[[:space:]]driver[[:space:]]*=* | \
+                    [[:space:]]*\#[[:space:]]server[[:space:]]*=* | [[:space:]]*\#[[:space:]]port[[:space:]]*=* | \
+                    [[:space:]]*\#[[:space:]]login[[:space:]]*=* | [[:space:]]*\#[[:space:]]password[[:space:]]*=* | \
+                    [[:space:]]*\#[[:space:]]radius_db[[:space:]]*=*)
+                        # 取出这个 key（去掉缩进、# 和空白）
+                        k="${line#"${line%%[![:space:]]*}"}"   # 去前导空白
+                        k="${k#\#}"
+                        k="${k#"${k%%[![:space:]]*}"}"
+                        k="${k%%[[:space:]]*=*}"
+                        case "$k" in
+                            dialect)   if [ $done_dialect -eq 0 ]; then out="${out}"$'\t''dialect = "mysql"'$'\n'; done_dialect=1; continue; fi ;;
+                            driver)    if [ $done_driver -eq 0 ];  then out="${out}"$'\t''driver = "rlm_sql_mysql"'$'\n'; done_driver=1; continue; fi ;;
+                            server)    if [ $done_server -eq 0 ];  then out="${out}"$'\t''server = "'"${host}"'"'$'\n'; done_server=1; continue; fi ;;
+                            port)      if [ $done_port -eq 0 ];    then out="${out}"$'\t''port = '"${port:-3306}"$'\n'; done_port=1; continue; fi ;;
+                            login)     if [ $done_login -eq 0 ];   then out="${out}"$'\t''login = "'"${login}"'"'$'\n'; done_login=1; continue; fi ;;
+                            password)  if [ $done_pass -eq 0 ];    then out="${out}"$'\t''password = "'"${pass}"'"'$'\n'; done_pass=1; continue; fi ;;
+                            radius_db) if [ $done_db -eq 0 ];      then out="${out}"$'\t''radius_db = "'"${db:-radius}"'"'$'\n'; done_db=1; continue; fi ;;
+                        esac
+                        ;;
                 esac
             fi
             if [ "$depth" -eq 0 ]; then in_sql=0; fi

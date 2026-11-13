@@ -481,6 +481,8 @@ infra_radius() {
     # 本地属性字典：radius 库里存着 Max-Daily-Traffic 之类的自定义属性，
     # 字典里没有定义的话 authorize 会解析失败并返回 Access-Reject。
     radius_install_dictionary
+    # 3.2.x 的 simul 查询要 JOIN nasreload，老库没有这张表，补上。
+    radius_install_schema_extra
     # clients.conf 是唯一会经常改的文件，交给 radius.sh clients 管理（会校验后再重载）。
     install_file "${MYCONF_HOME}/conf/radius/clients.conf" "${RADIUS_ETC}/clients.conf" 640
     chgrp freerad "${RADIUS_ETC}/clients.conf" 2>/dev/null || true
@@ -536,6 +538,34 @@ radius_install_dictionary() {
         log "自定义属性已存在，跳过（${dst}）"
     fi
     rm -f "$tmp"
+}
+
+# 补上 3.2.x 需要、但老库没有的表（目前只有 nasreload）。
+#
+# 3.2.10 的 simul_count_query 会 JOIN nasreload，老版 2.1.12 不会。
+# 库是从老机迁过来的，这张表不存在 → 每次认证报
+#   ERROR 1146 (42S02): Table 'radius.nasreload' doesn't exist
+# 并发检查（Simultaneous-Use）跟着失效。
+#
+# 幂等：CREATE TABLE IF NOT EXISTS。连不上库只告警，不阻断安装。
+radius_install_schema_extra() {
+    local src="${MYCONF_HOME}/conf/radius/schema-extra.sql"
+    [ -f "$src" ] || { warn "缺少 ${src}，跳过补表"; return 0; }
+    have mysql || { warn "没有 mysql 客户端，跳过补表（${src}）"; return 0; }
+
+    local host port login pass
+    host="$(sed -n 's/^[[:space:]]*server[[:space:]]*=[[:space:]]*"\(.*\)".*/\1/p' "${MYCONF_HOME}/conf/radius/sql.conf" | head -n 1)"
+    port="$(sed -n 's/^[[:space:]]*port[[:space:]]*=[[:space:]]*\([0-9]*\).*/\1/p' "${MYCONF_HOME}/conf/radius/sql.conf" | head -n 1)"
+    login="$(sed -n 's/^[[:space:]]*login[[:space:]]*=[[:space:]]*"\(.*\)".*/\1/p' "${MYCONF_HOME}/conf/radius/sql.conf" | head -n 1)"
+    pass="$(sed -n 's/^[[:space:]]*password[[:space:]]*=[[:space:]]*"\(.*\)".*/\1/p' "${MYCONF_HOME}/conf/radius/sql.conf" | head -n 1)"
+    [ -n "$host" ] && [ -n "$login" ] || { warn "读不到 sql.conf 的连接参数，跳过补表"; return 0; }
+
+    if MYSQL_PWD="$pass" mysql --no-defaults -h"$host" -P"${port:-3306}" -u"$login" radius <"$src" 2>/dev/null; then
+        log "radius 库补表完成: nasreload"
+    else
+        warn "radius 库补表失败（连不上 ${host}:${port:-3306}？）。认证会报 nasreload 不存在，手工执行:"
+        warn "  mysql -h ${host} -P ${port:-3306} -u ${login} -p radius < ${src}"
+    fi
 }
 
 # 把 conf/radius/sql.conf 里的数据库连接参数写进 3.x 的 mods-available/sql，并在 default 站点里启用 sql。

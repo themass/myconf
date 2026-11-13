@@ -30,7 +30,18 @@ CREATE TABLE IF NOT EXISTS nasreload (
   nasipaddress varchar(15) NOT NULL,
   reloadtime   datetime    NOT NULL,
   PRIMARY KEY (nasipaddress)
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb3;
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_unicode_ci;
+
+-- 已经存在但 collation 不对的库要就地改正。
+--
+-- 第一版建表时没写 COLLATE，nasreload 继承了服务端的 utf8mb3_general_ci，
+-- 而 radacct.nasipaddress 是 utf8mb3_unicode_ci。simul_count_query 里
+--   LEFT OUTER JOIN nasreload n USING (nasipaddress)
+-- 两列 collation 不一致，MySQL 8.0 直接报
+--   ERROR 1267 (HY000): Illegal mix of collations
+--   (utf8mb3_unicode_ci,IMPLICIT) and (utf8mb3_general_ci,IMPLICIT)
+-- 每次认证都失败。
+ALTER TABLE nasreload CONVERT TO CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci;
 
 DROP PROCEDURE IF EXISTS radius_add_missing_columns;
 

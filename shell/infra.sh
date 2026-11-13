@@ -172,6 +172,19 @@ infra_nginx() {
     chmod 755 /home/file/html /home/file/book /home/file/soft
     log "静态目录已就绪: /home/file/{html,book,soft}、/home/web/webroot/files"
 
+    # 站点静态文件（旧机 /home/file/html 的内容）随仓库走，部署时同步过去。
+    # 只新增/更新文件，不删目标机上多出来的东西（线上可能还有手动放的页面）。
+    local html_src="${MYCONF_HOME}/web/html" html_dst="/home/file/html" f
+    if [ -d "$html_src" ]; then
+        local n=0
+        for f in "$html_src"/*; do
+            [ -f "$f" ] || continue
+            install_file "$f" "${html_dst}/${f##*/}" 644
+            n=$((n + 1))
+        done
+        log "静态站点已同步 ${n} 个文件: ${html_src} -> ${html_dst}"
+    fi
+
     # 官方 systemd 单元里的 PIDFile 必须和 nginx.conf 的 pid 一致，否则 systemctl start 会超时。
     local conf="${OPENRESTY_PREFIX}/nginx/conf" src="${MYCONF_HOME}/conf/nginx" pidfile f
     local ssl_dir="$(infra_nginx_ssl_dir)" inner_ip

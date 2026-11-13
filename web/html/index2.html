@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>player</title>
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel='stylesheet' href="https://p.fplayer.cc/static/css/plyr.css">
+    <script src="https://p.fplayer.cc/static/js/plyr.min.js"></script>
+    <script src="https://p.fplayer.cc/static/js/hls.js"></script>
+   
+    <style>
+        html { line-height: 1.5;-webkit-text-size-adjust: 100%;-moz-tab-size: 4;-o-tab-size: 4;tab-size: 4;font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings: normal;font-variation-settings: normal;}
+        body {margin: 0;padding: 0;} .container {margin: 0;padding: 0;width: 100%;height: 100vh;}  video {width: 100%;height: 100vh;}  .plyr {height: 100vh;}
+    </style>
+</head>
+<body>
+<div class="container">
+     <video id="player" controls crossorigin playsinline data-poster="" style="--plyr-color-main: #e0a762;"></video>
+</div>
+<script type="text/javascript">
+    var controls = [
+        'play-large', 'play', 'rewind', 'fast-forward', 'progress', 'duration', 'mute', 'captions', 'settings', 'pip', 'fullscreen',
+        document.documentElement.clientWidth >= 768 ? 'volume' : null,
+    ];
+    var playerSettings = {
+        controls: controls,
+        fullscreen: {enabled: true, fallback: true, iosNative: true, container: null,},
+        speed: {selected: 1, options: [0.25, 0.5, 1, 1.25, 1.5, 2, 3],},
+        keyboard: {focused: true, global: true,},
+    };
+    function switchSource(sourceURL) {
+        var video = document.getElementById('player');
+        console.log(sourceURL);
+        ct = video.currentTime;
+        if (!Hls.isSupported() || sourceURL.indexOf(".mp4") > 0) {
+            video.src = sourceURL;
+        } else {
+            window.hls = new Hls();
+            hls.loadSource(sourceURL);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.ERROR, function (event, data) {
+                var errorType = data.type;
+                var errorDetails = data.details;
+                var errorFatal = data.fatal;
+                switch (errorType) {
+                    case Hls.ErrorTypes.NETWORK_ERROR:
+                        console.log("network error.")
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        var video = document.getElementById("player");
+        var player = new Plyr(video, playerSettings);
+        player.on('loadedmetadata', function (e) {
+            if (ct > 2) {
+                player.currentTime = ct-2;
+                player.play();
+            }
+        });
+        window.player = player;
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var lineObj = urlParams.get('play');
+
+        switchSource(lineObj);
+    });
+</script>
+
+</body>
+</html>

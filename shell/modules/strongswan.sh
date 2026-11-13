@@ -8,6 +8,7 @@
 #   vpn.sh strongswan config-port           同 config（保留旧名字）
 #   vpn.sh strongswan ca                    生成 CA、服务器、客户端证书
 #   vpn.sh strongswan fix                   关闭 ipsec0 用户态 IPsec，修复 CPU 打满
+#   vpn.sh strongswan restart               重启 charon 并重新加载 swanctl.conf
 #   vpn.sh strongswan check                 状态检查
 #   vpn.sh strongswan clean [force]         清理残留进程、socket，重建目录和权限
 #   vpn.sh strongswan status
@@ -32,6 +33,7 @@ strongSwan 模块（6.x，版本 ${STRONGSWAN6_VERSION}，swanctl + vici）:
   config-port     同 config（保留旧名字）
   ca              生成证书
   fix             关闭 ipsec0 用户态 IPsec（kernel-libipsec），修复 CPU 打满
+  restart         重启 charon 并重新加载 swanctl.conf（不重新生成配置和证书）
   check           状态检查
   clean [force]   清理残留进程和 socket；force 额外杀 ipsec 进程并清空 xfrm
   status          服务状态
@@ -354,7 +356,7 @@ strongswan_main() {
         *) die "只支持 strongSwan 6.x（不再支持 5.9）: $1" ;;
     esac
     case "$action" in
-        all | install | config | config-port | ca | fix | clean)
+        all | install | config | config-port | ca | fix | clean | restart)
             require_root
             ;;
     esac
@@ -365,6 +367,7 @@ strongswan_main() {
         config-port) ss_config_port_6 "$@" ;;
         ca) ss_ca_6 "$@" ;;
         fix) ss_fix_6 "$@" ;;
+        restart) ss_reload_6 "$@" ;;
         check) ss_check_6 "$@" ;;
         clean) ss_clean "$@" ;;
         status)

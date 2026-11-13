@@ -40,8 +40,14 @@ default_authentication_plugin = mysql_native_password
 character_set_server = utf8mb3
 collation_server = utf8mb3_general_ci
 
-# 沿用老库的 SQL 模式。ANSI 包含 ANSI_QUOTES（双引号当标识符）和 ONLY_FULL_GROUP_BY。
-sql-mode = ANSI
+# SQL 模式必须和老库（5.6/5.7）一致：STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION。
+#
+# 不要用 sql-mode = ANSI。MySQL 5.7 起把 ONLY_FULL_GROUP_BY 也并进了 ANSI 组合，
+# 8.0 里这一项会让大量老 SQL 直接报错。实测报错：
+#   select * from vpn.videochannel_1 where enable=1 and channelType=? group by channel order by id desc
+#   Expression #1 of SELECT list is not in GROUP BY clause ... incompatible with sql_mode=only_full_group_by
+# 老库里这条 SQL 一直是能跑的（旧机 sql_mode 就是下面这行）。
+sql-mode = STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION
 
 # ------------------------------------------------------------------ 容量与性能
 

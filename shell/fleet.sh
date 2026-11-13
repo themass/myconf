@@ -288,6 +288,7 @@ inventory_add() { # ip port roles
     cmp -s "$tmp" "$FLEET_ENV" && { rm -f "$tmp"; die "没能写入清单：.env 里 FLEET_HOSTS 需要是以单独一行 \" 结尾的多行写法"; }
     cat "$tmp" >"$FLEET_ENV"
     rm -f "$tmp"
+    fleet_load_env # 内存里的 FLEET_HOSTS 要跟着文件更新，同一次运行里后面的步骤才看得到
     log "清单已加入 ${ip}:${port}:${roles}"
 }
 
@@ -301,13 +302,15 @@ inventory_del() {
         { print }' "$FLEET_ENV" >"$tmp"
     cat "$tmp" >"$FLEET_ENV"
     rm -f "$tmp"
+    fleet_load_env
     log "清单已去掉 ${ip}"
 }
 
 # 只重启在跑的 VPN 服务。strongswan 走 vpn.sh（重启后重新加载 swanctl.conf）。
 do_vpn_restart() {
-    fleet_ssh "$1" "$2" "cd ${FLEET_REMOTE_DIR}/shell || exit 1; rc=0; n=0; \
-if systemctl cat strongswan >/dev/null 2>&1; then n=\$((n+1)); bash vpn.sh strongswan restart || rc=1; fi; \
+    # 不依赖节点上仓库的版本（老版本没有 vpn.sh strongswan restart）：直接 systemctl，再重新加载 swanctl.conf。
+    fleet_ssh "$1" "$2" "rc=0; n=0; \
+if systemctl cat strongswan >/dev/null 2>&1; then n=\$((n+1)); systemctl restart strongswan || rc=1; sleep 2; swanctl --load-all --noprompt >/dev/null 2>&1 || { echo '  swanctl --load-all 失败'; rc=1; }; fi; \
 for u in xray sing-box wg-quick@wg0; do \
 if systemctl is-enabled \$u >/dev/null 2>&1; then n=\$((n+1)); systemctl restart \$u || rc=1; fi; done; \
 sleep 2; for u in strongswan xray sing-box wg-quick@wg0; do \

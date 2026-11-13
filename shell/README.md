@@ -136,6 +136,25 @@ bash vpn.sh postgres check
   运行时只打印结果，不打印口令。
 - 运维细节（路径、认证、备份、故障处理）见 [docs/postgres.md](docs/postgres.md)。
 
+## 多机管理：fleet.sh
+
+在脚本机上一条命令管理所有服务器，实际安装仍由各机器上的 `infra.sh` / `vpn.sh` / `radius.sh` 完成。机器清单和密码放在仓库根目录的 `.env`（已被 git 忽略，换脚本机时复制过去即可），格式见 `.env.example` 的 `FLEET_` 部分。
+
+```bash
+bash fleet.sh hosts                        # 清单
+bash fleet.sh status [all|角色|ip]         # 各机服务状态和仓库版本（只读）
+bash fleet.sh sync [目标]                  # 目标机器 git pull --ff-only
+bash fleet.sh deploy nginx                 # sync + infra.sh nginx（默认目标：nginx 机；其他软件默认 infra 机）
+bash fleet.sh run <目标> '<命令>'          # 在目标机器上执行命令
+
+bash fleet.sh vpn add <ip> [端口] [--deploy]   # 登记 + 加进 radius clients 并推送；--deploy 再在节点上部署
+bash fleet.sh vpn del <ip>                      # 去掉登记和 radius client（不动节点上已运行的服务）
+bash fleet.sh vpn restart [目标]                # 逐台重启并检查状态，默认全部 vpn 节点
+bash fleet.sh radius add-ip <ip>                # 只给 radius 增加客户端 IP
+```
+
+`radius add-ip/del-ip` 改的是本机的 `conf/radius/clients.conf`，推到 radius 机后由 `radius.sh clients` 校验并重启（校验失败自动还原）。改完记得在本机 commit + push。
+
 ## 旧脚本去哪了
 
 | 旧脚本 | 现在 |

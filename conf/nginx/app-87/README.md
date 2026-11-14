@@ -9,7 +9,7 @@
 
 | 文件 | 域名 | 说明 |
 |---|---|---|
-| `server/wp-ok123find.conf` | ok123find.top / www | WordPress，root `/home/web/webroot/wordpress`，PHP 走 `upstream php`（unix:/home/web/var/run/php.sock） |
+| `server/wp-ok123find.conf` | ok123find.top / www | WordPress，root `/home/web/webroot/wordpress`，PHP 走 `upstream php`（unix:/home/web/var/run/php.sock）；80 跳 https，443 用**自签**证书 `/root/local/sslkey/ok123find.top.{crt,key}`（SAN 含 www，10 年） |
 | `server/sspacee-redirect.conf` | sspacee.com / www | 80 和 443 都 301 到 https://jc.sspacee.com，443 用 `sspacee.com` 自己的 Let's Encrypt 证书 |
 | `server/jc-site-*.conf` | jc.sspacee.com | JobCome（Next.js 3001 / API 8000） |
 | `server/newapi*.conf` | gpt.sspacee.com | New API |

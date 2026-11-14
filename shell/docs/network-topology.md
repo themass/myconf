@@ -16,6 +16,8 @@
 | ok123find.top / www | 8.217.122.83 | 8.217.122.83 反代 → 应用机 104.160.191.87 的 WordPress |
 | book.ok123find.top | 8.217.122.83 | 8.217.122.83：openapi 反代 |
 | api.ok123find.top / file.ok123find.top | 8.217.122.83 | 8.217.122.83：openapi 反代 |
+| api.sspacee.com / book.sspacee.com | 8.217.122.83 | **没有独立 vhost**，落到 book.conf 的处理上（证书是 api.ok123find.top 的） |
+| monitor.sspacee.com | 8.217.122.83 | **没有 vhost**，404 |
 | mysql.sspacee.com | 47.82.163.162 | 基础组件机：MySQL |
 | radius.sspacee.com | 47.82.163.162 | 基础组件机：FreeRADIUS（VPN 节点靠它认证） |
 

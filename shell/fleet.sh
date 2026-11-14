@@ -74,14 +74,20 @@ fleet_expect_script() {
     FLEET_EXP="$(mktemp "${TMPDIR:-/tmp}/fleet-exp.XXXXXX")"
     cat >"$FLEET_EXP" <<'EXP'
 set timeout $env(F_TIMEOUT)
-log_user 1
+# log_user 0：send 发出去的内容（密码）不会被打印。只把收到的输出累积起来最后输出。
+log_user 0
+match_max 200000
+set out ""
 spawn {*}$argv
+# 只认"整行以提示结尾"的形态。远端输出里常见 "using password: YES" 之类的文字，
+# 用宽松的 "assword:" 会把密码发进已登录的会话，终端随即回显，口令就漏到日志里。
 expect {
-    -re "yes/no" { send "yes\r"; exp_continue }
-    -re "assword:" { send "$env(F_PW)\r"; exp_continue }
-    timeout { puts "\n[fleet] 超时"; exit 124 }
-    eof
+    -re {(?n)^[^\n]*(yes/no|fingerprint)[^\n]*\? *$} { append out $expect_out(buffer); send "yes\r"; exp_continue }
+    -re {(?n)^[^\n]*[Pp]assword: *$} { append out $expect_out(buffer); send "$env(F_PW)\r"; exp_continue }
+    timeout { append out $expect_out(buffer); catch {puts -nonewline $out}; puts "\n[fleet] 超时"; exit 124 }
+    eof { append out $expect_out(buffer) }
 }
+catch {puts -nonewline $out}
 catch wait r
 exit [lindex $r 3]
 EXP
@@ -104,8 +110,11 @@ fleet_cmd() {
     if [ -n "$pw" ]; then
         fleet_expect_script
         # 去掉 expect 打印的 spawn 行和密码提示，只留远端输出。
+        # 只匹配提示本身的形态（x@host's password: / (x@host) Password:），
+        # 不能用 "password:" 通配，否则会把含 password 字样的正常输出吃掉。
         F_PW="$pw" F_TIMEOUT="${FLEET_TIMEOUT:-900}" expect -f "$FLEET_EXP" -- "$@" \
-            | tr -d '\r' | sed -e '/^spawn /d' -e 's/^.*[Pp]assword: *//'
+            | tr -d '\r' \
+            | sed -e '/^spawn /d' -e "s/[^[:space:]]*'s password: //" -e 's/^([^)]*) Password: //'
         return "${PIPESTATUS[0]}"
     fi
     "$@"

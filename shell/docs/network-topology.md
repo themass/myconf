@@ -16,9 +16,9 @@
 | ok123find.top / www | 8.217.122.83 | 8.217.122.83 反代 → 应用机 104.160.191.87 的 WordPress |
 | book.ok123find.top | 8.217.122.83 | 8.217.122.83：openapi 反代 |
 | api.ok123find.top / file.ok123find.top | 8.217.122.83 | 8.217.122.83：openapi 反代 |
-| api.sspacee.com / book.sspacee.com | 8.217.122.83 | **没有独立 vhost**，落到 book.conf 的处理上（证书是 api.ok123find.top 的） |
-| monitor.sspacee.com | 8.217.122.83 | **没有 vhost**，404 |
-| mysql.sspacee.com | 47.82.163.162 | 基础组件机：MySQL |
+| mysql.sspacee.com | 47.82.163.162 | 基础组件机：MySQL（业务库 `vpn`） |
+| newdb.sspacee.com | 47.82.163.162 | 同上，历史名字，ss-panel 在用 |
+| redis.sspacee.com | 47.82.163.162 | 基础组件机：Redis 6380（vvv-link 在用） |
 | radius.sspacee.com | 47.82.163.162 | 基础组件机：FreeRADIUS（VPN 节点靠它认证） |
 
 DNS 在 DNSOwl（`ns1/2/3.dnsowl.com`）。
@@ -61,6 +61,11 @@ DNS 在 DNSOwl（`ns1/2/3.dnsowl.com`）。
 
 - 本地编译 nginx，配置在 `/root/local/nginx-1.24.0/conf/server/`
 - `book.ok123find.top`、`api/file.ok123find.top`、`sspacee.com`（配置还在，但 DNS 已不指这里）
+- `api.sspacee.com` / `book.sspacee.com` 两个域名仍解析到这台，但**没有对应的 vhost**，
+  只落到 `book.conf` 上（静态前缀 `/home/file/book/`，目录已不存在），实测 404。属于历史遗留，
+  仓库里 `python/monitor/pingport.py` 还写着 `http://api.sspacee.com/vpn/api/noapp/ping.json`，
+  那个路径本来就不存在（正确的前缀是 `/vvv/`），脚本本身也没有被任何 cron/service 调用。
+- 真正在用的是 **`api.ok123find.top`**（`vpn.conf`，`/vvv/` 路由到后端），返回 200
 - ok123find.top 的 **反向代理入口**（当前 DNS 指向，等 DNS 迁移后可撤）
 - 另有 `:8888` java 服务、`:8388` ss-server、`:9002` 本机 nginx_check
 - 上面有 certbot，ok123find.top 的证书就是在这里签的

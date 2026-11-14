@@ -61,10 +61,10 @@ DNS 在 DNSOwl（`ns1/2/3.dnsowl.com`）。
 
 - 本地编译 nginx，配置在 `/root/local/nginx-1.24.0/conf/server/`
 - `book.ok123find.top`、`api/file.ok123find.top`、`sspacee.com`（配置还在，但 DNS 已不指这里）
-- `api.sspacee.com` / `book.sspacee.com` 两个域名仍解析到这台，但**没有对应的 vhost**，
-  只落到 `book.conf` 上（静态前缀 `/home/file/book/`，目录已不存在），实测 404。属于历史遗留，
-  仓库里 `python/monitor/pingport.py` 还写着 `http://api.sspacee.com/vpn/api/noapp/ping.json`，
-  那个路径本来就不存在（正确的前缀是 `/vvv/`），脚本本身也没有被任何 cron/service 调用。
+- `api.sspacee.com` / `book.sspacee.com` / `monitor.sspacee.com` 已于 2026-11-14 从 DNS 删除
+  （原本解析到这台但没有对应 vhost，实测 404）。仓库里 `python/monitor/pingport.py` 仍写着
+  `http://api.sspacee.com/vpn/api/noapp/ping.json`，域名删掉后它必然失败；该脚本没有 cron/service
+  在跑，路径本身也是旧的（正确前缀是 `/vvv/`）。
 - 真正在用的是 **`api.ok123find.top`**（`vpn.conf`，`/vvv/` 路由到后端），返回 200
 - ok123find.top 的 **反向代理入口**（当前 DNS 指向，等 DNS 迁移后可撤）
 - 另有 `:8888` java 服务、`:8388` ss-server、`:9002` 本机 nginx_check

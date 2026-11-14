@@ -1,100 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request Account Deletion</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        input {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .message {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #333;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request Account Deletion — ShieldWing</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0; padding: 32px 20px;
+    background: #f4f5f7; color: #1c1c1e;
+    display: flex; justify-content: center;
+    min-height: 100vh; box-sizing: border-box;
+  }
+  .container { background: #fff; padding: 28px; border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08); width: 100%; max-width: 460px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: #6b6b70; font-size: 14px; margin: 0 0 24px; }
+  label { display: block; font-size: 14px; font-weight: 600; margin: 16px 0 6px; }
+  input[type=text], input[type=password] {
+    width: 100%; box-sizing: border-box; padding: 12px;
+    border: 1px solid #d1d1d6; border-radius: 8px; font-size: 16px;
+    background: #fff; color: #1c1c1e;
+  }
+  input:focus { outline: 2px solid #6c5ce7; outline-offset: 1px; border-color: transparent; }
+  button {
+    margin-top: 22px; width: 100%; padding: 14px;
+    background: #6c5ce7; color: #fff; border: none; border-radius: 8px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+  }
+  button:hover:not(:disabled) { background: #5a4bd4; }
+  button.danger { background: #d63031; }
+  button.danger:hover:not(:disabled) { background: #b02525; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .message { margin-top: 20px; padding: 14px; border-radius: 8px; font-size: 14px; line-height: 1.5; display: none; }
+  .message.ok  { display: block; background: #e8f8ee; color: #18663a; }
+  .message.err { display: block; background: #fdecec; color: #a3231f; }
+  .note { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e5e5ea; font-size: 13px; color: #6b6b70; line-height: 1.6; }
+  .note a { color: #6c5ce7; }
+  details { margin-top: 18px; font-size: 14px; }
+  summary { cursor: pointer; font-weight: 600; color: #6c5ce7; }
+  details p { color: #3a3a3c; line-height: 1.6; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #131316; color: #e8e8ed; }
+    .container { background: #1e1e24; box-shadow: none; }
+    .sub, .note { color: #9a9aa0; }
+    input[type=text], input[type=password] { background: #2a2a32; border-color: #3a3a44; color: #e8e8ed; }
+    .note { border-top-color: #2f2f38; }
+    details p { color: #c4c4cc; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h2>Request Account Deletion</h2>
-        <form id="deleteAccountForm">
-            <label for="username">Username:</label><br>
-            <input type="text" id="username" name="username" required><br><br>
-            <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" required><br><br>
-            <button type="submit">Submit</button>
-        </form>
-        <div class="message" id="message"></div>
-    </div>
+<div class="container">
+  <h1>Delete your ShieldWing account</h1>
+  <p class="sub">This permanently deletes your account and cannot be undone.</p>
 
-    <script>
-        document.getElementById('deleteAccountForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const messageElement = document.getElementById('message');
+  <form id="deleteAccountForm" novalidate>
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" autocomplete="username"
+           autocapitalize="none" spellcheck="false" required>
 
-            // Clear previous message
-            messageElement.textContent = '';
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" autocomplete="current-password" required>
 
-            // Make API request
-            fetch(`http://api.ok123find.top/vvv/api/noapp/repass.json?name=${username}&pass=${password}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.errno === 0) {
-                        messageElement.textContent = 'Account deleted successfully!';
-                        messageElement.style.color = 'green';
-                    } else {
-                        messageElement.textContent = 'Account deletion failed: ' + data.error;
-                        messageElement.style.color = 'red';
-                    }
-                })
-                .catch(error => {
-                    messageElement.textContent = 'Request failed, please try again later.';
-                    messageElement.style.color = 'red';
-                });
-        });
-    </script>
+    <button type="submit" id="submitBtn" class="danger">Delete my account</button>
+  </form>
+
+  <div class="message" id="message" role="status" aria-live="polite"></div>
+
+  <details>
+    <summary>What exactly gets deleted?</summary>
+    <p>
+      Your account record (username, e-mail, password hash), your login sessions and any
+      custom nodes you saved are permanently removed. Daily usage statistics that were already
+      collected are kept without any link to you, so they can no longer be tied to a person.
+      See <a href="https://www.ok123find.top/privacy.html">the privacy policy</a> for details.
+    </p>
+  </details>
+
+  <div class="note">
+    Can't sign in, or already uninstalled the app? E-mail
+    <a href="mailto:justbegin010@gmail.com">justbegin010@gmail.com</a> from the address on your
+    account and we will handle the deletion manually within 30 days.
+  </div>
+</div>
+
+<script>
+(function () {
+  // 改为 HTTPS + POST：
+  //  - 旧版本用 http:// 明文提交，密码在网络上可被直接读到；
+  //  - 旧版本把密码拼在 URL 查询串里（?pass=...），会留在浏览器历史、Referer 和服务器访问日志中，
+  //    而且 GET 容易被中间设备缓存。现在一律 POST 到 /noapp/delete.json，参数放请求体。
+  var ENDPOINT = 'https://api.ok123find.top/vvv/api/noapp/delete.json';
+
+  var form = document.getElementById('deleteAccountForm');
+  var messageEl = document.getElementById('message');
+  var submitBtn = document.getElementById('submitBtn');
+
+  function show(text, kind) {
+    messageEl.textContent = text;
+    messageEl.className = 'message ' + kind;
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    var username = document.getElementById('username').value.trim();
+    var password = document.getElementById('password').value;
+
+    if (!username || !password) {
+      show('Please fill in both your username and password.', 'err');
+      return;
+    }
+
+    // 删除不可撤销，先让用户确认一次
+    if (!window.confirm('This permanently deletes the account "' + username +
+                        '" and cannot be undone. Continue?')) {
+      return;
+    }
+
+    messageEl.className = 'message';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Deleting…';
+
+    var body = new URLSearchParams();
+    body.append('name', username);
+    body.append('pwd', password);
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: body.toString(),
+      // 不携带 Cookie：这个页面不需要会话，少一个被利用的面
+      credentials: 'omit'
+    })
+      .then(function (response) {
+        if (!response.ok) { throw new Error('HTTP ' + response.status); }
+        return response.json();
+      })
+      .then(function (data) {
+        if (data && data.errno === 0) {
+          form.reset();
+          show('Your account has been deleted. You can close this page.', 'ok');
+          submitBtn.textContent = 'Deleted';
+          return; // 保持按钮禁用，防止重复提交
+        }
+        // 服务端返回业务错误（如密码错误）。error 字段可能是 i18n key，没有时给兜底文案。
+        var reason = (data && data.error) ? data.error : 'The username or password is incorrect.';
+        show('Deletion failed: ' + reason, 'err');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Delete my account';
+      })
+      .catch(function () {
+        show('Could not reach the server. Check your connection and try again.', 'err');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Delete my account';
+      });
+  });
+})();
+</script>
 </body>
 </html>

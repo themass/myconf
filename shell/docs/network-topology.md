@@ -75,7 +75,7 @@ DNS 在 DNSOwl（`ns1/2/3.dnsowl.com`）。
 
 | 机器 | SSH | 跑的东西 |
 |---|---|---|
-| 38.78.147.253 | 17966 | strongSwan（IKE 8081 / NAT-T 8080）、xray `:2096`、sing-box（8388/8443/8880）、WireGuard `wg0` 10.66.0.1/16 |
+| 38.78.147.253 | 17966 | **只走 UDP**（2026-11-18 起）：strongSwan（IKE 8081 / NAT-T 8080）、sing-box Hysteria2 `udp/8444`、WireGuard `wg0` 10.66.0.1/16。国内到它的 TCP 被阻断（SYN-ACK 回不去），已停 xray（2096 Reality）和 sing-box 的 VMess/Trojan/SS，配置备份在节点 `/etc/sing-box/disabled-20261118/`，数据库 host_v2 272/277/381 置 enable=0。SSH 从国内直连不通，需经 103.115.18.229 跳板 |
 | 103.115.18.229 | 22 | strongSwan（charon 跑在 8080/8081） |
 | 43.110.45.118 | 22 | xray `:443` |
 | 8.217.122.83 | 22 | 见上，同时是节点 |

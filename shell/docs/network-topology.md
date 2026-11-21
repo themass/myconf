@@ -75,6 +75,7 @@ DNS 在 DNSOwl（`ns1/2/3.dnsowl.com`）。
 
 | 机器 | SSH | 跑的东西 |
 |---|---|---|
+| 38.135.52.212 | 22 | 2026-11-21 新装（Ubuntu 20.04，洛杉矶，1 核/461M/9G，2G swap，BBR）：strongSwan（IKE 8081/NAT-T 8080，EAP-RADIUS）、Xray Reality `:443`（SNI www.samsung.com）、sing-box（VMess-WS 8880、Trojan 8443、SS 8388、Hysteria2 udp/8444）、WireGuard `wg0` 10.66.0.1/16。数据库 hostId 43117–43122，免费美国线路。本机实测 Reality（Google 204，2.3s）和 Hysteria2（204，1.3s）均通，出口即本机；IKEv2/WireGuard 未做真实客户端验证。WireGuard App 设备同步未启用。Trojan/Hysteria2 仍是自签证书 + insecure。本机到它的 SSH 直连时通时不通，安装经 103.115.18.229 跳板 |
 | 182.255.89.188 | 22 | 2026-11-19 新装（Ubuntu 24.04，1 核/1G/25G，2G swap，BBR）：strongSwan（IKE 8081/NAT-T 8080，EAP-RADIUS）、Xray Reality `:443`（SNI www.samsung.com）、sing-box（VMess-WS 8880、Trojan 8443、SS 8388、Hysteria2 udp/8444）、WireGuard `wg0` 10.66.0.1/16。数据库 hostId 43111–43116，免费线路。本机实测 Reality 和 Hysteria2 均通（出口即本机）；IKEv2/WireGuard 未做真实客户端验证。WireGuard App 设备同步未启用。Trojan/Hysteria2 仍是自签证书 + insecure |
 | 38.78.147.253 | 17966 | **只走 UDP**（2026-11-18 起）：strongSwan（IKE 8081 / NAT-T 8080）、sing-box Hysteria2 `udp/8444`、WireGuard `wg0` 10.66.0.1/16。国内到它的 TCP 被阻断（SYN-ACK 回不去），已停 xray（2096 Reality）和 sing-box 的 VMess/Trojan/SS，配置备份在节点 `/etc/sing-box/disabled-20261118/`，数据库 host_v2 272/277/381 置 enable=0。SSH 从国内直连不通，需经 103.115.18.229 跳板 |
 | 103.115.18.229 | 22 | strongSwan（charon 跑在 8080/8081） |

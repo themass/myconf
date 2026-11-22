@@ -20,7 +20,7 @@ if __name__ == '__main__':
     se8_vip.parseVideo()
     porn91luantan_vip.parseText()
     quanji91_vip.parseVideo()
-    xiaoya_vip.parseVideo2()
-    xiaoya_vip.parseVideo()
+    #xiaoya_vip.parseVideo2()
+    #xiaoya_vip.parseVideo()
 
     # missav_vip.parseVideo2()

@@ -1,0 +1,8 @@
+[project]
+name = "myconf"
+version = "0.1.0"
+requires-python = "==2.7.18"
+dependencies = []
+
+[tool.uv]
+python-preference = "only-system"

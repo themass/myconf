@@ -201,7 +201,7 @@ infra_nginx() {
     # server/*.conf 全量部署。旧服务器上的 openapi.conf / openapi-http.conf 没有迁移：
     # 它们和 book.conf 声明同一个 server_name，按字母序 book.conf 先加载，
     # 那两个块从来没生效过（nginx -t 会报 conflicting server name）。
-    for f in nginx_check.conf upstream.conf vpn.conf sspacee.conf sspacee3.conf book.conf; do
+    for f in 00-upgrade-map.conf nginx_check.conf upstream.conf vpn.conf sspacee.conf sspacee3.conf book.conf; do
         infra_put "${src}/${f}" "${conf}/server/${f}" 644 \
             "s|{{SSL_DIR}}|${ssl_dir}|g" "s|{{NGINX_INNER_IP}}|${inner_ip}|g"
     done

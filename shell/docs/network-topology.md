@@ -65,7 +65,8 @@ DNS 在 DNSOwl（`ns1/2/3.dnsowl.com`）。
   （原本解析到这台但没有对应 vhost，实测 404）。仓库里 `python/monitor/pingport.py` 仍写着
   `http://api.sspacee.com/vpn/api/noapp/ping.json`，域名删掉后它必然失败；该脚本没有 cron/service
   在跑，路径本身也是旧的（正确前缀是 `/vvv/`）。
-- 真正在用的是 **`api.ok123find.top`**（`vpn.conf`，`/vvv/` 路由到后端），返回 200
+- 真正在用的是 **`api.ok123find.top`**（`vpn.conf`，`/vvv/` 路由到后端），返回 200。`api.ok124find.top` 是它的备用域名，共用同一套路由
+- 游戏模块（2026-11-22）：`/vvv/api/game/ws` 单独一块做 WebSocket 升级，`/vvv/api/game/v1/` 走 JSON。升级头靠 `conf/nginx/00-upgrade-map.conf` 的 `$connection_upgrade`；游戏这块不能用 `rewrite ... break`，要用带 URI 的 `proxy_pass` 并把 Host 写死成 `127.0.0.1:8888`，否则后端收到 `Host: vpn_server` 直接 400。实测握手返回 401（与直连后端一致，缺的是鉴权）
 - ok123find.top 的 **反向代理入口**（当前 DNS 指向，等 DNS 迁移后可撤）
 - 另有 `:8888` java 服务、`:8388` ss-server、`:9002` 本机 nginx_check
 - 上面有 certbot，ok123find.top 的证书就是在这里签的

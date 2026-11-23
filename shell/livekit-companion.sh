@@ -58,10 +58,12 @@ livekit_companion_status() {
     [ -f "$ENV_FILE" ] || die "找不到 $ENV_FILE（本脚本只在 104 上跑）"
     log "$ENV_FILE 现状:"
     livekit_companion_show_url
-    local code
-    code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 "$LIVEKIT_URL_VALUE/" 2>/dev/null)"
-    [ "$code" = "200" ] && log "$LIVEKIT_URL_VALUE → 200（nginx 两跳通）" \
-        || warn "$LIVEKIT_URL_VALUE 探测异常: http=$code"
+    # curl 不认 ws/wss scheme（只会回 000），探测前换掉协议。
+    local probe code
+    probe="${LIVEKIT_URL_VALUE/#wss:\/\//https://}"; probe="${probe/#ws:\/\//http://}"
+    code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 "$probe/" 2>/dev/null)"
+    [ "$code" = "200" ] && log "$probe → 200（nginx 两跳通）" \
+        || warn "$probe 探测异常: http=$code"
     su -s /bin/bash web -c "cd '$CA_DIR' && bash '$PROCESS_SH' status" 2>&1 | sed 's/^/  /'
 }
 

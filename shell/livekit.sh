@@ -70,8 +70,7 @@ livekit_install() {
     # 端口冲突检查：信令 7880（允许本服务自己占）、TURN 7881 tcp+udp、7882 udp、媒体段抽查
     assert_port_free tcp 7880 livekit-server LIVEKIT_PORT
     assert_port_free tcp 7881 livekit-server LIVEKIT_TURN_TCP_PORT
-    assert_port_free udp 7881 livekit-server LIVEKIT_TURN_UDP_PORT
-    assert_port_free udp 7882 livekit-server LIVEKIT_RTC_UDP_PORT
+    assert_port_free udp 3478 livekit-server LIVEKIT_TURN_UDP_PORT
     assert_port_free udp "$start" livekit-server LIVEKIT_PORT_RANGE
 
     if [ ! -f "$LIVEKIT_CONF" ]; then
@@ -122,8 +121,7 @@ EOF
     systemctl enable livekit >/dev/null 2>&1
 
     open_port tcp 7881
-    open_port udp 7881
-    open_port udp 7882
+    open_port udp 3478
     open_port udp "$start" >/dev/null 2>&1 || true
     # 媒体段逐个 open_port 太啰嗦，直接给 ufw 加段（有 ufw 才加）。
     if have ufw && ufw status 2>/dev/null | grep -q "Status: active"; then
@@ -154,7 +152,7 @@ livekit_status() {
     code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://127.0.0.1:7880/ 2>/dev/null)"
     [ "$code" = "200" ] && log "本机信令 http://127.0.0.1:7880 → 200 OK" \
         || warn "本机信令探测异常: http=$code（LiveKit 根路径应回 200）"
-    ss -lunp 2>/dev/null | grep -E ':(7882|7881) ' | head -4
+    ss -lunp 2>/dev/null | grep -E ':(3478|5000[0-9]) ' | head -4
 }
 
 livekit_rotate_key() {

@@ -9,24 +9,27 @@ keys:
   {{LIVEKIT_API_KEY}}: {{LIVEKIT_API_SECRET}}
 
 rtc:
-  # 关键：多 IP 机器 + 无 NAT 场景下显式钉死 advertise 的公网 IP，
-  # 否则 candidate 可能落到别的 IP，手机直接连不上媒体。
+  # 关键：104 单网卡挂 5 个公网 IP，use_external_ip:true 会对每个 IP 做 STUN 并全部 advertise
+  # （v1.13.11 实测日志如此），node_ip 会被架空。显式钉死一个 IP，关掉 STUN 探测。
   node_ip: {{LIVEKIT_NODE_IP}}
-  use_external_ip: true
+  use_external_ip: false
 
   # 媒体 UDP 端口段。云安全组必须放行（livekit.sh 结束会提醒）。
   port_range_start: 50000
   port_range_end: 50019
 
-  # TURN over TCP / UDP（国内移动网络封 UDP 时的兜底，凭据由 LiveKit 自动下发，无需外部 TURN）。
+  # ICE over TCP（7881）：UDP 被封时的媒体兜底通道。
+  # 注意：rtc.udp_port 不设置——设了会变单端口复用，和 port_range 语义打架。
   tcp_port: 7881
-  udp_port: 7882
 
 turn:
   enabled: true
-  # 不开 tls_port：TURN/TLS 的证书主机名要和客户端连 TURN 的 host 一致，
-  # 而我们 TURN 走的是 node_ip（直连 104），LE 证书签的是域名，会校验失败。
-  # 后续要做 TURN/TLS，用域名解析+独立证书再开（tls_port/cert_file/key_file）。
+  # v1.13.11 源码 pkg/service/turn.go:83：tls_port 和 udp_port 都 <=0 直接报
+  # "invalid TURN ports" 退出（文件配置不自动补默认值）。内置 TURN 的 UDP 端口是
+  # turn.udp_port（默认 3478），和 rtc.tcp_port(ICE-TCP)/rtc.udp_port(ICE-UDP) 是三回事。
+  udp_port: 3478
+  # 不开 tls_port：TURN/TLS 证书主机名要和客户端连 TURN 的 host 一致，而 TURN 走的是
+  # node_ip 直连，LE 域名证书签不上。国内移动网络先验证 TURN/UDP + ICE-TCP 够用再议。
 
 logging:
   level: info

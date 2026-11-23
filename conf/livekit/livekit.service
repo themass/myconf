@@ -1,0 +1,17 @@
+[Unit]
+Description=LiveKit Server (self-hosted, companion voice)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=web
+Group=web
+# --bind 只约束信令监听（回环）；媒体 UDP 不受影响，仍按 rtc.* 配置监听。
+ExecStart=/home/web/opt/livekit/livekit-server --config /home/web/etc/livekit/config.yaml --bind 127.0.0.1
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

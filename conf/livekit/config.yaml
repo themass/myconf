@@ -1,0 +1,35 @@
+# LiveKit Server 自托管配置（104 应用机）
+# 由 shell/livekit.sh 渲染安装：{{...}} 占位符替换后写到 /home/web/etc/livekit/config.yaml（权限 600，含密钥）。
+# 键名对照上游 config-sample.yaml（v1.13.11，已在线核对）：
+#   port / keys / rtc.node_ip / rtc.use_external_ip / rtc.tcp_port / rtc.udp_port / rtc.port_range_* / turn.enabled
+
+port: 7880          # 信令 HTTP/WS。只绑 127.0.0.1（livekit.sh 传 --bind），外部一律走 nginx 反代。
+
+keys:
+  {{LIVEKIT_API_KEY}}: {{LIVEKIT_API_SECRET}}
+
+rtc:
+  # 关键：多 IP 机器 + 无 NAT 场景下显式钉死 advertise 的公网 IP，
+  # 否则 candidate 可能落到别的 IP，手机直接连不上媒体。
+  node_ip: {{LIVEKIT_NODE_IP}}
+  use_external_ip: true
+
+  # 媒体 UDP 端口段。云安全组必须放行（livekit.sh 结束会提醒）。
+  port_range_start: 50000
+  port_range_end: 50019
+
+  # TURN over TCP / UDP（国内移动网络封 UDP 时的兜底，凭据由 LiveKit 自动下发，无需外部 TURN）。
+  tcp_port: 7881
+  udp_port: 7882
+
+turn:
+  enabled: true
+  # 不开 tls_port：TURN/TLS 的证书主机名要和客户端连 TURN 的 host 一致，
+  # 而我们 TURN 走的是 node_ip（直连 104），LE 证书签的是域名，会校验失败。
+  # 后续要做 TURN/TLS，用域名解析+独立证书再开（tls_port/cert_file/key_file）。
+
+logging:
+  level: info
+  pion_level: error
+
+# 单节点不配 redis（LiveKit 无 redis 时进程内汇合；多节点扩展时再加）。

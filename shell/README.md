@@ -95,6 +95,8 @@ bash svc.sh logs mysql -f
 
 bash radius.sh clients   # 用 conf/radius/clients.conf 替换线上的，校验通过才重启，失败自动还原
 bash radius.sh debug     # 停掉 freeradius 前台调试（radiusd -X）
+
+bash livekit.sh install  # LiveKit Server 自托管（104）：二进制+systemd(web)+配置渲染；流程见 docs/README-livekit.md
 ```
 
 - 服务由 systemd 管理，不再 `pkill -9`；`infra.sh` 装的服务开机自启。

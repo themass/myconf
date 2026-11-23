@@ -134,12 +134,13 @@ EOF
     cat <<EOF
 
 下一步（都不在本脚本范围，按 README-livekit.md 执行）：
-  1. 云控制台安全组放行：udp ${start}-${end}, tcp 7881, udp 7881, udp 7882（104）。
+  1. 云控制台安全组放行：udp ${start}-${end}, tcp 7881, udp 3478（104）。
   2. companion 服务端 / voice worker .env：
        LIVEKIT_URL=wss://livekit.ok123find.top
        LIVEKIT_API_KEY=${LIVEKIT_API_KEY:-<见 $LIVEKIT_CONF>}
        LIVEKIT_API_SECRET=<见 $LIVEKIT_CONF>
-  3. 8.217 上装 conf/nginx/app-83/livekit-ok123find.conf + certbot 签证书 + reload。
+  3. nginx 两跳：104 装 conf/nginx/app-87/server/livekit-local.conf；
+     8.217 装 conf/nginx/app-83/livekit-ok123find.conf + certbot 签证书 + reload。
 EOF
     remind_security_group
 }

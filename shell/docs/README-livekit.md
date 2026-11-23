@@ -7,12 +7,17 @@
 
 ```
 App ── wss://livekit.ok123find.top:443 ──▶ 8.217.122.83 nginx（TLS 终结）
-                                          └─http─▶ 104.160.191.87:7880（LiveKit 信令，只绑回环）
+                                          └─http:80─▶ 104.160.191.87 nginx（编译版 1.24.0）
+                                                      └─▶ 127.0.0.1:7880（LiveKit 信令，只绑回环）
 App ── WebRTC 媒体 UDP 50000-50019 ──────▶ 104.160.191.87（ICE 直连，node_ip 钉死）
 App ── TURN udp 3478 ───────────────────▶ 104.160.191.87（内置 TURN，凭据自动下发；v1.13.11 必须显式配 turn.udp_port）
 App ── ICE over TCP 7881 ───────────────▶ 104.160.191.87（UDP 被封时的媒体兜底）
 voice worker（已在 104）────────────────▶ ws://127.0.0.1:7880（同机）
 ```
+
+信令两跳是必须的：LiveKit 只绑回环，7880 不对外。104 的 80 已跨机开放（ok123find.top 同款），
+所以不用为 LiveKit 新开 7880——8.217 转发时带 `Host: livekit.ok123find.top`，
+由 104 本机 nginx 的 `conf/nginx/app-87/server/livekit-local.conf` 接住再转回环。
 
 DNS `livekit.ok123find.top` 已解析到 8.217.122.83（2026-11-23 dig 验证）。
 
@@ -32,21 +37,27 @@ bash shell/livekit.sh install
 
 ## 2. 安全组（云控制台，人工）
 
-104 放行入站：`udp 50000-50019`、`tcp 7881`、`udp 7881`、`udp 7882`。
+104 放行入站：`udp 50000-50019`、`tcp 7881`、`udp 3478`（2026-11-23 已开）。
 不放行 UDP 段的后果：信令通、无声——表现和 LiveKit 坏了完全一样，别先查代码。
 
-## 3. 8.217.122.83 侧 nginx（该机的 root）
+## 3. nginx：两侧都要装（8.217 + 104）
+
+编译版 nginx，可执行文件和配置都在 `/root/local/nginx-1.24.0/`（`nginx` 不在 PATH，
+用 `/root/local/nginx-1.24.0/sbin/nginx -t`），站点目录 `conf/server/`。
 
 ```bash
-# 1) 装 vhost（内容在 conf/nginx/app-83/livekit-ok123find.conf）
-cp livekit-ok123find.conf /etc/nginx/conf.d/   # 或该机既有的站点目录，与 ok123find-proxy.conf 同级
-# 2) 签证书（A 记录已指向本机）
+# a) 104：中转 vhost（把 livekit-local.conf 放进 conf/server/）
+cp livekit-local.conf /root/local/nginx-1.24.0/conf/server/ && sbin/nginx -t && systemctl reload nginx
+
+# b) 8.217：先只装 :80 段（443 段引用的证书还没签，nginx -t 会失败）
+#    内容在 conf/nginx/app-83/livekit-ok123find.conf，与 zz-ok123find-proxy.conf 同级
 certbot certonly --webroot -w /var/www/letsencrypt -d livekit.ok123find.top
-# 3) 校验并 reload
-nginx -t && systemctl reload nginx
+# c) 证书到手后装完整版，校验并 reload
+sbin/nginx -t && systemctl reload nginx
 ```
 
-验证：`curl -s -o /dev/null -w '%{http_code}' https://livekit.ok123find.top/` 应 200（LiveKit 根路径）。
+验证：`curl -s -o /dev/null -w '%{http_code}' https://livekit.ok123find.top/` 应 200（LiveKit 根路径）；
+`curl -o /dev/null -w '%{http_code}' -H 'Host: livekit.ok123find.top' http://104.160.191.87/` 也应 200（只测中转这一跳）。
 
 ## 4. companion 服务端 / voice worker 切指向（104）
 
@@ -75,5 +86,5 @@ worker 与 LiveKit 同机走域名也无碍（TLS 绕一圈 nginx，量很小）
 
 - 单节点，无 redis（进程内汇合）。将来加第二节点要配 `redis:` 块——注意 104 生产 redis 基线（uher 卡 0001_baseline）那条旧账。
 - TURN/TLS（5349）未开：内置 TURN 走 node_ip 直连，LE 域名证书签不上去。国内移动网络先验证 TURN over TCP(7881) 够用再议。
-- 8.217 那台 nginx 版本未确认，vhost 里没写 `http2`（信令 WS 不需要）。
+- 两台 nginx 都是编译版 1.24.0（`/root/local/nginx-1.24.0`，不在 PATH）；vhost 不写 `http2`（1.24 只有老语法 `listen 443 ssl http2`，且信令 WS 不需要 h2）。
 - `livekit.sh` 只碰 livekit 自己：不动 8081 companion、不动 VPN 栈、不写生产库。

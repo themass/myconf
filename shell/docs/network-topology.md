@@ -16,6 +16,8 @@
 | ok123find.top / www | 8.217.122.83 | 8.217.122.83 反代 → 应用机 104.160.191.87 的 WordPress |
 | book.ok123find.top | 8.217.122.83 | 8.217.122.83：openapi 反代 |
 | api.ok123find.top / file.ok123find.top | 8.217.122.83 | 8.217.122.83：openapi 反代 |
+| api.sspacee.com | 8.217.122.83 | 8.217.122.83：api.ok123find.top 的镜像（2026-11-26 起有独立 vhost） |
+| file/book/game/livekit.sspacee.com | 待改 | 83 上镜像 vhost 已装好（自签占位证书）；A 记录还在 64.32.22.150，DNSOwl 改到 8.217.122.83 后用 certbot 换正式证书 |
 | mysql.sspacee.com | 47.82.163.162 | 基础组件机：MySQL（业务库 `vpn`） |
 | newdb.sspacee.com | 47.82.163.162 | 同上，历史名字，ss-panel 在用 |
 | redis.sspacee.com | 47.82.163.162 | 基础组件机：Redis 6380（vvv-link 在用） |

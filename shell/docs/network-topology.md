@@ -94,6 +94,15 @@ DNS 在 DNSOwl（`ns1/2/3.dnsowl.com`）。
 
 - JobCome（agent）、New API、companion agent，web 根在 `/home/web/webroot/{job-come,new-api,companion-agent,testserverV,wordpress}`
 
+### 新机 — 104.219.211.217（SSH **17874**，2026-11-26 登记）
+
+- 裸金属 Supermicro X9SCL/X9SCM（BIOS 2.2, 2015），Intel Xeon E3-1230 v2（Ivy Bridge 4c/8t），15.6 GiB RAM，962 GiB LVM ext4，Ubuntu 24.04.5 / 6.8 内核，无 IPv6。ISP Dignitas / AS54600（Raksmart 系），机房 Seattle。
+- **sshd 只监听 17874**（`Port 17874`、`PermitRootLogin yes`）；22/80/443 无监听。fleet 清单写 `104.219.211.217:17874:app`。
+- 已装：apt 全量升级（无 pending、无需重启）、python3-venv/pip、node 22（NodeSource）、ffmpeg 6.1、expect、gcc、cpuid。`/root/work/myconf` 在 testpython，仓库自带 `.env`（只含 FLEET_ 项，密钥登录，无密码）。
+- **AES-NI 关不掉也开不回来**：CPUID leaf1 ECX=0x7dbae3ff（bit25=0，且 FMA bit28=0、RDRAND 在）；直接执行 `AESENC` 触发 #UD —— 不是掩码，这颗 CPU 的 AES 单元就是没有（E3-1230 v2 按 Intel ARK 应有 AES-NI，怀疑是 ES/QS 样本或厂商机版）。裸金属无 hypervisor，microcode 0x21 已最新（SRBDS "No microcode"），BIOS 没有可开项。软件加密实测：AES-256-GCM ≈361 MB/s，ChaCha20-Poly1305 ≈1.05 GB/s —— VPN/反代 TLS 一律优先 ChaCha20 套件。
+- 定位：候选的 companion agent / LiveKit 应用机（150 只剩 355M 可用内存、26.7% iowait）。尚未迁移；迁移要办：47.82.163.162 的 Postgres 白名单加这个 IP、LiveKit 两跳 relay（7881/3478 UDP、`/rtc/` 重写）、file/book/game/livekit.sspacee.com 的 DNS 与 certbot。见"应用服务"节。
+- 网络评价（见 2026-11-26 分析）：不是 CN2/精品网；北京 ICMP min-RTT 186.6ms/抖动 35.8（150 是 236.5/95.0），1 Gbps 口，互联带宽实测 900 Mbit 级。
+
 ## 已知问题
 
 1. **WordPress 慢**（13–15 秒/页）：跨机房 MySQL RTT 172ms × 60 条查询。要么迁本地 MySQL，要么上 Redis 对象缓存。
